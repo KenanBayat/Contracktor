@@ -1,0 +1,40 @@
+plugins {
+ 	id 'org.springframework.boot' version '2.2.8.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'java'
+    id 'application'
+}
+
+group = 'de.sopro'
+version = '0.0.1-SNAPSHOT'
+
+repositories {
+    jcenter()
+}
+
+configurations {
+	developmentOnly
+	runtimeClasspath {
+		extendsFrom developmentOnly
+	}
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-tomcat'
+	//implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'com.h2database:h2'
+	//implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+	implementation 'org.webjars:bootstrap:4.5.0'
+
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	//testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'junit:junit:4.13'
+}
+
+// Define the main class for the "gradle run" task
+mainClassName = 'de.sopro.SoproSpringApplication'

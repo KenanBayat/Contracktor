@@ -1,0 +1,7 @@
+/* General CSS rules for web frontend */
+
+div.container { margin-bottom: 2em; }
+
+a.icon-link { margin-right: 1em; }
+
+a.icon-link:hover { text-decoration: none; }
