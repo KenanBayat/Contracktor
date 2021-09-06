@@ -1,6 +1,7 @@
 package de.contracktor;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -106,5 +107,7 @@ public class InitDatabaseService {
 		
 		User applicationAdmin = new User("password", "Pablo", "Cocaine", organisation, true, true, applicationAdminRoles);
 		userRepo.save(applicationAdmin);
+		
+		//User user2 = userRepo.findById(1).orElse(null);
 	}
 }

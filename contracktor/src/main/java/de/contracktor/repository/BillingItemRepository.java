@@ -6,4 +6,5 @@ import de.contracktor.model.BillingItem;
 
 public interface BillingItemRepository extends CrudRepository<BillingItem, String> {
 
+	
 }
