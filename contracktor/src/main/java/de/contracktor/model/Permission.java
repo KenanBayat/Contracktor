@@ -9,12 +9,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-public class Right {
+public class Permission {
 	
-	@Getter @Setter @NotNull @Id private String rightName;
+	@Getter @Setter @NotNull @Id private String permissionName;
 	
-	public Right(String rightName) {
-		this.rightName = rightName;
+	public Permission(String permissionName) {
+		this.permissionName = permissionName;
 	}
 
 }
