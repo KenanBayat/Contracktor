@@ -28,7 +28,7 @@ public class User {
 		
 	}
 	
-	public User(String password, String surname, String forename, Organisation organisation, 
+	public User(String password, String forename, String surname, Organisation organisation, 
 			    Boolean isAdmin, Boolean isApplicationAdmin, ArrayList<Role> roles) {
 		this.surname = surname;
 		this.forename = forename;

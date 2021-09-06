@@ -1,10 +1,15 @@
 package de.contracktor;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import de.contracktor.model.Organisation;
 import de.contracktor.model.Permission;
+import de.contracktor.model.Role;
+import de.contracktor.model.User;
 import de.contracktor.repository.BillingItemRepository;
 import de.contracktor.repository.BillingUnitCompletionReportRepository;
 import de.contracktor.repository.BillingUnitRepository;
@@ -59,14 +64,39 @@ public class InitDatabaseService {
 	private StateTransitionRepository stateTransitionRepo;
 	
 	
-	
-
-	
 	public void init() {
-		/*
-		if(permissionRepository.count() == 0) {
-			Permission permission = new Permission("Read-Only");
-			permissionRepository.save(permission);
-		}*/
+		if(userRepo.count() == 0 && 
+		   organisationRepo.count() == 0 && 
+		   projectRepo.count() == 0 && 
+		   contractRepo.count() == 0 && 
+		   permissionRepo.count() == 0 && 
+		   billingItemRepo.count() == 0 && 
+		   billingUnitRepo.count() == 0 &&
+		   billingUnitCompletionReportRepo.count() == 0 &&
+		   reportRepo.count() == 0 &&
+		   roleRepo.count() == 0 &&
+		   stateRepo.count() == 0 &&
+		   stateTransitionRepo.count() == 0
+			) 
+		{
+			Permission readOnly = new Permission("Nur lesen");
+			Permission readWrite = new Permission("Lesen und schreiben");
+			
+			permissionRepo.save(readOnly);
+			permissionRepo.save(readWrite);
+			
+			Organisation organisation = new Organisation("Mehiko", "mafio", "42", "Mehiko City", "1234", "Columbia");
+			organisationRepo.save(organisation);
+
+			Role applicationAdminRole = new Role("Applikations-Admin", readOnly, organisation);
+			roleRepo.save(applicationAdminRole);
+			
+			ArrayList<Role> applicationAdminRoles = new ArrayList<Role>();
+			applicationAdminRoles.add(applicationAdminRole);
+			
+			User applicationAdmin = new User("password", "Pablo", "Cocaine", organisation, true, true, applicationAdminRoles);
+			userRepo.save(applicationAdmin);
+			
+		}
 	}
 }
