@@ -30,6 +30,10 @@ public class Project {
 	@Getter @Setter private String image;
 	@Getter @Setter private String description;
 	
+	public Project() {
+		
+	}
+	
 	public Project(String name, Date completionDate, String street, String houseNumber, String city, 
 			       String postcode, String country, Double totalPrice, String owner, String creator,
 			       State status, String image, String description) {

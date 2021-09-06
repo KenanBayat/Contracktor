@@ -26,6 +26,10 @@ public class BillingItem {
 	@Getter @Setter @OneToMany private List<BillingItem> billingItems;
 	@Getter @Setter private String shortDescription;
 	
+	public BillingItem() {
+		
+	}
+	
 	public BillingItem(String billingItemID, String unit, Double quantity, Double pricePerUnit,
 			           Double totalPrice, String IFC, State status) {
 		this.billingItemID = billingItemID;

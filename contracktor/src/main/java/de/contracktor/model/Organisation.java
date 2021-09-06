@@ -24,6 +24,10 @@ public class Organisation {
 	@Getter @Setter @NotNull private String country;
 	@Getter @Setter @OneToMany(cascade = CascadeType.ALL) private List<User> users;
 	
+	public Organisation() {
+		
+	}
+	
 	public Organisation(String organisationName, String street, String houseNumber, String city,
 			            String postcode, String country) {
 		this.organisationName = organisationName;

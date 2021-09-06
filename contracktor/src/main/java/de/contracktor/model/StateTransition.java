@@ -18,6 +18,10 @@ public class StateTransition {
 	@Getter @Setter @NotNull @ManyToOne private State startState;
 	@Getter @Setter @NotNull @ManyToOne private State endState;
 	
+	public StateTransition() {
+		
+	}
+	
 	public StateTransition(State startState, State endState) {
 		this.startState = startState;
 		this.endState = endState;

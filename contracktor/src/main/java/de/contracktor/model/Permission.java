@@ -13,6 +13,10 @@ public class Permission {
 	
 	@Getter @Setter @NotNull @Id private String permissionName;
 	
+	public Permission() {
+		
+	}
+	
 	public Permission(String permissionName) {
 		this.permissionName = permissionName;
 	}

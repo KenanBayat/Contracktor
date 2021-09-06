@@ -23,6 +23,10 @@ public class BillingUnitCompletionReport {
 	@Getter @Setter private ArrayList<BillingUnit> billingUnits;
 	@Getter @Setter private ArrayList<Image> images;
 	
+	public BillingUnitCompletionReport() {
+		
+	}
+	
 	public BillingUnitCompletionReport(Contract contract, Project project, String comment, String username, 
 			                           ArrayList<BillingUnit> billingUnits, ArrayList<Image> images) {
 		this.contract = contract;

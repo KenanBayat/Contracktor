@@ -27,6 +27,10 @@ public class BillingUnit {
 	@Getter @Setter private String shortDescription;
 	@Getter @Setter private String longDescription;
 	
+	public BillingUnit() {
+		
+	}
+	
 	public BillingUnit(String billingUnitID, String unit, Date completionDate, Double totalPrice, 
 			           Double totalQuantity, Boolean ownContractDefined, 
 			           String shortDescription, String longDescription) {

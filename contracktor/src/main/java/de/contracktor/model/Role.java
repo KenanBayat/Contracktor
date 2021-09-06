@@ -13,6 +13,10 @@ public class Role {
 	
 	@Getter @Setter @NotNull @Id private String roleName;
 	
+	public Role() {
+		
+	}
+	
 	public Role(String roleName) {
 		this.roleName = roleName;
 	}

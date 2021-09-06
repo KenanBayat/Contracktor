@@ -13,6 +13,10 @@ public class State {
 
 	@Getter @Setter @NotNull @Id private String stateName;
 	
+	public State() {
+		
+	}
+	
 	public State(String stateName) {
 		this.stateName = stateName;
 	}

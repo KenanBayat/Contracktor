@@ -20,6 +20,10 @@ public class Contract {
 	@Getter @Setter @NotNull private String contractor;
 	@Getter @Setter private String description;
 
+	public Contract() {
+		
+	}
+	
 	public Contract(Project project, String name, String consignee, State status, String contractor, 
 			        String description) {
 		this.project = project;

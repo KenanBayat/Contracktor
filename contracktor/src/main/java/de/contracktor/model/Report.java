@@ -24,6 +24,10 @@ public class Report {
 	@Getter @Setter String comment;
 	@Getter @Setter ArrayList<Image> images;
 	
+	public Report() {
+		
+	}
+	
 	public Report(String billingItemID, Date date, String username, String comment, ArrayList<Image> images) {
 		this.billingItemID = billingItemID;
 		this.date = date;

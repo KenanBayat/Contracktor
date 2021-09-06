@@ -24,6 +24,10 @@ public class User {
 	@Getter @Setter	@NotNull private Boolean isApplicationAdmin;
 	@Getter @Setter private ArrayList<Role> roles;
 	
+	public User() {
+		
+	}
+	
 	public User(String password, String surname, String forename, Organisation organisation, 
 			    Boolean isAdmin, Boolean isApplicationAdmin, ArrayList<Role> roles) {
 		this.surname = surname;
