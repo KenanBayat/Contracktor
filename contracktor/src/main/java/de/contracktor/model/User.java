@@ -32,6 +32,7 @@ public class User {
 	
 	public User(String password, String forename, String surname, Organisation organisation, 
 			    Boolean isAdmin, Boolean isApplicationAdmin, ArrayList<Role> roles) {
+		this.password = password;
 		this.surname = surname;
 		this.forename = forename;
 		this.organisation = organisation;

@@ -94,9 +94,10 @@ public class InitDatabaseService {
 			ArrayList<Role> applicationAdminRoles = new ArrayList<Role>();
 			applicationAdminRoles.add(applicationAdminRole);
 			
-			User applicationAdmin = new User("password", "Pablo", "Cocaine", organisation, true, true, applicationAdminRoles);
+			User applicationAdmin = new User("124", "Pablo", "Cocaine", organisation, true, true, applicationAdminRoles);
 			userRepo.save(applicationAdmin);
 			
 		}
 	}
+	
 }
