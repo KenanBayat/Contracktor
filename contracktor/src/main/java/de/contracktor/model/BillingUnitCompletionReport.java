@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 import com.sun.istack.NotNull;
 
@@ -15,17 +16,17 @@ import lombok.Setter;
 public class BillingUnitCompletionReport {
 
 	@Getter @Setter @NotNull @Id private String CRID;	
-	@Getter @Setter @NotNull @Id private int contractID;
-	@Getter @Setter @NotNull @Id private int projectID;
+	@Getter @Setter @NotNull @ManyToOne private Contract contract;
+	@Getter @Setter @NotNull @ManyToOne private Project project;
 	@Getter @Setter private String comment;
 	@Getter @Setter private String username;
 	@Getter @Setter private ArrayList<BillingUnit> billingUnits;
 	@Getter @Setter private ArrayList<Image> images;
 	
-	public BillingUnitCompletionReport(int contractID, int projectID, String comment, String username, 
+	public BillingUnitCompletionReport(Contract contract, Project project, String comment, String username, 
 			                           ArrayList<BillingUnit> billingUnits, ArrayList<Image> images) {
-		this.contractID = contractID;
-		this.projectID = projectID;
+		this.contract = contract;
+		this.project = project;
 		this.comment = comment;
 		this.username = username;
 		this.billingUnits = billingUnits;

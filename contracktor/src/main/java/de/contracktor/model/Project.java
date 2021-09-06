@@ -1,10 +1,10 @@
 package de.contracktor.model;
 
-import java.awt.Image;
 import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 import com.sun.istack.NotNull;
 
@@ -26,13 +26,13 @@ public class Project {
 	@Getter @Setter @NotNull private Double totalPrice;
 	@Getter @Setter @NotNull private String owner;
 	@Getter @Setter @NotNull private String creator;
-	@Getter @Setter @NotNull private State status;
-	@Getter @Setter private Image image;
+	@Getter @Setter @NotNull @ManyToOne private State status;
+	@Getter @Setter private String image;
 	@Getter @Setter private String description;
 	
 	public Project(String name, Date completionDate, String street, String houseNumber, String city, 
 			       String postcode, String country, Double totalPrice, String owner, String creator,
-			       State status, Image image, String description) {
+			       State status, String image, String description) {
 		this.name = name;
 		this.completionDate = completionDate;
 		this.street = street;
