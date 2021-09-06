@@ -13,15 +13,15 @@ import de.contracktor.repository.UserRepository;
 public class InitDatabaseService {
 
 	@Autowired
-	//private UserRepository userRepository;
+	private UserRepository userRepository;
 	
 	public void init() {
-		//if(userRepository.count() == 0) {
+		/*if(userRepository.count() == 0) {
 			
-		//	Organisation organisation = new Organisation("adesso", "straße", "21", "hamburg", "345", "Deutschland");
+			Organisation organisation = new Organisation("adesso", "straße", "21", "hamburg", "345", "Deutschland");
 			
-		//	User user1 = new User("password", "Meier", "Hans", organisation, true, true, null);
-		//	user1 = userRepository.save(user1);
-		//}
+			User user1 = new User("password", "Meier", "Hans", organisation, true, true, null);
+			user1 = userRepository.save(user1);
+		}*/
 	}
 }
