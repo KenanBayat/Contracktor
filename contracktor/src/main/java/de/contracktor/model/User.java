@@ -3,11 +3,13 @@ package de.contracktor.model;
 import lombok.Getter;
 import lombok.Setter;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import com.sun.istack.NotNull;
@@ -22,7 +24,7 @@ public class User {
 	@Getter @Setter	@NotNull @ManyToOne private Organisation organisation;
 	@Getter @Setter	@NotNull private Boolean isAdmin;
 	@Getter @Setter	@NotNull private Boolean isApplicationAdmin;
-	@Getter @Setter private ArrayList<Role> roles;
+	@Getter @Setter @ManyToMany private List<Role> roles;
 	
 	public User() {
 		
