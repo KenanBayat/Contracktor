@@ -64,6 +64,9 @@ public class InitDatabaseService {
 	private StateTransitionRepository stateTransitionRepo;
 	
 	
+	private Permission read;
+	private Permission write;
+	
 	public void init() {
 		if(userRepo.count() == 0 && 
 		   organisationRepo.count() == 0 && 
@@ -79,24 +82,31 @@ public class InitDatabaseService {
 		   stateTransitionRepo.count() == 0
 			) 
 		{
-			Permission readOnly = new Permission("Nur lesen");
-			Permission readWrite = new Permission("Lesen und schreiben");
-			
-			permissionRepo.save(readOnly);
-			permissionRepo.save(readWrite);
-			
-			Organisation organisation = new Organisation("Mehiko", "mafio", "42", "Mehiko City", "1234", "Columbia");
-			organisationRepo.save(organisation);
+			initPermissions();
+			initApplicationAdmin();
 
-			Role applicationAdminRole = new Role("Applikations-Admin", readOnly, organisation);
-			roleRepo.save(applicationAdminRole);
-			
-			ArrayList<Role> applicationAdminRoles = new ArrayList<Role>();
-			applicationAdminRoles.add(applicationAdminRole);
-			
-			User applicationAdmin = new User("password", "Pablo", "Cocaine", organisation, true, true, applicationAdminRoles);
-			userRepo.save(applicationAdmin);
 			
 		}
+	}
+	
+	private void initPermissions() {
+		read = new Permission("Nur lesen");
+		write = new Permission("Lesen und schreiben");
+		permissionRepo.save(read);
+		permissionRepo.save(write);
+	}
+	
+	private void initApplicationAdmin() {
+		Organisation organisation = new Organisation("Mehiko", "mafio", "42", "Mehiko City", "1234", "Columbia");
+		organisationRepo.save(organisation);
+
+		Role applicationAdminRole = new Role("Applikations-Admin", write, organisation);
+		roleRepo.save(applicationAdminRole);
+		
+		ArrayList<Role> applicationAdminRoles = new ArrayList<Role>();
+		applicationAdminRoles.add(applicationAdminRole);
+		
+		User applicationAdmin = new User("password", "Pablo", "Cocaine", organisation, true, true, applicationAdminRoles);
+		userRepo.save(applicationAdmin);
 	}
 }
