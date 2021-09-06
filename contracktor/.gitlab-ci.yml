@@ -4,7 +4,7 @@ stages:
 
 build-gradle:
   stage: build
-  image: java:11-jdk
+  image: openjdk:11-jdk-alpine
 
   variables:
    GRADLE_USER_HOME: '.gradle-cache' 
