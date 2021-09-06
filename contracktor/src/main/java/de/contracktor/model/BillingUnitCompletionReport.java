@@ -3,6 +3,7 @@ package de.contracktor.model;
 import java.awt.Image;
 import java.util.ArrayList;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import com.sun.istack.NotNull;
@@ -10,6 +11,7 @@ import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+@Entity
 public class BillingUnitCompletionReport {
 
 	@Getter @Setter @NotNull @Id private String CRID;	

@@ -1,5 +1,6 @@
 package de.contracktor.model;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
@@ -8,6 +9,7 @@ import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+@Entity
 public class Contract {
 
 	@Getter @Setter @NotNull @Id    private int contractID;

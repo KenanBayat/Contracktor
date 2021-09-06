@@ -3,6 +3,7 @@ package de.contracktor.model;
 import java.util.ArrayList;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
 import com.sun.istack.NotNull;
@@ -10,6 +11,7 @@ import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+@Entity
 public class Organisation {
 
 	@Getter @Setter @NotNull private String organisationName;
