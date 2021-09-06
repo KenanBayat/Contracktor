@@ -19,8 +19,8 @@ build-gradle:
     - cd contracktor
     - chmod +x gradlew
     - mkdir -p target
-    - mv build/libs/contracktor-0.0.1-SNAPSHOT.jar target/app.jar
     - ./gradlew build
+    - mv build/libs/contracktor-0.0.1-SNAPSHOT.jar target/app.jar
 
   artifacts:
     when:
