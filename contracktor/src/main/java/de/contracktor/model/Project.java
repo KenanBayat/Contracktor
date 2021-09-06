@@ -12,7 +12,7 @@ import lombok.Setter;
 
 public class Project {
 
-	@Getter @Setter @Id      private Long projectID;
+	@Getter @Setter @NotNull @Id      private int projectID;
 	@Getter @Setter @NotNull private String name;
     @Getter @Setter @NotNull private Date creationDate;
 	@Getter @Setter @NotNull private Date completionDate;
@@ -21,14 +21,16 @@ public class Project {
 	@Getter @Setter @NotNull private String city;
 	@Getter @Setter @NotNull private String postcode;
 	@Getter @Setter @NotNull private String country;
-	@Getter @Setter @NotNull private Double totalCosts;
+	@Getter @Setter @NotNull private Double totalPrice;
 	@Getter @Setter @NotNull private String owner;
+	@Getter @Setter @NotNull private String creator;
 	@Getter @Setter @NotNull private State status;
-	@Getter @Setter  private Image image;
-	@Getter @Setter  private String description;
+	@Getter @Setter private Image image;
+	@Getter @Setter private String description;
 	
 	public Project(String name, Date completionDate, String street, String houseNumber, String city, 
-			       String postcode, String country, Double totalCosts, String owner, State status, Image image, String description) {
+			       String postcode, String country, Double totalPrice, String owner, String creator,
+			       State status, Image image, String description) {
 		this.name = name;
 		this.completionDate = completionDate;
 		this.street = street;
@@ -36,8 +38,9 @@ public class Project {
 		this.city = city;
 		this.postcode = postcode;
 		this.country = country;
-		this.totalCosts = totalCosts;
+		this.totalPrice = totalPrice;
 		this.owner = owner;
+		this.creator = creator;
 		this.status = status;
 		this.image = image;
 		this.description = description;

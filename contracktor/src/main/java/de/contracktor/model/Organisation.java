@@ -1,5 +1,10 @@
 package de.contracktor.model;
 
+import java.util.ArrayList;
+
+import javax.persistence.CascadeType;
+import javax.persistence.OneToMany;
+
 import com.sun.istack.NotNull;
 
 import lombok.Getter;
@@ -13,6 +18,7 @@ public class Organisation {
 	@Getter @Setter @NotNull private String city;
 	@Getter @Setter @NotNull private String postcode;
 	@Getter @Setter @NotNull private String country;
+	@Getter @Setter @OneToMany(mappedBy = "Organisation", cascade = CascadeType.ALL) private ArrayList<User> users;
 	
 	public Organisation(String organisationName, String street, String houseNumber, String city,
 			            String postcode, String country) {

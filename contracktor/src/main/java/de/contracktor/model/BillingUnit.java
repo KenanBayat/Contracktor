@@ -3,7 +3,9 @@ package de.contracktor.model;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import com.sun.istack.NotNull;
 
@@ -12,12 +14,12 @@ import lombok.Setter;
 
 public class BillingUnit {
 
-	@Getter @Setter @Id String billingUnitID;
+	@Getter @Setter @Id private String billingUnitID;
 	@Getter @Setter @NotNull private String unit;
 	@Getter @Setter @NotNull private Date completionDate;
 	@Getter @Setter @NotNull private Double totalPrice;
 	@Getter @Setter @NotNull private Double totalQuantity;
-	@Getter @Setter private ArrayList<BillingItem> billingItems;
+	@Getter @Setter @OneToMany(mappedBy = "BillingUnit", cascade = CascadeType.ALL) private ArrayList<BillingItem> billingItems;
 	@Getter @Setter private Boolean ownContractDefined;
 	@Getter @Setter private String shortDescription;
 	@Getter @Setter private String longDescription;

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 import com.sun.istack.NotNull;
 
@@ -15,7 +16,7 @@ public class User {
 	@Getter @Setter @NotNull private String password;
 	@Getter @Setter	@NotNull private String forename;
 	@Getter @Setter @NotNull private String surname;
-	@Getter @Setter	@NotNull private String organisationName;
+	@Getter @Setter	@NotNull @ManyToOne private String organisationName;
 	@Getter @Setter	@NotNull private Boolean isAdmin;
 	@Getter @Setter	@NotNull private Boolean isApplicationAdmin;
 	@Getter @Setter private ArrayList<Role> roles;

@@ -10,6 +10,7 @@ import de.contracktor.repository.UserRepository;
 @SpringBootTest
 public class TestUser {
 
+	/*
 	private User user1;
 	private User user2;
 	
@@ -26,4 +27,5 @@ public class TestUser {
 	public void saveUser() {
 		user1 = userRepo.save(user1);
 	}
+	*/
 }
