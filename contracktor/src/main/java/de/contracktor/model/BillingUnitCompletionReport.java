@@ -15,7 +15,7 @@ import lombok.Setter;
 @Entity
 public class BillingUnitCompletionReport {
 
-	@Getter @Setter @NotNull @Id private String CRID;	
+	@Getter @Setter @NotNull @Id private int CRID;	
 	@Getter @Setter @NotNull @ManyToOne private Contract contract;
 	@Getter @Setter @NotNull @ManyToOne private Project project;
 	@Getter @Setter private String comment;
