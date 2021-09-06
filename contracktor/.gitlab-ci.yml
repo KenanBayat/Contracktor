@@ -4,7 +4,7 @@ stages:
 
 build-gradle:
   stage: build
-  image: java:11-jdk
+  image: adoptopenjdk/openjdk11:x86_64-alpine-jdk11u-2021-09-03-02-30-beta-nightly-slim
 
   variables:
    GRADLE_USER_HOME: '.gradle-cache' 
@@ -16,18 +16,19 @@ build-gradle:
       - $GRADLE_USER_HOME
 
   script:
+    - cd contracktor
     - chmod +x gradlew
     - mkdir -p target
-    - mv build/libscontracktor-0.0.1-SNAPSHOT.jar target/app.jar
     - ./gradlew build
+    - mv build/libs/contracktor-0.0.1-SNAPSHOT.jar target/app.jar
 
   artifacts:
     when:
       always
     reports:
-      junit: /build/test-results/test/TEST-*.xml
+      junit: contracktor/build/test-results/test/TEST-*.xml
     paths: 
-      - target/app.jar
+      - contracktor/target/app.jar
 
 
 docker-deploy:
@@ -35,7 +36,7 @@ docker-deploy:
   image: docker:latest
 
   script:
-    - docker build -t contracktor-web .
+    - docker build -t contracktor-web contracktor/Dockerfile
     - docker stop contracktor-web-container || true
     - docker rm contracktor-web-container || true
     - docker run -d -p 8080:8080 --name contracktor-web-container contracktor-web
