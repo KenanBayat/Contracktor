@@ -1,6 +1,8 @@
 package de.contracktor.controller;
 
+import de.contracktor.model.Organisation;
 import de.contracktor.model.User;
+import de.contracktor.repository.OrganisationRepository;
 import de.contracktor.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,17 +19,16 @@ public class AuthenticationController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private OrganisationRepository organisationRepository;
+
     @GetMapping("/register")
     public String registrationController(Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
-        user.setPassword(encoder.encode("Test"));
-        user.setUsername("jonas");
-        user.setForename("Jonas");
-        user.setIsAdmin(false);
-        user.setIsApplicationAdmin(false);
-        user.setSurname("Testo");
+        Organisation testorg = new Organisation("testOrg","test","test","test","test","test");
+        User user = new User("test",encoder.encode("test"),"test","test",testorg,false,false,null);
+        organisationRepository.save(testorg);
         userRepository.save(user);
+
         return "registerTest";
     }
 
