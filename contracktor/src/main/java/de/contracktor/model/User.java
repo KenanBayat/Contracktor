@@ -19,12 +19,12 @@ import javax.validation.constraints.NotEmpty;
 @Entity
 public class User {
 
-	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	private int id;
+	@Getter	@Id	@GeneratedValue(strategy = GenerationType.IDENTITY)	private int id;
 	@Getter	@Setter	@Column(nullable = false, unique = true) @NotEmpty private String username;
 	@Getter	@Setter	@Column(nullable = false) @NotEmpty private String password;
 	@Getter	@Setter	@Column(nullable = false) @NotEmpty private String forename;
 	@Getter	@Setter	@Column(nullable = false) @NotEmpty private String surname;
-	@Getter	@Setter	@ManyToOne private Organisation organisation;
+	@Getter	@Setter	@JoinColumn(nullable = false) @ManyToOne private Organisation organisation;
 	@Getter	@Setter	@Column(nullable = false) private Boolean isAdmin;
 	@Getter	@Setter	@Column(nullable = false) private Boolean isApplicationAdmin;
 	@Getter	@Setter	@ManyToMany	private List<Role> roles;

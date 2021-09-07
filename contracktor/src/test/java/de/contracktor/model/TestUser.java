@@ -83,13 +83,9 @@ public class TestUser {
 	}
 	
 	@Test 
-	public void testSaveUser() {
-		
+	public void testSaveUser() {		
 		user1 = new User("hansPeter", "password", "hans", "peter", organisation, true, true, null);
 		user2 = new User("hansMeier", "betterpassword", "hans", "meier", organisation, true, true, null);
-		
-		assertEquals(user1.getId(), 0);
-		assertEquals(user2.getId(), 0);
 		
 		user1 = userRepo.save(user1);
 		user2 = userRepo.save(user2);
