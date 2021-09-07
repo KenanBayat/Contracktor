@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotEmpty;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +16,7 @@ import lombok.Setter;
 public class Role {
 	
 	@Getter @Id @GeneratedValue(strategy = GenerationType.AUTO) private int id;
-	@Getter @Setter @Column(nullable = false) private String roleName;
+	@Getter @Setter @Column(nullable = false) @NotEmpty private String roleName;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private Permission permission;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne Organisation organisation;
 	

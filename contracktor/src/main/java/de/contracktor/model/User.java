@@ -19,7 +19,7 @@ import javax.validation.constraints.NotEmpty;
 @Entity
 public class User {
 
-	@Getter	@Id	@GeneratedValue(strategy = GenerationType.IDENTITY)	private int id;
+	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	private int id;
 	@Getter	@Setter	@Column(nullable = false, unique = true) @NotEmpty private String username;
 	@Getter	@Setter	@Column(nullable = false) @NotEmpty private String password;
 	@Getter	@Setter	@Column(nullable = false) @NotEmpty private String forename;

@@ -2,6 +2,7 @@ package de.contracktor.model;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import de.contracktor.repository.StateRepository;
 import de.contracktor.repository.StateTransitionRepository;
 
 @SpringBootTest
-public class StateTransitionTest {
+public class TestStateTransition {
 
 	@Autowired
 	StateRepository stateRepo;
@@ -33,6 +34,12 @@ public class StateTransitionTest {
 		stateRepo.save(state2);
 	}
 	
+	@AfterEach
+	public void delete() {
+		stateRepo.delete(state1);
+		stateRepo.delete(state2);
+	}
+	
 	@Test
 	public void testNullValue() {
 		stateTransition1 = new StateTransition(null, null);
@@ -49,5 +56,7 @@ public class StateTransitionTest {
 		
 		stateTransition2 = new StateTransition(state1, state2);
 		stateTransitionRepo.save(stateTransition2);
+		stateTransitionRepo.delete(stateTransition1);
+		stateTransitionRepo.delete(stateTransition2);
 	}
 }

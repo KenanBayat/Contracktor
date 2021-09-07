@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +19,7 @@ import lombok.Setter;
 public class Report {
 
 	@Getter @Id @GeneratedValue(strategy = GenerationType.AUTO) private int id;
-	@Getter @Setter @Column(nullable = false) String billingItemID;
+	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne String billingItemID;
 	@Getter @Setter @Column(nullable = false) Date date;
 	@Getter @Setter @Column(nullable = false) String username;
 	@Getter @Setter String comment;
