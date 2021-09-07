@@ -6,6 +6,10 @@ build-gradle:
   stage: build
   image: adoptopenjdk/openjdk11:x86_64-alpine-jdk11u-2021-09-03-02-30-beta-nightly-slim
 
+  only:
+    - develop
+    - main
+
   variables:
    GRADLE_USER_HOME: '.gradle-cache' 
    GRADLE_OPTS: '-Dorg.gradle.daemon=false'
@@ -34,6 +38,9 @@ build-gradle:
 docker-deploy:
   stage: deploy
   image: docker:latest
+
+  only:
+    - main
 
   script:
     - docker build -t contracktor-web contracktor/
