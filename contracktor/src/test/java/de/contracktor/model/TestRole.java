@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import de.contracktor.repository.OrganisationRepository;
 import de.contracktor.repository.PermissionRepository;
 import de.contracktor.repository.RoleRepository;
 
@@ -18,30 +19,37 @@ public class TestRole {
 	
 	@Autowired
 	PermissionRepository permissionRepo;
-		
 	
+	@Autowired
+	OrganisationRepository organisationRepo;
+			
 	Role role1;
 	Role role2;
 	
 	Permission permission1;
 	Permission permission2;
 	
+	Organisation organisation;
+	
 	@BeforeEach
 	public void init() {
-		permission1 = new Permission("r");
-		permission2 = new Permission("w");
-		
+		permission1 = new Permission("blabla");
+		permission2 = new Permission("bla");
 		permissionRepo.save(permission1);
 		permissionRepo.save(permission2);
+		
+		organisation = new Organisation("organisation1", "straße", "houseNumber", "city", "12345", "country"); 
+		organisationRepo.save(organisation);
 	}
 	
 	@Test
 	public void testNullValue() {
-		role1 = new Role(null, null, null);
+		// Test with null rolename.
+		role1 = new Role(null, permission1, organisation);
 		assertThrows(Exception.class, () -> roleRepo.save(role1));
 		
-		// Test with null permission
-		role1 = new Role(null, null, null);
+		// Test with null permission.
+		role1 = new Role("role", null, organisation);
 		assertThrows(Exception.class, () -> roleRepo.save(role1));
 		
 		// Test with null organisation.
