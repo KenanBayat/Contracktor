@@ -30,6 +30,9 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	
+	implementation group: 'javax.validation', name: 'validation-api', version: '1.1.0.Final'
+	
 }
 
 test {
