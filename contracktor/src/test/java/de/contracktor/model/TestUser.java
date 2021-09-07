@@ -33,10 +33,32 @@ public class TestUser {
 	@Test
 	public void testNullValues() {
 		// Test null password.
-		user1 = new User(null, "", "", organisation, true, true, null);	
+		user1 = new User(null, "hans", "peter", organisation, true, true, null);	
 		assertThrows(Exception.class, () -> userRepo.save(user1));
 		
 		// Test null forename.
-		user1 = new User("", "", "", organisation, true, true, null);
+		user1 = new User("password", null, "peter", organisation, true, true, null);
+		assertThrows(Exception.class, () -> userRepo.save(user1));
+		
+		// Test null surname.
+		user1 = new User("password", "hans", null, organisation, true, true, null);
+		assertThrows(Exception.class, () -> userRepo.save(user1));
+		
+		// Test null organisation.
+		user1 = new User("password", "hans", "peter", null, true, true, null);
+		assertThrows(Exception.class, () -> userRepo.save(user1));
+		
+		// Test null isAdmin.
+		user1 = new User("password", "hans", "peter", organisation, null, true, null);
+		assertThrows(Exception.class, () -> userRepo.save(user1));
+		
+		// Test null isAdmin.
+		user1 = new User("password", "hans", "peter", organisation, true, null, null);
+		assertThrows(Exception.class, () -> userRepo.save(user1));
+	}
+	
+	@Test
+	public void testEmptyValues() {
+		
 	}
 }
