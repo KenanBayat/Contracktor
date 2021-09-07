@@ -1,6 +1,9 @@
 package de.contracktor.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,12 +14,14 @@ import javax.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 
+@SuppressWarnings("serial")
+@Embeddable
 @Entity
-public class StateTransition {
+public class StateTransition implements Serializable {
 
-	@Getter @Setter @Column(nullable = false) @Id @GeneratedValue(strategy = GenerationType.AUTO) private int stateTranstionID;
-	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private State startState;
-	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private State endState;
+	@Getter @Column(nullable = false) @Id @GeneratedValue(strategy = GenerationType.AUTO) private int id;
+	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne State startState; 
+	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne State endState; 
 	
 	public StateTransition() {
 		

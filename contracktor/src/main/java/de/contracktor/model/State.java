@@ -13,7 +13,7 @@ import lombok.Setter;
 @Entity
 public class State {
 
-	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	private int sateID;
+	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	private int id;
 	@Getter @Setter @Column(nullable = false, unique = true) @NotEmpty private String stateName;
 	
 	public State() {

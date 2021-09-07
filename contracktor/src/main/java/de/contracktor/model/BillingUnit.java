@@ -7,6 +7,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -18,7 +20,8 @@ import lombok.Setter;
 @Entity
 public class BillingUnit {
 
-	@Getter @Setter @Id private String billingUnitID;
+	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	private int id;
+	@Getter @Setter  @Column(nullable = false, unique = true) private String billingUnitID;
 	@Getter @Setter @Column(nullable = false) private String unit;
 	@Getter @Setter @Column(nullable = false) private Date completionDate;
 	@Getter @Setter @Column(nullable = false) private Double totalPrice;

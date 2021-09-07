@@ -2,6 +2,8 @@ package de.contracktor.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -12,7 +14,8 @@ import lombok.Setter;
 @Entity
 public class Contract {
 
-	@Getter @Setter @Column(nullable = false) @Id    private int contractID;
+	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	private int id;
+	@Getter @Setter @Column(nullable = false, unique = true) private int contractID;
 	@Getter @Setter @ManyToOne @JoinColumn(nullable = false) private Project project;
 	@Getter @Setter @Column(nullable = false) private String name;
 	@Getter @Setter @Column(nullable = false) private String consignee;

@@ -36,7 +36,7 @@ public class TestState {
 		state1 = stateRepo.save(state1);
 		state2 = stateRepo.save(state2);
 		
-		stateRepo.deleteById(state1.getSateID());
+		stateRepo.deleteById(state1.getId());
 		
 		// Test if state was deleted.
 		assertFalse(stateRepo.existsByStateName(state1.getStateName()));
@@ -44,11 +44,13 @@ public class TestState {
 	
 	@Test
 	public void testNullValue() {
-		
+		state1 = new State(null);
+		assertThrows(Exception.class, () -> stateRepo.save(state1));
 	}
 	
 	@Test
 	public void testEmptyValue() {
-		
+		state1 = new State("");
+		assertThrows(Exception.class, () -> stateRepo.save(state1));
 	}
 }

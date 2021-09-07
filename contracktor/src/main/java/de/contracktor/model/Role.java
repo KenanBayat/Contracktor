@@ -2,6 +2,8 @@ package de.contracktor.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -12,7 +14,8 @@ import lombok.Setter;
 @Entity
 public class Role {
 	
-	@Getter @Setter @Column(nullable = false) @Id private String roleName;
+	@Getter @Id @GeneratedValue(strategy = GenerationType.AUTO) private int id;
+	@Getter @Setter @Column(nullable = false) private String roleName;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private Permission permission;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne Organisation organisation;
 	

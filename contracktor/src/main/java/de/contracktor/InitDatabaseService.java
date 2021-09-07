@@ -89,8 +89,8 @@ public class InitDatabaseService {
 	}
 	
 	private void initPermissions() {
-		read = new Permission("Nur lesen");
-		write = new Permission("Lesen und schreiben");
+		read = new Permission("r");
+		write = new Permission("w");
 		permissionRepo.save(read);
 		permissionRepo.save(write);
 	}
@@ -105,7 +105,7 @@ public class InitDatabaseService {
 		ArrayList<Role> applicationAdminRoles = new ArrayList<Role>();
 		applicationAdminRoles.add(applicationAdminRole);
 		
-		User applicationAdmin = new User("password", "Pablo", "Cocaine", organisation, true, true, applicationAdminRoles);
+		User applicationAdmin = new User("PC", "password", "Pablo", "Cocaine", organisation, true, true, applicationAdminRoles);
 		userRepo.save(applicationAdmin);
 		
 		//User user2 = userRepo.findById(1).orElse(null);

@@ -13,12 +13,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
 public class User {
 
-	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	private int loginID;
+	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	private int id;
+	@Getter	@Setter	@Column(nullable = false, unique = true) @NotEmpty private String username;
 	@Getter	@Setter	@Column(nullable = false) @NotEmpty private String password;
 	@Getter	@Setter	@Column(nullable = false) @NotEmpty private String forename;
 	@Getter	@Setter	@Column(nullable = false) @NotEmpty private String surname;
@@ -31,8 +33,9 @@ public class User {
 		
 	}
 	
-	public User(String password, String forename, String surname, Organisation organisation, 
+	public User(String username, String password, String forename, String surname, Organisation organisation, 
 			 Boolean isAdmin, Boolean isApplicationAdmin, ArrayList<Role> roles) {
+		this.username = username;
 		this.password = password;
 		this.surname = surname;
 		this.forename = forename;

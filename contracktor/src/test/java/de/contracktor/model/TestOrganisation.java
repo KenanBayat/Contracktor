@@ -94,7 +94,7 @@ public class TestOrganisation {
 		organisation1 = organisationRepo.save(organisation1);
 		organisation2 = organisationRepo.save(organisation2);
 		
-		user1 =  new User("password", "hans", "peter", organisation1, true, true, null);
+		user1 =  new User("hansPeter", "password", "hans", "peter", organisation1, true, true, null);
 		userRepo.save(user1);
 		
 

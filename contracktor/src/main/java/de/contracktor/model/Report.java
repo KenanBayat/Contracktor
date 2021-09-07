@@ -16,7 +16,7 @@ import lombok.Setter;
 @Entity
 public class Report {
 
-	@Getter @Setter @Id @GeneratedValue(strategy = GenerationType.AUTO) private int reportID;
+	@Getter @Id @GeneratedValue(strategy = GenerationType.AUTO) private int id;
 	@Getter @Setter @Column(nullable = false) String billingItemID;
 	@Getter @Setter @Column(nullable = false) Date date;
 	@Getter @Setter @Column(nullable = false) String username;
