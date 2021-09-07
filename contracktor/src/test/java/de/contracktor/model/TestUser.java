@@ -32,9 +32,11 @@ public class TestUser {
 	
 	@Test
 	public void testNullValues() {
-		// Test Null Password.
-		user1 = new User(null, "", "", organisation, true, true, null);
+		// Test null password.
+		user1 = new User(null, "", "", organisation, true, true, null);	
+		assertThrows(Exception.class, () -> userRepo.save(user1));
 		
-		userRepo.save(user1);
+		// Test null forename.
+		user1 = new User("", "", "", organisation, true, true, null);
 	}
 }

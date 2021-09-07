@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
@@ -20,7 +21,7 @@ public class User {
 	@Getter	@Setter	@Column(nullable = false) private String password;
 	@Getter	@Setter	@Column(nullable = false) private String forename;
 	@Getter	@Setter	@Column(nullable = false) private String surname;
-	@Getter	@Setter	@Column(nullable = false) @ManyToOne private Organisation organisation;
+	@Getter	@Setter	@JoinColumn(nullable = false) @ManyToOne private Organisation organisation;
 	@Getter	@Setter	@Column(nullable = false) private Boolean isAdmin;
 	@Getter	@Setter	@Column(nullable = false) private Boolean isApplicationAdmin;
 	@Getter	@Setter	@ManyToMany	private List<Role> roles;

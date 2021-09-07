@@ -3,6 +3,7 @@ package de.contracktor.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import lombok.Getter;
@@ -12,10 +13,10 @@ import lombok.Setter;
 public class Contract {
 
 	@Getter @Setter @Column(nullable = false) @Id    private int contractID;
-	@Getter @Setter @ManyToOne @Column(nullable = false) private Project project;
+	@Getter @Setter @ManyToOne @JoinColumn(nullable = false) private Project project;
 	@Getter @Setter @Column(nullable = false) private String name;
 	@Getter @Setter @Column(nullable = false) private String consignee;
-	@Getter @Setter @Column(nullable = false) @ManyToOne private State status;
+	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private State status;
 	@Getter @Setter @Column(nullable = false) private String contractor;
 	@Getter @Setter private String description;
 

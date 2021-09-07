@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import lombok.Getter;
@@ -23,9 +24,9 @@ public class Project {
 	@Getter @Setter @Column(nullable = false) private String postcode;
 	@Getter @Setter @Column(nullable = false) private String country;
 	@Getter @Setter @Column(nullable = false) private Double totalPrice;
-	@Getter @Setter @Column(nullable = false) private String owner;
+	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private Organisation owner;
 	@Getter @Setter @Column(nullable = false) private String creator;
-	@Getter @Setter @Column(nullable = false) @ManyToOne private State status;
+	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private State status;
 	@Getter @Setter private String image;
 	@Getter @Setter private String description;
 	
@@ -34,7 +35,7 @@ public class Project {
 	}
 	
 	public Project(String name, Date completionDate, String street, String houseNumber, String city, 
-			       String postcode, String country, Double totalPrice, String owner, String creator,
+			       String postcode, String country, Double totalPrice, Organisation owner, String creator,
 			       State status, String image, String description) {
 		this.name = name;
 		this.completionDate = completionDate;

@@ -109,8 +109,6 @@ public class InitDatabaseService {
 		userRepo.save(applicationAdmin);
 		
 		//User user2 = userRepo.findById(1).orElse(null);
-		User user1 = new User(null, "", "", organisation, true, true, null);
 		
-		userRepo.save(user1);
 	}
 }

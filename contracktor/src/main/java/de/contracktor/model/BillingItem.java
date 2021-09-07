@@ -6,10 +6,10 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
-import com.sun.istack.NotNull;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -23,7 +23,7 @@ public class BillingItem {
 	@Getter @Setter @Column(nullable = false) private Double pricePerUnit;
 	@Getter @Setter @Column(nullable = false) private Double totalPrice;
 	@Getter @Setter @Column(nullable = false) private String IFC;
-	@Getter @Setter @Column(nullable = false) @ManyToOne private State status;
+	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private State status;
 	@Getter @Setter @OneToMany private List<BillingItem> billingItems;
 	@Getter @Setter private String shortDescription;
 	
