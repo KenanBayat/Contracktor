@@ -31,6 +31,7 @@ public class TestRole {
 	
 	Organisation organisation;
 	
+	/*
 	@BeforeEach
 	public void init() {
 		permission1 = new Permission("blabla");
@@ -41,6 +42,18 @@ public class TestRole {
 		organisation = new Organisation("organisation1", "straße", "houseNumber", "city", "12345", "country"); 
 		organisationRepo.save(organisation);
 	}
+	
+	@AfterEach
+	public void init() {
+		permission1 = new Permission("blabla");
+		permission2 = new Permission("bla");
+		permissionRepo.save(permission1);
+		permissionRepo.save(permission2);
+		
+		organisation = new Organisation("organisation1", "straße", "houseNumber", "city", "12345", "country"); 
+		organisationRepo.save(organisation);
+	}
+	*/
 	
 	@Test
 	public void testNullValue() {

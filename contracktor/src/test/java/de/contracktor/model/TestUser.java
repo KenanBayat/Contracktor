@@ -1,9 +1,10 @@
 package de.contracktor.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,34 +33,58 @@ public class TestUser {
 		organisationRepo.save(organisation);
 	}
 	
+	@AfterEach
+	public void delete() {
+		organisationRepo.delete(organisation);
+	}
+	
+	
 	@Test
-	public void testNullValues() {
+	public void testNullUsername() {
 		// Test null username.
 		user1 = new User(null, "password", "hans", "peter", organisation, true, true, null);	
 		assertThrows(Exception.class, () -> userRepo.save(user1));
-		
+	}
+	
+	@Test
+	public void testNullPassword() {
 		// Test null password.
 		user1 = new User("username", null, "hans", "peter", organisation, true, true, null);	
 		assertThrows(Exception.class, () -> userRepo.save(user1));
-		
+	}
+	
+	@Test
+	public void testNullForename() {
 		// Test null forename.
 		user1 = new User("username", "password", null, "peter", organisation, true, true, null);
 		assertThrows(Exception.class, () -> userRepo.save(user1));
-		
+	}
+	
+	@Test
+	public void testNullSurname() {
 		// Test null surname.
 		user1 = new User("username", "password", "hans", null, organisation, true, true, null);
 		assertThrows(Exception.class, () -> userRepo.save(user1));
-		
+	}
+	
+	@Test
+	public void testNullOrganisation() {
 		// Test null organisation.
 		user1 = new User("username", "password", "hans", "peter", null, true, true, null);
 		assertThrows(Exception.class, () -> userRepo.save(user1));
-		
-		// Test null isAdmin.
-		user1 = new User("username", "password", "hans", "peter", organisation, null, true, null);
-		assertThrows(Exception.class, () -> userRepo.save(user1));
-		
+	}
+	
+	@Test
+	public void testNullIsAdmin() {
 		// Test null isAdmin.
 		user1 = new User("username", "password", "hans", "peter", organisation, true, null, null);
+		assertThrows(Exception.class, () -> userRepo.save(user1));
+	}
+	
+	@Test
+	public void testNullIsApplicatonAdmin() {
+		// Test null isAdmin.
+		user1 = new User("username", "password", "hans", "peter", organisation, null, true, null);
 		assertThrows(Exception.class, () -> userRepo.save(user1));
 	}
 	
@@ -91,6 +116,9 @@ public class TestUser {
 		user2 = userRepo.save(user2);
 		
 		// User should not get same loginID.
-		assertNotEquals(user1.getId(), user2.getId());		
+		assertNotEquals(user1.getId(), user2.getId());	
+		
+		userRepo.delete(user1);
+		userRepo.delete(user2);
 	}
 }
