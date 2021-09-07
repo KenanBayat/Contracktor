@@ -1,31 +1,40 @@
 package de.contracktor.model;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import de.contracktor.repository.OrganisationRepository;
 import de.contracktor.repository.UserRepository;
 
 @SpringBootTest
 public class TestUser {
 
-	/*
 	private User user1;
 	private User user2;
+	
+	private Organisation organisation;
 	
 	@Autowired
 	private UserRepository userRepo;
 	
+	@Autowired
+	private OrganisationRepository organisationRepo;
+	
 	@BeforeEach
-	public void init() {
-		User user1 = new User("password", "Meier", "Hans", "organisation", true, true, null);
-		User user2 = new User("betterpassword", "person", "test", "besteorganisation", false, false, null);
+	private void init() {
+		organisation = new Organisation("organisation", "straße", "42", "city", "12345", "Land");
+		organisationRepo.save(organisation);
 	}
 	
 	@Test
-	public void saveUser() {
-		user1 = userRepo.save(user1);
+	public void testNullValues() {
+		// Test Null Password.
+		user1 = new User(null, "", "", organisation, true, true, null);
+		
+		userRepo.save(user1);
 	}
-	*/
 }
