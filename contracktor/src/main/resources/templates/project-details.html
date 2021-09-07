@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org" th:include="layout :: page">
+<head/>
+<body>
+<th:block th:fragment="content">
+    <div class="container">
+        <h3 th:text="'Deatils zu Projekt ' + ${projectId}" />
+    </div>
+</th:block>
+</body>
+</html>
