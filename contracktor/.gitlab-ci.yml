@@ -39,6 +39,9 @@ docker-deploy:
   stage: deploy
   image: docker:latest
 
+  only:
+    - main
+
   script:
     - docker build -t contracktor-web contracktor/
     - docker stop contracktor-web-container || true
