@@ -5,6 +5,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,20 +15,44 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 
-
-
 @Entity
 public class User {
-	
-	@Getter @Setter @Id @GeneratedValue(strategy = GenerationType.AUTO) private int loginID;
-	@Getter @Setter @NotNull private String password;
-	@Getter @Setter	@NotNull private String forename;
-	@Getter @Setter @NotNull private String surname;
-	@Getter @Setter	@NotNull @ManyToOne private Organisation organisation;
-	@Getter @Setter	@NotNull private Boolean isAdmin;
-	@Getter @Setter	@NotNull private Boolean isApplicationAdmin;
-	@Getter @Setter @ManyToMany private List<Role> roles;
-	
+
+	@Getter
+	@Setter
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int loginID;
+	@Getter
+	@Setter
+	@NotNull
+	private String password;
+	@Getter
+	@Setter
+	@Column(nullable = false)
+	private String forename;
+	@Getter
+	@Setter
+	@NotNull
+	private String surname;
+	@Getter
+	@Setter
+	@NotNull
+	@ManyToOne
+	private Organisation organisation;
+	@Getter
+	@Setter
+	@NotNull
+	private Boolean isAdmin;
+	@Getter
+	@Setter
+	@NotNull
+	private Boolean isApplicationAdmin;
+	@Getter
+	@Setter
+	@ManyToMany
+	private List<Role> roles;
+
 	public User() {
 		
 	}
