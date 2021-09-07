@@ -43,7 +43,11 @@ docker-deploy:
     - main
 
   script:
-    - docker build -t contracktor-web contracktor/
+    - docker build -t adessoAPI contracktor/docker/adessoAPI
+    - docker stop adessoAPI-container || true
+    - docker rm adessoAPI-container || true
+    - docker run -d -p 3000:3000 --name adeesoAPI-container adessoAPI
+    - docker build -t contracktor-web contracktor/docker/app
     - docker stop contracktor-web-container || true
     - docker rm contracktor-web-container || true
     - docker run -d -p 8080:8080 --name contracktor-web-container contracktor-web
