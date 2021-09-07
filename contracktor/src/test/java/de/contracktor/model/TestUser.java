@@ -1,5 +1,7 @@
 package de.contracktor.model;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -59,6 +61,32 @@ public class TestUser {
 	
 	@Test
 	public void testEmptyValues() {
+		// Test empty password.
+		user1 = new User("", "hans", "peter", organisation, true, true, null);	
+		assertThrows(Exception.class, () -> userRepo.save(user1));
 		
+		// Test empty forename.
+		user1 = new User("password", "", "peter", organisation, true, true, null);
+		assertThrows(Exception.class, () -> userRepo.save(user1));
+		
+		// Test empty surname.
+		user1 = new User("password", "hans", "", organisation, true, true, null);
+		assertThrows(Exception.class, () -> userRepo.save(user1));
+	}
+	
+	@Test 
+	public void testSaveUser() {
+		
+		user1 = new User("password", "hans", "peter", organisation, true, true, null);
+		user2 = new User("betterpassword", "hans", "meier", organisation, true, true, null);
+		
+		assertEquals(user1.getLoginID(), 0);
+		assertEquals(user2.getLoginID(), 0);
+		
+		user1 = userRepo.save(user1);
+		user2 = userRepo.save(user2);
+		
+		// User should not get same loginID.
+		assertNotEquals(user1.getLoginID(), user2.getLoginID());		
 	}
 }
