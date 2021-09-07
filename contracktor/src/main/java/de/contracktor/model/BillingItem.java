@@ -3,6 +3,7 @@ package de.contracktor.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -17,12 +18,12 @@ import lombok.Setter;
 public class BillingItem {
 
 	@Getter @Setter @Id String billingItemID;
-	@Getter @Setter @NotNull private String unit;
-	@Getter @Setter @NotNull private Double quantity;
-	@Getter @Setter @NotNull private Double pricePerUnit;
-	@Getter @Setter @NotNull private Double totalPrice;
-	@Getter @Setter @NotNull private String IFC;
-	@Getter @Setter @NotNull @ManyToOne private State status;
+	@Getter @Setter @Column(nullable = false) private String unit;
+	@Getter @Setter @Column(nullable = false) private Double quantity;
+	@Getter @Setter @Column(nullable = false) private Double pricePerUnit;
+	@Getter @Setter @Column(nullable = false) private Double totalPrice;
+	@Getter @Setter @Column(nullable = false) private String IFC;
+	@Getter @Setter @Column(nullable = false) @ManyToOne private State status;
 	@Getter @Setter @OneToMany private List<BillingItem> billingItems;
 	@Getter @Setter private String shortDescription;
 	

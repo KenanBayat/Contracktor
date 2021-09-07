@@ -1,10 +1,9 @@
 package de.contracktor.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-
-import com.sun.istack.NotNull;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,9 +11,9 @@ import lombok.Setter;
 @Entity
 public class Role {
 	
-	@Getter @Setter @NotNull @Id private String roleName;
+	@Getter @Setter @Column(nullable = false) @Id private String roleName;
 	@Getter @Setter @ManyToOne private Permission permission;
-	@Getter @Setter @NotNull @ManyToOne Organisation organisation;
+	@Getter @Setter @Column(nullable = false) @ManyToOne Organisation organisation;
 	
 	public Role() {
 		

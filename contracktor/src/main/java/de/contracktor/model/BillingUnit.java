@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -18,10 +19,10 @@ import lombok.Setter;
 public class BillingUnit {
 
 	@Getter @Setter @Id private String billingUnitID;
-	@Getter @Setter @NotNull private String unit;
-	@Getter @Setter @NotNull private Date completionDate;
-	@Getter @Setter @NotNull private Double totalPrice;
-	@Getter @Setter @NotNull private Double totalQuantity;
+	@Getter @Setter @Column(nullable = false) private String unit;
+	@Getter @Setter @Column(nullable = false) private Date completionDate;
+	@Getter @Setter @Column(nullable = false) private Double totalPrice;
+	@Getter @Setter @Column(nullable = false) private Double totalQuantity;
 	@Getter @Setter @OneToMany(cascade = CascadeType.ALL) private List<BillingItem> billingItems;
 	@Getter @Setter private Boolean ownContractDefined;
 	@Getter @Setter private String shortDescription;

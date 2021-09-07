@@ -2,11 +2,10 @@ package de.contracktor.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-
-import com.sun.istack.NotNull;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -14,19 +13,19 @@ import lombok.Setter;
 @Entity
 public class Project {
 
-	@Getter @Setter @NotNull @Id      private int projectID;
-	@Getter @Setter @NotNull private String name;
-    @Getter @Setter @NotNull private Date creationDate;
-	@Getter @Setter @NotNull private Date completionDate;
-	@Getter @Setter @NotNull private String street;
-	@Getter @Setter @NotNull private String houseNumber;
-	@Getter @Setter @NotNull private String city;
-	@Getter @Setter @NotNull private String postcode;
-	@Getter @Setter @NotNull private String country;
-	@Getter @Setter @NotNull private Double totalPrice;
-	@Getter @Setter @NotNull private String owner;
-	@Getter @Setter @NotNull private String creator;
-	@Getter @Setter @NotNull @ManyToOne private State status;
+	@Getter @Setter @Column(nullable = false) @Id      private int projectID;
+	@Getter @Setter @Column(nullable = false) private String name;
+    @Getter @Setter @Column(nullable = false) private Date creationDate;
+	@Getter @Setter @Column(nullable = false) private Date completionDate;
+	@Getter @Setter @Column(nullable = false) private String street;
+	@Getter @Setter @Column(nullable = false) private String houseNumber;
+	@Getter @Setter @Column(nullable = false) private String city;
+	@Getter @Setter @Column(nullable = false) private String postcode;
+	@Getter @Setter @Column(nullable = false) private String country;
+	@Getter @Setter @Column(nullable = false) private Double totalPrice;
+	@Getter @Setter @Column(nullable = false) private String owner;
+	@Getter @Setter @Column(nullable = false) private String creator;
+	@Getter @Setter @Column(nullable = false) @ManyToOne private State status;
 	@Getter @Setter private String image;
 	@Getter @Setter private String description;
 	

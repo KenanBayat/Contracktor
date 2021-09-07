@@ -1,9 +1,8 @@
 package de.contracktor.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
-import com.sun.istack.NotNull;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +10,7 @@ import lombok.Setter;
 @Entity
 public class Permission {
 	
-	@Getter @Setter @NotNull @Id private String permissionName;
+	@Getter @Setter @Column(nullable = false) @Id private String permissionName;
 	
 	public Permission() {
 		

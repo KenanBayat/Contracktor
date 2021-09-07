@@ -4,12 +4,11 @@ import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import com.sun.istack.NotNull;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,9 +17,9 @@ import lombok.Setter;
 public class Report {
 
 	@Getter @Setter @Id @GeneratedValue(strategy = GenerationType.AUTO) private int reportID;
-	@Getter @Setter @NotNull String billingItemID;
-	@Getter @Setter @NotNull Date date;
-	@Getter @Setter @NotNull String username;
+	@Getter @Setter @Column(nullable = false) String billingItemID;
+	@Getter @Setter @Column(nullable = false) Date date;
+	@Getter @Setter @Column(nullable = false) String username;
 	@Getter @Setter String comment;
 	@Getter @Setter ArrayList<Image> images;
 	

@@ -12,46 +12,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
-
 
 @Entity
 public class User {
 
-	@Getter
-	@Setter
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int loginID;
-	@Getter
-	@Setter
-	@NotNull
-	private String password;
-	@Getter
-	@Setter
-	@Column(nullable = false)
-	private String forename;
-	@Getter
-	@Setter
-	@NotNull
-	private String surname;
-	@Getter
-	@Setter
-	@NotNull
-	@ManyToOne
-	private Organisation organisation;
-	@Getter
-	@Setter
-	@NotNull
-	private Boolean isAdmin;
-	@Getter
-	@Setter
-	@NotNull
-	private Boolean isApplicationAdmin;
-	@Getter
-	@Setter
-	@ManyToMany
-	private List<Role> roles;
+	@Getter	@Setter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	private int loginID;
+	@Getter	@Setter	@Column(nullable = false) private String password;
+	@Getter	@Setter	@Column(nullable = false) private String forename;
+	@Getter	@Setter	@Column(nullable = false) private String surname;
+	@Getter	@Setter	@Column(nullable = false) @ManyToOne private Organisation organisation;
+	@Getter	@Setter	@Column(nullable = false) private Boolean isAdmin;
+	@Getter	@Setter	@Column(nullable = false) private Boolean isApplicationAdmin;
+	@Getter	@Setter	@ManyToMany	private List<Role> roles;
 
 	public User() {
 		
