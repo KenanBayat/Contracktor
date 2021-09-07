@@ -59,6 +59,8 @@ public class TestUser {
 	
 	@Test
 	public void testEmptyValues() {
-		
+		// Test empty password.
+		user1 = new User("", "hans", "peter", organisation, true, null, null);
+		assertThrows(Exception.class, () -> userRepo.save(user1));
 	}
 }

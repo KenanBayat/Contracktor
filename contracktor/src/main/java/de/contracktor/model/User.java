@@ -13,14 +13,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 public class User {
 
 	@Getter	@Setter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	private int loginID;
-	@Getter	@Setter	@Column(nullable = false) private String password;
-	@Getter	@Setter	@Column(nullable = false) private String forename;
-	@Getter	@Setter	@Column(nullable = false) private String surname;
+	@Getter	@Setter	@Column(nullable = false) @NotEmpty private String password;
+	@Getter	@Setter	@Column(nullable = false) @NotEmpty private String forename;
+	@Getter	@Setter	@Column(nullable = false) @NotEmpty private String surname;
 	@Getter	@Setter	@JoinColumn(nullable = false) @ManyToOne private Organisation organisation;
 	@Getter	@Setter	@Column(nullable = false) private Boolean isAdmin;
 	@Getter	@Setter	@Column(nullable = false) private Boolean isApplicationAdmin;
