@@ -90,13 +90,14 @@ public class TestOrganisation {
 	public void testSaveOrganisation() {
 		
 		organisation1 = new Organisation("organisation1", "straße", "houseNumber", "city", "12345", "country");
-		organisation2 = new Organisation("organisation2", "straße", "houseNumber", "city", "12345", "country");
+		organisation2 = new Organisation("organisation1", "straße", "houseNumber", "city", "12345", "country");
 		organisation1 = organisationRepo.save(organisation1);
 		organisation2 = organisationRepo.save(organisation2);
 		
 		user1 =  new User("password", "hans", "peter", organisation1, true, true, null);
 		userRepo.save(user1);
 		
+
 		assertTrue(organisation1.getUsers().contains(user1));
 	}
 }

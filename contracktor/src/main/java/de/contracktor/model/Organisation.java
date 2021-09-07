@@ -6,8 +6,10 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 
@@ -17,7 +19,8 @@ import lombok.Setter;
 @Entity
 public class Organisation {
 
-	@Getter @Column(nullable = false) @NotEmpty @Id private String organisationName;
+	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	private int organisationID;
+	@Getter @Column(nullable = false) @NotEmpty private String organisationName;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String street;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String houseNumber;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String city;

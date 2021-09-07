@@ -22,7 +22,7 @@ public class User {
 	@Getter	@Setter	@Column(nullable = false) @NotEmpty private String password;
 	@Getter	@Setter	@Column(nullable = false) @NotEmpty private String forename;
 	@Getter	@Setter	@Column(nullable = false) @NotEmpty private String surname;
-	@Getter	@Setter	@JoinColumn(nullable = false, name = "organisationName") @ManyToOne private Organisation organisation;
+	@Getter	@Setter	@ManyToOne private Organisation organisation;
 	@Getter	@Setter	@Column(nullable = false) private Boolean isAdmin;
 	@Getter	@Setter	@Column(nullable = false) private Boolean isApplicationAdmin;
 	@Getter	@Setter	@ManyToMany	private List<Role> roles;

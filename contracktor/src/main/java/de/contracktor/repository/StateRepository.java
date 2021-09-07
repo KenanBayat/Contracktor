@@ -7,6 +7,11 @@ import de.contracktor.model.State;
 
 
 @Repository
-public interface StateRepository extends CrudRepository<State, String> {
+public interface StateRepository extends CrudRepository<State, Integer> {
 
+	State findByStateName(String stateName);
+	
+	boolean existsByStateName(String stateName);
+	
+	void deleteByStateName(String stateName);
 }
