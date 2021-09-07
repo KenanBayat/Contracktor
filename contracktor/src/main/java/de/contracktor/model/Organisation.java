@@ -18,7 +18,7 @@ import lombok.Setter;
 
 @Entity
 public class Organisation {
-
+	
 	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	private int organisationID;
 	@Getter @Column(nullable = false) @NotEmpty private String organisationName;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String street;
