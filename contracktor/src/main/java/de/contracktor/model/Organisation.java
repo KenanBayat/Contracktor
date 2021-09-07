@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotEmpty;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,12 +16,12 @@ import lombok.Setter;
 @Entity
 public class Organisation {
 
-	@Getter @Setter @Column(nullable = false) @Id private String organisationName;
-	@Getter @Setter @Column(nullable = false) private String street;
-	@Getter @Setter @Column(nullable = false) private String houseNumber;
-	@Getter @Setter @Column(nullable = false) private String city;
-	@Getter @Setter @Column(nullable = false) private String postcode;
-	@Getter @Setter @Column(nullable = false) private String country;
+	@Getter @Column(nullable = false) @NotEmpty @Id private String organisationName;
+	@Getter @Setter @Column(nullable = false) @NotEmpty private String street;
+	@Getter @Setter @Column(nullable = false) @NotEmpty private String houseNumber;
+	@Getter @Setter @Column(nullable = false) @NotEmpty private String city;
+	@Getter @Setter @Column(nullable = false) @NotEmpty private String postcode;
+	@Getter @Setter @Column(nullable = false) @NotEmpty private String country;
 	@Getter @Setter @OneToMany(cascade = CascadeType.ALL) private List<User> users;
 	
 	public Organisation() {
