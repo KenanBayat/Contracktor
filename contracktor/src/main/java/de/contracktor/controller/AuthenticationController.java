@@ -22,7 +22,7 @@ public class AuthenticationController {
         User user = new User();
         model.addAttribute("user", user);
         user.setPassword(encoder.encode("Test"));
-        user.setLoginID(2);
+        user.setUsername("jonas");
         user.setForename("Jonas");
         user.setIsAdmin(false);
         user.setIsApplicationAdmin(false);

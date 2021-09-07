@@ -19,7 +19,7 @@ public class ContracktorUserDetails implements UserDetails {
     private List<GrantedAuthority> authorities;
 
     public ContracktorUserDetails(User user) {
-        this.username = Integer.toString(user.getLoginID());
+        this.username = user.getUsername();
         this.password = user.getPassword();
 
         List<GrantedAuthority> authorities = new ArrayList<>();
