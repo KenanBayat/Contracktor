@@ -1,9 +1,15 @@
 package de.contracktor.controller;
 
+import de.contracktor.model.Organisation;
+import de.contracktor.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @Controller
 public class PageController {
@@ -54,5 +60,37 @@ public class PageController {
     @GetMapping("/admin")
     public String getAdminConsole() {
         return "admin-console";
+    }
+
+    @GetMapping("/admin/register")
+    public String getRegisterAdminPage(Model model) {
+        List<Organisation> organisations = List.of(
+                new Organisation("Hochtief", "Elbstraße", "7", "Hamburg", "22406", "Deutschland"),
+                new Organisation("Züblin", "Haupstraße", "26", "Hamburg", "22317", "Deutschland")
+        );
+        model.addAttribute("organisations", organisations);
+        model.addAttribute("user", new User());
+        return "register-sysadmin";
+    }
+
+    @PostMapping("/admin/register")
+    public String setAdmin(@ModelAttribute User user, Model model) {
+        if(user.getIsApplicationAdmin() == null) {
+            user.setIsApplicationAdmin(false);
+        }
+        if(user.getIsAdmin() == null) {
+            user.setIsAdmin(false);
+        }
+
+
+        System.out.println(user.getUsername() + ", " + user.getForename() + ", " + user.getSurname() + ", " + user.getOrganisation() + ", " + user.getPassword()+ ", " + user.getIsAdmin() + ", " + user.getIsApplicationAdmin());
+
+        List<Organisation> organisations = List.of(
+                new Organisation("Hochtief", "Elbstraße", "7", "Hamburg", "22406", "Deutschland"),
+                new Organisation("Züblin", "Haupstraße", "26", "Hamburg", "22317", "Deutschland")
+        );
+        model.addAttribute("organisations", organisations);
+        model.addAttribute("user", new User());
+        return "register-sysadmin";
     }
 }
