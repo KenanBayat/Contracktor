@@ -20,7 +20,6 @@ public class Organisation {
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String city;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String postcode;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String country;
-	//@Getter @Setter @OneToMany(mappedBy = "organisation", cascade = CascadeType.ALL) private List<User> users;
 	
 	public Organisation() {
 		
@@ -34,7 +33,6 @@ public class Organisation {
 		this.city = city;
 		this.postcode = postcode;
 		this.country = country;
-		//this.users = new ArrayList<User>();
 	}
 	
 }

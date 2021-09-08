@@ -3,14 +3,9 @@ package de.contracktor.model;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -19,21 +14,21 @@ import lombok.Setter;
 public class Report {
 
 	@Getter @Id @GeneratedValue(strategy = GenerationType.AUTO) private int id;
-	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne BillingItem billingItem;
+	@Getter @Setter @JoinColumn(nullable = false) @OneToMany List<BillingItem> billingItems;
 	@Getter @Setter @Column(nullable = false) Date date;
 	@Getter @Setter @Column(nullable = false) String username;
 	@Getter @Setter String comment;
-	@Getter @Setter ArrayList<Image> images;
+	@Getter @Setter @OneToMany List<Picture> pictures;
 	
 	public Report() {
 		
 	}
 	
-	public Report(BillingItem billingItem, Date date, String username, String comment, ArrayList<Image> images) {
-		this.billingItem = billingItem;
+	public Report(List<BillingItem> billingItems, Date date, String username, String comment, ArrayList<Picture> pictures) {
+		this.billingItems = billingItems;
 		this.date = date;
 		this.username = username;
 		this.comment = comment;
-		this.images = images;
+		this.pictures = pictures;
 	}
 }
