@@ -86,9 +86,9 @@ public class InitDatabaseService {
 			) 
 		{
 			initPermissions();
-			initApplicationAdmin();		
+			initApplicationAdmin();	
 			
-			State state = new State("testing");
+			State state = new State("test");
 			stateRepo.save(state);
 			
 			BillingItem billingItemInList1 = new BillingItem("ID_3346_2929_38", "meter", 1000.0, 105.0, 100050.0, 
@@ -104,6 +104,8 @@ public class InitDatabaseService {
 
 			BillingItem billingItem = new BillingItem("ID_3346_2929_37", "meter", 1000.0, 105.0, 100050.0, "3m7_6h4uXAXvBoFEtks_QE", state, "", billingItems);
 			billingItemRepo.save(billingItem);
+
+			billingItemRepo.delete(billingItem);
 		}
 	}
 	
