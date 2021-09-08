@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotEmpty;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,17 +19,17 @@ public class Project {
 
 	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	private int id;
 	@Getter @Setter @Column(nullable = false) private int projectID;
-	@Getter @Setter @Column(nullable = false) private String name;
+	@Getter @Setter @Column(nullable = false) @NotEmpty private String name;
     @Getter @Setter @Column(nullable = false) private Date creationDate;
 	@Getter @Setter @Column(nullable = false) private Date completionDate;
-	@Getter @Setter @Column(nullable = false) private String street;
-	@Getter @Setter @Column(nullable = false) private String houseNumber;
-	@Getter @Setter @Column(nullable = false) private String city;
-	@Getter @Setter @Column(nullable = false) private String postcode;
-	@Getter @Setter @Column(nullable = false) private String country;
+	@Getter @Setter @Column(nullable = false) @NotEmpty private String street;
+	@Getter @Setter @Column(nullable = false) @NotEmpty private String houseNumber;
+	@Getter @Setter @Column(nullable = false) @NotEmpty private String city;
+	@Getter @Setter @Column(nullable = false) @NotEmpty private String postcode;
+	@Getter @Setter @Column(nullable = false) @NotEmpty private String country;
 	@Getter @Setter @Column(nullable = false) private Double totalPrice;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private Organisation owner;
-	@Getter @Setter @Column(nullable = false) private String creator;
+	@Getter @Setter @Column(nullable = false) @NotEmpty private String creator;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private State status;
 	@Getter @Setter private String image;
 	@Getter @Setter private String description;

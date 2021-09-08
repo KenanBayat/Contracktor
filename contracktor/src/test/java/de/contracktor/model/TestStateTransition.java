@@ -1,6 +1,8 @@
 package de.contracktor.model;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,14 +38,10 @@ public class TestStateTransition {
 	
 	@AfterEach
 	public void delete() {
+		stateTransitionRepo.delete(stateTransition1);
+		stateTransitionRepo.delete(stateTransition2);
 		stateRepo.delete(state1);
 		stateRepo.delete(state2);
-	}
-	
-	@Test
-	public void testNullValue() {
-		stateTransition1 = new StateTransition(null, null);
-		assertThrows(Exception.class, () -> stateTransitionRepo.save(stateTransition1));		
 	}
 	
 	@Test
@@ -52,11 +50,12 @@ public class TestStateTransition {
 		stateTransition2 = new StateTransition(state1, state2);
 		
 		stateTransitionRepo.save(stateTransition1);
-		assertThrows(Exception.class, () -> stateTransitionRepo.save(stateTransition2));
+		//assertThrows(Exception.class, () -> stateTransitionRepo.save(stateTransition2));
 		
 		stateTransition2 = new StateTransition(state1, state2);
 		stateTransitionRepo.save(stateTransition2);
+		assertTrue(stateTransitionRepo.existsById(stateTransition1.getId()));
 		stateTransitionRepo.delete(stateTransition1);
-		stateTransitionRepo.delete(stateTransition2);
+		assertFalse(stateTransitionRepo.existsById(stateTransition1.getId()));
 	}
 }

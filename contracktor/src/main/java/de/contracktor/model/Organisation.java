@@ -1,16 +1,10 @@
 package de.contracktor.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 
 import lombok.Getter;
@@ -26,7 +20,6 @@ public class Organisation {
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String city;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String postcode;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String country;
-	@Getter @Setter @OneToMany(mappedBy = "organisation", cascade = CascadeType.ALL) private List<User> users;
 	
 	public Organisation() {
 		
@@ -40,7 +33,6 @@ public class Organisation {
 		this.city = city;
 		this.postcode = postcode;
 		this.country = country;
-		this.users = new ArrayList<User>();
 	}
 	
 }

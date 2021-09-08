@@ -5,6 +5,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
@@ -24,7 +26,7 @@ public class User {
 	@Getter	@Setter	@Column(nullable = false) @NotEmpty private String password;
 	@Getter	@Setter	@Column(nullable = false) @NotEmpty private String forename;
 	@Getter	@Setter	@Column(nullable = false) @NotEmpty private String surname;
-	@Getter	@Setter	@JoinColumn(nullable = false) @ManyToOne private Organisation organisation;
+	@Getter	@Setter	@JoinColumn(nullable = false, name = "organisation_id") @ManyToOne private Organisation organisation;
 	@Getter	@Setter	@Column(nullable = false) private Boolean isAdmin;
 	@Getter	@Setter	@Column(nullable = false) private Boolean isApplicationAdmin;
 	@Getter	@Setter	@ManyToMany	private List<Role> roles;
