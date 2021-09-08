@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -83,23 +84,36 @@ public class TestBillingUnit {
 		organisationRepo.save(organisation);
 		
 		picture = new Picture(null,null);
+		pictureRepo.save(picture);
 		
 		project = new Project(2, "project", creationDate, completionDate, "street", "42", "hamburg", "187",
 	              "de", 100.0, organisation, "hans", state, picture, "");
 		projectRepo.save(project);
 		
+		contract = new Contract(42, project, "contract", "consignee", state, "Contractor", "test");
+		contractRepo.save(contract);
 	}
 	
 	@AfterEach
 	public void delete() {
+		
+		contractRepo.delete(contract);
+		
 		projectRepo.delete(project);
+		
+		pictureRepo.delete(picture);
 		
 		organisationRepo.delete(organisation);
 		
-		billingItemRepo.delete(billingItem1);
-		billingItemRepo.delete(billingItem2);
 		billingItemRepo.delete(billingItem3);
 		
 		stateRepo.delete(state);
 	}
+	
+	@Test
+	public void test() {
+		
+	}
+	
+	
 }
