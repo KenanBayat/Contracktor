@@ -15,7 +15,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 @SuppressWarnings("serial")
-@Embeddable
 @Entity
 public class StateTransition implements Serializable {
 

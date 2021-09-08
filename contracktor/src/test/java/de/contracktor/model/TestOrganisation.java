@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import javax.validation.ConstraintViolationException;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +20,6 @@ public class TestOrganisation {
 	private OrganisationRepository organisationRepo;
 	
 	private Organisation organisation1;
-	private Organisation organisation2;
 	
 	@Autowired
 	private UserRepository userRepo;
@@ -91,19 +92,14 @@ public class TestOrganisation {
 	public void testSaveOrganisation() {
 		
 		organisation1 = new Organisation("organisation1", "straße", "houseNumber", "city", "12345", "country");
-		organisation2 = new Organisation("organisation2", "straße", "houseNumber", "city", "12345", "country");
 		organisation1 = organisationRepo.save(organisation1);
-		organisation2 = organisationRepo.save(organisation2);
 		
 		user1 =  new User("hansPeter", "password", "hans", "peter", organisation1, true, true, null);
-		userRepo.save(user1);
+		user1 = userRepo.save(user1);
 		int userID = user1.getId();
 		
-		assertTrue(organisation1.getUsers().contains(user1));
-		
-		organisationRepo.delete(organisation1);
-		organisationRepo.delete(organisation2);
-		
+		userRepo.delete(user1);
 		assertFalse(userRepo.existsById(userID));
+		organisationRepo.delete(organisation1);
 	}
 }

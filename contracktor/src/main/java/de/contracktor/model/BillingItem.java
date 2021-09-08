@@ -20,7 +20,7 @@ import lombok.Setter;
 public class BillingItem {
 
 	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	private int id;
-	@Getter @Setter @Column(nullable = false, unique = true) String billingItemID;
+	@Getter @Setter @Column(nullable = false) String billingItemID;
 	@Getter @Setter @Column(nullable = false) private String unit;
 	@Getter @Setter @Column(nullable = false) private Double quantity;
 	@Getter @Setter @Column(nullable = false) private Double pricePerUnit;
@@ -28,14 +28,14 @@ public class BillingItem {
 	@Getter @Setter @Column(nullable = false) private String IFC;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private State status;
 	@Getter @Setter @OneToMany private List<BillingItem> billingItems;
-	@Getter @Setter private String shortDescription;
+	@Getter @Setter @Column(nullable = false) private String shortDescription;
 	
 	public BillingItem() {
 		
 	}
 	
 	public BillingItem(String billingItemID, String unit, Double quantity, Double pricePerUnit,
-			           Double totalPrice, String IFC, State status) {
+			           Double totalPrice, String IFC, State status, String shortDescription) {
 		this.billingItemID = billingItemID;
 		this.unit = unit;
 		this.quantity = quantity;
@@ -44,5 +44,6 @@ public class BillingItem {
 		this.IFC = IFC;
 		this.status = status;
 		this.billingItems = new ArrayList<BillingItem>(); 
+		this.shortDescription = shortDescription;
 	}
 }
