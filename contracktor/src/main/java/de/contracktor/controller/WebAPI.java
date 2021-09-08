@@ -1,11 +1,10 @@
 package de.contracktor.controller;
 
 import de.contracktor.model.*;
-import de.contracktor.repository.ContractRepository;
-import de.contracktor.repository.ProjectRepository;
-import de.contracktor.repository.UserRepository;
+import de.contracktor.repository.*;
 import de.contracktor.security.ContracktorUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +29,18 @@ public class WebAPI {
     @Autowired
     private ContractRepository contractRepository;
 
+    @Autowired
+    private BillingUnitRepository billingUnitRepository;
+
+    @Autowired
+    private StateRepository stateRepository;
+
+    @Autowired
+    private StateTransitionRepository stateTransitionRepository;
+
+    @Autowired
+    private ReportRepository reportRepository;
+
     @GetMapping("/api/download")
     @ResponseBody
     public APIResponse downloadController(Model model, Principal principal) {
@@ -48,8 +59,12 @@ public class WebAPI {
         response.setProjects(projectRepository.findByOwner_OrganisationNameIgnoreCase(organisation.getOrganisationName()));
         response.setContracts(contractRepository.findByContractorIgnoreCaseOrConsigneeIgnoreCase(organisation.getOrganisationName(),
                 organisation.getOrganisationName()));
-        response.setBillingUnits();
-
+        response.setBillingUnits(billingUnitRepository.findByContractIsIn(response.getContracts()));
+        response.setStates((List<State>) stateRepository.findAll());
+        response.setStateTransitions((List<StateTransition>) stateTransitionRepository.findAll());
+        response.setReports(reportRepository.findByOrganisation(organisation));
+        response.setError("OK");
+        return response;
     }
 
     private boolean hasWritePerm(User user) {
