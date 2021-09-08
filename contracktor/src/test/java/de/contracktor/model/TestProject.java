@@ -47,7 +47,7 @@ public class TestProject {
 		stateRepo.save(state);
 		organisation = new Organisation("orga", "straße", "houseNumber", "city", "12345", "blabla");
 		organisationRepo.save(organisation);
-		picture = new Picture(null);
+		picture = new Picture(null,null);
 		pictureRepo.save(picture);
 	}
 	

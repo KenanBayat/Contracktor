@@ -82,6 +82,7 @@ public class TestBillingUnit {
 		organisation = new Organisation("organisation1", "straße", "houseNumber", "city", "12345", "country");
 		organisationRepo.save(organisation);
 		
+		picture = new Picture(null,null);
 		
 		project = new Project(2, "project", creationDate, completionDate, "street", "42", "hamburg", "187",
 	              "de", 100.0, organisation, "hans", state, picture, "");

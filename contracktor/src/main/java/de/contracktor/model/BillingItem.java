@@ -10,9 +10,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotEmpty;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -21,12 +21,12 @@ import lombok.Setter;
 public class BillingItem {
 
 	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	@Column(name = "id") private int id;
-	@Getter @Setter @Column(nullable = false, unique = true) String billingItemID;
-	@Getter @Setter @Column(nullable = false) private String unit;
+	@Getter @Setter @Column(nullable = false, unique = true) @NotEmpty String billingItemID;
+	@Getter @Setter @Column(nullable = false) @NotEmpty private String unit;
 	@Getter @Setter @Column(nullable = false) private Double quantity;
 	@Getter @Setter @Column(nullable = false) private Double pricePerUnit;
 	@Getter @Setter @Column(nullable = false) private Double totalPrice;
-	@Getter @Setter @Column(nullable = false) private String IFC;
+	@Getter @Setter @Column(nullable = false) @NotEmpty private String IFC;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private State status;
 	@Getter @Setter @OneToMany(cascade = CascadeType.REMOVE) private List<BillingItem> billingItems;
 	@Getter @Setter @Column(nullable = false) private String shortDescription;
