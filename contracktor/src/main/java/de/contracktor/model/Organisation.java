@@ -14,7 +14,7 @@ import lombok.Setter;
 public class Organisation {
 	
 	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	private int id;
-	@Getter @Column(nullable = false, unique = true) @NotEmpty private String organisationName;
+	@Getter @Column(nullable = false) @NotEmpty private String organisationName;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String street;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String houseNumber;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String city;

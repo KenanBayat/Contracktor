@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.sun.istack.NotNull;
@@ -21,7 +23,8 @@ import lombok.Setter;
 public class BillingUnit {
 
 	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	private int id;
-	@Getter @Setter  @Column(nullable = false, unique = true) private String billingUnitID;
+	@Getter @Setter @Column(nullable = false, unique = true) private String billingUnitID;
+	@Getter @Setter @ManyToOne @JoinColumn(nullable = false) private Contract contract;
 	@Getter @Setter @Column(nullable = false) private String unit;
 	@Getter @Setter @Column(nullable = false) private Date completionDate;
 	@Getter @Setter @Column(nullable = false) private Double totalPrice;

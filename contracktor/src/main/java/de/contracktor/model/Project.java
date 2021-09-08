@@ -21,7 +21,7 @@ import lombok.Setter;
 public class Project {
 
 	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	private int id;
-	@Getter @Setter @Column(nullable = false) private int projectID;
+	@Getter @Setter @Column(nullable = false, unique = true) private int projectID;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String name;
     @Getter @Setter @Column(nullable = false) private LocalDate creationDate;
 	@Getter @Setter @Column(nullable = false) private LocalDate completionDate;
@@ -41,9 +41,10 @@ public class Project {
 		
 	}
 	
-	public Project(String name, LocalDate completionDate, String street, String houseNumber, String city, 
+	public Project(int projectID, String name, LocalDate creationDate, LocalDate completionDate, String street, String houseNumber, String city, 
 			       String postcode, String country, Double totalPrice, Organisation owner, String creator,
 			       State status, Picture image, String description) {
+		this.projectID = projectID;
 		this.name = name;
 		this.completionDate = completionDate;
 		this.street = street;

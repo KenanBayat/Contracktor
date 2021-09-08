@@ -16,7 +16,7 @@ public class Report {
 	@Getter @Setter @JoinColumn(nullable = false) @OneToMany List<BillingItem> billingItems;
 	@Getter @Setter @Column(nullable = false) LocalDate date;
 	@Getter @Setter @Column(nullable = false) String username;
-	@Getter @Setter String comment;
+	@Getter @Setter @Column(nullable = false) String comment;
 	@Getter @Setter @OneToMany List<Picture> pictures;
 	
 	public Report() {
