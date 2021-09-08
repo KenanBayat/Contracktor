@@ -28,8 +28,9 @@ public class Contract {
 		
 	}
 	
-	public Contract(Project project, String name, String consignee, State status, String contractor, 
+	public Contract(int contractID, Project project, String name, String consignee, State status, String contractor, 
 			        String description) {
+		this.contractID = contractID;
 		this.project = project;
 		this.name = name;
 		this.consignee = consignee;

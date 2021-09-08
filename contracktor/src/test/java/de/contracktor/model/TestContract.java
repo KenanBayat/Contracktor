@@ -1,9 +1,12 @@
 package de.contracktor.model;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -39,21 +42,29 @@ public class TestContract {
 	
 	private Project project;
 	
-	private final LocalDate creationDate = LocalDate.of(2021, 9, 8);
-	private final LocalDate completionDate = LocalDate.of(2022, 12, 12);
+	private Contract contract;
+	
+	private LocalDate creationDate;
+	private LocalDate completionDate;
 	
 	@BeforeEach
 	public void init() {
-		state = new State("status");
+		creationDate = LocalDate.of(2022, 12, 12);
+		completionDate = LocalDate.of(2022, 12, 12);
+		state = new State("state");
 		stateRepo.save(state);
 		organisation = new Organisation("orga", "straße", "houseNumber", "city", "12345", "blabla");
 		organisationRepo.save(organisation);
 		picture = new Picture(null);
 		pictureRepo.save(picture);
+		project = new Project(2, "project", creationDate, completionDate, "street", "42", "hamburg", "12345",
+	              "de", 100.0, organisation, "hans", state, picture, "");
+		projectRepo.save(project);
 	}
 	
 	@AfterEach
 	public void delete() {
+		contractRepo.delete(contract);
 		projectRepo.delete(project);
 		stateRepo.delete(state);
 		organisationRepo.delete(organisation);
@@ -61,5 +72,23 @@ public class TestContract {
 	}
 	
 	@Test
-	public void test
+	public void testNullName() {
+		// Test null name.
+		contract = new Contract(42, project, null, "consignee", state, "contractor", "");
+		assertThrows(Exception.class, () -> contractRepo.save(contract));
+	}
+	
+	@Test
+	public void testNullConsignee() {
+		// Test null name.
+		contract = new Contract(42, project, "contract", null, state, "contractor", "");
+		assertThrows(Exception.class, () -> contractRepo.save(contract));
+	}
+	
+	@Test
+	public void testNullContractor() {
+		// Test null name.
+		contract = new Contract(42, project, "contract", "consignee", state, null, "");
+		assertThrows(Exception.class, () -> contractRepo.save(contract));
+	}
 }

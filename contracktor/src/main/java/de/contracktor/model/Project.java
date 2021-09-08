@@ -35,7 +35,7 @@ public class Project {
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String creator;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private State status;
 	@Getter @Setter @OneToOne private Picture image;
-	@Getter @Setter private String description;
+	@Getter @Setter @Column(nullable = false) private String description;
 	
 	public Project() {
 		
@@ -46,6 +46,7 @@ public class Project {
 			       State status, Picture image, String description) {
 		this.projectID = projectID;
 		this.name = name;
+		this.creationDate = creationDate;
 		this.completionDate = completionDate;
 		this.street = street;
 		this.houseNumber = houseNumber;
