@@ -20,7 +20,7 @@ import lombok.Setter;
 public class BillingItem {
 
 	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	private int id;
-	@Getter @Setter @Column(nullable = false, unique = true) String billingItemID;
+	@Getter @Setter @Column(nullable = false) String billingItemID;
 	@Getter @Setter @Column(nullable = false) private String unit;
 	@Getter @Setter @Column(nullable = false) private Double quantity;
 	@Getter @Setter @Column(nullable = false) private Double pricePerUnit;

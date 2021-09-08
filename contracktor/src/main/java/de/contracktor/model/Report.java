@@ -1,8 +1,7 @@
 package de.contracktor.model;
 
-import java.awt.Image;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
@@ -15,7 +14,7 @@ public class Report {
 
 	@Getter @Id @GeneratedValue(strategy = GenerationType.AUTO) private int id;
 	@Getter @Setter @JoinColumn(nullable = false) @OneToMany List<BillingItem> billingItems;
-	@Getter @Setter @Column(nullable = false) Date date;
+	@Getter @Setter @Column(nullable = false) LocalDate date;
 	@Getter @Setter @Column(nullable = false) String username;
 	@Getter @Setter String comment;
 	@Getter @Setter @OneToMany List<Picture> pictures;
@@ -24,7 +23,7 @@ public class Report {
 		
 	}
 	
-	public Report(List<BillingItem> billingItems, Date date, String username, String comment, ArrayList<Picture> pictures) {
+	public Report(List<BillingItem> billingItems, LocalDate date, String username, String comment, ArrayList<Picture> pictures) {
 		this.billingItems = billingItems;
 		this.date = date;
 		this.username = username;

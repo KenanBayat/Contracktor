@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import javax.validation.ConstraintViolationException;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -96,10 +98,6 @@ public class TestOrganisation {
 		user1 = userRepo.save(user1);
 		int userID = user1.getId();
 		
-		//assertTrue(organisation1.getUsers().contains(user1));
-		//organisationRepo.delete(organisation1);
-		
-		//assertThrows(IllegalArgumentException.class, () -> organisationRepo.delete(organisation1));
 		userRepo.delete(user1);
 		assertFalse(userRepo.existsById(userID));
 		organisationRepo.delete(organisation1);
