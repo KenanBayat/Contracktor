@@ -17,8 +17,6 @@ public class ContracktorApplication implements CommandLineRunner {
 	@Autowired
 	private InitDatabaseService initDatabaseService;
 
-	private ScheduledREST scheduledREST = new ScheduledREST();
-
 	@Bean
 	public RestTemplate getRestTemplate() {
 		return new RestTemplate();
@@ -31,7 +29,5 @@ public class ContracktorApplication implements CommandLineRunner {
 	@Override
 	public void run(String... arg0) throws Exception {
 		initDatabaseService.init();
-		//scheduledREST.initializeHeader();
-		//scheduledREST.refreshDB();
 	}
 }

@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,12 +29,13 @@ public class ScheduledREST {
     RestTemplate restTemplate = new RestTemplate();
     HttpHeaders headers = new org.springframework.http.HttpHeaders();
 
+    @PostConstruct
     public void initializeHeader() {
         headers.set("Authorization", credentials);
         entity = new HttpEntity(headers);
     }
 
-    @Scheduled(fixedRate = 10000)
+/*    @Scheduled(fixedRate = 10000)
     public void refreshDB() {
 
         // Fetch all Projects
@@ -79,6 +81,6 @@ public class ScheduledREST {
             }
         }
 
-    }
+    }*/
 
 }
