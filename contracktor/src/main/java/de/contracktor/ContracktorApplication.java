@@ -31,7 +31,7 @@ public class ContracktorApplication implements CommandLineRunner {
 	@Override
 	public void run(String... arg0) throws Exception {
 		initDatabaseService.init();
-		scheduledREST.initializeHeader();
-		scheduledREST.refreshDB();
+		//scheduledREST.initializeHeader();
+		//scheduledREST.refreshDB();
 	}
 }
