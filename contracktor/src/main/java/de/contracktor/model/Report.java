@@ -19,7 +19,7 @@ import lombok.Setter;
 public class Report {
 
 	@Getter @Id @GeneratedValue(strategy = GenerationType.AUTO) private int id;
-	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne String billingItemID;
+	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne BillingItem billingItem;
 	@Getter @Setter @Column(nullable = false) Date date;
 	@Getter @Setter @Column(nullable = false) String username;
 	@Getter @Setter String comment;
@@ -29,8 +29,8 @@ public class Report {
 		
 	}
 	
-	public Report(String billingItemID, Date date, String username, String comment, ArrayList<Image> images) {
-		this.billingItemID = billingItemID;
+	public Report(BillingItem billingItem, Date date, String username, String comment, ArrayList<Image> images) {
+		this.billingItem = billingItem;
 		this.date = date;
 		this.username = username;
 		this.comment = comment;
