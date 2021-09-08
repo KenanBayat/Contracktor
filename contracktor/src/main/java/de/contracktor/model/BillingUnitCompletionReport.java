@@ -1,8 +1,6 @@
 package de.contracktor.model;
 
-import java.awt.Image;
 import java.util.ArrayList;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,17 +19,17 @@ public class BillingUnitCompletionReport {
 	@Getter @Setter @Column(nullable = false, unique = true) private int CRID;	
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private Contract contract;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private Project project;
-	@Getter @Setter private String comment;
-	@Getter @Setter private String username;
-	@Getter @Setter private ArrayList<BillingUnit> billingUnits;
-	@Getter @Setter private ArrayList<Image> images;
+	@Getter @Setter @Column(nullable = false) private String comment;
+	@Getter @Setter @Column(nullable = false) private String username;
+	@Getter @Setter @Column(nullable = false) private ArrayList<BillingUnit> billingUnits;
+	@Getter @Setter @Column(nullable = false) private ArrayList<Picture> images;
 	
 	public BillingUnitCompletionReport() {
 		
 	}
 	
 	public BillingUnitCompletionReport(Contract contract, Project project, String comment, String username, 
-			                           ArrayList<BillingUnit> billingUnits, ArrayList<Image> images) {
+			                           ArrayList<BillingUnit> billingUnits, ArrayList<Picture> images) {
 		this.contract = contract;
 		this.project = project;
 		this.comment = comment;
