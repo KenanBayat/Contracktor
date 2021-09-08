@@ -55,7 +55,7 @@ public class TestContract {
 		stateRepo.save(state);
 		organisation = new Organisation("orga", "straße", "houseNumber", "city", "12345", "blabla");
 		organisationRepo.save(organisation);
-		picture = new Picture(null);
+		picture = new Picture(null,null);
 		pictureRepo.save(picture);
 		project = new Project(2, "project", creationDate, completionDate, "street", "42", "hamburg", "12345",
 	              "de", 100.0, organisation, "hans", state, picture, "");

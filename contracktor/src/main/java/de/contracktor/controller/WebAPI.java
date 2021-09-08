@@ -43,9 +43,11 @@ public class WebAPI {
 
     @GetMapping("/api/download")
     @ResponseBody
-    public APIResponse downloadController(Model model, Principal principal) {
-        String username = principal.getName();
-        return apiDownloadConstructor(username);
+    public APIResponse downloadController(Model model, @AuthenticationPrincipal User user) {
+        if (user == null) {
+            return new APIResponse("NOT_AUTHENTICATED");
+        }
+        return apiDownloadConstructor(user.getUsername());
     }
 
     private APIResponse apiDownloadConstructor(String username) {
