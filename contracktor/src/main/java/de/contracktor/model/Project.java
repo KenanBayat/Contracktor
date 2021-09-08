@@ -14,14 +14,20 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Project {
 
-	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	private int id;
-	@Getter @Setter @Column(nullable = false, unique = true) private int projectID;
+	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO) @JsonIgnore
+	private int id;
+	@Getter @Setter @Column(nullable = false, unique = true) @JsonProperty("id")
+	private int projectID;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String name;
     @Getter @Setter @Column(nullable = false) private LocalDate creationDate;
 	@Getter @Setter @Column(nullable = false) private LocalDate completionDate;
