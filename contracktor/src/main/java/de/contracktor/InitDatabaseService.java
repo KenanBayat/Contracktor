@@ -87,25 +87,6 @@ public class InitDatabaseService {
 		{
 			initPermissions();
 			initApplicationAdmin();	
-			
-			State state = new State("test");
-			stateRepo.save(state);
-			
-			BillingItem billingItemInList1 = new BillingItem("ID_3346_2929_38", "meter", 1000.0, 105.0, 100050.0, 
-                    "3m5_6h4uXAXvBoFEtks_QE", state, "", new ArrayList<BillingItem>());
-			BillingItem billingItemInList2 = new BillingItem("ID_3346_2929_39", "meter", 1000.0, 105.0, 100050.0, 
-                    "3m6_6h4uXAXvBoFEtks_QE", state, "", new ArrayList<BillingItem>());
-			billingItemRepo.save(billingItemInList1);
-			billingItemRepo.save(billingItemInList2);
-
-			ArrayList<BillingItem> billingItems = new ArrayList<BillingItem>();
-			billingItems.add(billingItemInList1);
-			billingItems.add(billingItemInList2);
-
-			BillingItem billingItem = new BillingItem("ID_3346_2929_37", "meter", 1000.0, 105.0, 100050.0, "3m7_6h4uXAXvBoFEtks_QE", state, "", billingItems);
-			billingItemRepo.save(billingItem);
-
-			billingItemRepo.delete(billingItem);
 		}
 	}
 	
