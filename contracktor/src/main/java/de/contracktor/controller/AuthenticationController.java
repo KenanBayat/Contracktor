@@ -29,7 +29,7 @@ public class AuthenticationController {
         organisationRepository.save(testorg);
         userRepository.save(user);
 
-        return "registerTest";
+        return "landing";
     }
 
 }

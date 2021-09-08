@@ -12,11 +12,13 @@ import javax.persistence.Id;
 public class Picture {
 
     @Getter @Id @GeneratedValue(strategy = GenerationType.AUTO) private int pictureID;
-    @Getter @Setter String picturePath;
+    @Getter @Setter String pictureName;
+    @Getter @Setter byte[] picture;
 
     protected Picture() {}
 
-    public Picture(String picturePath) {
-        this.picturePath = picturePath;
+    public Picture(String pictureName, byte[] picture) {
+        this.pictureName = pictureName;
+        this.picture = picture;
     }
 }
