@@ -3,6 +3,7 @@ package de.contracktor.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,7 +20,7 @@ import lombok.Setter;
 @Entity
 public class BillingItem {
 
-	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	private int id;
+	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	@Column(name = "id") private int id;
 	@Getter @Setter @Column(nullable = false, unique = true) String billingItemID;
 	@Getter @Setter @Column(nullable = false) private String unit;
 	@Getter @Setter @Column(nullable = false) private Double quantity;
@@ -27,15 +28,16 @@ public class BillingItem {
 	@Getter @Setter @Column(nullable = false) private Double totalPrice;
 	@Getter @Setter @Column(nullable = false) private String IFC;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private State status;
-	@Getter @Setter @OneToMany private List<BillingItem> billingItems;
-	@Getter @Setter private String shortDescription;
+	@Getter @Setter @OneToMany(cascade = CascadeType.ALL) private List<BillingItem> billingItems;
+	//@Getter @Setter @JoinColumn(nullable = false) @OneToMany private List<BillingItem> billingItems;
+	@Getter @Setter @Column(nullable = false) private String shortDescription;
 	
 	public BillingItem() {
 		
 	}
 	
 	public BillingItem(String billingItemID, String unit, Double quantity, Double pricePerUnit,
-			           Double totalPrice, String IFC, State status) {
+			           Double totalPrice, String IFC, State status, String shortDescription, ArrayList<BillingItem> billingItems) {
 		this.billingItemID = billingItemID;
 		this.unit = unit;
 		this.quantity = quantity;
@@ -43,6 +45,7 @@ public class BillingItem {
 		this.totalPrice = totalPrice;
 		this.IFC = IFC;
 		this.status = status;
-		this.billingItems = new ArrayList<BillingItem>(); 
+		this.billingItems = billingItems; 
+		this.shortDescription = shortDescription;
 	}
 }

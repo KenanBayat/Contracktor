@@ -1,10 +1,15 @@
 package de.contracktor.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 
 import lombok.Getter;
@@ -14,7 +19,7 @@ import lombok.Setter;
 public class Organisation {
 	
 	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	private int id;
-	@Getter @Column(nullable = false, unique = true) @NotEmpty private String organisationName;
+	@Getter @Column(nullable = false) @NotEmpty private String organisationName;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String street;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String houseNumber;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String city;
