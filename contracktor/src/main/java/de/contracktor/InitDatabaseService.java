@@ -1,17 +1,12 @@
 package de.contracktor;
 
 import java.util.ArrayList;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
-import de.contracktor.model.BillingItem;
 import de.contracktor.model.Organisation;
 import de.contracktor.model.Permission;
 import de.contracktor.model.Role;
-import de.contracktor.model.State;
 import de.contracktor.model.User;
 import de.contracktor.repository.BillingItemRepository;
 import de.contracktor.repository.BillingUnitCompletionReportRepository;
