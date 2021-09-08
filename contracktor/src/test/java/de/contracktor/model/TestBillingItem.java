@@ -68,4 +68,7 @@ public class TestBillingItem {
 		assertFalse(billingItemRepo.existsById(billingItemInList1.getId()));
 		assertFalse(billingItemRepo.existsById(billingItemInList2.getId()));
 	}
+	
+	@Test
+	public void testNull
 }
