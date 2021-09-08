@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import de.contracktor.model.BillingItem;
 import de.contracktor.model.Organisation;
 import de.contracktor.model.Permission;
 import de.contracktor.model.Role;
+import de.contracktor.model.State;
 import de.contracktor.model.User;
 import de.contracktor.repository.BillingItemRepository;
 import de.contracktor.repository.BillingUnitCompletionReportRepository;
@@ -84,7 +86,24 @@ public class InitDatabaseService {
 			) 
 		{
 			initPermissions();
-			initApplicationAdmin();			
+			initApplicationAdmin();		
+			
+			State state = new State("testing");
+			stateRepo.save(state);
+			
+			BillingItem billingItemInList1 = new BillingItem("ID_3346_2929_38", "meter", 1000.0, 105.0, 100050.0, 
+                    "3m5_6h4uXAXvBoFEtks_QE", state, "", new ArrayList<BillingItem>());
+			BillingItem billingItemInList2 = new BillingItem("ID_3346_2929_39", "meter", 1000.0, 105.0, 100050.0, 
+                    "3m6_6h4uXAXvBoFEtks_QE", state, "", new ArrayList<BillingItem>());
+			billingItemRepo.save(billingItemInList1);
+			billingItemRepo.save(billingItemInList2);
+
+			ArrayList<BillingItem> billingItems = new ArrayList<BillingItem>();
+			billingItems.add(billingItemInList1);
+			billingItems.add(billingItemInList2);
+
+			BillingItem billingItem = new BillingItem("ID_3346_2929_37", "meter", 1000.0, 105.0, 100050.0, "3m7_6h4uXAXvBoFEtks_QE", state, "", billingItems);
+			billingItemRepo.save(billingItem);
 		}
 	}
 	
