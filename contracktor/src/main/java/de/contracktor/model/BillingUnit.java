@@ -14,8 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.sun.istack.NotNull;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,9 +28,9 @@ public class BillingUnit {
 	@Getter @Setter @Column(nullable = false) private Double totalPrice;
 	@Getter @Setter @Column(nullable = false) private Double totalQuantity;
 	@Getter @Setter @OneToMany(cascade = CascadeType.ALL) private List<BillingItem> billingItems;
-	@Getter @Setter private Boolean ownContractDefined;
-	@Getter @Setter private String shortDescription;
-	@Getter @Setter private String longDescription;
+	@Getter @Setter @Column(nullable = false) private Boolean ownContractDefined;
+	@Getter @Setter @Column(nullable = false) private String shortDescription;
+	@Getter @Setter @Column(nullable = false) private String longDescription;
 	
 	public BillingUnit() {
 		
