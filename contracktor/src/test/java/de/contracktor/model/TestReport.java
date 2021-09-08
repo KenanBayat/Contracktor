@@ -39,10 +39,11 @@ public class TestReport {
 	public void init() {
 		state = new State("Processing");
 		stateRepo.save(state);
-		billingItem = new BillingItem("ID_3346_2929_37", "meter", 1000.0, 105.0, 100050.0, "3m5_6h4uXAXvBoFEtks_QE", state);
-		billingItem = billingItemRepo.save(billingItem);
 		billingItems = new ArrayList<BillingItem>();
-		billingItems.add(billingItem);
+		billingItem = new BillingItem("ID_3346_2929_37", "meter", 1000.0, 105.0, 100050.0, "3m5_6h4uXAXvBoFEtks_QE", state, "", billingItems);
+		billingItem = billingItemRepo.save(billingItem);
+	
+		//billingItems.add(billingItem);
 	}
 	
 	@AfterEach
