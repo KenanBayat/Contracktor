@@ -91,4 +91,11 @@ public class TestContract {
 		contract = new Contract(42, project, "contract", "consignee", state, null, "");
 		assertThrows(Exception.class, () -> contractRepo.save(contract));
 	}
+	
+	@Test
+	public void testNullDescription() {
+		// Test null name.
+		contract = new Contract(42, project, "contract", "consignee", state, "contractor", null);
+		assertThrows(Exception.class, () -> contractRepo.save(contract));
+	}
 }
