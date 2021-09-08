@@ -13,11 +13,11 @@ public class APIResponse {
 
     boolean writePerm;
 
-    public String error;
+    public String status;
 
     public APIResponse(List<Project> projects, List<Contract> contracts, List<BillingUnit> billingUnits,
                        List<State> states, List<StateTransition> stateTransitions, List<Report> reports,
-                       boolean writePerm, String error) {
+                       boolean writePerm, String status) {
         this.projects = projects;
         this.contracts = contracts;
         this.billingUnits = billingUnits;
@@ -25,14 +25,14 @@ public class APIResponse {
         this.stateTransitions = stateTransitions;
         this.reports = reports;
         this.writePerm = writePerm;
-        this.error = error;
+        this.status = status;
     }
 
     public APIResponse() {
     }
 
-    public APIResponse(String error) {
-        this.error = error;
+    public APIResponse(String status) {
+        this.status = status;
     }
 
     public List<Project> getProjects() {
@@ -91,11 +91,11 @@ public class APIResponse {
         this.writePerm = writePerm;
     }
 
-    public String getError() {
-        return error;
+    public String getStatus() {
+        return status;
     }
 
-    public void setError(String error) {
-        this.error = error;
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

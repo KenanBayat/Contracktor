@@ -2,17 +2,13 @@ package de.contracktor.controller;
 
 import de.contracktor.model.*;
 import de.contracktor.repository.*;
-import de.contracktor.security.ContracktorUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -43,11 +39,12 @@ public class WebAPI {
 
     @GetMapping("/api/download")
     @ResponseBody
-    public APIResponse downloadController(Model model, @AuthenticationPrincipal User user) {
+    public APIResponse downloadController(Model model) {
+        String user = SecurityContextHolder.getContext().getAuthentication().getName();
         if (user == null) {
             return new APIResponse("NOT_AUTHENTICATED");
         }
-        return apiDownloadConstructor(user.getUsername());
+        return apiDownloadConstructor(user);
     }
 
     private APIResponse apiDownloadConstructor(String username) {
@@ -65,7 +62,7 @@ public class WebAPI {
         response.setStates((List<State>) stateRepository.findAll());
         response.setStateTransitions((List<StateTransition>) stateTransitionRepository.findAll());
         response.setReports(reportRepository.findByOrganisation(organisation));
-        response.setError("OK");
+        response.setStatus("OK");
         return response;
     }
 
