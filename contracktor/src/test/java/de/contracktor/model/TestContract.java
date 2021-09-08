@@ -80,22 +80,36 @@ public class TestContract {
 	
 	@Test
 	public void testNullConsignee() {
-		// Test null name.
+		// Test null consignee.
 		contract = new Contract(42, project, "contract", null, state, "contractor", "");
 		assertThrows(Exception.class, () -> contractRepo.save(contract));
 	}
 	
 	@Test
 	public void testNullContractor() {
-		// Test null name.
+		// Test null contractor.
 		contract = new Contract(42, project, "contract", "consignee", state, null, "");
 		assertThrows(Exception.class, () -> contractRepo.save(contract));
 	}
 	
 	@Test
 	public void testNullDescription() {
-		// Test null name.
+		// Test null description.
 		contract = new Contract(42, project, "contract", "consignee", state, "contractor", null);
+		assertThrows(Exception.class, () -> contractRepo.save(contract));
+	}
+	
+	@Test
+	public void testEmptyConsignee() {
+		// Test empty consignee.
+		contract = new Contract(42, project, "contract", "", state, "contractor", "");
+		assertThrows(Exception.class, () -> contractRepo.save(contract));
+	}
+	
+	@Test
+	public void testEmptyContractor() {
+		// Test empty contractor.
+		contract = new Contract(42, project, "contract", "consignee", state, "", "");
 		assertThrows(Exception.class, () -> contractRepo.save(contract));
 	}
 }

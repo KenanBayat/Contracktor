@@ -19,7 +19,7 @@ import lombok.Setter;
 @Entity
 public class BillingItem {
 
-	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	private int id;
+	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	@Column(name = "id") private int id;
 	@Getter @Setter @Column(nullable = false, unique = true) String billingItemID;
 	@Getter @Setter @Column(nullable = false) private String unit;
 	@Getter @Setter @Column(nullable = false) private Double quantity;
@@ -27,7 +27,8 @@ public class BillingItem {
 	@Getter @Setter @Column(nullable = false) private Double totalPrice;
 	@Getter @Setter @Column(nullable = false) private String IFC;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private State status;
-	@Getter @Setter @OneToMany private List<BillingItem> billingItems;
+	@Getter @Setter @OneToMany(mappedBy = "id") private List<BillingItem> billingItems;
+	//@Getter @Setter @JoinColumn(nullable = false) @OneToMany private List<BillingItem> billingItems;
 	@Getter @Setter @Column(nullable = false) private String shortDescription;
 	
 	public BillingItem() {
