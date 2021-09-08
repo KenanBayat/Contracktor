@@ -1,12 +1,20 @@
 package de.contracktor;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import de.contracktor.model.BillingItem;
+import de.contracktor.model.Contract;
 import de.contracktor.model.Organisation;
 import de.contracktor.model.Permission;
+import de.contracktor.model.Picture;
+import de.contracktor.model.Project;
 import de.contracktor.model.Role;
+import de.contracktor.model.State;
 import de.contracktor.model.User;
 import de.contracktor.repository.BillingItemRepository;
 import de.contracktor.repository.BillingUnitCompletionReportRepository;
@@ -14,6 +22,7 @@ import de.contracktor.repository.BillingUnitRepository;
 import de.contracktor.repository.ContractRepository;
 import de.contracktor.repository.OrganisationRepository;
 import de.contracktor.repository.PermissionRepository;
+import de.contracktor.repository.PictureRepository;
 import de.contracktor.repository.ProjectRepository;
 import de.contracktor.repository.ReportRepository;
 import de.contracktor.repository.RoleRepository;
@@ -61,6 +70,12 @@ public class InitDatabaseService {
 	@Autowired
 	private StateTransitionRepository stateTransitionRepo;
 	
+	@Autowired
+	private PictureRepository pictureRepo;
+	
+	@Autowired
+    private PasswordEncoder encoder;
+	
 	
 	private Permission read;
 	private Permission write;
@@ -102,7 +117,7 @@ public class InitDatabaseService {
 		ArrayList<Role> applicationAdminRoles = new ArrayList<Role>();
 		applicationAdminRoles.add(applicationAdminRole);
 		
-		User applicationAdmin = new User("PC", "password", "Pablo", "Cocaine", organisation, true, true, applicationAdminRoles);
+		User applicationAdmin = new User("Pablo", encoder.encode("Cocaine"), "Pablo", "Cocaine", organisation, true, true, applicationAdminRoles);
 		userRepo.save(applicationAdmin);
 		
 		//User user2 = userRepo.findById(1).orElse(null);
