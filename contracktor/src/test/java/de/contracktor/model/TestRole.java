@@ -49,6 +49,7 @@ public class TestRole {
 		permissionRepo.delete(permission1);
 		permissionRepo.delete(permission2);
 		organisationRepo.delete(organisation);
+		roleRepo.delete(role1);
 	}
 	
 	@Test
