@@ -29,8 +29,7 @@ public class TestBillingItem {
 	BillingItem billingItemInList2;
 	
 	ArrayList<BillingItem> billingItems;
-	
-	
+		
 	@BeforeEach
 	public void init() {
 		state = new State("billingStatus");
@@ -50,7 +49,7 @@ public class TestBillingItem {
 	public void testSavingBillingItem() {
 		billingItemInList1 = new BillingItem("ID_3346_2929_38", "meter", 1000.0, 105.0, 100050.0, 
 				                             "3m5_6h4uXAXvBoFEtks_QE", state, "", new ArrayList<BillingItem>());
-		billingItemInList1 = new BillingItem("ID_3346_2929_39", "meter", 1000.0, 105.0, 100050.0, 
+		billingItemInList2 = new BillingItem("ID_3346_2929_39", "meter", 1000.0, 105.0, 100050.0, 
                 "3m5_6h4uXAXvBoFEtks_QE", state, "", new ArrayList<BillingItem>());
 		billingItemRepo.save(billingItemInList1);
 		billingItemRepo.save(billingItemInList2);

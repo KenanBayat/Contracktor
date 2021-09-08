@@ -3,6 +3,7 @@ package de.contracktor.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,7 +28,7 @@ public class BillingItem {
 	@Getter @Setter @Column(nullable = false) private Double totalPrice;
 	@Getter @Setter @Column(nullable = false) private String IFC;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private State status;
-	@Getter @Setter @OneToMany(mappedBy = "id") private List<BillingItem> billingItems;
+	@Getter @Setter @OneToMany(cascade = CascadeType.ALL) private List<BillingItem> billingItems;
 	//@Getter @Setter @JoinColumn(nullable = false) @OneToMany private List<BillingItem> billingItems;
 	@Getter @Setter @Column(nullable = false) private String shortDescription;
 	
