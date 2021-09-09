@@ -53,6 +53,7 @@ public class WebAPI {
     }
 
     @PostMapping("/api/update")
+    @ResponseBody
     public APIResponse updateController(@RequestParam(name = "json") APIUpdate update) {
         for (BillingItem billingItem : update.getBillingItemList()) {
             Optional<BillingItem> savedItem = billingItemRepository.findByBillingItemID(billingItem.getBillingItemID());
