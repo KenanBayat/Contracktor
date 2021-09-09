@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org" th:include="layout :: page">
+<head/>
+<body>
+<th:block th:fragment="content">
+    <div class="container">
+        <main>
+            <div class="py-3 text-center col-md-7 col-lg-8 mx-auto">
+                <div class="feature-icon bg-primary bg-gradient mx-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="white" class="bi bi-person-fill" viewBox="0 0 16 16">
+                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                    </svg>
+                </div>
+                <h2>Nutzerdaten verändern</h2>
+                <p class="lead">Ändern Sie die Daten in einem oder mehreren Feldern und bestätigen Sie. Machen Sie keine neuen Angaben in einem Feld, bleibt dieses unverändert.</p>
+            </div>
+            <div class="col-md-7 col-lg-8 mx-auto">
+                <h4 class="mb-3">Nutzer</h4>
+                <form class="needs-validation" novalidate th:action="@{'/admin/manage-user/edit'}" th:object="${newUser}" method="post">
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <label for="firstName" class="form-label">Vorname</label>
+                            <input type="text" class="form-control" id="firstName" th:placeholder="${oldUser.getForename()}" th:field="*{newForename}" required>
+                            <div class="invalid-feedback">
+                                Valid first name is required.
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label for="lastName" class="form-label">Nachname</label>
+                            <input type="text" class="form-control" id="lastName" th:placeholder="${oldUser.getSurname()}" th:field="*{newSurname}" required>
+                            <div class="invalid-feedback">
+                                Valid last name is required.
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <label for="username" class="form-label">Nutzername</label>
+                            <div class="input-group has-validation">
+                                <input type="text" class="form-control" id="username" th:placeholder="${oldUser.getUsername()}" th:field="*{newUsername}" required>
+                                <div class="invalid-feedback">
+                                    Your username is required.
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-6">
+                            <label for="organisation" class="form-label">Organisation</label>
+                            <select class="form-select" id="organisation" name="organisation" disabled>
+                                <option th:text="${oldUser.getOrganisation().getOrganisationName()}"></option>
+                            </select>
+                        </div>
+
+
+                        <div class="col-6">
+                            <label for="password" class="form-label">Neues Password</label>
+                            <input type="password" class="form-control" id="password" th:field="*{newPassword}">
+                        </div>
+                        <div class="col-6">
+                            <label for="passwordCheck" class="form-label">Neues Password wiederholen</label>
+                            <input type="password" class="form-control" id="passwordCheck" th:field="*{newPasswordCheck}">
+                        </div>
+                    </div>
+                    <div class="py-3"/>
+                    <div class="d-grid gap-2 col-6 mx-auto py-2">
+                        <button class="btn btn-primary btn-lg mx-auto" type="submit" value="Submit">Nutzerdaten ändern</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+</th:block>
+</body>
+</html>
