@@ -2,7 +2,17 @@ package de.contracktor.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -23,13 +33,14 @@ public class BillingUnitCompletionReport {
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private Project project;
 	@Getter @Setter @Column(nullable = false) private String comment;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String username;
+
 	@Getter @Setter @Column(nullable = false) @OneToMany @JsonIgnore private List<BillingUnit> billingUnits;
 	@Getter @Setter @Column(nullable = false) @OneToMany @JsonIgnore private List<Picture> images;
 	@Getter @Setter @Transient private int contractId;
 	@Getter @Setter @Transient private int projectId;
 	@Getter @Setter @Transient private List<String> billingUnitIds;
 	@Getter @Setter @Transient private List<String> filenames;
-	
+
 	public BillingUnitCompletionReport() {
 		
 	}
