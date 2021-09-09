@@ -25,11 +25,12 @@ public class AuthenticationController {
     @GetMapping("/register")
     public String registrationController(Model model) {
         Organisation testorg = new Organisation("testOrg","test","test","test","test","test");
-        User user = new User("test",encoder.encode("test"),"test","test",testorg,false,false,null);
+        User user = new User("test",encoder.encode("test"),"test","test",testorg,
+                false,false,null);
         organisationRepository.save(testorg);
         userRepository.save(user);
 
-        return "registerTest";
+        return "landing";
     }
 
 }

@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import javax.validation.ConstraintViolationException;
+
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,35 +27,46 @@ public class TestOrganisation {
 	
 	private User user1;
 		
+	
 	@Test
-	public void testNullValues() {
+	public void testNullName() {
 		// Test null organisationName.
 		organisation1 = new Organisation(null, "straße", "houseNumber", "city", "12345", "country");
-		assertThrows(Exception.class, () -> organisationRepo.save(organisation1));
-		
+		assertThrows(Exception.class, () -> organisationRepo.save(organisation1));	
+	}
+	
+	@Test
+	public void testNullStreet() {
 		// Test null street
 		organisation1 = new Organisation("organisation1", null, "houseNumber", "city", "12345", "country");
 		assertThrows(Exception.class, () -> organisationRepo.save(organisation1));
-		
-		
+	}
+	
+	@Test
+	public void testNullHouseNumber() {
 		// Test null houseNumber
 		organisation1 = new Organisation("organisation1", "straße", null, "city", "12345", "country");
 		assertThrows(Exception.class, () -> organisationRepo.save(organisation1));
-		
-		
+	}
+	
+	@Test
+	public void testNullCity() {
 		// Test null city
 		organisation1 = new Organisation("organisation1", "straße", "houseNumber", null, "12345", "country");
 		assertThrows(Exception.class, () -> organisationRepo.save(organisation1));
-		
-		
+	}
+	
+	@Test
+	public void testNullPostCode() {
 		// Test null postcode
 		organisation1 = new Organisation("organisation1", "straße", "houseNumber", "city", null, "country");
 		assertThrows(Exception.class, () -> organisationRepo.save(organisation1));
-		
-				
+	}
+	
+	public void testNullCountry() {
 		// Test null country
 		organisation1 = new Organisation("organisation1", "straße", "houseNumber", "city", "12345", null);
-		assertThrows(Exception.class, () -> organisationRepo.save(organisation1));		
+		assertThrows(Exception.class, () -> organisationRepo.save(organisation1));
 	}
 	
 	@Test
@@ -96,10 +110,6 @@ public class TestOrganisation {
 		user1 = userRepo.save(user1);
 		int userID = user1.getId();
 		
-		//assertTrue(organisation1.getUsers().contains(user1));
-		//organisationRepo.delete(organisation1);
-		
-		//assertThrows(IllegalArgumentException.class, () -> organisationRepo.delete(organisation1));
 		userRepo.delete(user1);
 		assertFalse(userRepo.existsById(userID));
 		organisationRepo.delete(organisation1);
