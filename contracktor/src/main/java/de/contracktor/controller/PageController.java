@@ -1,7 +1,10 @@
 package de.contracktor.controller;
 
+import de.contracktor.controller.dato.ManageUserDato;
+import de.contracktor.controller.dato.RegisterUserDato;
 import de.contracktor.model.Organisation;
 import de.contracktor.model.User;
+import de.contracktor.model.Role;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -69,28 +73,47 @@ public class PageController {
                 new Organisation("Züblin", "Haupstraße", "26", "Hamburg", "22317", "Deutschland")
         );
         model.addAttribute("organisations", organisations);
-        model.addAttribute("user", new User());
+        model.addAttribute("user", new RegisterUserDato());
         return "register-sysadmin";
     }
 
     @PostMapping("/admin/register")
-    public String setAdmin(@ModelAttribute User user, Model model) {
-        if(user.getIsApplicationAdmin() == null) {
-            user.setIsApplicationAdmin(false);
+    public String setAdmin(@ModelAttribute RegisterUserDato user, Model model) {
+        if(user.getIsSysadmin() == null) {
+            user.setIsSysadmin(false);
         }
         if(user.getIsAdmin() == null) {
             user.setIsAdmin(false);
         }
 
 
-        System.out.println(user.getUsername() + ", " + user.getForename() + ", " + user.getSurname() + ", " + user.getOrganisation() + ", " + user.getPassword()+ ", " + user.getIsAdmin() + ", " + user.getIsApplicationAdmin());
+        System.out.println(user.getUsername() + ", " + user.getForename() + ", " + user.getSurname() + ", " + user.getOrganisation() + ", " + user.getPassword()+ ", " + user.getPasswordCheck()+ ", " + user.getIsAdmin() + ", " + user.getIsSysadmin());
 
         List<Organisation> organisations = List.of(
                 new Organisation("Hochtief", "Elbstraße", "7", "Hamburg", "22406", "Deutschland"),
                 new Organisation("Züblin", "Haupstraße", "26", "Hamburg", "22317", "Deutschland")
         );
         model.addAttribute("organisations", organisations);
-        model.addAttribute("user", new User());
+        model.addAttribute("user", new RegisterUserDato());
         return "register-sysadmin";
+    }
+
+    @GetMapping("/admin/manage-user")
+    public String getUserList(@RequestParam(value = "search", defaultValue = "") String search, Model model) {
+        Organisation hochtief = new Organisation("Hochtief", "Elbstraße", "7", "Hamburg", "22406", "Deutschland");
+        Organisation zublin = new Organisation("Züblin", "Haupstraße", "26", "Hamburg", "22317", "Deutschland");
+        List<Organisation> organisations = List.of(
+                zublin, hochtief
+        );
+        List<User> users = List.of(
+                new User("lion", "pwd", "Lion", "Grabau", hochtief, true, true, new ArrayList<Role>()),
+                new User("alex", "hallo", "Alex", "Meier", hochtief, true, false, new ArrayList<Role>()),
+                new User("nils", "imDreieck", "Nils", "Fischer", zublin, false, false, new ArrayList<Role>())
+
+        );
+        ManageUserDato userDato = new ManageUserDato(organisations, users);
+        userDato.setUserList(userDato.getFilteredUserList(search));
+        model.addAttribute("userlist", userDato);
+        return "user-list";
     }
 }

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org" th:include="layout :: page">
+<head/>
+<body>
+<th:block th:fragment="content">
+    <div class="container" th:object="${userlist}">
+        <h2>Nutzerverwaltung</h2>
+        <p>Verwalten Sie die Nutzer geordnet nach Organisationen. Sie können Nutzerdaten ändern, Nutzern Rollen zuweisen und Nutzer löschen.</p>
+
+        <h3>Nach Nutzern suchen</h3>
+        <div class="input-group mb-3 col-4">
+            <input type="text" class="form-control" placeholder="Suchen..">
+            <a th:href="@{/admin/manage-user(search=a)}" class="btn btn-secondary" type="button" id="search">Suchen</a>
+        </div>
+
+        <div th:each="organisation : ${userlist.organisationList}" class="py-3">
+            <h4 th:text="${organisation.getOrganisationName()}" th:if="${!userlist.getUserOfOrganisation(organisation).isEmpty()}"></h4>
+            <div class="card my-4" th:each="user : ${userlist.getUserOfOrganisation(organisation)}">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="'@' + ${user.getUsername()}"></h5>
+                    <form>
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <label for="firstName" class="form-label">Vorname</label>
+                                <input type="text" class="form-control" id="firstName" th:value="${user.getForename()}" disabled>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="lastName" class="form-label">Nachname</label>
+                                <input type="text" class="form-control" id="lastName" th:value="${user.getSurname()}" disabled>
+                            </div>
+                            <div class="col-6">
+                                <label for="username" class="form-label">Nutzername</label>
+                                <div class="input-group has-validation">
+                                    <input type="text" class="form-control" id="username" th:value="${user.getUsername()}" disabled>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <label for="organisation" class="form-label">Organisation</label>
+                                <select class="form-select" id="organisation" name="organisation" disabled>
+                                    <option th:text="${user.getOrganisation().getOrganisationName()}"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>
