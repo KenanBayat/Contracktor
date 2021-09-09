@@ -13,11 +13,19 @@ import javax.validation.constraints.NotEmpty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Address {
 
-    @Getter	@Id @GeneratedValue(strategy = GenerationType.AUTO) @JsonIgnore private int id;
-    @Getter @Setter @Column(nullable = false) @NotEmpty private String street;
+	@Getter	@Id @GeneratedValue(strategy = GenerationType.AUTO) @JsonIgnore private int id;
+	@Getter @Setter @Column(nullable = false) @NotEmpty private String street;
     @Getter @Setter @Column(nullable = false) @NotEmpty private String houseNumber;
     @Getter @Setter @Column(nullable = false) @NotEmpty private String city;
     @Getter @Setter @Column(nullable = false) @NotEmpty private String zipCode;
     @Getter @Setter @Column(nullable = false) @NotEmpty private String country;
 
+  
+    public Address(String street, String houseNumber, String city, String zipCode, String country) {
+    	this.street = street;
+    	this.houseNumber = houseNumber;
+    	this.city = city;
+    	this.zipCode = zipCode;
+    	this.country = country;
+	}
 }

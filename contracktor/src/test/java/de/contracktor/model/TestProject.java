@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import de.contracktor.repository.AddressRepository;
 import de.contracktor.repository.OrganisationRepository;
 import de.contracktor.repository.PictureRepository;
 import de.contracktor.repository.ProjectRepository;
@@ -41,11 +42,18 @@ public class TestProject {
 	private final LocalDate creationDate = LocalDate.of(2021, 9, 8);
 	private final LocalDate completionDate = LocalDate.of(2022, 12, 12);
 	
+	@Autowired
+	private AddressRepository addressRepo;
+	
+	Address address;
+	
 	@BeforeEach
 	public void init() {
 		state = new State("status");
 		stateRepo.save(state);
-		organisation = new Organisation("orga", "straße", "houseNumber", "city", "12345", "blabla");
+		address = new Address( "straße", "42", "city", "12345", "Land");
+		addressRepo.save(address);
+		organisation = new Organisation("orga", address);
 		organisationRepo.save(organisation);
 		picture = new Picture(null,null);
 		pictureRepo.save(picture);
@@ -57,86 +65,46 @@ public class TestProject {
 		stateRepo.delete(state);
 		organisationRepo.delete(organisation);
 		pictureRepo.delete(picture);
+		addressRepo.delete(address);
 	}
 	
 	@Test
 	public void testNullProjectName() {
 		// Test null projectName.
-		project = new Project(2, null, creationDate, completionDate, "street", "42", "hamburg", "12345",
-				              "de", 100.0, organisation, "hans", state, picture, "");
+		project = new Project(2, null, creationDate, completionDate, address,
+				100.0, organisation, "hans", state, picture, "");
 		assertThrows(Exception.class, () -> projectRepo.save(project));
 	}
 	
 	@Test
 	public void testNullCreationDate() {
 		// Test null creationDate.
-		project = new Project(2, "project", null, completionDate, "street", "42", "hamburg", "12345",
-	              "de", 100.0, organisation, "hans", state, picture, "");
+		project = new Project(2, "project", null, completionDate, address, 
+				100.0, organisation, "hans", state, picture, "");
 				  assertThrows(Exception.class, () -> projectRepo.save(project));
 	}
 	
 	@Test
 	public void testNullCompletionDate() {
 		// Test null completionDate.
-		project = new Project(2, "project", creationDate, null, "street", "42", "hamburg", "12345",
-			              "de", 100.0, organisation, "hans", state, picture, "");
-						  assertThrows(Exception.class, () -> projectRepo.save(project));
-	}
-	
-	@Test
-	public void testNullStreet() {
-		// Test null street.
-		project = new Project(2, "project", creationDate, completionDate, null, "42", "hamburg", "12345",
-			              "de", 100.0, organisation, "hans", state, picture, "");
-						  assertThrows(Exception.class, () -> projectRepo.save(project));
-	}
-	
-	@Test
-	public void testNullHouseNumber() {
-		// Test null street.
-		project = new Project(2, "project", creationDate, completionDate, "street", null, "hamburg", "12345",
-			              "de", 100.0, organisation, "hans", state, picture, "");
-						  assertThrows(Exception.class, () -> projectRepo.save(project));
-	}
-	
-	
-	@Test
-	public void testNullCity() {
-		// Test null city.
-		project = new Project(2, "project", creationDate, completionDate, "street", "42", null, "12345",
-			              "de", 100.0, organisation, "hans", state, picture, "");
-						  assertThrows(Exception.class, () -> projectRepo.save(project));
-	}
-	
-	@Test
-	public void testPostCode() {
-		// Test null postcode.
-		project = new Project(2, "project", creationDate, completionDate, "street", "42", "hamburg", null,
-			              "de", 100.0, organisation, "hans", state, picture, "");
-						  assertThrows(Exception.class, () -> projectRepo.save(project));
-	}
-	
-	@Test
-	public void testNullCountry() {
-		// Test null country.
-		project = new Project(2, "project", creationDate, completionDate, "street", "42", "hamburg", "12345",
-			              null, 100.0, organisation, "hans", state, picture, "");
+		project = new Project(2, "project", creationDate, null, address,
+				100.0, organisation, "hans", state, picture, "");
 						  assertThrows(Exception.class, () -> projectRepo.save(project));
 	}
 	
 	@Test
 	public void testNullCreator() {
 		// Test null creator.
-		project = new Project(2, "project", creationDate, completionDate, "street", "42", "hamburg", "12345",
-				 		  "de", 100.0, organisation, null, state, picture, "");
+		project = new Project(2, "project", creationDate, completionDate, address, 
+				100.0, organisation, null, state, picture, "");
 						  assertThrows(Exception.class, () -> projectRepo.save(project));
 	}
 	
 	@Test
 	public void testNullDescription() {
 		// Test null description.
-		project = new Project(2, "project", creationDate, completionDate, "street", "42", "hamburg", "12345",
-				          "de", 100.0, organisation, "hans", state, picture, null);
+		project = new Project(2, "project", creationDate, completionDate, address,
+				100.0, organisation, "hans", state, picture, null);
 						  assertThrows(Exception.class, () -> projectRepo.save(project));
 	}
 	

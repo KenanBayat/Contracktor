@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import de.contracktor.repository.AddressRepository;
 import de.contracktor.repository.OrganisationRepository;
 import de.contracktor.repository.UserRepository;
 
@@ -27,15 +28,23 @@ public class TestUser {
 	@Autowired
 	private OrganisationRepository organisationRepo;
 	
+	@Autowired
+	private AddressRepository addressRepo;
+	
+	Address address;
+	
 	@BeforeEach
 	private void init() {
-		organisation = new Organisation("organisation", "straße", "42", "city", "12345", "Land");
+		address = new Address( "straße", "42", "city", "12345", "Land");
+		addressRepo.save(address);
+		organisation = new Organisation("organisation", address);
 		organisationRepo.save(organisation);
 	}
 	
 	@AfterEach
 	public void delete() {
 		organisationRepo.delete(organisation);
+		addressRepo.delete(address);
 	}
 	
 	

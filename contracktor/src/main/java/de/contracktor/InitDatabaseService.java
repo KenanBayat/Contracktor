@@ -5,12 +5,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import de.contracktor.model.Address;
 import de.contracktor.model.Organisation;
 import de.contracktor.model.Permission;
 import de.contracktor.model.Role;
 import de.contracktor.model.State;
 import de.contracktor.model.StateTransition;
 import de.contracktor.model.User;
+import de.contracktor.repository.AddressRepository;
 import de.contracktor.repository.BillingItemRepository;
 import de.contracktor.repository.BillingUnitCompletionReportRepository;
 import de.contracktor.repository.BillingUnitRepository;
@@ -71,6 +74,10 @@ public class InitDatabaseService {
 	@Autowired
     private PasswordEncoder encoder;
 	
+	@Autowired
+	private AddressRepository addressRepo;
+	
+	Address address;
 	
 	private Permission read;
 	private Permission write;
@@ -115,7 +122,10 @@ public class InitDatabaseService {
 	}
 	
 	private void initApplicationAdmin() {
-		Organisation organisation = new Organisation("Mehiko", "mafio", "42", "Mehiko City", "1234", "Columbia");
+		address = new Address( "straße", "42", "city", "12345", "Land");
+		addressRepo.save(address);
+		
+		Organisation organisation = new Organisation("Mehiko", address);
 		organisationRepo.save(organisation);
 
 		Role applicationAdminRole = new Role("Applikations-Admin", write, organisation);
