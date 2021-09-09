@@ -10,12 +10,14 @@ import de.contracktor.model.BillingItem;
 import de.contracktor.model.BillingUnit;
 import de.contracktor.model.BillingUnitCompletionReport;
 import de.contracktor.model.Contract;
+import de.contracktor.model.Organisation;
 import de.contracktor.model.Project;
 import de.contracktor.model.State;
 import de.contracktor.repository.BillingItemRepository;
 import de.contracktor.repository.BillingUnitCompletionReportRepository;
 import de.contracktor.repository.BillingUnitRepository;
 import de.contracktor.repository.ContractRepository;
+import de.contracktor.repository.OrganisationRepository;
 import de.contracktor.repository.ProjectRepository;
 import de.contracktor.repository.StateRepository;
 
@@ -24,6 +26,9 @@ public class AdessoAPIService {
 
 	@Autowired
 	private ProjectRepository projectRepo;
+	
+	@Autowired
+	private OrganisationRepository organisationRepo;
 
 	@Autowired
 	private ContractRepository contractRepo;
@@ -51,7 +56,14 @@ public class AdessoAPIService {
 		LocalDate completionDate = LocalDate.parse(project.getCompletionDateString(), formatter);
 		project.setCreationDate(creationDate);
 		project.setCompletionDate(completionDate);
-
+		Organisation organisation;
+		if(!organisationRepo.existsByOrganisationName(project.getOwnerGroupIdentifier())) {
+			organisation = new Organisation(project.getOwnerGroupIdentifier());
+			organisationRepo.save(organisation);
+		}else {
+			organisation = organisationRepo.findByOrganisationName(project.getOwnerGroupIdentifier());
+		}
+		project.setOwner(organisation);
 		if (!projectRepo.existsById(project.getId())) {
 			projectRepo.save(project);
 		}

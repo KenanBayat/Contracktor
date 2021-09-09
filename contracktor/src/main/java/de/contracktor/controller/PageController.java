@@ -104,7 +104,7 @@ public class PageController {
             user.setIsAdmin(false);
         }
         //TODO Remove
-        user.setOrganisation(organisationRepository.findByOrganisationName("Hochtief").get(0));
+        user.setOrganisation(organisationRepository.findByOrganisationName("Hochtief"));
         userManager.addUser(user);
 
 
