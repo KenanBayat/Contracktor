@@ -40,8 +40,9 @@ public class SecurityConfigs {
 					.and()
 					.httpBasic();
 
+			// Comment in to enable H2 console on test server (not recommended for release version!)
 			http.csrf().disable();
-
+			http.headers().frameOptions().disable();
 		}
 
 		@Configuration

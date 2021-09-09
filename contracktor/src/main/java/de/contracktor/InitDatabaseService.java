@@ -103,6 +103,7 @@ public class InitDatabaseService {
 			initApplicationAdmin();	
 			initStates();
 			initStateTransitions();
+			
 		}
 	}
 	

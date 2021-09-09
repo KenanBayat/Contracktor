@@ -38,7 +38,7 @@ public class BillingUnit {
 	}
 	
 	public BillingUnit(String billingUnitID, String unit, Date completionDate, Double totalPrice, 
-			           Double totalQuantity,Contract contract,ArrayList<BillingItem> billingItems ,Boolean ownContractDefined, 
+			           Double totalQuantity, Contract contract,ArrayList<BillingItem> billingItems ,Boolean ownContractDefined, 
 			           String shortDescription, String longDescription) {
 		this.billingUnitID = billingUnitID;
 		this.unit = unit;
