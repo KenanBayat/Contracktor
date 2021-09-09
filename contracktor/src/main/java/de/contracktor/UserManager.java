@@ -16,7 +16,7 @@ public class UserManager {
     PasswordEncoder encoder;
 
     public User addUser(User user) throws AuthorizationServiceException {
-        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+        if (userRepository.existsByUsername(user.getUsername())) {
             throw new AuthorizationServiceException("Username already exists");
         }
         user.setPassword(encoder.encode(user.getPassword()));
