@@ -14,16 +14,22 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BillingUnit {
 
-	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	private int id;
-	@Getter @Setter @Column(nullable = false, unique = true) private String billingUnitID;
+	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO) @JsonIgnore
+	private int id;
+	@Getter @Setter @Column(nullable = false, unique = true) @JsonProperty("id")
+	private String billingUnitID;
 	@Getter @Setter @ManyToOne @JoinColumn(nullable = false) private Contract contract;
 	@Getter @Setter @Column(nullable = false) private String unit;
 	@Getter @Setter @Column(nullable = false) private Date completionDate;
