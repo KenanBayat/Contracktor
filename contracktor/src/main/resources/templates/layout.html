@@ -9,7 +9,8 @@
 </head>
 <body>
     <th:block th:replace="navbar :: navbar"></th:block>
-    <th:block th:include="this :: content" th:style="'margin-top: 100px'"></th:block>
+    <div th:style="'margin-top: 100px'"/>
+    <th:block th:include="this :: content"></th:block>
     <script th:src="@{/webjars/bootstrap/5.1.0/js/bootstrap.min.js}"></script>
 </body>
 </html>

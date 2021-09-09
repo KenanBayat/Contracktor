@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org" th:include="layout :: page">
+<head/>
+<body>
+<th:block th:fragment="content">
+    <div class="container">
+        <h3>Verträge</h3>
+        <ul>
+            <li><a th:href="@{'/contract-details/?contractId=' + 1}">Vertrag 1</a></li>
+        </ul>
+    </div>
+</th:block>
+</body>
+</html>
