@@ -16,11 +16,8 @@ import de.contracktor.repository.BillingItemRepository;
 import de.contracktor.repository.BillingUnitCompletionReportRepository;
 import de.contracktor.repository.BillingUnitRepository;
 import de.contracktor.repository.ContractRepository;
-import de.contracktor.repository.OrganisationRepository;
 import de.contracktor.repository.ProjectRepository;
-import de.contracktor.repository.RoleRepository;
 import de.contracktor.repository.StateRepository;
-import de.contracktor.repository.StateTransitionRepository;
 
 @Service
 public class AdessoAPIService {
