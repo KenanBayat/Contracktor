@@ -8,9 +8,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -33,6 +31,9 @@ public class WebAPI {
     private BillingUnitRepository billingUnitRepository;
 
     @Autowired
+    private BillingItemRepository billingItemRepository;
+
+    @Autowired
     private StateRepository stateRepository;
 
     @Autowired
@@ -43,21 +44,41 @@ public class WebAPI {
 
     @GetMapping("/api/download")
     @ResponseBody
-    public APIResponse downloadController(Model model, @AuthenticationPrincipal User user) {
+    public APIResponse downloadController(Model model) {
+        String user = SecurityContextHolder.getContext().getAuthentication().getName();
         if (user == null) {
             return new APIResponse("NOT_AUTHENTICATED");
         }
-        return apiDownloadConstructor(user.getUsername());
+        return apiDownloadConstructor(user);
+    }
+
+    @PostMapping("/api/update")
+    public APIResponse updateController(@RequestParam(name = "json") APIUpdate update) {
+        for (BillingItem billingItem : update.getBillingItemList()) {
+            Optional<BillingItem> savedItem = billingItemRepository.findByBillingItemID(billingItem.getBillingItemID());
+            if (savedItem.isPresent() && savedItem.get().getLastModified() >= billingItem.getLastModified()) {
+                billingItemRepository.save(billingItem);
+            }
+        }
+
+        for (Report report : update.getReportList()) {
+            reportRepository.save(report);
+        }
+
+        return new APIResponse("OK");
     }
 
     private APIResponse apiDownloadConstructor(String username) {
         Optional<User> user =  userRepository.findByUsername(username);
         if (user.isEmpty()) {
             return new APIResponse("UNKNOWN_USER");
+        } else if (!hasPerm(user.get(), new Permission("r"))) {
+            return new APIResponse("NO_READ_PERM");
         }
+
         APIResponse response = new APIResponse();
         Organisation organisation = user.get().getOrganisation();
-        response.setWritePerm(hasWritePerm(user.get()));
+        response.setWritePerm(hasPerm(user.get(), new Permission("w")));
         response.setProjects(projectRepository.findByOwner_OrganisationNameIgnoreCase(organisation.getOrganisationName()));
         response.setContracts(contractRepository.findByContractorIgnoreCaseOrConsigneeIgnoreCase(organisation.getOrganisationName(),
                 organisation.getOrganisationName()));
@@ -69,7 +90,7 @@ public class WebAPI {
         return response;
     }
 
-    private boolean hasWritePerm(User user) {
+    private boolean hasPerm(User user, Permission permission) {
         List<Permission> permissions = user.getRoles().stream().map((p) -> p.getPermission()).collect(Collectors.toList());
         return permissions.contains(new Permission("w"));
     }

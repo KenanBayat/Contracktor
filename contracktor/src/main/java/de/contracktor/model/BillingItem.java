@@ -30,6 +30,7 @@ public class BillingItem {
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private State status;
 	@Getter @Setter @OneToMany(cascade = CascadeType.REMOVE) private List<BillingItem> billingItems;
 	@Getter @Setter @Column(nullable = false) private String shortDescription;
+	@Getter @Setter @Column(nullable = false) private long lastModified;
 	
 	public BillingItem() {
 		
