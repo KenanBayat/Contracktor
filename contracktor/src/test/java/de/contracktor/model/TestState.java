@@ -2,8 +2,7 @@ package de.contracktor.model;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import org.junit.jupiter.api.AfterEach;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,6 +26,14 @@ public class TestState {
 		
 		// Test if state with same name was not added.
 		assertThrows(Exception.class, () -> stateRepo.save(state2));
+		
+		state1.setStateName("test");
+		state1 = stateRepo.save(state1);
+		state2 = stateRepo.save(state2);
+		
+		assertTrue(stateRepo.existsById(state1.getId()));
+		assertTrue(stateRepo.existsById(state2.getId()));
+		
 		stateRepo.delete(state1);
 	}
 	
