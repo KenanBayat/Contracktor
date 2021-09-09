@@ -1,40 +1,44 @@
 package de.contracktor.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Project {
 
-	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	private int id;
-	@Getter @Setter @Column(nullable = false, unique = true) private int projectID;
+	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO) @JsonIgnore
+	private int id;
+	@Getter @Setter @Column(nullable = false, unique = true) @JsonProperty("id")
+	private int projectID;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String name;
-    @Getter @Setter @Column(nullable = false) private LocalDate creationDate;
-	@Getter @Setter @Column(nullable = false) private LocalDate completionDate;
+    @Getter @Setter @Column(nullable = false) @JsonIgnore private LocalDate creationDate;
+	@Getter @Setter @Column(nullable = false) @JsonIgnore private LocalDate completionDate;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String street;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String houseNumber;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String city;
-	@Getter @Setter @Column(nullable = false) @NotEmpty private String postcode;
+	@Getter @Setter @Column(nullable = false) @NotEmpty @JsonProperty("zipCode") private String postcode;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String country;
-	@Getter @Setter @Column(nullable = false) private Double totalPrice;
-	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private Organisation owner;
+	@Getter @Setter @Column(nullable = false) @JsonProperty("overallCost") private Double totalPrice;
+	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne @JsonProperty("ownerGroupIdentifier") private Organisation owner;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String creator;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private State status;
 	@Getter @Setter @OneToOne private Picture image;
 	@Getter @Setter @Column(nullable = false) private String description;
-	
+	@Getter @Setter @Transient @JsonProperty("creationDate") private String creationDateString;
+	@Getter @Setter @Transient @JsonProperty("completionDate") private String completionDateString;
+	@Getter @Setter @Transient @JsonProperty("address") private List<String> address;
+
+
 	public Project() {
 		
 	}
