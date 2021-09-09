@@ -2,6 +2,7 @@ package de.contracktor.controller;
 
 import de.contracktor.model.Organisation;
 import de.contracktor.model.User;
+import de.contracktor.repository.ProjectRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,12 +28,6 @@ public class PageController {
     @GetMapping("/projects")
     public String getProjectList() {
         return "project-list";
-    }
-
-    @GetMapping("/project-details")
-    public String getProjectDetails(@RequestParam(value = "projectId") String projectId, Model model) {
-        model.addAttribute("projectId", projectId);
-        return "project-details";
     }
 
     @GetMapping("/contracts")
