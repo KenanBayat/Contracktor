@@ -99,7 +99,26 @@ public class PageController {
     }
 
     @GetMapping("/admin/manage-user")
-    public String getUserList(@RequestParam(value = "search", defaultValue = "") String search, Model model) {
+    public String getUserList(Model model) {
+        Organisation hochtief = new Organisation("Hochtief", "Elbstraße", "7", "Hamburg", "22406", "Deutschland");
+        Organisation zublin = new Organisation("Züblin", "Haupstraße", "26", "Hamburg", "22317", "Deutschland");
+        List<Organisation> organisations = List.of(
+                zublin, hochtief
+        );
+        List<User> users = List.of(
+                new User("lion", "pwd", "Lion", "Grabau", hochtief, true, true, new ArrayList<Role>()),
+                new User("alex", "hallo", "Alex", "Meier", hochtief, true, false, new ArrayList<Role>()),
+                new User("nils", "imDreieck", "Nils", "Fischer", zublin, false, false, new ArrayList<Role>())
+
+        );
+        ManageUserDato userDato = new ManageUserDato(organisations, users);
+        model.addAttribute("userlist", userDato);
+        return "user-list";
+    }
+
+    @PostMapping("/admin/manage-user")
+    public String getFilteredUserList(@RequestParam String search, Model model) {
+        model.addAttribute("search", search);
         Organisation hochtief = new Organisation("Hochtief", "Elbstraße", "7", "Hamburg", "22406", "Deutschland");
         Organisation zublin = new Organisation("Züblin", "Haupstraße", "26", "Hamburg", "22317", "Deutschland");
         List<Organisation> organisations = List.of(

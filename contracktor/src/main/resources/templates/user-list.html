@@ -8,10 +8,12 @@
         <p>Verwalten Sie die Nutzer geordnet nach Organisationen. Sie können Nutzerdaten ändern, Nutzern Rollen zuweisen und Nutzer löschen.</p>
 
         <h3>Nach Nutzern suchen</h3>
-        <div class="input-group mb-3 col-4">
-            <input type="text" class="form-control" placeholder="Suchen..">
-            <a th:href="@{/admin/manage-user(search=a)}" class="btn btn-secondary" type="button" id="search">Suchen</a>
-        </div>
+        <form action="#" th:action="@{'/admin/manage-user'}" method="post">
+            <div class="form-group input-group w-50 py-3">
+                <input type="text" class="form-control" placeholder="Suchen.." name="search" th:value="${search}"/>
+                <button type="submit" class="btn btn-primary">Suchen</button>
+            </div>
+        </form>
 
         <div th:each="organisation : ${userlist.organisationList}" class="py-3">
             <h4 th:text="${organisation.getOrganisationName()}" th:if="${!userlist.getUserOfOrganisation(organisation).isEmpty()}"></h4>
