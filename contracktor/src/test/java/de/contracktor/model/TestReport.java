@@ -67,6 +67,7 @@ public class TestReport {
 		billingItemRepo.delete(billingItem);
 		stateRepo.delete(state);
 		reportRepo.delete(report);
+		organisationRepo.delete(organisation);
 		addressRepo.delete(address);
 	}
 	
