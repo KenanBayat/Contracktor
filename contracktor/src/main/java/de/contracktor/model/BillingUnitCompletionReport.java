@@ -29,8 +29,8 @@ public class BillingUnitCompletionReport {
 	private int id;
 	@Getter @Setter @Column(nullable = false, unique = true) @JsonProperty("id")
 	private int CRID;
-	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private Contract contract;
-	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private Project project;
+	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne @JsonIgnore private Contract contract;
+	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne @JsonIgnore private Project project;
 	@Getter @Setter @Column(nullable = false) private String comment;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String username;
 
@@ -38,8 +38,8 @@ public class BillingUnitCompletionReport {
 	@Getter @Setter @Column(nullable = false) @OneToMany @JsonIgnore private List<Picture> images;
 	@Getter @Setter @Transient private int contractId;
 	@Getter @Setter @Transient private int projectId;
-	@Getter @Setter @Transient private List<String> billingUnitIds;
-	@Getter @Setter @Transient private List<String> filenames;
+	@Getter @Setter @Transient private String[] billingUnitIds;
+	@Getter @Setter @Transient private String[] filenames;
 
 	public BillingUnitCompletionReport() {
 		
@@ -54,4 +54,5 @@ public class BillingUnitCompletionReport {
 		this.billingUnits = billingUnits;
 		this.images = images;
 	}
+
 }

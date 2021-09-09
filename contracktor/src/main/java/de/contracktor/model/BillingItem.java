@@ -38,6 +38,7 @@ public class BillingItem {
 	@Getter @Setter @OneToMany(cascade = CascadeType.REMOVE) private List<BillingItem> billingItems;
 	@Getter @Setter @Column(nullable = false) private String shortDescription;
 	@Getter @Setter @Transient @JsonProperty("status") String statusName;
+	@Getter @Setter @Column(nullable = false) private long lastModified;
 	
 	public BillingItem() {
 		

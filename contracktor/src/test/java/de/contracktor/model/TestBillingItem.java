@@ -32,6 +32,7 @@ public class TestBillingItem {
 	
 	ArrayList<BillingItem> billingItems;
 		
+	
 	@BeforeEach
 	public void init() {
 		billingItems = new ArrayList<BillingItem>();

@@ -5,12 +5,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import de.contracktor.model.Address;
 import de.contracktor.model.Organisation;
 import de.contracktor.model.Permission;
 import de.contracktor.model.Role;
 import de.contracktor.model.State;
 import de.contracktor.model.StateTransition;
-import de.contracktor.model.User;
+import de.contracktor.model.UserAccount;
+import de.contracktor.repository.AddressRepository;
 import de.contracktor.repository.BillingItemRepository;
 import de.contracktor.repository.BillingUnitCompletionReportRepository;
 import de.contracktor.repository.BillingUnitRepository;
@@ -70,8 +73,7 @@ public class InitDatabaseService {
 	
 	@Autowired
     private PasswordEncoder encoder;
-	
-	
+		
 	private Permission read;
 	private Permission write;
 	
@@ -115,7 +117,7 @@ public class InitDatabaseService {
 	}
 	
 	private void initApplicationAdmin() {
-		Organisation organisation = new Organisation("Mehiko", "mafio", "42", "Mehiko City", "1234", "Columbia");
+		Organisation organisation = new Organisation("Mehiko");
 		organisationRepo.save(organisation);
 
 		Role applicationAdminRole = new Role("Applikations-Admin", write, organisation);
@@ -124,7 +126,7 @@ public class InitDatabaseService {
 		ArrayList<Role> applicationAdminRoles = new ArrayList<Role>();
 		applicationAdminRoles.add(applicationAdminRole);
 		
-		User applicationAdmin = new User("Pablo", encoder.encode("Cocaine"), "Pablo", "Cocaine", organisation, true, true, applicationAdminRoles);
+		UserAccount applicationAdmin = new UserAccount("Pablo", encoder.encode("Cocaine"), "Pablo", "Cocaine", organisation, true, true, applicationAdminRoles);
 		userRepo.save(applicationAdmin);
 	}
 	
