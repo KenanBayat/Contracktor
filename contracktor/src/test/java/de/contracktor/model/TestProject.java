@@ -111,56 +111,16 @@ public class TestProject {
 	@Test
 	public void testEmptyName() {
 		// Test empty name.
-		project = new Project(2, "", creationDate, completionDate, "street", "42", "hamburg", "12345",
-			              "de", 100.0, organisation, "hans", state, picture, "");
-						  assertThrows(Exception.class, () -> projectRepo.save(project));
-	}
-	
-	@Test
-	public void testEmptyStreet() {
-		// Test empty street.
-		project = new Project(2, "project", creationDate, completionDate, "", "42", "hamburg", "12345",
-			              "de", 100.0, organisation, "hans", state, picture, "");
-						  assertThrows(Exception.class, () -> projectRepo.save(project));
-	}
-	
-	@Test
-	public void testEmptyHouseNumber() {
-		// Test empty house number.
-		project = new Project(2, "project", creationDate, completionDate, "street", "", "hamburg", "12345",
-			              "de", 100.0, organisation, "hans", state, picture, "");
-						  assertThrows(Exception.class, () -> projectRepo.save(project));
-	}
-	
-	@Test
-	public void testEmptyCity() {
-		// Test empty city.
-		project = new Project(2, "project", creationDate, completionDate, "street", "42", "", "12345",
-			              "de", 100.0, organisation, "hans", state, picture, "");
-						  assertThrows(Exception.class, () -> projectRepo.save(project));
-	}
-	
-	@Test
-	public void testEmptyPostCode() {
-		// Test empty city.
-		project = new Project(2, "project", creationDate, completionDate, "street", "42", "hamburg", "",
-			              "de", 100.0, organisation, "hans", state, picture, "");
-						  assertThrows(Exception.class, () -> projectRepo.save(project));
-	}
-	
-	@Test
-	public void testEmptyCountry() {
-		// Test empty country.
-		project = new Project(2, "project", creationDate, completionDate, "street", "42", "hamburg", "",
-			              "", 100.0, organisation, "hans", state, picture, "");
+		project = new Project(2, "", creationDate, completionDate, address, 
+				100.0, organisation, "hans", state, picture, "");
 						  assertThrows(Exception.class, () -> projectRepo.save(project));
 	}
 	
 	@Test
 	public void testEmptyCreator() {
 		// Test empty creator.
-		project = new Project(2, "project", creationDate, completionDate, "street", "42", "hamburg", "",
-			              "de", 100.0, organisation, "", state, picture, "");
+		project = new Project(2, "project", creationDate, completionDate, address,
+				100.0, organisation, "", state, picture, "");
 						  assertThrows(Exception.class, () -> projectRepo.save(project));
 	}
 }

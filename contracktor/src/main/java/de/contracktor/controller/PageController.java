@@ -1,8 +1,10 @@
 package de.contracktor.controller;
 
 import de.contracktor.UserManager;
+import de.contracktor.model.Address;
 import de.contracktor.model.Organisation;
 import de.contracktor.model.User;
+import de.contracktor.repository.AddressRepository;
 import de.contracktor.repository.OrganisationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,12 @@ public class PageController {
     OrganisationRepository organisationRepository;
     //TODO Remove
 
+	@Autowired
+	private AddressRepository addressRepo;
+	
+	Address address1;
+	Address address2;
+    
     @GetMapping("/")
     public String getLandingPage() {
         return "landing";
@@ -74,9 +82,11 @@ public class PageController {
 
     @GetMapping("/admin/register")
     public String getRegisterAdminPage(Model model) {
+    	address1 = new Address("Elbstraße", "7", "Hamburg", "22406", "Deutschland");
+    	address2 = new Address("Haupstraße", "26", "Hamburg", "22317", "Deutschland");
         List<Organisation> organisations = List.of(
-                new Organisation("Hochtief", "Elbstraße", "7", "Hamburg", "22406", "Deutschland"),
-                new Organisation("Züblin", "Haupstraße", "26", "Hamburg", "22317", "Deutschland")
+                new Organisation("Hochtief", address1),
+                new Organisation("Züblin", address2)
         );
         //TODO Remove
         organisationRepository.save(organisations.get(0));
@@ -103,9 +113,12 @@ public class PageController {
 
         System.out.println(user.getUsername() + ", " + user.getForename() + ", " + user.getSurname() + ", " + user.getOrganisation() + ", " + user.getPassword()+ ", " + user.getIsAdmin() + ", " + user.getIsApplicationAdmin());
 
+    	address1 = new Address("Elbstraße", "7", "Hamburg", "22406", "Deutschland");
+    	address2 = new Address("Haupstraße", "26", "Hamburg", "22317", "Deutschland");
+        
         List<Organisation> organisations = List.of(
-                new Organisation("Hochtief", "Elbstraße", "7", "Hamburg", "22406", "Deutschland"),
-                new Organisation("Züblin", "Haupstraße", "26", "Hamburg", "22317", "Deutschland")
+                new Organisation("Hochtief", address1),
+                new Organisation("Züblin", address2)
         );
         model.addAttribute("organisations", organisations);
         model.addAttribute("user", new User());

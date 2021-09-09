@@ -20,6 +20,8 @@ public class Address {
     @Getter @Setter @Column(nullable = false) @NotEmpty private String zipCode;
     @Getter @Setter @Column(nullable = false) @NotEmpty private String country;
 
+    public Address() { 
+    }
   
     public Address(String street, String houseNumber, String city, String zipCode, String country) {
     	this.street = street;
