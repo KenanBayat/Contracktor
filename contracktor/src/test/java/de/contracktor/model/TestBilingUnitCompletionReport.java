@@ -125,7 +125,7 @@ public class TestBilingUnitCompletionReport {
 		
 		stateRepo.delete(state);
 		
-		addressRepo.delete(address);
+		//addressRepo.delete(address);
 	}
 	
 	@Test
