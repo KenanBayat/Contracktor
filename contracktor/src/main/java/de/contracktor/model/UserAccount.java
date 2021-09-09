@@ -15,7 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
-public class User {
+public class UserAccount {
 
 	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	private int id;
 	@Getter	@Setter	@Column(nullable = false, unique = true) @NotEmpty private String username;
@@ -27,11 +27,11 @@ public class User {
 	@Getter	@Setter	@Column(nullable = false) private Boolean isApplicationAdmin;
 	@Getter	@Setter	@ManyToMany	private List<Role> roles;
 
-	public User() {
+	public UserAccount() {
 		
 	}
 	
-	public User(String username, String password, String forename, String surname, Organisation organisation, 
+	public UserAccount(String username, String password, String forename, String surname, Organisation organisation, 
 			 Boolean isAdmin, Boolean isApplicationAdmin, ArrayList<Role> roles) {
 		this.username = username;
 		this.password = password;

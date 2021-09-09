@@ -69,7 +69,7 @@ public class WebAPI {
     }
 
     private APIResponse apiDownloadConstructor(String username) {
-        Optional<User> user =  userRepository.findByUsername(username);
+        Optional<UserAccount> user =  userRepository.findByUsername(username);
         if (user.isEmpty()) {
             return new APIResponse("UNKNOWN_USER");
         } else if (!hasPerm(user.get(), new Permission("r"))) {
@@ -90,7 +90,7 @@ public class WebAPI {
         return response;
     }
 
-    private boolean hasPerm(User user, Permission permission) {
+    private boolean hasPerm(UserAccount user, Permission permission) {
         List<Permission> permissions = user.getRoles().stream().map((p) -> p.getPermission()).collect(Collectors.toList());
         return permissions.contains(new Permission("w"));
     }

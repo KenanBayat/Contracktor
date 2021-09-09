@@ -3,7 +3,7 @@ package de.contracktor.controller;
 import de.contracktor.UserManager;
 import de.contracktor.model.Address;
 import de.contracktor.model.Organisation;
-import de.contracktor.model.User;
+import de.contracktor.model.UserAccount;
 import de.contracktor.repository.AddressRepository;
 import de.contracktor.repository.OrganisationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,12 +91,12 @@ public class PageController {
         organisationRepository.save(organisations.get(1));
 
         model.addAttribute("organisations", organisations);
-        model.addAttribute("user", new User());
+        model.addAttribute("user", new UserAccount());
         return "register-sysadmin";
     }
 
     @PostMapping("/admin/register")
-    public String setAdmin(@ModelAttribute User user, Model model) {
+    public String setAdmin(@ModelAttribute UserAccount user, Model model) {
         if(user.getIsApplicationAdmin() == null) {
             user.setIsApplicationAdmin(false);
         }
@@ -116,7 +116,7 @@ public class PageController {
                 new Organisation("Züblin")
         );
         model.addAttribute("organisations", organisations);
-        model.addAttribute("user", new User());
+        model.addAttribute("user", new UserAccount());
         return "register-sysadmin";
     }
 }

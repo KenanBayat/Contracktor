@@ -12,7 +12,7 @@ import de.contracktor.model.Permission;
 import de.contracktor.model.Role;
 import de.contracktor.model.State;
 import de.contracktor.model.StateTransition;
-import de.contracktor.model.User;
+import de.contracktor.model.UserAccount;
 import de.contracktor.repository.AddressRepository;
 import de.contracktor.repository.BillingItemRepository;
 import de.contracktor.repository.BillingUnitCompletionReportRepository;
@@ -126,7 +126,7 @@ public class InitDatabaseService {
 		ArrayList<Role> applicationAdminRoles = new ArrayList<Role>();
 		applicationAdminRoles.add(applicationAdminRole);
 		
-		User applicationAdmin = new User("Pablo", encoder.encode("Cocaine"), "Pablo", "Cocaine", organisation, true, true, applicationAdminRoles);
+		UserAccount applicationAdmin = new UserAccount("Pablo", encoder.encode("Cocaine"), "Pablo", "Cocaine", organisation, true, true, applicationAdminRoles);
 		userRepo.save(applicationAdmin);
 	}
 	

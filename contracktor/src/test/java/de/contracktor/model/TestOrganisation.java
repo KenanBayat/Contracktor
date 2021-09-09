@@ -27,7 +27,7 @@ public class TestOrganisation {
 	@Autowired
 	private UserRepository userRepo;
 	
-	private User user1;
+	private UserAccount user1;
 				
 	@Test
 	public void testNullName() {
@@ -49,7 +49,7 @@ public class TestOrganisation {
 		organisation1 = new Organisation("organisation1");
 		organisation1 = organisationRepo.save(organisation1);
 		
-		user1 =  new User("hansPeter", "password", "hans", "peter", organisation1, true, true, null);
+		user1 =  new UserAccount("hansPeter", "password", "hans", "peter", organisation1, true, true, null);
 		user1 = userRepo.save(user1);
 		int userID = user1.getId();
 		
