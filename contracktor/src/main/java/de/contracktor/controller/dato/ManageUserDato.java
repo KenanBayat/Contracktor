@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class ManageUserDato {
@@ -25,7 +26,8 @@ public class ManageUserDato {
     }
 
     public List<User> getFilteredUserList(String search) {
-        return this.userList.stream().filter(user -> (user.getUsername().contains(search) || user.getForename().contains(search) || user.getSurname().contains(search) || user.getOrganisation().getOrganisationName().contains(search)))
+        String param = search.toLowerCase();
+        return this.userList.stream().filter(user -> (user.getUsername().toLowerCase().contains(param) | user.getForename().toLowerCase().contains(param) | user.getSurname().toLowerCase().contains(param) | user.getOrganisation().getOrganisationName().toLowerCase().contains(param)))
                 .collect(Collectors.toList());
     }
 }
