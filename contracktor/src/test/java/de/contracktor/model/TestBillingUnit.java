@@ -1,7 +1,10 @@
 package de.contracktor.model;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,6 +51,7 @@ public class TestBillingUnit {
 	BillingItem billingItem1;
 	BillingItem billingItem2;
 	BillingItem billingItem3;
+	ArrayList<BillingItem> billingItemsi;
 	ArrayList<BillingItem> billingItems;
 	
 	State state;
@@ -71,10 +75,13 @@ public class TestBillingUnit {
                 "3m5_6h4uXAXvBoFEtks_QE", state, "", new ArrayList<BillingItem>());
 		billingItem2 = new BillingItem("ID_3346_2929_39", "meter", 1000.0, 105.0, 100050.0, 
                 "3m6_6h4uXAXvBoFEtks_QE", state, "", new ArrayList<BillingItem>());
+		billingItemsi = new ArrayList<BillingItem>();
+		billingItemsi.add(billingItem1);
+		billingItemsi.add(billingItem2);
+		billingItem3 = new BillingItem("ID_3346_2929_37", "meter", 1000.0, 105.0, 100050.0, "3m7_6h4uXAXvBoFEtks_QE", state, "", billingItemsi);
+		
 		billingItems = new ArrayList<BillingItem>();
-		billingItems.add(billingItem1);
-		billingItems.add(billingItem2);
-		billingItem3 = new BillingItem("ID_3346_2929_37", "meter", 1000.0, 105.0, 100050.0, "3m7_6h4uXAXvBoFEtks_QE", state, "", billingItems);
+		billingItems.add(billingItem3);
 		
 		billingItemRepo.save(billingItem1);
 		billingItemRepo.save(billingItem2);
@@ -111,10 +118,63 @@ public class TestBillingUnit {
 	}
 	
 	@Test
-	public void nulltest() {
-		
-		
+	public void null_ID_Test() {
+		BillingUnit unit = new BillingUnit(null, "Meter", completionDate ,42.42, 
+		           1337.0 ,contract, billingItems ,true, 
+		           "shortDescription", "longDescription");
+		assertThrows(Exception.class, () -> billingUnitRepo.save(unit));
 	}
 	
+	@Test
+	public void null_Unit_Test() {
+		BillingUnit unit = new BillingUnit("1", null, completionDate ,42.42, 
+		           1337.0 ,contract, billingItems ,true, 
+		           "shortDescription", "longDescription");
+		assertThrows(Exception.class, () -> billingUnitRepo.save(unit));
+	}
+	
+	@Test
+	public void null_CompletionDate_Test() {
+		BillingUnit unit = new BillingUnit("1", "Meter", null ,42.42, 
+		           1337.0 ,contract, billingItems ,true, 
+		           "shortDescription", "longDescription");
+		assertThrows(Exception.class, () -> billingUnitRepo.save(unit));
+	}
+	@Test
+	public void null_TotalPrice_Test() {
+		BillingUnit unit = new BillingUnit("1", "Meter", completionDate ,null, 
+		           1337.0 ,contract, billingItems ,true, 
+		           "shortDescription", "longDescription");
+		assertThrows(Exception.class, () -> billingUnitRepo.save(unit));
+	}
+	@Test
+	public void null_TotalQuantity_Test() {
+		BillingUnit unit = new BillingUnit("1", "Meter", completionDate ,42.42, 
+		           null ,contract, billingItems ,true, 
+		           "shortDescription", "longDescription");
+		assertThrows(Exception.class, () -> billingUnitRepo.save(unit));
+	}
+	@Test
+	public void null_ownContractDefined_Test() {
+		BillingUnit unit = new BillingUnit("1", "Meter", completionDate ,42.42, 
+		           1337.0 ,contract, billingItems ,null, 
+		           "shortDescription", "longDescription");
+		assertThrows(Exception.class, () -> billingUnitRepo.save(unit));
+	}
+
+	@Test
+	public void null_shortDescriptionDefined_Test() {
+		BillingUnit unit = new BillingUnit("1", "Meter", completionDate ,42.42, 
+		           1337.0 ,contract, billingItems ,true, 
+		           null, "longDescription");
+		assertThrows(Exception.class, () -> billingUnitRepo.save(unit));
+	}
+	@Test
+	public void null_longDescriptionDefined_Test() {
+		BillingUnit unit = new BillingUnit("1", "Meter", completionDate ,42.42, 
+		           1337.0 ,contract, billingItems ,true, 
+		           "shortDescription", null);
+		assertThrows(Exception.class, () -> billingUnitRepo.save(unit));
+	}
 	
 }
