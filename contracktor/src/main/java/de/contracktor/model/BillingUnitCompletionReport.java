@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotEmpty;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +21,7 @@ public class BillingUnitCompletionReport {
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private Contract contract;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private Project project;
 	@Getter @Setter @Column(nullable = false) private String comment;
-	@Getter @Setter @Column(nullable = false) private String username;
+	@Getter @Setter @Column(nullable = false) @NotEmpty private String username;
 	@Getter @Setter @Column(nullable = false) private ArrayList<BillingUnit> billingUnits;
 	@Getter @Setter @Column(nullable = false) private ArrayList<Picture> images;
 	
