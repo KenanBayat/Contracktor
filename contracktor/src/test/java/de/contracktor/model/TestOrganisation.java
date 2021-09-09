@@ -28,41 +28,25 @@ public class TestOrganisation {
 	private UserRepository userRepo;
 	
 	private User user1;
-		
-	@Autowired
-	private AddressRepository addressRepo;
-	
-	Address address;
-	
-	@BeforeEach
-	public void init() {
-		address = new Address( "straße", "42", "city", "12345", "Land");
-		addressRepo.save(address);
-	}
-	
-	@AfterEach
-	public void delete() {
-		addressRepo.delete(address);
-	}
-	
+				
 	@Test
 	public void testNullName() {
 		// Test null organisationName.
-		organisation1 = new Organisation(null, address);
+		organisation1 = new Organisation(null);
 		assertThrows(Exception.class, () -> organisationRepo.save(organisation1));	
 	}
 	
 	@Test
 	public void testEmptyOrganisationName() {
 		// Test null organisationName.
-		organisation1 = new Organisation("", address);
+		organisation1 = new Organisation("");
 		assertThrows(Exception.class, () -> organisationRepo.save(organisation1));		
 	}
 	
 	@Test 
 	public void testSaveOrganisation() {
 		
-		organisation1 = new Organisation("organisation1", address);
+		organisation1 = new Organisation("organisation1");
 		organisation1 = organisationRepo.save(organisation1);
 		
 		user1 =  new User("hansPeter", "password", "hans", "peter", organisation1, true, true, null);
@@ -74,14 +58,4 @@ public class TestOrganisation {
 		organisationRepo.delete(organisation1);
 	}
 	
-	@Test
-	public void testRemoveOrganisation() {
-		
-		organisation1 = new Organisation("organisation1", address);
-		organisationRepo.save(organisation1);
-		
-		organisationRepo.delete(organisation1);
-		
-		assertFalse(addressRepo.existsById(address.getId()));
-	}
 }

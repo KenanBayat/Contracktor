@@ -73,12 +73,7 @@ public class InitDatabaseService {
 	
 	@Autowired
     private PasswordEncoder encoder;
-	
-	@Autowired
-	private AddressRepository addressRepo;
-	
-	Address address;
-	
+		
 	private Permission read;
 	private Permission write;
 	
@@ -122,10 +117,7 @@ public class InitDatabaseService {
 	}
 	
 	private void initApplicationAdmin() {
-		address = new Address( "straße", "42", "city", "12345", "Land");
-		addressRepo.save(address);
-		
-		Organisation organisation = new Organisation("Mehiko", address);
+		Organisation organisation = new Organisation("Mehiko");
 		organisationRepo.save(organisation);
 
 		Role applicationAdminRole = new Role("Applikations-Admin", write, organisation);

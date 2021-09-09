@@ -96,7 +96,7 @@ public class TestBilingUnitCompletionReport {
 		billingItemRepo.save(billingItem2);
 		billingItemRepo.save(billingItem3);
 		
-		organisation = new Organisation("organisation1", address);
+		organisation = new Organisation("organisation1");
 		organisationRepo.save(organisation);
 		
 		picture = new Picture(null,null);

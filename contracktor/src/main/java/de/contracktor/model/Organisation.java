@@ -20,15 +20,13 @@ public class Organisation {
 	
 	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	private int id;
 	@Getter @Column(nullable = false) @NotEmpty private String organisationName;
-	@Getter @Setter @JoinColumn(nullable = false) @OneToOne(cascade = CascadeType.REMOVE) private Address address;
 	
 	public Organisation() {
 		
 	}
 	
-	public Organisation(String organisationName, Address address) {
+	public Organisation(String organisationName) {
 		this.organisationName = organisationName;
-		this.address = address;
 	}
 	
 }

@@ -31,6 +31,11 @@ public class TestProject {
 	@Autowired
 	private PictureRepository pictureRepo;
 	
+	@Autowired
+	AddressRepository addressRepo;
+	
+	Address address;
+	
 	private Picture picture;
 	
 	private Organisation organisation;
@@ -42,18 +47,13 @@ public class TestProject {
 	private final LocalDate creationDate = LocalDate.of(2021, 9, 8);
 	private final LocalDate completionDate = LocalDate.of(2022, 12, 12);
 	
-	@Autowired
-	private AddressRepository addressRepo;
-	
-	Address address;
-	
 	@BeforeEach
 	public void init() {
+		address = new Address("straße", "houseNumber", "city", "12345", "country");
+		addressRepo.save(address);
 		state = new State("status");
 		stateRepo.save(state);
-		address = new Address( "straße", "42", "city", "12345", "Land");
-		addressRepo.save(address);
-		organisation = new Organisation("orga", address);
+		organisation = new Organisation("orga");
 		organisationRepo.save(organisation);
 		picture = new Picture(null,null);
 		pictureRepo.save(picture);
@@ -65,7 +65,6 @@ public class TestProject {
 		stateRepo.delete(state);
 		organisationRepo.delete(organisation);
 		pictureRepo.delete(picture);
-		addressRepo.delete(address);
 	}
 	
 	@Test

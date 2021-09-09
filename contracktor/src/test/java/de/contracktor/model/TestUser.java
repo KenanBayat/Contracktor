@@ -27,27 +27,18 @@ public class TestUser {
 	
 	@Autowired
 	private OrganisationRepository organisationRepo;
-	
-	@Autowired
-	private AddressRepository addressRepo;
-	
-	Address address;
-	
+		
 	@BeforeEach
 	private void init() {
-		address = new Address("straße", "42", "city", "12345", "Land");
-		addressRepo.save(address);
-		organisation = new Organisation("organisation", address);
+		organisation = new Organisation("organisation");
 		organisationRepo.save(organisation);
 	}
 	
 	@AfterEach
 	public void delete() {
 		organisationRepo.delete(organisation);
-		addressRepo.delete(address);
 	}
-	
-	
+		
 	@Test
 	public void testNullUsername() {
 		// Test null username.

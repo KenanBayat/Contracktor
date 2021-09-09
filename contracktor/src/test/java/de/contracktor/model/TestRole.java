@@ -48,7 +48,7 @@ public class TestRole {
 		
 		address = new Address( "straße", "42", "city", "12345", "Land");
 		addressRepo.save(address);
-		organisation = new Organisation("organisation1", address); 
+		organisation = new Organisation("organisation1"); 
 		organisationRepo.save(organisation);
 	}
 	

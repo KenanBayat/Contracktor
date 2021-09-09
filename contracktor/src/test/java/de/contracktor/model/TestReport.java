@@ -53,9 +53,7 @@ public class TestReport {
 	public void init() {
 		state = new State("Processing");
 		stateRepo.save(state);
-		address = new Address( "straße", "42", "city", "12345", "Land");
-		addressRepo.save(address);
-		organisation = new Organisation("testOrganisation", address);
+		organisation = new Organisation("testOrganisation");
 		organisation = organisationRepo.save(organisation);
 		billingItems = new ArrayList<BillingItem>();
 		billingItem = new BillingItem("ID_3346_2929_37", "meter", 1000.0, 105.0, 100050.0, "3m5_6h4uXAXvBoFEtks_QE", state, "", billingItems);
@@ -68,7 +66,6 @@ public class TestReport {
 		stateRepo.delete(state);
 		reportRepo.delete(report);
 		organisationRepo.delete(organisation);
-		addressRepo.delete(address);
 	}
 	
 	@Test

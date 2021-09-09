@@ -101,7 +101,7 @@ public class TestBillingUnit {
 		addressRepo.save(address1);
 		addressRepo.save(address2);
 		
-		organisation = new Organisation("organisation1", address1);
+		organisation = new Organisation("organisation1");
 		organisationRepo.save(organisation);
 		
 		picture = new Picture(null,null);

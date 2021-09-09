@@ -62,7 +62,7 @@ public class TestContract {
 		completionDate = LocalDate.of(2022, 12, 12);
 		state = new State("state");
 		stateRepo.save(state);
-		organisation = new Organisation("orga", address);
+		organisation = new Organisation("orga");
 		organisationRepo.save(organisation);
 		picture = new Picture(null,null);
 		pictureRepo.save(picture);

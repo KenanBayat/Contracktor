@@ -82,11 +82,9 @@ public class PageController {
 
     @GetMapping("/admin/register")
     public String getRegisterAdminPage(Model model) {
-    	address1 = new Address("Elbstraße", "7", "Hamburg", "22406", "Deutschland");
-    	address2 = new Address("Haupstraße", "26", "Hamburg", "22317", "Deutschland");
         List<Organisation> organisations = List.of(
-                new Organisation("Hochtief", address1),
-                new Organisation("Züblin", address2)
+                new Organisation("Hochtief"),
+                new Organisation("Züblin")
         );
         //TODO Remove
         organisationRepository.save(organisations.get(0));
@@ -112,13 +110,10 @@ public class PageController {
 
 
         System.out.println(user.getUsername() + ", " + user.getForename() + ", " + user.getSurname() + ", " + user.getOrganisation() + ", " + user.getPassword()+ ", " + user.getIsAdmin() + ", " + user.getIsApplicationAdmin());
-
-    	address1 = new Address("Elbstraße", "7", "Hamburg", "22406", "Deutschland");
-    	address2 = new Address("Haupstraße", "26", "Hamburg", "22317", "Deutschland");
-        
+       
         List<Organisation> organisations = List.of(
-                new Organisation("Hochtief", address1),
-                new Organisation("Züblin", address2)
+                new Organisation("Hochtief"),
+                new Organisation("Züblin")
         );
         model.addAttribute("organisations", organisations);
         model.addAttribute("user", new User());
