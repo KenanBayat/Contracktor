@@ -38,14 +38,15 @@ public class BillingUnit {
 	}
 	
 	public BillingUnit(String billingUnitID, String unit, Date completionDate, Double totalPrice, 
-			           Double totalQuantity, Boolean ownContractDefined, 
+			           Double totalQuantity,Contract contract,ArrayList<BillingItem> billingItems ,Boolean ownContractDefined, 
 			           String shortDescription, String longDescription) {
 		this.billingUnitID = billingUnitID;
 		this.unit = unit;
 		this.completionDate = completionDate;
 		this.totalPrice = totalPrice;
 		this.totalQuantity = totalQuantity;
-		this.billingItems = new ArrayList<BillingItem>();
+		this.contract = contract;
+		this.billingItems = billingItems;
 		this.ownContractDefined = ownContractDefined;
 		this.shortDescription = shortDescription;
 		this.longDescription = longDescription;

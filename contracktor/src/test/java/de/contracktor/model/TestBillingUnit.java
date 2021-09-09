@@ -111,7 +111,8 @@ public class TestBillingUnit {
 	}
 	
 	@Test
-	public void test() {
+	public void nulltest() {
+		
 		
 	}
 	
