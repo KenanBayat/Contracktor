@@ -6,14 +6,13 @@
 <body>
     <th:block th:fragment="content">
         <div class="container">
-            <h3>Projekte</h3>
-
+            <h3>Projektübersicht</h3>
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Start-Datum</th>
-                        <th>End-Datum</th>
+                        <th>Projekt ID</th>
+                        <th>Projektname</th>
+                        <th>Adresse</th>
                         <th>Status</th>
                         <th>Details</th>
                     </tr>
@@ -21,9 +20,9 @@
 
                 <tbody>
                     <tr th:each="project: ${projects.projects}">
-                        <td th:text="${project.id}"></td>
+                        <td th:text="${project.projectID}"></td>
                         <td th:text="${project.name}"></td>
-                        <td th:text="${project.street}"></td>
+                        <td th:text="${project.country + ': ' + project.street + ' ' + project.houseNumber + ', ' + project.postcode + ' ' + project.city}"></td>
                         <td th:text="${project.completionDate.date +'.'+ project.completionDate.month +'.'+ project.completionDate.year}"></td>
                         <td>
                             <a th:href="@{'/project/' + ${project.id} + '/details'}" class="icon-link" title="Details">

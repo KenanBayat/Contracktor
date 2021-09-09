@@ -8,16 +8,16 @@
 <body>
 <th:block th:fragment="content">
     <div class="container">
-        <h2 th:text="${'Projektdetails von Projekt ' + name}"></h2>
+        <h2 th:text="${'Projektdetails von Projekt ' + project.name}"></h2>
         <div class="row align-items-start">
             <div class="col">
-                <p th:text="${'ProjektID: ' + projectId}"></p>
+                <p th:text="${'ProjektID: ' + project.projectID}"></p>
             </div>
             <div class="col">
-                <p th:text="${'Start: ' + start}"></p>
+                <p th:text="${'Start: ' + project.creationDate}"></p>
             </div>
             <div class="col">
-                <p th:text="${'Completion: ' + end}"></p>
+                <p th:text="${'Completion: ' + project.completionDate}"></p>
             </div>
         </div>
     </div>
@@ -34,7 +34,9 @@
         </thead>
 
         <tbody>
+            <tr th:each>
 
+            </tr>
         </tbody>
     </table>
     </div>

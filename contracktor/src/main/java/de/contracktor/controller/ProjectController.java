@@ -34,6 +34,9 @@ public class ProjectController {
     @GetMapping("/project/{projectId}/details")
     public String getProjectDetails(@PathVariable int projectId, Model model) {
         //model.addAttribute("project", projectRepository.findById(projectId).get());
+        ProjectsDato projects = new ProjectsDato();
+
+        model.addAttribute("project", projects.findById(projectId));
         return "project-details";
     }
 }
