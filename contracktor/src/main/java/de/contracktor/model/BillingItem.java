@@ -14,14 +14,20 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BillingItem {
 
-	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	@Column(name = "id") private int id;
-	@Getter @Setter @Column(nullable = false, unique = true) String billingItemID;
+	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	@Column(name = "id") @JsonIgnore
+	private int id;
+	@Getter @Setter @Column(nullable = false, unique = true) @JsonProperty("id")
+	String billingItemID;
 	@Getter @Setter @Column(nullable = false) private String unit;
 	@Getter @Setter @Column(nullable = false) private Double quantity;
 	@Getter @Setter @Column(nullable = false) private Double pricePerUnit;

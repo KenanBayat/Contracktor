@@ -1,8 +1,6 @@
 package de.contracktor;
 
-import de.contracktor.model.BillingItem;
-import de.contracktor.model.Contract;
-import de.contracktor.model.Project;
+import de.contracktor.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -21,9 +19,9 @@ import java.util.List;
 @Component
 public class ScheduledREST {
 
-    String url = "http://localhost:3000/api/v1/";
-    final String credentials = "Bearer 123";
-    static HttpEntity entity;
+    private String url = "http://localhost:3000/api/v1/";
+    private final String credentials = "Bearer 123";
+    private static HttpEntity entity;
 
     @Autowired
     RestTemplate restTemplate = new RestTemplate();
@@ -35,7 +33,7 @@ public class ScheduledREST {
         entity = new HttpEntity(headers);
     }
 
-/*    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 5000)
     public void refreshDB() {
 
         // Fetch all Projects
@@ -49,7 +47,7 @@ public class ScheduledREST {
         // Retrieve the Project objects
         List<Project> projectList = Arrays.asList(projectResponse.getBody());
 
-        List<Integer> projectIDs = new ArrayList<Integer>();
+        List<Integer> projectIDs = new ArrayList<>();
 
         if (!projectList.isEmpty()) {
             for (Project project : projectList) {
@@ -60,7 +58,7 @@ public class ScheduledREST {
         // Fetch all contracts
         // --------------------------------------------------------------------
 
-        List<Integer> contractIDs = new ArrayList<Integer>();
+        List<Integer> contractIDs = new ArrayList<>();
 
         for (int projectID : projectIDs) {
             // Build the URL
@@ -80,7 +78,49 @@ public class ScheduledREST {
                 }
             }
         }
+        // Fetch all billing items
+        // --------------------------------------------------------------------
 
-    }*/
+        for (int contractID : contractIDs) {
+
+            System.out.println("Now retrieving billing model for contract number: " + contractID);
+
+            // Build the URL
+            UriComponentsBuilder billingModelBuilder = UriComponentsBuilder.fromUriString(url)
+                    .pathSegment("billingmodel").pathSegment("loadAndParseForContractConfiguration")
+                    .queryParam("contractId", contractID);
+            //System.out.println(billingModelBuilder.build().toUri());
+
+            ResponseEntity<BillingModel>  billingModelResponse = restTemplate.exchange(
+                    billingModelBuilder.build().toUri(), HttpMethod.GET, entity, BillingModel.class);
+
+            BillingModel billingModel = billingModelResponse.getBody();
+
+            System.out.println("The number of billing units in this contract is: " + billingModel.getBillingUnits().size());
+
+            // Should probably test for/catch Rest client exception instead
+            if (billingModel != null) {
+                List<BillingUnit> billingUnits = billingModel.getBillingUnits();
+
+                for (BillingUnit billingUnit : billingUnits) {
+                    System.out.println(billingUnit.getBillingUnitID());
+                    List<BillingItem> billingItems = billingUnit.getBillingItems();
+
+                    for (BillingItem billingItem : billingItems ) {
+                        System.out.println(billingItem.getBillingItemID());
+                        List<BillingItem> billingItemItems = billingItem.getBillingItems();
+
+                        for (BillingItem billingItemItem : billingItemItems) {
+                            System.out.println(billingItemItem.getBillingItemID());
+                        }
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
 
 }
