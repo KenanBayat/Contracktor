@@ -73,7 +73,7 @@ public class ScheduledREST {
             if (!contractList.isEmpty()) {
                 for (Contract contract : contractList) {
                     System.out.println("Contract number" + contract.getContractID() + ": " + contract.getName()
-                            + " belongs to project number: " + contract.getProject());
+                            + " belongs to project number: " + contract.getProjectId());
                     contractIDs.add(contract.getContractID());
                 }
             }
