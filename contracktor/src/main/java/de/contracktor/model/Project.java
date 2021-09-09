@@ -23,7 +23,7 @@ public class Project {
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String name;
     @Getter @Setter @Column(nullable = false) @JsonIgnore private LocalDate creationDate;
 	@Getter @Setter @Column(nullable = false) @JsonIgnore private LocalDate completionDate;
-	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne(cascade = CascadeType.REMOVE) private Address address;
+	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private Address address;
 	@Getter @Setter @Column(nullable = false) @JsonProperty("overallCost") private Double totalPrice;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private Organisation owner;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String creator;

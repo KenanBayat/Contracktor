@@ -35,7 +35,7 @@ public class TestUser {
 	
 	@BeforeEach
 	private void init() {
-		address = new Address( "straße", "42", "city", "12345", "Land");
+		address = new Address("straße", "42", "city", "12345", "Land");
 		addressRepo.save(address);
 		organisation = new Organisation("organisation", address);
 		organisationRepo.save(organisation);

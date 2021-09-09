@@ -73,4 +73,15 @@ public class TestOrganisation {
 		assertFalse(userRepo.existsById(userID));
 		organisationRepo.delete(organisation1);
 	}
+	
+	@Test
+	public void testRemoveOrganisation() {
+		
+		organisation1 = new Organisation("organisation1", address);
+		organisationRepo.save(organisation1);
+		
+		organisationRepo.delete(organisation1);
+		
+		assertFalse(addressRepo.existsById(address.getId()));
+	}
 }
