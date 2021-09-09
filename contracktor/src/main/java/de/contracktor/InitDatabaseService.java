@@ -1,17 +1,15 @@
 package de.contracktor;
 
 import java.util.ArrayList;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
-import de.contracktor.model.BillingItem;
 import de.contracktor.model.Organisation;
 import de.contracktor.model.Permission;
 import de.contracktor.model.Role;
 import de.contracktor.model.State;
+import de.contracktor.model.StateTransition;
 import de.contracktor.model.User;
 import de.contracktor.repository.BillingItemRepository;
 import de.contracktor.repository.BillingUnitCompletionReportRepository;
@@ -19,6 +17,7 @@ import de.contracktor.repository.BillingUnitRepository;
 import de.contracktor.repository.ContractRepository;
 import de.contracktor.repository.OrganisationRepository;
 import de.contracktor.repository.PermissionRepository;
+import de.contracktor.repository.PictureRepository;
 import de.contracktor.repository.ProjectRepository;
 import de.contracktor.repository.ReportRepository;
 import de.contracktor.repository.RoleRepository;
@@ -66,9 +65,24 @@ public class InitDatabaseService {
 	@Autowired
 	private StateTransitionRepository stateTransitionRepo;
 	
+	@Autowired
+	private PictureRepository pictureRepo;
+	
+	@Autowired
+    private PasswordEncoder encoder;
+	
 	
 	private Permission read;
 	private Permission write;
+	
+	private State nostatus;
+	private State open;
+	private State ok;
+	private State deny;
+	
+	private StateTransition noStatusOpen;
+	private StateTransition openOk;
+	private StateTransition openDeny;
 	
 	public void init() {
 		if(userRepo.count() == 0 && 
@@ -87,6 +101,9 @@ public class InitDatabaseService {
 		{
 			initPermissions();
 			initApplicationAdmin();	
+			initStates();
+			initStateTransitions();
+			
 		}
 	}
 	
@@ -107,10 +124,27 @@ public class InitDatabaseService {
 		ArrayList<Role> applicationAdminRoles = new ArrayList<Role>();
 		applicationAdminRoles.add(applicationAdminRole);
 		
-		User applicationAdmin = new User("PC", "password", "Pablo", "Cocaine", organisation, true, true, applicationAdminRoles);
+		User applicationAdmin = new User("Pablo", encoder.encode("Cocaine"), "Pablo", "Cocaine", organisation, true, true, applicationAdminRoles);
 		userRepo.save(applicationAdmin);
-		
-		//User user2 = userRepo.findById(1).orElse(null);
-		
+	}
+	
+	private void initStates() {
+		nostatus = new State("NO_STATUS");
+		open = new State("OPEN");
+		ok = new State("OK");
+	    deny = new State("DENY");
+		stateRepo.save(nostatus);
+		stateRepo.save(open);
+		stateRepo.save(ok);
+		stateRepo.save(deny);
+	}
+	
+	private void initStateTransitions() {
+		noStatusOpen = new StateTransition(nostatus, open);
+		openOk = new StateTransition(open, ok);
+		openDeny = new StateTransition(open, deny);
+		stateTransitionRepo.save(noStatusOpen);
+		stateTransitionRepo.save(openOk);
+		stateTransitionRepo.save(openDeny);
 	}
 }

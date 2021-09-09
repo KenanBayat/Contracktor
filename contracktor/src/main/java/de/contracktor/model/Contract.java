@@ -1,12 +1,6 @@
 package de.contracktor.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -22,12 +16,14 @@ public class Contract {
 	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO) @JsonIgnore
 	private int id;
 	@Getter @Setter @Column(nullable = false, unique = true) @JsonProperty("id") private int contractID;
-	@Getter @Setter @ManyToOne @JoinColumn(nullable = false) private Project project;
+	@Getter @Setter @ManyToOne @JoinColumn(nullable = false) @JsonIgnore private Project project;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String name;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String consignee;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private State status;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String contractor;
 	@Getter @Setter @Column(nullable = false) private String description;
+	@Getter @Setter @Transient private int projectId;
+	@Getter @Setter @Transient private String statusString;
 
 	public Contract() {
 		
