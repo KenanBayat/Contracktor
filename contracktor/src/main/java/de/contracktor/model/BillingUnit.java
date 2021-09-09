@@ -1,5 +1,6 @@
 package de.contracktor.model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +26,7 @@ public class BillingUnit {
 	@Getter @Setter @Column(nullable = false, unique = true) private String billingUnitID;
 	@Getter @Setter @ManyToOne @JoinColumn(nullable = false) private Contract contract;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String unit;
-	@Getter @Setter @Column(nullable = false) private Date completionDate;
+	@Getter @Setter @Column(nullable = false) private LocalDate completionDate;
 	@Getter @Setter @Column(nullable = false) private Double totalPrice;
 	@Getter @Setter @Column(nullable = false) private Double totalQuantity;
 	@Getter @Setter @OneToMany(cascade = CascadeType.ALL) private List<BillingItem> billingItems;
@@ -37,7 +38,7 @@ public class BillingUnit {
 		
 	}
 	
-	public BillingUnit(String billingUnitID, String unit, Date completionDate, Double totalPrice, 
+	public BillingUnit(String billingUnitID, String unit, LocalDate completionDate, Double totalPrice, 
 			           Double totalQuantity, Contract contract,ArrayList<BillingItem> billingItems ,Boolean ownContractDefined, 
 			           String shortDescription, String longDescription) {
 		this.billingUnitID = billingUnitID;

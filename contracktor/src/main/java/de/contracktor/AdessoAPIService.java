@@ -33,13 +33,12 @@ public class AdessoAPIService {
 	
 	@Autowired
 	private BillingUnitCompletionReportRepository billingUnitCompletionReportRepo;
-	
-	@Autowired
-	private RoleRepository roleRepo;
-	
+		
 	@Autowired
 	private StateRepository stateRepo;
 	
 	@Autowired
 	private StateTransitionRepository stateTransitionRepo;
+	
+	
 }
