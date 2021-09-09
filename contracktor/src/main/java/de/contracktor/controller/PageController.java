@@ -1,7 +1,10 @@
 package de.contracktor.controller;
 
+import de.contracktor.UserManager;
 import de.contracktor.model.Organisation;
 import de.contracktor.model.User;
+import de.contracktor.repository.OrganisationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +16,13 @@ import java.util.List;
 
 @Controller
 public class PageController {
+
+    @Autowired
+    UserManager userManager;
+
+    @Autowired
+    OrganisationRepository organisationRepository;
+    //TODO Remove
 
     @GetMapping("/")
     public String getLandingPage() {
@@ -68,6 +78,10 @@ public class PageController {
                 new Organisation("Hochtief", "Elbstraße", "7", "Hamburg", "22406", "Deutschland"),
                 new Organisation("Züblin", "Haupstraße", "26", "Hamburg", "22317", "Deutschland")
         );
+        //TODO Remove
+        organisationRepository.save(organisations.get(0));
+        organisationRepository.save(organisations.get(1));
+
         model.addAttribute("organisations", organisations);
         model.addAttribute("user", new User());
         return "register-sysadmin";
@@ -81,6 +95,10 @@ public class PageController {
         if(user.getIsAdmin() == null) {
             user.setIsAdmin(false);
         }
+        //TODO Remove
+        user.setOrganisation(organisationRepository.findByOrganisationName("Hochtief").get(0));
+        userManager.addUser(user);
+
 
 
         System.out.println(user.getUsername() + ", " + user.getForename() + ", " + user.getSurname() + ", " + user.getOrganisation() + ", " + user.getPassword()+ ", " + user.getIsAdmin() + ", " + user.getIsApplicationAdmin());
