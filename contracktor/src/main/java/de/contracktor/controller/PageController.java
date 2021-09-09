@@ -4,13 +4,12 @@ package de.contracktor.controller;
 import de.contracktor.controller.dato.EditUserDato;
 import de.contracktor.controller.dato.ManageUserDato;
 import de.contracktor.controller.dato.RegisterUserDato;
-import de.contracktor.model.User;
+import de.contracktor.model.UserAccount;
 import de.contracktor.model.Role;
 
 import de.contracktor.UserManager;
 import de.contracktor.model.Address;
 import de.contracktor.model.Organisation;
-import de.contracktor.model.UserAccount;
 import de.contracktor.repository.AddressRepository;
 import de.contracktor.repository.OrganisationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,15 +118,15 @@ public class PageController {
 
     @GetMapping("/admin/manage-user")
     public String getUserList(Model model) {
-        Organisation hochtief = new Organisation("Hochtief", "Elbstraße", "7", "Hamburg", "22406", "Deutschland");
-        Organisation zublin = new Organisation("Züblin", "Haupstraße", "26", "Hamburg", "22317", "Deutschland");
+        Organisation hochtief = new Organisation("Hochtief");
+        Organisation zublin = new Organisation("Züblin");
         List<Organisation> organisations = List.of(
                 zublin, hochtief
         );
-        List<User> users = List.of(
-                new User("lion", "pwd", "Lion", "Grabau", hochtief, true, true, new ArrayList<Role>()),
-                new User("alex", "hallo", "Alex", "Meier", hochtief, true, false, new ArrayList<Role>()),
-                new User("nils", "imDreieck", "Nils", "Fischer", zublin, false, false, new ArrayList<Role>())
+        List<UserAccount> users = List.of(
+                new UserAccount("lion", "pwd", "Lion", "Grabau", hochtief, true, true, new ArrayList<Role>()),
+                new UserAccount("alex", "hallo", "Alex", "Meier", hochtief, true, false, new ArrayList<Role>()),
+                new UserAccount("nils", "imDreieck", "Nils", "Fischer", zublin, false, false, new ArrayList<Role>())
 
         );
         ManageUserDato userDato = new ManageUserDato(organisations, users);
@@ -138,15 +137,15 @@ public class PageController {
     @PostMapping("/admin/manage-user")
     public String getFilteredUserList(@RequestParam String search, Model model) {
         model.addAttribute("search", search);
-        Organisation hochtief = new Organisation("Hochtief", "Elbstraße", "7", "Hamburg", "22406", "Deutschland");
-        Organisation zublin = new Organisation("Züblin", "Haupstraße", "26", "Hamburg", "22317", "Deutschland");
+        Organisation hochtief = new Organisation("Hochtief");
+        Organisation zublin = new Organisation("Züblin");
         List<Organisation> organisations = List.of(
                 zublin, hochtief
         );
-        List<User> users = List.of(
-                new User("lion", "pwd", "Lion", "Grabau", hochtief, true, true, new ArrayList<Role>()),
-                new User("alex", "hallo", "Alex", "Meier", hochtief, true, false, new ArrayList<Role>()),
-                new User("nils", "imDreieck", "Nils", "Fischer", zublin, false, false, new ArrayList<Role>())
+        List<UserAccount> users = List.of(
+                new UserAccount("lion", "pwd", "Lion", "Grabau", hochtief, true, true, new ArrayList<Role>()),
+                new UserAccount("alex", "hallo", "Alex", "Meier", hochtief, true, false, new ArrayList<Role>()),
+                new UserAccount("nils", "imDreieck", "Nils", "Fischer", zublin, false, false, new ArrayList<Role>())
 
         );
         ManageUserDato userDato = new ManageUserDato(organisations, users);
@@ -160,15 +159,15 @@ public class PageController {
     @GetMapping("/admin/manage-user/delete/{userId}")
     public String deleteUser(@PathVariable String userId, Model model) {
         System.out.println(userId);
-        Organisation hochtief = new Organisation("Hochtief", "Elbstraße", "7", "Hamburg", "22406", "Deutschland");
-        Organisation zublin = new Organisation("Züblin", "Haupstraße", "26", "Hamburg", "22317", "Deutschland");
+        Organisation hochtief = new Organisation("Hochtief");
+        Organisation zublin = new Organisation("Züblin");
         List<Organisation> organisations = List.of(
                 zublin, hochtief
         );
-        List<User> users = List.of(
-                new User("lion", "pwd", "Lion", "Grabau", hochtief, true, true, new ArrayList<Role>()),
-                new User("alex", "hallo", "Alex", "Meier", hochtief, true, false, new ArrayList<Role>()),
-                new User("nils", "imDreieck", "Nils", "Fischer", zublin, false, false, new ArrayList<Role>())
+        List<UserAccount> users = List.of(
+                new UserAccount("lion", "pwd", "Lion", "Grabau", hochtief, true, true, new ArrayList<Role>()),
+                new UserAccount("alex", "hallo", "Alex", "Meier", hochtief, true, false, new ArrayList<Role>()),
+                new UserAccount("nils", "imDreieck", "Nils", "Fischer", zublin, false, false, new ArrayList<Role>())
 
         );
         ManageUserDato userDato = new ManageUserDato(organisations, users);
@@ -180,15 +179,15 @@ public class PageController {
     @GetMapping("/admin/manage-user/edit/{userId}")
     public String editUser(@PathVariable String userId, Model model) {
         System.out.println(userId);
-        Organisation hochtief = new Organisation("Hochtief", "Elbstraße", "7", "Hamburg", "22406", "Deutschland");
-        Organisation zublin = new Organisation("Züblin", "Haupstraße", "26", "Hamburg", "22317", "Deutschland");
+        Organisation hochtief = new Organisation("Hochtief");
+        Organisation zublin = new Organisation("Züblin");
         List<Organisation> organisations = List.of(
                 zublin, hochtief
         );
-        List<User> users = List.of(
-                new User("lion", "pwd", "Lion", "Grabau", hochtief, true, true, new ArrayList<Role>()),
-                new User("alex", "hallo", "Alex", "Meier", hochtief, true, false, new ArrayList<Role>()),
-                new User("nils", "imDreieck", "Nils", "Fischer", zublin, false, false, new ArrayList<Role>())
+        List<UserAccount> users = List.of(
+                new UserAccount("lion", "pwd", "Lion", "Grabau", hochtief, true, true, new ArrayList<Role>()),
+                new UserAccount("alex", "hallo", "Alex", "Meier", hochtief, true, false, new ArrayList<Role>()),
+                new UserAccount("nils", "imDreieck", "Nils", "Fischer", zublin, false, false, new ArrayList<Role>())
 
         );
         ManageUserDato userDato = new ManageUserDato(organisations, users);
