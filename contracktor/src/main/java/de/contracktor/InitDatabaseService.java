@@ -1,20 +1,15 @@
 package de.contracktor;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
-import de.contracktor.model.BillingItem;
-import de.contracktor.model.Contract;
 import de.contracktor.model.Organisation;
 import de.contracktor.model.Permission;
-import de.contracktor.model.Picture;
-import de.contracktor.model.Project;
 import de.contracktor.model.Role;
 import de.contracktor.model.State;
+import de.contracktor.model.StateTransition;
 import de.contracktor.model.User;
 import de.contracktor.repository.BillingItemRepository;
 import de.contracktor.repository.BillingUnitCompletionReportRepository;
@@ -80,6 +75,15 @@ public class InitDatabaseService {
 	private Permission read;
 	private Permission write;
 	
+	private State nostatus;
+	private State open;
+	private State ok;
+	private State deny;
+	
+	private StateTransition noStatusOpen;
+	private StateTransition openOk;
+	private StateTransition openDeny;
+	
 	public void init() {
 		if(userRepo.count() == 0 && 
 		   organisationRepo.count() == 0 && 
@@ -97,6 +101,8 @@ public class InitDatabaseService {
 		{
 			initPermissions();
 			initApplicationAdmin();	
+			initStates();
+			initStateTransitions();
 		}
 	}
 	
@@ -119,8 +125,25 @@ public class InitDatabaseService {
 		
 		User applicationAdmin = new User("Pablo", encoder.encode("Cocaine"), "Pablo", "Cocaine", organisation, true, true, applicationAdminRoles);
 		userRepo.save(applicationAdmin);
-		
-		//User user2 = userRepo.findById(1).orElse(null);
-		
+	}
+	
+	private void initStates() {
+		nostatus = new State("NO_STATUS");
+		open = new State("OPEN");
+		ok = new State("OK");
+	    deny = new State("DENY");
+		stateRepo.save(nostatus);
+		stateRepo.save(open);
+		stateRepo.save(ok);
+		stateRepo.save(deny);
+	}
+	
+	private void initStateTransitions() {
+		noStatusOpen = new StateTransition(nostatus, open);
+		openOk = new StateTransition(open, ok);
+		openDeny = new StateTransition(open, deny);
+		stateTransitionRepo.save(noStatusOpen);
+		stateTransitionRepo.save(openOk);
+		stateTransitionRepo.save(openDeny);
 	}
 }
