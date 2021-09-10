@@ -44,6 +44,8 @@ public class TestBillingItem {
 	@AfterEach
 	public void delete() {
 		billingItemRepo.delete(billingItem);
+		//billingItemRepo.delete(billingItemInList1);
+		//billingItemRepo.delete(billingItemInList2);
 		stateRepo.delete(state);
 	}
 	
@@ -91,20 +93,6 @@ public class TestBillingItem {
                 					"3m7_6h4uXAXvBoFEtks_QE", state, null, billingItems);
 		assertThrows(Exception.class, () -> billingItemRepo.save(billingItem));
 	}	
-	
-	@Test
-	public void testEmptyUnit() {
-		billingItem = new BillingItem("ID_334", "", 1000.0, 105.0, 100050.0, 
-				"3m7_6h4uXAXvBoFEtks_QE", state, "", billingItems);
-		assertThrows(Exception.class, () -> billingItemRepo.save(billingItem));
-	}
-	
-	@Test
-	public void testEmptyIFC() {
-		billingItem = new BillingItem("ID_334", "meter", 1000.0, 105.0, 100050.0, 
-				"", state, "", billingItems);
-		assertThrows(Exception.class, () -> billingItemRepo.save(billingItem));
-	}
 	
 	@Test
 	public void testEmptyBillingItemID() {

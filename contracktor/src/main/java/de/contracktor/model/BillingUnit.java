@@ -32,7 +32,7 @@ public class BillingUnit {
 	private int id;
 	@Getter @Setter @Column(nullable = false, unique = true) @JsonProperty("id") private String billingUnitID;
 	@Getter @Setter @ManyToOne @JoinColumn(nullable = false) private Contract contract;
-	@Getter @Setter @Column(nullable = false) private String unit;
+	@Getter @Setter @Column private String unit;
 	@Getter @Setter @Column(nullable = false) @JsonIgnore private LocalDate completionDate;
 	@Getter @Setter @Column(nullable = false) private Double totalPrice;
 	@Getter @Setter @Column(nullable = false) private Double totalQuantity;
