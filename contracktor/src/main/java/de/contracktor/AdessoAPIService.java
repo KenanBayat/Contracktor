@@ -117,9 +117,10 @@ public class AdessoAPIService {
 	 */
 	public void save(BillingItem billingItem) {
 
-		if (!billingItem.getBillingItems().isEmpty()) {
+		if (billingItem.getBillingItems() != null &&
+				!billingItem.getBillingItems().isEmpty()) {
 			for (BillingItem billingItem1 : billingItem.getBillingItems()) {
-				adessoAPIService.save(billingItem1);
+				adessoAPIService.save(billingItem1);			
 			}
 		}
 
@@ -130,10 +131,6 @@ public class AdessoAPIService {
 				billingItemRepo.save(billingItem);
 			}
 		}
-	}
-
-	public void save(List<BillingItem> billingItemList) {
-
 	}
 
 
