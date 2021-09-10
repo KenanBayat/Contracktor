@@ -2,6 +2,7 @@ package de.contracktor;
 
 import de.contracktor.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,7 @@ public class ScheduledREST {
     HttpHeaders headers = new org.springframework.http.HttpHeaders();
 
     @PostConstruct
+    @DependsOn("init")
     public void initializeHeader() {
         headers.set("Authorization", credentials);
         entity = new HttpEntity(headers);
@@ -78,7 +80,7 @@ public class ScheduledREST {
 
             if (!contractList.isEmpty()) {
                 for (Contract contract : contractList) {
-                    System.out.println("Contract number" + contract.getContractID() + ": " + contract.getName()
+                    System.out.println("Contract number" + contract.getContractID() + ": " + contract.getStatus().getStateName()
                             + " belongs to project number: " + contract.getProjectId());
                     contractIDs.add(contract.getContractID());
 

@@ -98,11 +98,9 @@ public class AdessoAPIService {
 	 * @param contract the contract to be saved
 	 */
 	public void save(Contract contract) {
-		System.out.print("tesssst   ");
-		System.out.println(projectRepo.existsByProjectID(contract.getProjectId())
-				/*&& stateRepo.existsByStateName(contract.getStatus().getStateName())*/);
+
 		if (projectRepo.existsByProjectID(contract.getProjectId())
-				/*&& stateRepo.existsByStateName(contract.getStatus().getStateName())*/) {
+				&& stateRepo.existsByStateName(contract.getStatus().getStateName())) {
 			State state = stateRepo.findByStateName(contract.getStatus().getStateName());
 			contract.setStatus(state);
 			Project project = projectRepo.findByProjectID(contract.getProjectId());
