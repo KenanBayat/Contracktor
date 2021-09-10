@@ -27,6 +27,6 @@ public class ContracktorApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... arg0) throws Exception {
-		initDatabaseService.init();
+		//initDatabaseService.init();
 	}
 }

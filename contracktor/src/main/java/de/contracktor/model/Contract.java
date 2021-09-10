@@ -19,7 +19,7 @@ public class Contract {
 	@Getter @Setter @ManyToOne @JoinColumn(nullable = false) @JsonIgnore private Project project;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String name;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String consignee;
-	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private State status;
+	@Getter @Setter @JoinColumn @ManyToOne private State status;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String contractor;
 	@Getter @Setter @Column(nullable = false, length = 8192) private String description;
 	@Getter @Setter @Transient private int projectId;

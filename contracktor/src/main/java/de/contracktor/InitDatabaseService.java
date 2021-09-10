@@ -1,6 +1,9 @@
 package de.contracktor;
 
 import java.util.ArrayList;
+
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -86,6 +89,8 @@ public class InitDatabaseService {
 	private StateTransition openOk;
 	private StateTransition openDeny;
 	
+	
+	@PostConstruct
 	public void init() {
 		if(userRepo.count() == 0 && 
 		   organisationRepo.count() == 0 && 
