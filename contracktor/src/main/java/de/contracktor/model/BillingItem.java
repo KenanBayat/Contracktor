@@ -29,11 +29,11 @@ public class BillingItem {
 	private int id;
 	@Getter @Setter @Column(nullable = false, unique = true) @NotEmpty @JsonProperty("id")
 	String billingItemID;
-	@Getter @Setter @Column(nullable = false) @NotEmpty private String unit;
+	@Getter @Setter @Column(nullable = false) private String unit;
 	@Getter @Setter @Column(nullable = false) @JsonProperty("quantities") private Double quantity;
-	@Getter @Setter @Column(nullable = false) @JsonProperty("unitPrice") private Double pricePerUnit;
+	@Getter @Setter @Column @JsonProperty("unitPrice") private Double pricePerUnit;
 	@Getter @Setter @Column(nullable = false) @JsonProperty("price") private Double totalPrice;
-	@Getter @Setter @Column(nullable = false) @NotEmpty @JsonProperty("shortDesLinkedIFC") private String IFC;
+	@Getter @Setter @Column(nullable = false) @JsonProperty("shortDesLinkedIFC") private String IFC;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne @JsonIgnore private State status;
 	@Getter @Setter @OneToMany(cascade = CascadeType.REMOVE) private List<BillingItem> billingItems;
 	@Getter @Setter @Column(nullable = false) private String shortDescription;

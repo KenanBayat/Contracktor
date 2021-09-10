@@ -2,6 +2,7 @@ package de.contracktor;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,18 +118,23 @@ public class AdessoAPIService {
 	 */
 	public void save(BillingItem billingItem) {
 
+		ArrayList<BillingItem> billingItems = new ArrayList<BillingItem>();
+		
 		if (billingItem.getBillingItems() != null &&
 				!billingItem.getBillingItems().isEmpty()) {
 			for (BillingItem billingItem1 : billingItem.getBillingItems()) {
-				adessoAPIService.save(billingItem1);			
+				adessoAPIService.save(billingItem1);
+				billingItems.add(billingItem1);
 			}
 		}
 
 		if (stateRepo.existsByStateName(billingItem.getStatusName())) {
 			State state = stateRepo.findByStateName(billingItem.getStatusName());
 			billingItem.setStatus(state);
+			billingItem.setBillingItems(billingItems);
 			if (!billingItemRepo.existsById(billingItem.getId())) {
 				billingItemRepo.save(billingItem);
+				
 			}
 		}
 	}
@@ -141,8 +147,11 @@ public class AdessoAPIService {
 	 */
 	public void save(BillingUnit billingUnit, int contractID) {
 
+		ArrayList<BillingItem> billingItems = new ArrayList<BillingItem>();
+		
 		for (BillingItem billingItem : billingUnit.getBillingItems()) {
 			adessoAPIService.save(billingItem);
+			billingItems.add(billingItem);
 		}
 
 		if (contractRepo.existsByContractID(contractID)) {
@@ -151,7 +160,7 @@ public class AdessoAPIService {
 			LocalDate completionDate = LocalDate.parse(billingUnit.getCompletionDateString(), formatter);
 			billingUnit.setCompletionDate(completionDate);
 			billingUnit.setContract(contract);
-			
+			billingUnit.setBillingItems(billingItems);
 			if (!billingUnitRepo.existsById(billingUnit.getId())) {
 				billingUnitRepo.save(billingUnit);
 			}
@@ -190,7 +199,7 @@ public class AdessoAPIService {
 		
 		if(billingUnitRepo.existsByBillingUnitID(ID)) {
 			BillingUnit billingUnit = billingUnitRepo.findByBillingUnitID(ID);
-			billingUnit.setStatus(state);
+			//billingUnit.setStatus(state);
 			billingUnitRepo.save(billingUnit);
 		}
 		

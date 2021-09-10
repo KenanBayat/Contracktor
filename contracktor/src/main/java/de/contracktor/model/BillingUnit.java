@@ -37,7 +37,7 @@ public class BillingUnit {
 	private int id;
 	@Getter @Setter @Column(nullable = false, unique = true) @JsonProperty("id") private String billingUnitID;
 	@Getter @Setter @ManyToOne @JoinColumn(nullable = false) private Contract contract;
-	@Getter @Setter @Column(nullable = false) @NotEmpty private String unit;
+	@Getter @Setter @Column(nullable = false) private String unit;
 	@Getter @Setter @Column(nullable = false) @JsonIgnore private LocalDate completionDate;
 	@Getter @Setter @Column(nullable = false) private Double totalPrice;
 	@Getter @Setter @Column(nullable = false) private Double totalQuantity;
@@ -45,7 +45,7 @@ public class BillingUnit {
 	@Getter @Setter @Column private Boolean ownContractDefined;
 	@Getter @Setter @Column(nullable = false, length = 8192) private String shortDescription;
 	@Getter @Setter @Column(nullable = false, length = 8192) private String longDescription;
-	@Getter @Setter @JoinColumn @ManyToOne private State status;
+	//@Getter @Setter @JoinColumn @ManyToOne private State status;
 	@Getter @Setter @Transient @JsonProperty ("completionDate")
 	private String completionDateString;
 
@@ -67,6 +67,6 @@ public class BillingUnit {
 		this.ownContractDefined = ownContractDefined;
 		this.shortDescription = shortDescription;
 		this.longDescription = longDescription;
-		this.status = status;
+		//this.status = status;
 	}
 }
