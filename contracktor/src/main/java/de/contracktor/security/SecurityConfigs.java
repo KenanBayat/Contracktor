@@ -45,8 +45,11 @@ public class SecurityConfigs {
 			http.csrf().disable()
 					.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
+
+			APIAuthorizationFilter apiAuthFilter =  new APIAuthorizationFilter(authenticationManagerBean());
+
 			APITokenFilter apiFilter = new APITokenFilter(authenticationManagerBean());
-			http.addFilter(apiFilter);
+			http.addFilter(apiFilter).addFilter(apiAuthFilter);
 		}
 	}
 

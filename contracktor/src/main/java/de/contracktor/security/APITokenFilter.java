@@ -6,6 +6,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -41,7 +42,7 @@ public class APITokenFilter extends UsernamePasswordAuthenticationFilter {
                 .withSubject(authResult.getName())
                 .withIssuer("ContracktorWEB")
                 .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
-                .withClaim("authorities", authResult.getAuthorities().stream().collect(Collectors.toList()))
+                .withClaim("authorities", authResult.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(encoder);
         response.setHeader("api_token", token);
     }
