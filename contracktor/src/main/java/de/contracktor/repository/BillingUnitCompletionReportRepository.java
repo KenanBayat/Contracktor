@@ -6,4 +6,7 @@ import de.contracktor.model.BillingUnitCompletionReport;
 
 public interface BillingUnitCompletionReportRepository extends CrudRepository<BillingUnitCompletionReport, Integer>{
 
+	boolean existsByCRID(int id);
+	
+	BillingUnitCompletionReport findByCRID(int id);
 }

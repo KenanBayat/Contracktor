@@ -87,7 +87,7 @@ public class AdessoAPIService {
 		}
 		
 		project.setOwner(organisation);
-		if (!projectRepo.existsById(project.getId())) {
+		if (!projectRepo.existsByProjectID(project.getProjectID())) {
 			projectRepo.save(project);
 		}
 	}
@@ -104,7 +104,7 @@ public class AdessoAPIService {
 			contract.setStatus(state);
 			Project project = projectRepo.findByProjectID(contract.getProjectId());
 			contract.setProject(project);
-			if (!contractRepo.existsById(contract.getId())) {
+			if (!contractRepo.existsByContractID(contract.getContractID())) {
 				contractRepo.save(contract);
 			}
 		}
@@ -132,7 +132,7 @@ public class AdessoAPIService {
 			State state = stateRepo.findByStateName(billingItem.getStatusName());
 			billingItem.setStatus(state);
 			billingItem.setBillingItems(billingItems);
-			if (!billingItemRepo.existsById(billingItem.getId())) {
+			if (!billingItemRepo.existsByBillingItemID(billingItem.getBillingItemID())) {
 				billingItemRepo.save(billingItem);
 				
 			}
@@ -161,7 +161,7 @@ public class AdessoAPIService {
 			billingUnit.setCompletionDate(completionDate);
 			billingUnit.setContract(contract);
 			billingUnit.setBillingItems(billingItems);
-			if (!billingUnitRepo.existsById(billingUnit.getId())) {
+			if (!billingUnitRepo.existsByBillingUnitID(billingUnit.getBillingUnitID())) {
 				billingUnitRepo.save(billingUnit);
 			}
 		}
@@ -180,7 +180,7 @@ public class AdessoAPIService {
 
 			billingUnitCR.setContract(contract);
 			billingUnitCR.setProject(project);
-			if (!billingUnitCompletionReportRepo.existsById(billingUnitCR.getId())) {
+			if (!billingUnitCompletionReportRepo.existsByCRID(billingUnitCR.getCRID())) {
 				billingUnitCompletionReportRepo.save(billingUnitCR);
 			}
 		}
@@ -199,7 +199,7 @@ public class AdessoAPIService {
 		
 		if(billingUnitRepo.existsByBillingUnitID(ID)) {
 			BillingUnit billingUnit = billingUnitRepo.findByBillingUnitID(ID);
-			//billingUnit.setStatus(state);
+			billingUnit.setStatus(state);
 			billingUnitRepo.save(billingUnit);
 		}
 		
