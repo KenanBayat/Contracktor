@@ -8,9 +8,6 @@ import de.contracktor.model.UserAccount;
 import de.contracktor.model.Role;
 
 import de.contracktor.UserManager;
-import de.contracktor.model.Address;
-import de.contracktor.model.Organisation;
-import de.contracktor.repository.AddressRepository;
 import de.contracktor.repository.OrganisationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -73,38 +70,6 @@ public class PageController {
     public String getBillingitemDetails(@RequestParam(value = "billingitemId") String billingitemId, Model model) {
         model.addAttribute("billingitemId", billingitemId);
         return "billingitem-details";
-    }
-
-    @GetMapping("/admin/register")
-    public String getRegisterAdminPage(Model model) {
-        List<Organisation> organisations = List.of(
-                new Organisation("Hochtief"),
-                new Organisation("Züblin")
-        );
-        model.addAttribute("organisations", organisations);
-        model.addAttribute("user", new RegisterUserDato());
-        return "register-sysadmin";
-    }
-
-    @PostMapping("/admin/register")
-    public String setAdmin(@ModelAttribute RegisterUserDato user, Model model) {
-        if(user.getIsSysadmin() == null) {
-            user.setIsSysadmin(false);
-        }
-        if(user.getIsAdmin() == null) {
-            user.setIsAdmin(false);
-        }
-
-
-        System.out.println(user.getUsername() + ", " + user.getForename() + ", " + user.getSurname() + ", " + user.getOrganisation() + ", " + user.getPassword()+ ", " + user.getPasswordCheck()+ ", " + user.getIsAdmin() + ", " + user.getIsSysadmin());
-
-        List<Organisation> organisations = List.of(
-                new Organisation("Hochtief"),
-                new Organisation("Züblin")
-        );
-        model.addAttribute("organisations", organisations);
-        model.addAttribute("user", new RegisterUserDato());
-        return "register-sysadmin";
     }
 
     @GetMapping("/admin/manage-user")
