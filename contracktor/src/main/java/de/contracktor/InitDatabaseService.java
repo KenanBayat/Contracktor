@@ -85,6 +85,7 @@ public class InitDatabaseService {
 	private UserAccount applicationAdmin;
 	private Organisation applicationAdminOrganisation;
 	private Role applicationAdminRole;
+	ArrayList<Role> applicationAdminRoles;
 	
 	
 	@PostConstruct
@@ -130,14 +131,13 @@ public class InitDatabaseService {
 	}
 	
 	private void initApplicationRole() {
-		Role applicationAdminRole = new Role("Applikations-Admin", write, applicationAdminOrganisation);
+		applicationAdminRole = new Role("Applikations-Admin", write, applicationAdminOrganisation);
 		roleRepo.save(applicationAdminRole);
 	}
 	
 	private void initApplicationAdmin() {
-		ArrayList<Role> applicationAdminRoles = new ArrayList<Role>();
+		applicationAdminRoles = new ArrayList<Role>();
 		applicationAdminRoles.add(applicationAdminRole);
-		
 		applicationAdmin = new UserAccount("Pablo", encoder.encode("Cocaine"), "Pablo", "Cocaine", applicationAdminOrganisation, true, true, applicationAdminRoles);
 		userRepo.save(applicationAdmin);
 	}
