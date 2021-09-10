@@ -93,11 +93,11 @@ public class AdessoAPIService {
 	 * @param contract the contract to be saved
 	 */
 	public void save(Contract contract) {
-		if (projectRepo.existsById(contract.getProjectId())
-				&& stateRepo.existsByStateName(contract.getStatusString())) {
-			State state = stateRepo.findByStateName(contract.getStatusString());
+		if (projectRepo.existsByProjectID(contract.getProjectId())
+				&& stateRepo.existsByStateName(contract.getStatus().getStateName())) {
+			State state = stateRepo.findByStateName(contract.getStatus().getStateName());
 			contract.setStatus(state);
-			Project project = projectRepo.findById(contract.getProjectId()).orElse(null);
+			Project project = projectRepo.findByProjectID(contract.getProjectId());
 			contract.setProject(project);
 			if (!contractRepo.existsById(contract.getId())) {
 				contractRepo.save(contract);
@@ -127,8 +127,8 @@ public class AdessoAPIService {
 	 * @param billingUnit the billingUnit to be saved.
 	 */
 	public void save(BillingUnit billingUnit, int contractID) {
-		if (contractRepo.existsById(contractID)) {
-			Contract contract = contractRepo.findById(contractID).orElse(null);
+		if (contractRepo.existsByContractID(contractID)) {
+			Contract contract = contractRepo.findByContractID(contractID);
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 			LocalDate completionDate = LocalDate.parse(billingUnit.getCompletionDateString(), formatter);
 			billingUnit.setCompletionDate(completionDate);

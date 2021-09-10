@@ -42,10 +42,10 @@ public class BillingUnit {
 	@Getter @Setter @Column(nullable = false) private Double totalPrice;
 	@Getter @Setter @Column(nullable = false) private Double totalQuantity;
 	@Getter @Setter @OneToMany(cascade = CascadeType.ALL) private List<BillingItem> billingItems;
-	@Getter @Setter @Column(nullable = false) private Boolean ownContractDefined;
-	@Getter @Setter @Column(nullable = false) private String shortDescription;
-	@Getter @Setter @Column(nullable = false) private String longDescription;
-	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private State status;
+	@Getter @Setter @Column private Boolean ownContractDefined;
+	@Getter @Setter @Column(nullable = false, length = 8192) private String shortDescription;
+	@Getter @Setter @Column(nullable = false, length = 8192) private String longDescription;
+	@Getter @Setter @JoinColumn @ManyToOne private State status;
 	@Getter @Setter @Transient @JsonProperty ("completionDate")
 	private String completionDateString;
 

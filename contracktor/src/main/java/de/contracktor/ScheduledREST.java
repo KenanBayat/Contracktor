@@ -82,7 +82,7 @@ public class ScheduledREST {
                             + " belongs to project number: " + contract.getProjectId());
                     contractIDs.add(contract.getContractID());
 
-                   // adesso.save(contract);
+                    adesso.save(contract);
 
                 }
             }
@@ -116,7 +116,7 @@ public class ScheduledREST {
                     System.out.println(billingUnit.getBillingUnitID());
                     List<BillingItem> billingItems = billingUnit.getBillingItems();
 
-                    //adesso.save(billingUnit, contractID);
+                    adesso.save(billingUnit, contractID);
 
                     try {
                         UriComponentsBuilder latestStatusBuilder = UriComponentsBuilder.fromUriString(url)
