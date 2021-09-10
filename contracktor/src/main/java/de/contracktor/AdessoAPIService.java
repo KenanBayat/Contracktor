@@ -73,7 +73,7 @@ public class AdessoAPIService {
 			organisation = organisationRepo.findByOrganisationName(project.getOwnerGroupIdentifier());
 		}
 		
-		if(!addressRepo.existsById(project.getAddress().getId())) {
+		if(!addressRepo.existsByAddressId(project.getAddress().getAddressId())) {
 			addressRepo.save(project.getAddress());
 		} else {
 			project.setAddress(addressRepo.findByAddressId(project.getAddress().getAddressId()));
