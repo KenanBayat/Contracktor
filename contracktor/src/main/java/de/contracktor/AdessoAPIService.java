@@ -2,6 +2,7 @@ package de.contracktor;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,6 +49,9 @@ public class AdessoAPIService {
 	
 	@Autowired
 	private AddressRepository addressRepo;
+
+	@Autowired
+	private AdessoAPIService adessoAPIService;
 
 	/**
 	 * Saves a project if it is not existing in the repository.
@@ -112,6 +116,13 @@ public class AdessoAPIService {
 	 * @param billingItem the billingItem to be saved.
 	 */
 	public void save(BillingItem billingItem) {
+
+		if (!billingItem.getBillingItems().isEmpty()) {
+			for (BillingItem billingItem1 : billingItem.getBillingItems()) {
+				adessoAPIService.save(billingItem1);
+			}
+		}
+
 		if (stateRepo.existsByStateName(billingItem.getStatusName())) {
 			State state = stateRepo.findByStateName(billingItem.getStatusName());
 			billingItem.setStatus(state);
@@ -121,12 +132,22 @@ public class AdessoAPIService {
 		}
 	}
 
+	public void save(List<BillingItem> billingItemList) {
+
+	}
+
+
 	/**
 	 * Saves a billingUnit if it is not existing in the repository.
 	 * 
 	 * @param billingUnit the billingUnit to be saved.
 	 */
 	public void save(BillingUnit billingUnit, int contractID) {
+
+		for (BillingItem billingItem : billingUnit.getBillingItems()) {
+			adessoAPIService.save(billingItem);
+		}
+
 		if (contractRepo.existsByContractID(contractID)) {
 			Contract contract = contractRepo.findByContractID(contractID);
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
