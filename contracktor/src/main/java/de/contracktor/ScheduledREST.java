@@ -155,7 +155,7 @@ public class ScheduledREST {
 
                         System.out.println(StatusResponse1.getBody());
 
-                        adesso.save(StatusResponse1.getBody(), billingItem);
+                        adesso.save(StatusResponse1.getBody(), billingItem.getBillingItemID());
 
 
                         } catch (Exception e) {
