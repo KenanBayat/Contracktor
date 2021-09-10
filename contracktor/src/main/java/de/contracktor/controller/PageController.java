@@ -199,4 +199,17 @@ public class PageController {
 
         return "user-list";
     }
+
+    @GetMapping("/admin/organisation")
+    public String getOrganisationManagement(Model model) {
+
+        // Testing Data
+        List<Organisation> organisations = List.of(
+                new Organisation("Hochtief", "Elbstraße", "7", "Hamburg", "22406", "Deutschland"),
+                new Organisation("Züblin", "Haupstraße", "26", "Hamburg", "22317", "Deutschland")
+        );
+
+        model.addAttribute("organisations", organisations);
+        return "organisation";
+    }
 }
