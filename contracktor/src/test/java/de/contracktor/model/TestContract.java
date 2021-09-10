@@ -1,5 +1,6 @@
 package de.contracktor.model;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDate;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import de.contracktor.repository.AddressRepository;
 import de.contracktor.repository.ContractRepository;
 import de.contracktor.repository.OrganisationRepository;
 import de.contracktor.repository.PictureRepository;
@@ -47,18 +49,25 @@ public class TestContract {
 	private LocalDate creationDate;
 	private LocalDate completionDate;
 	
+	@Autowired
+	private AddressRepository addressRepo;
+	
+	Address address;
+	
 	@BeforeEach
 	public void init() {
+		address = new Address( "straße", "42", "city", "12345", "Land");
+		addressRepo.save(address);
 		creationDate = LocalDate.of(2022, 12, 12);
 		completionDate = LocalDate.of(2022, 12, 12);
 		state = new State("state");
 		stateRepo.save(state);
-		organisation = new Organisation("orga", "straße", "houseNumber", "city", "12345", "blabla");
+		organisation = new Organisation("orga");
 		organisationRepo.save(organisation);
 		picture = new Picture(null,null);
 		pictureRepo.save(picture);
-		project = new Project(2, "project", creationDate, completionDate, "street", "42", "hamburg", "12345",
-	              "de", 100.0, organisation, "hans", state, picture, "");
+		project = new Project(2, "project", creationDate, completionDate, address, 
+				100.0, organisation, "hans", state, picture, "");
 		projectRepo.save(project);
 	}
 	
@@ -69,6 +78,7 @@ public class TestContract {
 		stateRepo.delete(state);
 		organisationRepo.delete(organisation);
 		pictureRepo.delete(picture);
+		addressRepo.delete(address);
 	}
 	
 	@Test

@@ -7,6 +7,9 @@ import de.contracktor.model.Organisation;
 import java.util.List;
 
 public interface OrganisationRepository extends CrudRepository<Organisation, Integer> {
-    List<Organisation> findByOrganisationName(String organisationName);
-
+    List<Organisation> findAll();
+    Organisation findByOrganisationName(String organisationName);
+    boolean existsByOrganisationName(String organisationName);
+    void deleteById(int id);
+    Organisation save(Organisation newOrganisation);
 }

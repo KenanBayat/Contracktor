@@ -1,6 +1,6 @@
 package de.contracktor.security;
 
-import de.contracktor.model.User;
+import de.contracktor.model.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,7 +18,7 @@ public class ContracktorUserDetails implements UserDetails {
     private String password;
     private List<GrantedAuthority> authorities;
 
-    public ContracktorUserDetails(User user) {
+    public ContracktorUserDetails(UserAccount user) {
         this.username = user.getUsername();
         this.password = user.getPassword();
 

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import de.contracktor.repository.AddressRepository;
 import de.contracktor.repository.OrganisationRepository;
 import de.contracktor.repository.PermissionRepository;
 import de.contracktor.repository.RoleRepository;
@@ -33,6 +34,11 @@ public class TestRole {
 	
 	Organisation organisation;
 	
+	@Autowired
+	private AddressRepository addressRepo;
+	
+	Address address;
+	
 	@BeforeEach
 	public void init() {
 		permission1 = new Permission("blabla");
@@ -40,7 +46,9 @@ public class TestRole {
 		permissionRepo.save(permission1);
 		permissionRepo.save(permission2);
 		
-		organisation = new Organisation("organisation1", "straße", "houseNumber", "city", "12345", "country"); 
+		address = new Address( "straße", "42", "city", "12345", "Land");
+		addressRepo.save(address);
+		organisation = new Organisation("organisation1"); 
 		organisationRepo.save(organisation);
 	}
 	
@@ -50,6 +58,7 @@ public class TestRole {
 		permissionRepo.delete(permission2);
 		organisationRepo.delete(organisation);
 		roleRepo.delete(role1);
+		addressRepo.delete(address);
 	}
 	
 	@Test

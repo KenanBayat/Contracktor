@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import de.contracktor.repository.AddressRepository;
 import de.contracktor.repository.BillingItemRepository;
 import de.contracktor.repository.BillingUnitRepository;
 import de.contracktor.repository.ContractRepository;
@@ -43,6 +44,9 @@ public class TestBillingUnit {
 	OrganisationRepository organisationRepo;
 	
 	@Autowired
+	AddressRepository addressRepo;
+	
+	@Autowired
 	PictureRepository pictureRepo;
 	
 	private final LocalDate creationDate = LocalDate.of(2021, 9, 8);
@@ -65,6 +69,10 @@ public class TestBillingUnit {
 	Project project;
 	
 	Picture picture;
+	
+	Address address1;
+	Address address2;
+	
 		
 	@BeforeEach
 	public void init() {
@@ -87,14 +95,19 @@ public class TestBillingUnit {
 		billingItemRepo.save(billingItem2);
 		billingItemRepo.save(billingItem3);
 		
-		organisation = new Organisation("organisation1", "straße", "houseNumber", "city", "12345", "country");
+		address1 = new Address("straße", "houseNumber", "city", "12345", "country");
+		address2 = new Address("street", "42", "hamburg", "187", "de");
+		
+		addressRepo.save(address1);
+		addressRepo.save(address2);
+		
+		organisation = new Organisation("organisation1");
 		organisationRepo.save(organisation);
 		
 		picture = new Picture(null,null);
 		pictureRepo.save(picture);
 		
-		project = new Project(2, "project", creationDate, completionDate, "street", "42", "hamburg", "187",
-	              "de", 100.0, organisation, "hans", state, picture, "");
+		project = new Project(2, "project", creationDate, completionDate, address2,100.0, organisation, "hans", state, picture, "");
 		projectRepo.save(project);
 		
 		contract = new Contract(42, project, "contract", "consignee", state, "Contractor", "test");

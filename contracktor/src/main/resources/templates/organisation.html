@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org" th:include="layout :: page">
+<head>
+    <title>
+        Organisation - Contracktor
+    </title>
+</head>
+<body>
+    <th:block th:fragment="content">
+        <div class="container">
+
+            <!-- Beginn Content -->
+
+            <!-- Begin Head of the Page -->
+            <!-- Set with of the page -->
+            <div class="py-3 text-center col-md-7 col-lg-8 mx-auto">
+
+                <!-- Set icon of the page -->
+                <div class="feature-icon bg-primary bg-gradient mx-auto">
+                    <!-- Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="white" class="bi bi-shop" viewBox="0 0 16 16">
+                        <path d="M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.371 2.371 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976l2.61-3.045zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0zM1.5 8.5A.5.5 0 0 1 2 9v6h1v-5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v5h6V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5zM4 15h3v-5H4v5zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3zm3 0h-2v3h2v-3z"/>
+                    </svg>
+                </div>
+
+                <!-- Heading and explanation of the page -->
+                <h2>
+                    Organisationen verwalten
+                </h2>
+                <p class="lead">
+                    Legen Sie neue Organisationen an oder löschen Sie existierende Organisationen.
+                </p>
+
+            </div>
+            <!-- End Head of the Page -->
+
+            <!-- Beginn Body of the Page -->
+            <!-- Set with of the page -->
+            <div class="col-md-7 col-lg-8 mx-auto">
+
+                <!-- Add Organisation -->
+                <!-- Box around add form -->
+                <div class="card">
+                    <div class="card-body">
+
+                        <!-- Form to add new user -->
+                        <form th:action="@{/admin/organisation/add}" th:method="post">
+                            <!-- Label for input field -->
+                            <label for="newOrganisation">
+                                Organisation hinzufügen
+                            </label>
+                            <!-- Input field with button -->
+                            <div class="form-group input-group py-3">
+                                <!-- Field for new Organisation name -->
+                                <input id="newOrganisation" type="text" class="form-control" placeholder="Name der Organisation.." name="newOrganisation" th:value="${newOrganisation}"/>
+                                <button type="submit" class="btn btn-success">
+                                    Hinzufügen
+                                </button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+
+                <!-- Adding space between sections -->
+                <div class="pt-4"></div>
+
+                <!-- Search organisation and delete organisation -->
+                <!-- Box around search form and organisation list -->
+                <div class="card">
+                    <div class="card-body">
+
+                        <!-- Form search organisation -->
+                        <form th:action="@{/admin/organisation/search}" th:method="post">
+                            <!-- Label for input field -->
+                            <label for="search">
+                                Organisation suchen
+                            </label>
+                            <!-- Input field with button -->
+                            <div class="form-group input-group py-3">
+                                <!-- Field for search term -->
+                                <input id="search" type="text" class="form-control" placeholder="Organisation suchen.." name="search" th:value="${search}"/>
+                                <button type="submit" class="btn btn-primary">
+                                    Suchen
+                                </button>
+                                <button type="submit" class="btn btn-outline-secondary" th:value="''">
+                                    Zurücksetzten
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Table of organisations -->
+                        <table class="table table-bordered">
+
+                            <thead>
+                            <tr>
+                                <th scope="col">
+
+                                    <!-- Sorting ID ascending -->
+                                    <a class="text-decoration-none text-reset" th:href="@{'/admin/organisation/id_desc'}" th:unless="${filter.equals('id_desc')}">
+                                        ID
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" fill="currentColor" class="bi bi-sort-numeric-down pl-3" viewBox="0 0 16 16">
+                                            <path d="M12.438 1.668V7H11.39V2.684h-.051l-1.211.859v-.969l1.262-.906h1.046z"/>
+                                            <path fill-rule="evenodd" d="M11.36 14.098c-1.137 0-1.708-.657-1.762-1.278h1.004c.058.223.343.45.773.45.824 0 1.164-.829 1.133-1.856h-.059c-.148.39-.57.742-1.261.742-.91 0-1.72-.613-1.72-1.758 0-1.148.848-1.835 1.973-1.835 1.09 0 2.063.636 2.063 2.687 0 1.867-.723 2.848-2.145 2.848zm.062-2.735c.504 0 .933-.336.933-.972 0-.633-.398-1.008-.94-1.008-.52 0-.927.375-.927 1 0 .64.418.98.934.98z"/>
+                                            <path d="M4.5 2.5a.5.5 0 0 0-1 0v9.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L4.5 12.293V2.5z"/>
+                                        </svg>
+                                    </a>
+
+                                    <!-- Sorting ID descending -->
+                                    <a class="text-decoration-none text-reset" th:href="@{'/admin/organisation/id_asc'}" th:if="${filter.equals('id_desc')}">
+                                        ID
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" fill="currentColor" class="bi bi-sort-numeric-up-alt pl-3" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M11.36 7.098c-1.137 0-1.708-.657-1.762-1.278h1.004c.058.223.343.45.773.45.824 0 1.164-.829 1.133-1.856h-.059c-.148.39-.57.742-1.261.742-.91 0-1.72-.613-1.72-1.758 0-1.148.848-1.836 1.973-1.836 1.09 0 2.063.637 2.063 2.688 0 1.867-.723 2.848-2.145 2.848zm.062-2.735c.504 0 .933-.336.933-.972 0-.633-.398-1.008-.94-1.008-.52 0-.927.375-.927 1 0 .64.418.98.934.98z"/>
+                                            <path d="M12.438 8.668V14H11.39V9.684h-.051l-1.211.859v-.969l1.262-.906h1.046zM4.5 13.5a.5.5 0 0 1-1 0V3.707L2.354 4.854a.5.5 0 1 1-.708-.708l2-1.999.007-.007a.498.498 0 0 1 .7.006l2 2a.5.5 0 1 1-.707.708L4.5 3.707V13.5z"/>
+                                        </svg>
+                                    </a>
+                                </th>
+
+                                <!-- Sorting Organisation name -->
+                                <th scope="col">
+                                    <a class="text-decoration-none text-reset" th:href="@{'/admin/organisation/name_desc'}" th:unless="${filter.equals('name_desc')}">
+                                        Name
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" fill="currentColor" class="bi bi-sort-alpha-down" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M10.082 5.629 9.664 7H8.598l1.789-5.332h1.234L13.402 7h-1.12l-.419-1.371h-1.781zm1.57-.785L11 2.687h-.047l-.652 2.157h1.351z"/>
+                                            <path d="M12.96 14H9.028v-.691l2.579-3.72v-.054H9.098v-.867h3.785v.691l-2.567 3.72v.054h2.645V14zM4.5 2.5a.5.5 0 0 0-1 0v9.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L4.5 12.293V2.5z"/>
+                                        </svg>
+                                    </a>
+
+                                    <!-- Sorting ID descending -->
+                                    <a class="text-decoration-none text-reset" th:href="@{'/admin/organisation/name_asc'}" th:if="${filter.equals('name_desc')}">
+                                        Name
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" fill="currentColor" class="bi bi-sort-alpha-up-alt" viewBox="0 0 16 16">
+                                            <path d="M12.96 7H9.028v-.691l2.579-3.72v-.054H9.098v-.867h3.785v.691l-2.567 3.72v.054h2.645V7z"/>
+                                            <path fill-rule="evenodd" d="M10.082 12.629 9.664 14H8.598l1.789-5.332h1.234L13.402 14h-1.12l-.419-1.371h-1.781zm1.57-.785L11 9.688h-.047l-.652 2.156h1.351z"/>
+                                            <path d="M4.5 13.5a.5.5 0 0 1-1 0V3.707L2.354 4.854a.5.5 0 1 1-.708-.708l2-1.999.007-.007a.498.498 0 0 1 .7.006l2 2a.5.5 0 1 1-.707.708L4.5 3.707V13.5z"/>
+                                        </svg>
+                                    </a>
+                                </th>
+                                <th scope="col">
+                                    Löschen
+                                </th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr th:each="organisation : ${organisations}">
+                                    <th scope="row" th:text="${organisation.getId()}"></th>
+
+                                    <td th:text="${organisation.getOrganisationName()}"></td>
+
+                                    <!-- Icon for delete -->
+                                    <th>
+                                        <form th:action="@{/admin/organisation/delete}" method="post">
+
+                                            <!-- Trigger modal -->
+                                            <button class="btn btn-outline-danger btn-sm" type="button" data-bs-toggle="modal" th:data-bs-target="'#' + ${organisation.getOrganisationName()}">
+                                                Löschen
+                                            </button>
+
+                                            <!-- Modal -->
+                                            <div class="modal fade" th:id="${organisation.getOrganisationName()}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+
+                                                            <!-- Modal header -->
+                                                            <h5 class="modal-title" id="exampleModalLabel">Organisation löschen</h5>
+
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+
+                                                            <!-- Modal body -->
+                                                            Möchten Sie die Organisation <strong th:text="'' + ${organisation.getOrganisationName()}"></strong> sicher löschen?
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                                                            <button type="submit" class="btn btn-danger" name="id" th:value="${organisation.getId()}">Löschen</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </form>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+            <!-- End Body of the Page -->
+
+            <!-- End Content -->
+
+        </div>
+    </th:block>
+</body>
+</html>
