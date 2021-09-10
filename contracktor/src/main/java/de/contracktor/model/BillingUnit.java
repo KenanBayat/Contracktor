@@ -45,6 +45,7 @@ public class BillingUnit {
 	@Getter @Setter @Column(nullable = false) private Boolean ownContractDefined;
 	@Getter @Setter @Column(nullable = false) private String shortDescription;
 	@Getter @Setter @Column(nullable = false) private String longDescription;
+	@Getter @Setter @Column(nullable = false) private State status;
 	@Getter @Setter @Transient @JsonProperty ("completionDate")
 	private String completionDateString;
 
@@ -55,7 +56,7 @@ public class BillingUnit {
 	
 	public BillingUnit(String billingUnitID, String unit, LocalDate completionDate, Double totalPrice, 
 			           Double totalQuantity, Contract contract,ArrayList<BillingItem> billingItems ,Boolean ownContractDefined, 
-			           String shortDescription, String longDescription) {
+			           String shortDescription, String longDescription, State status) {
 		this.billingUnitID = billingUnitID;
 		this.unit = unit;
 		this.completionDate = completionDate;
@@ -66,5 +67,6 @@ public class BillingUnit {
 		this.ownContractDefined = ownContractDefined;
 		this.shortDescription = shortDescription;
 		this.longDescription = longDescription;
+		this.status = status;
 	}
 }

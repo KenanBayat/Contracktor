@@ -140,4 +140,29 @@ public class AdessoAPIService {
 			}
 		}
 	}
+	
+	/**
+	 * Save a billingUnitCompletionReport if it is not existing in the repository.
+	 * 
+	 * @param billingUnitCR the billingUnitCompletionReport to be saved.
+	 */
+	public void save(String stateName, String ID) {
+		State state = new State(stateName);
+		if(!stateRepo.existsByStateName(stateName)) {
+			stateRepo.save(state);
+		}
+		
+		if(billingUnitRepo.existsByBillingUnitID(ID)) {
+			BillingUnit billingUnit = billingUnitRepo.findByBillingUnitID(ID);
+			billingUnit.setStatus(state);
+			billingUnitRepo.save(billingUnit);
+		}
+		
+		if(billingItemRepo.existsByBillingItemID(ID)) {
+			BillingItem billingItem = billingItemRepo.findByBillingItemID(ID).orElse(null);
+			billingItem.setStatus(state);
+			billingItemRepo.save(billingItem);
+		}
+	}
+	
 }
