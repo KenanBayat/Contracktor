@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import de.contracktor.model.Organisation;
@@ -68,7 +67,7 @@ public class InitDatabaseService {
 	private StateTransitionRepository stateTransitionRepo;
 	
 	@Autowired
-    private PasswordEncoder encoder;
+	private UserManager userManager;
 		
 	private Permission read;
 	private Permission write;
@@ -85,7 +84,7 @@ public class InitDatabaseService {
 	private UserAccount applicationAdmin;
 	private Organisation applicationAdminOrganisation;
 	private Role applicationAdminRole;
-	ArrayList<Role> applicationAdminRoles;
+	private ArrayList<Role> applicationAdminRoles;
 	
 	
 	@PostConstruct
@@ -138,8 +137,9 @@ public class InitDatabaseService {
 	private void initApplicationAdmin() {
 		applicationAdminRoles = new ArrayList<Role>();
 		applicationAdminRoles.add(applicationAdminRole);
-		applicationAdmin = new UserAccount("Pablo", encoder.encode("Cocaine"), "Pablo", "Cocaine", applicationAdminOrganisation, true, true, applicationAdminRoles);
-		userRepo.save(applicationAdmin);
+		applicationAdmin = new UserAccount("Pablo", "Cocaine", "Pablo", "Coca Cola", applicationAdminOrganisation, true, true, applicationAdminRoles);
+		
+		userManager.addUser(applicationAdmin);
 	}
 	
 	private void initStates() {
