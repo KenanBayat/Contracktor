@@ -2,6 +2,7 @@ package de.contracktor.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -16,13 +17,21 @@ import java.util.Date;
 import java.util.stream.Collectors;
 
 public class APITokenFilter extends UsernamePasswordAuthenticationFilter {
+
+    private final AuthenticationManager authenticationManager;
+
+    public APITokenFilter(AuthenticationManager authenticationManager) {
+        setFilterProcessesUrl("/api/login");
+        this.authenticationManager = authenticationManager;
+    }
+
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        String username = obtainUsername(request);
-        String password = obtainPassword(request);
+        String username = request.getHeader("username");
+        String password = request.getHeader("password");
 
         UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username,password);
-        return this.getAuthenticationManager().authenticate(authRequest);
+        return authenticationManager.authenticate(authRequest);
     }
 
     @Override
