@@ -24,14 +24,14 @@ public class UserManager {
 
     }
 
-    public void removeUser(User user) {
+    public void removeUser(UserAccount user) {
         if(!userRepository.existsByUsername(user.getUsername())) {
             throw new AuthorizationServiceException("User does not exist");
         }
         userRepository.delete(user);
     }
 
-    public User updateUser(User user) {
+    public UserAccount updateUser(UserAccount user) {
         if (!userRepository.existsByUsername(user.getUsername())) {
             throw new AuthorizationServiceException("User does not exist");
         }

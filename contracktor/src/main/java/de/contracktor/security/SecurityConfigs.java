@@ -6,8 +6,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -15,12 +17,33 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfigs {
 
+	@Autowired
+	private UserDetailsServiceH2 userDetailsServiceH2;
 
 	@Configuration
 	@Order(1)
-	public static class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-		@Autowired
-		UserDetailsServiceH2 userDetailsServiceH2;
+	public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
+
+		@Override
+		public void configure(AuthenticationManagerBuilder auth) throws Exception {
+			auth.userDetailsService(userDetailsServiceH2);
+		}
+		@Override
+		protected void configure(HttpSecurity http) throws Exception {
+			http.authorizeRequests()
+					.antMatchers("/api/login").permitAll()
+					.antMatchers("/api/**").hasAuthority("USER");
+
+			http.csrf().disable()
+					.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+			new APITokenFilter();
+			http.addFilter(new APITokenFilter());
+		}
+	}
+
+	@Configuration
+	public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		@Override
 		protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -45,10 +68,6 @@ public class SecurityConfigs {
 			http.headers().frameOptions().disable();
 		}
 
-		@Configuration
-		public static class ApiSecurityConfig extends WebSecurityConfigurerAdapter{
-
-		}
 		@Bean
 		public PasswordEncoder encoder() {
 			return new BCryptPasswordEncoder();
