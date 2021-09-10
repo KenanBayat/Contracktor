@@ -133,7 +133,7 @@ public class AdessoAPIService {
 			LocalDate completionDate = LocalDate.parse(billingUnit.getCompletionDateString(), formatter);
 			billingUnit.setCompletionDate(completionDate);
 			billingUnit.setContract(contract);
-
+			
 			if (!billingUnitRepo.existsById(billingUnit.getId())) {
 				billingUnitRepo.save(billingUnit);
 			}
