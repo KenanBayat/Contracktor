@@ -1,5 +1,6 @@
 package de.contracktor.controller;
 
+import de.contracktor.controller.dato.ContractDato;
 import de.contracktor.controller.dato.ProjectsDato;
 import de.contracktor.model.Organisation;
 import de.contracktor.model.Project;
@@ -25,7 +26,7 @@ public class ProjectController {
     public String getProjectList(Model model) {
         //model.addAttribute("projects",projectRepository.findAll());
 
-        ProjectsDato projects = new ProjectsDato();
+        ProjectsDato projects = ProjectsDato.getInstance();
 
         model.addAttribute("projects", projects);
         return "project-list";
@@ -34,8 +35,10 @@ public class ProjectController {
     @GetMapping("/project/{projectId}/details")
     public String getProjectDetails(@PathVariable int projectId, Model model) {
         //model.addAttribute("project", projectRepository.findById(projectId).get());
-        ProjectsDato projects = new ProjectsDato();
+        ProjectsDato projects = ProjectsDato.getInstance();
+        ContractDato contractList = ContractDato.getInstance();
 
+        model.addAttribute("contracts", contractList.filterByProjectID(projectId));
         model.addAttribute("project", projects.findById(projectId));
         return "project-details";
     }

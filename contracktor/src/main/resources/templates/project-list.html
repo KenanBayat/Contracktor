@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="de" xmlns:th="http://www.thymeleaf.org" th:include="layout :: page">
 <head>
-    <link rel="stylesheet" th:href="@{/css/project-list.css}"/>
+
 </head>
 <body>
     <th:block th:fragment="content">
@@ -14,18 +14,23 @@
                         <th>Projektname</th>
                         <th>Adresse</th>
                         <th>Status</th>
+                        <th>Start</th>
+                        <th>Ende</th>
                         <th>Details</th>
+                        <th></th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    <tr th:each="project: ${projects.projects}">
+                    <tr th:each="project: ${projects.getProjects()}">
                         <td th:text="${project.projectID}"></td>
                         <td th:text="${project.name}"></td>
                         <td th:text="${project.country + ': ' + project.street + ' ' + project.houseNumber + ', ' + project.postcode + ' ' + project.city}"></td>
-                        <td th:text="${project.completionDate.date +'.'+ project.completionDate.month +'.'+ project.completionDate.year}"></td>
+                        <td th:text="${project.status.stateName}"></td>
+                        <td th:text="${project.creationDate}"></td>
+                        <td th:text="${project.completionDate}"></td>
                         <td>
-                            <a th:href="@{'/project/' + ${project.id} + '/details'}" class="icon-link" title="Details">
+                            <a th:href="@{'/project/' + ${project.projectID} + '/details'}" class="icon-link" title="Details">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5z"/>
                                     <path fill-rule="evenodd" d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0v-5z"/>

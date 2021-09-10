@@ -11,6 +11,9 @@ import javax.validation.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import de.contracktor.controller.dato.ContractDato;
+import de.contracktor.controller.dato.ProjectsDato;
+import de.contracktor.controller.dato.StateDato;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,7 +38,7 @@ public class BillingUnit {
 
 	
 	public BillingUnit() {
-		
+
 	}
 	
 	public BillingUnit(String billingUnitID, String unit, LocalDate completionDate, Double totalPrice, 
