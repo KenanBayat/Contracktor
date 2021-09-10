@@ -67,11 +67,18 @@ public class AdessoAPIService {
 		}else {
 			organisation = organisationRepo.findByOrganisationName(project.getOwnerGroupIdentifier());
 		}
+		
 		if(!addressRepo.existsById(project.getAddress().getId())) {
 			addressRepo.save(project.getAddress());
+		} else {
+			project.setAddress(addressRepo.findByAddressId(project.getAddress().getAddressId()));
 		}
+					
 		if(!stateRepo.existsByStateName(project.getStatus().getStateName())) {
 			stateRepo.save(project.getStatus());
+		} else {
+			State state = stateRepo.findByStateName(project.getStatus().getStateName());
+			project.setStatus(state);
 		}
 		
 		project.setOwner(organisation);
