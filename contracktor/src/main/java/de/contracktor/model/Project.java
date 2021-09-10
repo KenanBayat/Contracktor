@@ -23,38 +23,29 @@ public class Project {
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String name;
     @Getter @Setter @Column(nullable = false) @JsonIgnore private LocalDate creationDate;
 	@Getter @Setter @Column(nullable = false) @JsonIgnore private LocalDate completionDate;
-	@Getter @Setter @Column(nullable = false) @NotEmpty private String street;
-	@Getter @Setter @Column(nullable = false) @NotEmpty private String houseNumber;
-	@Getter @Setter @Column(nullable = false) @NotEmpty private String city;
-	@Getter @Setter @Column(nullable = false) @NotEmpty @JsonProperty("zipCode") private String postcode;
-	@Getter @Setter @Column(nullable = false) @NotEmpty private String country;
+	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private Address address;
 	@Getter @Setter @Column(nullable = false) @JsonProperty("overallCost") private Double totalPrice;
-	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne @JsonProperty("ownerGroupIdentifier") private Organisation owner;
+	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private Organisation owner;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String creator;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private State status;
 	@Getter @Setter @OneToOne private Picture image;
 	@Getter @Setter @Column(nullable = false) private String description;
 	@Getter @Setter @Transient @JsonProperty("creationDate") private String creationDateString;
 	@Getter @Setter @Transient @JsonProperty("completionDate") private String completionDateString;
-	@Getter @Setter @Transient @JsonProperty("address") private List<String> address;
+	@Getter @Setter @Transient private String ownerGroupIdentifier;
 
 
 	public Project() {
 		
 	}
 	
-	public Project(int projectID, String name, LocalDate creationDate, LocalDate completionDate, String street, String houseNumber, String city, 
-			       String postcode, String country, Double totalPrice, Organisation owner, String creator,
+	public Project(int projectID, String name, LocalDate creationDate, LocalDate completionDate, Address address, Double totalPrice, Organisation owner, String creator,
 			       State status, Picture image, String description) {
 		this.projectID = projectID;
 		this.name = name;
 		this.creationDate = creationDate;
 		this.completionDate = completionDate;
-		this.street = street;
-		this.houseNumber = houseNumber;
-		this.city = city;
-		this.postcode = postcode;
-		this.country = country;
+		this.address = address;
 		this.totalPrice = totalPrice;
 		this.owner = owner;
 		this.creator = creator;
