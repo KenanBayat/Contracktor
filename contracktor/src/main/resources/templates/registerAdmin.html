@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org" th:include="layout :: page">
+<head>
+    <title>
+        Admin - Contracktor
+    </title>
+</head>
+<body>
+    <th:block th:fragment="content">
+        <div class="container">
+
+            <!-- Beginn Content -->
+
+            <!-- Begin Head of the Page -->
+            <!-- Set with of the page -->
+            <div class="py-3 text-center col-md-7 col-lg-8 mx-auto">
+
+                <!-- Set icon of the page -->
+                <div class="feature-icon bg-primary bg-gradient mx-auto">
+                    <!-- Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="white" class="bi bi-person-fill" viewBox="0 0 16 16">
+                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                    </svg>
+                </div>
+
+                <!-- Heading and explanation of the page -->
+                <h2>
+                    Registrieren Sie einen neuen Nutzer
+                </h2>
+                <p class="lead">
+                    Wählen Sie dazu einen individuellen Nutzernamen, eine zugehörige Organisation, Vor- und Nachnamen sowie die Rechte des Nutzers.
+                </p>
+
+            </div>
+            <!-- End Head of the Page -->
+
+            <!-- Beginn Body of the Page -->
+            <!-- Set with of the page -->
+            <div class="col-md-7 col-lg-8 mx-auto">
+                <div class="card">
+                    <div class="card-body">
+
+                        <!-- Form -->
+                        <form th:action="@{/admin/register}" method="post">
+
+                            <!-- Into rows -->
+                            <div class="row g-3">
+
+                                <!-- Forename field -->
+                                <div class="col-6">
+                                    <label for="forename" class="form-label">
+                                        Vorname
+                                    </label>
+                                    <input type="text" class="form-control" id="forename" placeholder="Vorname.." name="forename" th:value="${forename}">
+                                </div>
+
+                                <!-- Surname field -->
+                                <div class="col-6">
+                                    <label for="surname" class="form-label">
+                                        Nachname
+                                    </label>
+                                    <input type="text" class="form-control" id="surname" placeholder="Nachname.." name="surname" th:value="${surname}">
+                                </div>
+
+                                <!-- Username field -->
+                                <div class="col-6">
+                                    <label for="username" class="form-label">
+                                        Nutzername
+                                    </label>
+                                    <input type="text" class="form-control" id="username" placeholder="Nutzername.." name="username" th:value="${username}">
+                                </div>
+
+                                <!-- Organisation field -->
+                                <div class="col-6">
+                                    <label for="organisation" class="form-label">
+                                        Organisation
+                                    </label>
+                                    <input class="form-control" list="datalistOptions" id="organisation" placeholder="Tippen zum Suchen..." name="organisation" th:value="${organisation}">
+                                    <datalist id="datalistOptions">
+                                        <option th:each="organisation : ${organisations}" th:value="${organisation.getOrganisationName()}">
+                                    </datalist>
+                                </div>
+
+                                <!-- Password field -->
+                                <div class="col-6">
+                                    <label for="password" class="form-label">
+                                        Passwort
+                                    </label>
+                                    <input type="password" class="form-control" id="password" placeholder="Passwort.." name="password" th:value="${password}">
+                                </div>
+
+                                <!-- Password Check field -->
+                                <div class="col-6">
+                                    <label for="passwordCheck" class="form-label">
+                                        Passwort wiederholen
+                                    </label>
+                                    <input type="password" class="form-control" id="passwordCheck" placeholder="Passwort.." name="passwordCheck" th:value="${passwordCheck}">
+                                </div>
+
+                                <!-- user rights fields -->
+                                <label class="form-label">Nutzerrechte</label>
+                                <div class="col-12 px-4">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox"  id="isAdmin" name="admin" th:value="admin"/>
+                                        <label class="form-check-label" for="isAdmin">
+                                            Mit Admin-Rechten
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" id="isApplicationAdmin" name="admin"
+                                               th:value="sysadmin" type="checkbox"/>
+                                        <label class="form-check-label" for="isApplicationAdmin">
+                                            Mit Systemadmin-Rechten
+                                        </label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="d-grid gap-2 col-6 mx-auto pt-5">
+                                <button class="btn btn-primary btn-lg mx-auto" type="submit" value="Submit">
+                                    Nutzer registrieren
+                                </button>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+            <!-- End Body of the Page -->
+
+            <!-- End Content -->
+
+        </div>
+    </th:block>
+</body>
+</html>

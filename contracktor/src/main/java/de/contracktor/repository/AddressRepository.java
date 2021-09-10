@@ -7,4 +7,5 @@ import de.contracktor.model.BillingItem;
 
 public interface AddressRepository extends CrudRepository<Address, Integer> {
 
+	Address findByAddressId(int id);
 }

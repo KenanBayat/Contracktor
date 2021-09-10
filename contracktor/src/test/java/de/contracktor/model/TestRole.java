@@ -46,7 +46,7 @@ public class TestRole {
 		permissionRepo.save(permission1);
 		permissionRepo.save(permission2);
 		
-		address = new Address( "straße", "42", "city", "12345", "Land");
+		address = new Address(1, "straße", "42", "city", "12345", "Land");
 		addressRepo.save(address);
 		organisation = new Organisation("organisation1"); 
 		organisationRepo.save(organisation);

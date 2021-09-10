@@ -9,4 +9,7 @@ import java.util.List;
 public interface ContractRepository extends CrudRepository<Contract, Integer>{
     List<Contract> findByContractorIgnoreCaseOrConsigneeIgnoreCase(String contractor, String consignee);
 
+    boolean existsByContractID(int id);
+    
+    Contract findByContractID(int id);
 }
