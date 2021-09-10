@@ -45,7 +45,7 @@ public class BillingUnit {
 	@Getter @Setter @Column(nullable = false) private Boolean ownContractDefined;
 	@Getter @Setter @Column(nullable = false) private String shortDescription;
 	@Getter @Setter @Column(nullable = false) private String longDescription;
-	@Getter @Setter @Column(nullable = false) private State status;
+	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private State status;
 	@Getter @Setter @Transient @JsonProperty ("completionDate")
 	private String completionDateString;
 
