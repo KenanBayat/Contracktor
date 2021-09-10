@@ -75,11 +75,6 @@ public class PageController {
         return "billingitem-details";
     }
 
-    @GetMapping("/admin")
-    public String getAdminConsole() {
-        return "admin-console";
-    }
-
     @GetMapping("/admin/register")
     public String getRegisterAdminPage(Model model) {
         List<Organisation> organisations = List.of(

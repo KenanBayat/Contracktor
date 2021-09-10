@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -18,6 +19,8 @@ public class OrganisationController {
     // Connecting to the database
     @Autowired
     OrganisationRepository organisationRepository;
+
+    List<Organisation> searchedOrganisations = new ArrayList<Organisation>();
 
 
     // Function of the Page:
@@ -47,30 +50,16 @@ public class OrganisationController {
     // - Search in organisations
     // - List all organisations
     // - Delete organisations
-    @GetMapping("/admin/organisation/search/{filter}")
-    public String getSearchOrganisationManagement(@PathVariable String filter, Model model) {
+    @GetMapping("/admin/organisation/search/")
+    public String getSearchOrganisationManagement(Model model) {
         // Data:
         List<Organisation> organisationList = organisationRepository.findAll();
 
         // Logic:
-        if(filter.equals("id_asc")) {
-            organisationList = organisationList.stream().sorted(Comparator.comparing(Organisation::getId)).collect(Collectors.toList());
-        }
-        if(filter.equals("id_desc")) {
-            organisationList = organisationList.stream().sorted(Comparator.comparing(Organisation::getId)).collect(Collectors.toList());
-            Collections.reverse(organisationList);
-        }
-        if(filter.equals("name_asc")) {
-            organisationList = organisationList.stream().sorted(Comparator.comparing(Organisation::getOrganisationName)).collect(Collectors.toList());
-        }
-        if(filter.equals("name_desc")) {
-            organisationList = organisationList.stream().sorted(Comparator.comparing(Organisation::getOrganisationName)).collect(Collectors.toList());
-            Collections.reverse(organisationList);
-        }
 
         // Model attributes:
         model.addAttribute("organisations", organisationList);
-        model.addAttribute("filter", filter);
+        model.addAttribute("filter", "");
 
         return "organisation";
     }
@@ -89,6 +78,7 @@ public class OrganisationController {
         organisationList = organisationList.stream()
                 .filter(organisation -> organisation.getOrganisationName().toLowerCase().contains(search.toLowerCase()))
                 .collect(Collectors.toList());
+        searchedOrganisations = organisationList;
 
         // Model attributes:
         model.addAttribute("organisations", organisationList);
@@ -195,9 +185,12 @@ public class OrganisationController {
     @GetMapping("/admin/organisation/{filter}")
     public String getOrganisationManagement(@PathVariable String filter, Model model) {
         // Data:
-        List<Organisation> organisationList = organisationRepository.findAll();
+        List<Organisation> organisationList = searchedOrganisations;
 
         // Logic:
+        if(searchedOrganisations.isEmpty()) {
+            organisationList = organisationRepository.findAll();
+        }
         if(filter.equals("id_asc")) {
             organisationList = organisationList.stream().sorted(Comparator.comparing(Organisation::getId)).collect(Collectors.toList());
         }
