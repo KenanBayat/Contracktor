@@ -134,7 +134,6 @@ public class AdessoAPIService {
 			billingItem.setBillingItems(billingItems);
 			if (!billingItemRepo.existsByBillingItemID(billingItem.getBillingItemID())) {
 				billingItemRepo.save(billingItem);
-				
 			}
 		}
 	}
@@ -163,8 +162,6 @@ public class AdessoAPIService {
 			billingUnit.setBillingItems(billingItems);
 			if (!billingUnitRepo.existsByBillingUnitID(billingUnit.getBillingUnitID())) {
 				billingUnitRepo.save(billingUnit);
-				BillingUnit billingUnit1 = billingUnitRepo.findByBillingUnitID(billingUnit.getBillingUnitID());
-				billingUnitRepo.save(billingUnit1);
 			}
 		}
 	}
@@ -202,7 +199,7 @@ public class AdessoAPIService {
 		if(billingUnitRepo.existsByBillingUnitID(ID)) {
 			BillingUnit billingUnit = billingUnitRepo.findByBillingUnitID(ID);
 			billingUnit.setStatus(state);
-			billingUnitRepo.save(billingUnit);
+			billingUnit = billingUnitRepo.save(billingUnit);
 		}
 		
 		if(billingItemRepo.existsByBillingItemID(ID)) {
