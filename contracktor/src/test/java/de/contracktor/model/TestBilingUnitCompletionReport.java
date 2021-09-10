@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import de.contracktor.repository.AddressRepository;
 import de.contracktor.repository.BillingItemRepository;
 import de.contracktor.repository.BillingUnitCompletionReportRepository;
 import de.contracktor.repository.BillingUnitRepository;
@@ -69,8 +70,16 @@ public class TestBilingUnitCompletionReport {
 	@Autowired
 	BillingUnitCompletionReportRepository billingUnitCRRepo;
 	
+	@Autowired
+	private AddressRepository addressRepo;
+	
+	Address address;
+	
 	@BeforeEach
 	public void init() {
+		address = new Address( "straße", "42", "city", "12345", "Land");
+		addressRepo.save(address);
+		
 		state = new State("BillingUnitState");
 		stateRepo.save(state);
 		
@@ -87,14 +96,14 @@ public class TestBilingUnitCompletionReport {
 		billingItemRepo.save(billingItem2);
 		billingItemRepo.save(billingItem3);
 		
-		organisation = new Organisation("organisation1", "straße", "houseNumber", "city", "12345", "country");
+		organisation = new Organisation("organisation1");
 		organisationRepo.save(organisation);
 		
 		picture = new Picture(null,null);
 		pictureRepo.save(picture);
 		
-		project = new Project(2, "project", creationDate, completionDate, "street", "42", "hamburg", "187",
-	              "de", 100.0, organisation, "hans", state, picture, "");
+		project = new Project(2, "project", creationDate, completionDate, address, 
+				100.0, organisation, "hans", state, picture, "");
 		projectRepo.save(project);
 		
 		contract = new Contract(42, project, "contract", "consignee", state, "Contractor", "test");
@@ -115,6 +124,8 @@ public class TestBilingUnitCompletionReport {
 		billingItemRepo.delete(billingItem3);
 		
 		stateRepo.delete(state);
+		
+		addressRepo.delete(address);
 	}
 	
 	@Test

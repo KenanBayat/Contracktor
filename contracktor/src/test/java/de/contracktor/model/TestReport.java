@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import de.contracktor.repository.AddressRepository;
 import de.contracktor.repository.BillingItemRepository;
 import de.contracktor.repository.OrganisationRepository;
 import de.contracktor.repository.ReportRepository;
@@ -43,11 +44,16 @@ public class TestReport {
 	
 	private LocalDate date = LocalDate.of(2021, 9, 8);
 	
+	@Autowired
+	private AddressRepository addressRepo;
+	
+	Address address;
+	
 	@BeforeEach
 	public void init() {
 		state = new State("Processing");
 		stateRepo.save(state);
-		organisation = new Organisation("testOrganisation", "straße", "houseNumber", "city", "12345", "country");
+		organisation = new Organisation("testOrganisation");
 		organisation = organisationRepo.save(organisation);
 		billingItems = new ArrayList<BillingItem>();
 		billingItem = new BillingItem("ID_3346_2929_37", "meter", 1000.0, 105.0, 100050.0, "3m5_6h4uXAXvBoFEtks_QE", state, "", billingItems);
@@ -59,6 +65,7 @@ public class TestReport {
 		billingItemRepo.delete(billingItem);
 		stateRepo.delete(state);
 		reportRepo.delete(report);
+		organisationRepo.delete(organisation);
 	}
 	
 	@Test

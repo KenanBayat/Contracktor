@@ -47,12 +47,11 @@
 
                                 <div class="col-6">
                                     <label for="organisation" class="form-label">Organisation</label>
-                                    <select class="form-select" id="organisation" name="organisation" th:field="*{organisation.organisationName}">
-                                        <option th:each="o : ${organisations}" th:text="${o.organisationName}" th:value="${o.organisationName}"></option>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        Please provide a valid state.
-                                    </div>
+
+                                    <input class="form-control" list="datalistOptions" id="organisation" placeholder="Tippen zum Suchen..." name="organisation" th:field="*{organisation}">
+                                    <datalist id="datalistOptions">
+                                        <option th:each="o : ${organisations}" th:value="${o.organisationName}">
+                                    </datalist>
                                 </div>
 
 
@@ -61,8 +60,8 @@
                                     <input type="password" class="form-control" id="password" th:field="*{password}">
                                 </div>
                                 <div class="col-6">
-                                    <label for="passwordR" class="form-label">Password wiederholen</label>
-                                    <input type="password" class="form-control" id="passwordR">
+                                    <label for="passwordCheck" class="form-label">Password wiederholen</label>
+                                    <input type="password" class="form-control" id="passwordCheck" th:field="*{passwordCheck}">
                                 </div>
 
 
@@ -77,7 +76,7 @@
                                         </label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="isApplicationAdmin" name="isApplicationAdmin" th:checked="*{isApplicationAdmin}"/>
+                                        <input class="form-check-input" type="checkbox" id="isApplicationAdmin" name="isApplicationAdmin" th:checked="*{isSysadmin}"/>
                                         <label class="form-check-label" for="isApplicationAdmin">
                                             Mit Systemadmin-Rechten
                                         </label>

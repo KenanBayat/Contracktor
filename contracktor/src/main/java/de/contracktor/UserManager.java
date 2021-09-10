@@ -1,6 +1,6 @@
 package de.contracktor;
 
-import de.contracktor.model.User;
+import de.contracktor.model.UserAccount;
 import de.contracktor.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AuthorizationServiceException;
@@ -15,7 +15,7 @@ public class UserManager {
     @Autowired
     PasswordEncoder encoder;
 
-    public User addUser(User user) throws AuthorizationServiceException {
+    public UserAccount addUser(UserAccount user) throws AuthorizationServiceException {
         if (userRepository.existsByUsername(user.getUsername())) {
             throw new AuthorizationServiceException("Username already exists");
         }
