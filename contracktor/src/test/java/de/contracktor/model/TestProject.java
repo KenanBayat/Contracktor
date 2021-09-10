@@ -49,7 +49,7 @@ public class TestProject {
 	
 	@BeforeEach
 	public void init() {
-		address = new Address(2, "straße", "houseNumber", "city", "12345", "country");
+		address = new Address(200000, "straße", "houseNumber", "city", "12345", "country");
 		addressRepo.save(address);
 		state = new State("status");
 		stateRepo.save(state);
@@ -65,12 +65,13 @@ public class TestProject {
 		stateRepo.delete(state);
 		organisationRepo.delete(organisation);
 		pictureRepo.delete(picture);
+		addressRepo.delete(address);
 	}
 	
 	@Test
 	public void testNullProjectName() {
 		// Test null projectName.
-		project = new Project(2, null, creationDate, completionDate, address,
+		project = new Project(200000, null, creationDate, completionDate, address,
 				100.0, organisation, "hans", state, picture, "");
 		assertThrows(Exception.class, () -> projectRepo.save(project));
 	}
@@ -78,7 +79,7 @@ public class TestProject {
 	@Test
 	public void testNullCreationDate() {
 		// Test null creationDate.
-		project = new Project(2, "project", null, completionDate, address, 
+		project = new Project(200000, "project", null, completionDate, address, 
 				100.0, organisation, "hans", state, picture, "");
 				  assertThrows(Exception.class, () -> projectRepo.save(project));
 	}
@@ -86,7 +87,7 @@ public class TestProject {
 	@Test
 	public void testNullCompletionDate() {
 		// Test null completionDate.
-		project = new Project(2, "project", creationDate, null, address,
+		project = new Project(200000, "project", creationDate, null, address,
 				100.0, organisation, "hans", state, picture, "");
 						  assertThrows(Exception.class, () -> projectRepo.save(project));
 	}
@@ -94,7 +95,7 @@ public class TestProject {
 	@Test
 	public void testNullCreator() {
 		// Test null creator.
-		project = new Project(2, "project", creationDate, completionDate, address, 
+		project = new Project(2000000, "project", creationDate, completionDate, address, 
 				100.0, organisation, null, state, picture, "");
 						  assertThrows(Exception.class, () -> projectRepo.save(project));
 	}
@@ -102,7 +103,7 @@ public class TestProject {
 	@Test
 	public void testNullDescription() {
 		// Test null description.
-		project = new Project(2, "project", creationDate, completionDate, address,
+		project = new Project(200000, "project", creationDate, completionDate, address,
 				100.0, organisation, "hans", state, picture, null);
 						  assertThrows(Exception.class, () -> projectRepo.save(project));
 	}
@@ -110,7 +111,7 @@ public class TestProject {
 	@Test
 	public void testEmptyName() {
 		// Test empty name.
-		project = new Project(2, "", creationDate, completionDate, address, 
+		project = new Project(2000000, "", creationDate, completionDate, address, 
 				100.0, organisation, "hans", state, picture, "");
 						  assertThrows(Exception.class, () -> projectRepo.save(project));
 	}
@@ -118,7 +119,7 @@ public class TestProject {
 	@Test
 	public void testEmptyCreator() {
 		// Test empty creator.
-		project = new Project(2, "project", creationDate, completionDate, address,
+		project = new Project(2000000, "project", creationDate, completionDate, address,
 				100.0, organisation, "", state, picture, "");
 						  assertThrows(Exception.class, () -> projectRepo.save(project));
 	}
