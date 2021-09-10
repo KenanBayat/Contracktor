@@ -1,14 +1,15 @@
 package de.contracktor.model;
 
 import java.util.List;
+import java.util.Map;
 
 public class APIUpdate {
 
-    private List<BillingItem> billingItemList;
+    private Map<String,String> billingItemUpdates;
     private List<Report> reportList;
 
-    public List<BillingItem> getBillingItemList() {
-        return billingItemList;
+    public Map<String,String> getBillingItemIDList() {
+        return billingItemUpdates;
     }
 
     public List<Report> getReportList() {

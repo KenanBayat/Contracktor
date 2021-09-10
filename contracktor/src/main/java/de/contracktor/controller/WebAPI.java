@@ -50,12 +50,12 @@ public class WebAPI {
         }
         return apiDownloadConstructor(user);
     }
-
+/**
     @PostMapping("/api/update")
     @ResponseBody
     public APIResponse updateController(@RequestParam(name = "json") APIUpdate update) {
-        for (BillingItem billingItem : update.getBillingItemList()) {
-            Optional<BillingItem> savedItem = billingItemRepository.findByBillingItemID(billingItem.getBillingItemID());
+        for (String billingItemID : update.getBillingItemIDList()) {
+            Optional<BillingItem> savedItem = billingItemRepository.findByBillingItemID(getBillingItemUpdates());
             if (savedItem.isPresent() && savedItem.get().getLastModified() >= billingItem.getLastModified()) {
                 billingItemRepository.save(billingItem);
             }
@@ -67,7 +67,7 @@ public class WebAPI {
 
         return new APIResponse("OK");
     }
-
+**/
     private APIResponse apiDownloadConstructor(String username) {
         Optional<UserAccount> user =  userRepository.findByUsername(username);
         if (user.isEmpty()) {
