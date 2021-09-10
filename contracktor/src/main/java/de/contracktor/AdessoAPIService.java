@@ -163,6 +163,8 @@ public class AdessoAPIService {
 			billingUnit.setBillingItems(billingItems);
 			if (!billingUnitRepo.existsByBillingUnitID(billingUnit.getBillingUnitID())) {
 				billingUnitRepo.save(billingUnit);
+				BillingUnit billingUnit1 = billingUnitRepo.findByBillingUnitID(billingUnit.getBillingUnitID());
+				billingUnitRepo.save(billingUnit1);
 			}
 		}
 	}

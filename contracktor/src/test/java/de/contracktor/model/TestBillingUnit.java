@@ -95,8 +95,8 @@ public class TestBillingUnit {
 		billingItemRepo.save(billingItem2);
 		billingItemRepo.save(billingItem3);
 		
-		address1 = new Address("straße", "houseNumber", "city", "12345", "country");
-		address2 = new Address("street", "42", "hamburg", "187", "de");
+		address1 = new Address(1, "straße", "houseNumber", "city", "12345", "country");
+		address2 = new Address(2, "street", "42", "hamburg", "187", "de");
 		
 		addressRepo.save(address1);
 		addressRepo.save(address2);

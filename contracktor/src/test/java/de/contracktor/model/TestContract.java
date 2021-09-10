@@ -56,7 +56,7 @@ public class TestContract {
 	
 	@BeforeEach
 	public void init() {
-		address = new Address( "straße", "42", "city", "12345", "Land");
+		address = new Address(2, "straße", "42", "city", "12345", "Land");
 		addressRepo.save(address);
 		creationDate = LocalDate.of(2022, 12, 12);
 		completionDate = LocalDate.of(2022, 12, 12);

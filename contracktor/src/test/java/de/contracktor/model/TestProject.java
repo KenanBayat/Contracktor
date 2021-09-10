@@ -49,7 +49,7 @@ public class TestProject {
 	
 	@BeforeEach
 	public void init() {
-		address = new Address("straße", "houseNumber", "city", "12345", "country");
+		address = new Address(2, "straße", "houseNumber", "city", "12345", "country");
 		addressRepo.save(address);
 		state = new State("status");
 		stateRepo.save(state);

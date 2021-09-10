@@ -22,7 +22,7 @@ import de.contracktor.repository.ProjectRepository;
 import de.contracktor.repository.StateRepository;
 
 @SpringBootTest
-public class TestBilingUnitCompletionReport {
+public class TestBillingUnitCompletionReport {
 
 	@Autowired
 	BillingItemRepository billingItemRepo;
@@ -77,7 +77,7 @@ public class TestBilingUnitCompletionReport {
 	
 	@BeforeEach
 	public void init() {
-		address = new Address( "straße", "42", "city", "12345", "Land");
+		address = new Address(1, "straße", "42", "city", "12345", "Land");
 		addressRepo.save(address);
 		
 		state = new State("BillingUnitState");
