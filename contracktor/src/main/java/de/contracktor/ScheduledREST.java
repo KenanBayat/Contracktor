@@ -15,7 +15,6 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import de.contracktor.AdessoAPIService;
 
 @Component
 public class ScheduledREST {
@@ -23,7 +22,9 @@ public class ScheduledREST {
     private String url = "http://localhost:3000/api/v1/";
     private final String credentials = "Bearer 123";
     private static HttpEntity entity;
-    private AdessoAPIService adesso = new AdessoAPIService();
+    
+    @Autowired
+    private AdessoAPIService adesso;
 
     @Autowired
     RestTemplate restTemplate = new RestTemplate();
@@ -81,7 +82,7 @@ public class ScheduledREST {
                             + " belongs to project number: " + contract.getProjectId());
                     contractIDs.add(contract.getContractID());
 
-                    adesso.save(contract);
+                   // adesso.save(contract);
 
                 }
             }
@@ -115,7 +116,7 @@ public class ScheduledREST {
                     System.out.println(billingUnit.getBillingUnitID());
                     List<BillingItem> billingItems = billingUnit.getBillingItems();
 
-                    adesso.save(billingUnit, contractID);
+                    //adesso.save(billingUnit, contractID);
 
                     try {
                         UriComponentsBuilder latestStatusBuilder = UriComponentsBuilder.fromUriString(url)
@@ -127,7 +128,7 @@ public class ScheduledREST {
                         ResponseEntity<String> StatusResponse = restTemplate.exchange(
                                 latestStatusBuilder.build().toUri(), HttpMethod.GET, entity, String.class);
 
-                        adesso.save(StatusResponse.getBody(), billingUnit.getBillingUnitID());
+                      //  adesso.save(StatusResponse.getBody(), billingUnit.getBillingUnitID());
 
                         System.out.println(StatusResponse.getBody());
 
@@ -155,7 +156,7 @@ public class ScheduledREST {
 
                         System.out.println(StatusResponse1.getBody());
 
-                        adesso.save(StatusResponse1.getBody(), billingItem.getBillingItemID());
+                       // adesso.save(StatusResponse1.getBody(), billingItem.getBillingItemID());
 
 
                         } catch (Exception e) {
@@ -179,7 +180,7 @@ public class ScheduledREST {
                             ResponseEntity<String> StatusResponse2 = restTemplate.exchange(
                                     latestStatusBuilder2.build().toUri(), HttpMethod.GET, entity, String.class);
 
-                                    adesso.save(StatusResponse2.getBody(), billingItemItem.getBillingItemID());
+                                   // adesso.save(StatusResponse2.getBody(), billingItemItem.getBillingItemID());
 
                                     System.out.println(StatusResponse2.getBody());
                             } catch(Exception e) {

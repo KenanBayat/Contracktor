@@ -13,6 +13,7 @@ import de.contracktor.model.Contract;
 import de.contracktor.model.Organisation;
 import de.contracktor.model.Project;
 import de.contracktor.model.State;
+import de.contracktor.repository.AddressRepository;
 import de.contracktor.repository.BillingItemRepository;
 import de.contracktor.repository.BillingUnitCompletionReportRepository;
 import de.contracktor.repository.BillingUnitRepository;
@@ -44,6 +45,9 @@ public class AdessoAPIService {
 
 	@Autowired
 	private StateRepository stateRepo;
+	
+	@Autowired
+	private AddressRepository addressRepo;
 
 	/**
 	 * Saves a project if it is not existing in the repository.
@@ -63,6 +67,13 @@ public class AdessoAPIService {
 		}else {
 			organisation = organisationRepo.findByOrganisationName(project.getOwnerGroupIdentifier());
 		}
+		if(!addressRepo.existsById(project.getAddress().getId())) {
+			addressRepo.save(project.getAddress());
+		}
+		if(!stateRepo.existsByStateName(project.getStatus().getStateName())) {
+			stateRepo.save(project.getStatus());
+		}
+		
 		project.setOwner(organisation);
 		if (!projectRepo.existsById(project.getId())) {
 			projectRepo.save(project);
