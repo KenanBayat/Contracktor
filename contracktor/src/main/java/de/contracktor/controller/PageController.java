@@ -4,7 +4,7 @@ import de.contracktor.controller.dato.EditUserDato;
 import de.contracktor.controller.dato.ManageUserDato;
 import de.contracktor.controller.dato.RegisterUserDato;
 import de.contracktor.model.Organisation;
-import de.contracktor.model.User;
+import de.contracktor.model.UserAccount;
 import de.contracktor.model.Role;
 
 import de.contracktor.UserManager;
@@ -174,15 +174,15 @@ public class PageController {
 
     @GetMapping("/admin/manage-user/edit/{userId}")
     public String editUser(@PathVariable String userId, Model model) {
-        Organisation hochtief = new Organisation("Hochtief", "Elbstraße", "7", "Hamburg", "22406", "Deutschland");
-        Organisation zublin = new Organisation("Züblin", "Haupstraße", "26", "Hamburg", "22317", "Deutschland");
-        List<User> users = List.of(
-                new User("lion", "pwd", "Lion", "Grabau", hochtief, true, true, new ArrayList<Role>()),
-                new User("alex", "hallo", "Alex", "Meier", hochtief, true, false, new ArrayList<Role>()),
-                new User("nils", "imDreieck", "Nils", "Fischer", zublin, false, false, new ArrayList<Role>())
+        Organisation hochtief = new Organisation("Hochtief");
+        Organisation zublin = new Organisation("Züblin");
+        List<UserAccount> users = List.of(
+                new UserAccount("lion", "pwd", "Lion", "Grabau", hochtief, true, true, new ArrayList<Role>()),
+                new UserAccount("alex", "hallo", "Alex", "Meier", hochtief, true, false, new ArrayList<Role>()),
+                new UserAccount("nils", "imDreieck", "Nils", "Fischer", zublin, false, false, new ArrayList<Role>())
 
         );
-        for(User user : users) {
+        for(UserAccount user : users) {
             if(user.getUsername().equals(userId)) {
                 model.addAttribute("oldUser", user);
             }
@@ -194,9 +194,6 @@ public class PageController {
     @PostMapping("/admin/manage-user/edit")
     public String setUserEdit(@ModelAttribute EditUserDato newUser, Model model) {
         System.out.println(newUser.getNewUsername());
-        Organisation hochtief = new Organisation("Hochtief", "Elbstraße", "7", "Hamburg", "22406", "Deutschland");
-        Organisation zublin = new Organisation("Züblin", "Haupstraße", "26", "Hamburg", "22317", "Deutschland");
-        System.out.println(userId);
         Organisation hochtief = new Organisation("Hochtief");
         Organisation zublin = new Organisation("Züblin");
         List<Organisation> organisations = List.of(
@@ -211,26 +208,13 @@ public class PageController {
         ManageUserDato userDato = new ManageUserDato(organisations, users);
         model.addAttribute("userlist", userDato);
 
-        User oldUser;
-        for(User user : users) {
+        UserAccount oldUser;
+        for(UserAccount user : users) {
             if(user.getUsername().equals(newUser.getOldUsername())) {
                 oldUser = user;
             }
         }
 
         return "user-list";
-    }
-
-    @GetMapping("/admin/organisation")
-    public String getOrganisationManagement(Model model) {
-
-        // Testing Data
-        List<Organisation> organisations = List.of(
-                new Organisation("Hochtief", "Elbstraße", "7", "Hamburg", "22406", "Deutschland"),
-                new Organisation("Züblin", "Haupstraße", "26", "Hamburg", "22317", "Deutschland")
-        );
-
-        model.addAttribute("organisations", organisations);
-        return "organisation";
     }
 }
