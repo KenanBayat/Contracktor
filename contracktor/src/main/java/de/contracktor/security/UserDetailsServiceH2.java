@@ -21,6 +21,7 @@ public class UserDetailsServiceH2 implements UserDetailsService {
         Optional<UserAccount> user = userRepository.findByUsername(username);
 
         if (user.isEmpty()) {
+            System.out.println("TEST");
             throw new UsernameNotFoundException("The requested account does not exist.");
         }
 
