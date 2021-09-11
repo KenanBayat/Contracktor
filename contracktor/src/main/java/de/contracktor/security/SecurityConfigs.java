@@ -40,7 +40,9 @@ public class SecurityConfigs {
 
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
-			http.authorizeRequests()
+			http.requestMatchers().antMatchers("/api/**")
+					.and()
+					.authorizeRequests()
 					.antMatchers("/api/login").permitAll()
 					.antMatchers("/api/**").hasAuthority("USER");
 
