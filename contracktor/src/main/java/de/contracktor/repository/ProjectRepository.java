@@ -7,6 +7,7 @@ import de.contracktor.model.Project;
 import java.util.List;
 
 public interface ProjectRepository extends CrudRepository<Project, Integer>{
+    List<Project> findAll();
     List<Project> findByOwner_OrganisationNameIgnoreCase(String organisationName);
 
 

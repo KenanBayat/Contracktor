@@ -2,7 +2,6 @@ package de.contracktor.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -18,17 +17,11 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sun.istack.NotNull;
+
 import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import de.contracktor.controller.dato.ContractDato;
-import de.contracktor.controller.dato.ProjectsDato;
-import de.contracktor.controller.dato.StateDato;
 import lombok.Getter;
 import lombok.Setter;
 

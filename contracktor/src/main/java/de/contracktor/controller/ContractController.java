@@ -1,9 +1,10 @@
 package de.contracktor.controller;
 
-import de.contracktor.controller.dato.BillingUnitDato;
-import de.contracktor.controller.dato.ContractDato;
 import de.contracktor.model.BillingItem;
 import de.contracktor.model.BillingUnit;
+import de.contracktor.repository.BillingUnitRepository;
+import de.contracktor.repository.ContractRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,26 +16,32 @@ import java.util.List;
 @Controller
 public class ContractController {
 
+    @Autowired
+    ContractRepository contractRepository;
+
+    @Autowired
+    BillingUnitRepository billingUnitRepository;
+
     @GetMapping("/contracts")
     public String getContractList(Model model){
-        ContractDato contracts = ContractDato.getInstance();
-        model.addAttribute("contracts",contracts);
+        model.addAttribute("contracts",contractRepository.findAll());
         return "contract-list";
     }
 
     @GetMapping("/contract/{contractId}/details")
     public String getContractDetails(@PathVariable int contractId, Model model){
-        ContractDato contracts = ContractDato.getInstance();
 
-        BillingUnitDato billingUnits = BillingUnitDato.getInstance();
-        List<BillingUnit> units = billingUnits.getBunits();
+        model.addAttribute("contract", contractRepository.findById(contractId));
 
-        model.addAttribute("contract", contracts.findById(contractId));
-
+        List<BillingUnit> units = (List<BillingUnit>) billingUnitRepository.findAll();
         List<BillingItem> items = new ArrayList<>();
         for(BillingUnit unit: units){
-            items.addAll(unit.getBillingItems());
+            List<BillingItem> bItems = unit.getBillingItems();
+            for(BillingItem bItem:bItems){
+                items.add(bItem);
+            }
         }
+
         model.addAttribute("items",items);
         return "contract-details";
     }

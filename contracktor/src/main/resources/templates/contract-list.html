@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="de" xmlns:th="http://www.thymeleaf.org" th:include="layout :: page">
-<head/>
+<head>
+    <title>Verträge</title>
+</head>
 <body>
 <th:block th:fragment="content">
 <div class="container">
@@ -16,7 +18,7 @@
         </thead>
 
         <tbody>
-        <tr th:each="contract: ${contracts.getContracts()}">
+        <tr th:each="contract: ${contracts}">
             <td th:text="${contract.contractID}"></td>
             <td th:text="${contract.name}"></td>
             <td>

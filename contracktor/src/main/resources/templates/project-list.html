@@ -12,23 +12,15 @@
                     <tr>
                         <th>Projekt ID</th>
                         <th>Projektname</th>
-                        <th>Adresse</th>
-                        <th>Status</th>
-                        <th>Start</th>
-                        <th>Ende</th>
                         <th>Details</th>
-                        <th></th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    <tr th:each="project: ${projects.getProjects()}">
+                    <tr th:each="project: ${projects}">
                         <td th:text="${project.projectID}"></td>
                         <td th:text="${project.name}"></td>
-                        <td th:text="${project.country + ': ' + project.street + ' ' + project.houseNumber + ', ' + project.postcode + ' ' + project.city}"></td>
-                        <td th:text="${project.status.stateName}"></td>
-                        <td th:text="${project.creationDate}"></td>
-                        <td th:text="${project.completionDate}"></td>
+
                         <td>
                             <a th:href="@{'/project/' + ${project.projectID} + '/details'}" class="icon-link" title="Details">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16">

@@ -1,45 +1,40 @@
 package de.contracktor.controller;
 
-import de.contracktor.controller.dato.ContractDato;
-import de.contracktor.controller.dato.ProjectsDato;
-import de.contracktor.model.Organisation;
-import de.contracktor.model.Project;
-import de.contracktor.model.State;
+import de.contracktor.model.Contract;
+import de.contracktor.repository.ContractRepository;
 import de.contracktor.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class ProjectController {
 
-    //@Autowired
-    //ProjectRepository projectRepository;
+    @Autowired
+    ProjectRepository projectRepository;
+
+    @Autowired
+    ContractRepository contractRepository;
 
     @GetMapping("/projects")
     public String getProjectList(Model model) {
-        //model.addAttribute("projects",projectRepository.findAll());
-
-        ProjectsDato projects = ProjectsDato.getInstance();
-
-        model.addAttribute("projects", projects);
+        model.addAttribute("projects", projectRepository.findAll());
         return "project-list";
     }
 
     @GetMapping("/project/{projectId}/details")
     public String getProjectDetails(@PathVariable int projectId, Model model) {
-        //model.addAttribute("project", projectRepository.findById(projectId).get());
-        ProjectsDato projects = ProjectsDato.getInstance();
-        ContractDato contractList = ContractDato.getInstance();
+        List<Contract> contractList = (List<Contract>) contractRepository.findAll();
+        contractList = contractList.stream().filter(contract -> contract.getProjectId() == projectId).collect(Collectors.toList());
 
-        model.addAttribute("contracts", contractList.filterByProjectID(projectId));
-        model.addAttribute("project", projects.findById(projectId));
+
+        model.addAttribute("project", projectRepository.findById(projectId));
+        model.addAttribute("contracts", contractList);
         return "project-details";
     }
 }
