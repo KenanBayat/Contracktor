@@ -10,5 +10,7 @@ public interface ProjectRepository extends CrudRepository<Project, Integer>{
     List<Project> findAll();
     List<Project> findByOwner_OrganisationNameIgnoreCase(String organisationName);
 
-
+    boolean existsByProjectID(int id);
+    
+    Project findByProjectID(int id);
 }

@@ -2,7 +2,6 @@ package de.contracktor.controller;
 
 import de.contracktor.controller.dato.EditUserDato;
 import de.contracktor.controller.dato.ManageUserDato;
-import de.contracktor.controller.dato.RegisterUserDato;
 import de.contracktor.model.Organisation;
 import de.contracktor.model.UserAccount;
 import de.contracktor.model.Role;
@@ -55,7 +54,7 @@ public class PageController {
         );
         ManageUserDato userDato = new ManageUserDato(organisations, users);
         model.addAttribute("userlist", userDato);
-        return "user-list";
+        return "manageUsers";
     }
 
     @PostMapping("/admin/manage-user")
@@ -76,7 +75,7 @@ public class PageController {
         userDato.setUserList(userDato.getFilteredUserList(search));
         model.addAttribute("userlist", userDato);
         model.addAttribute("editUser", new EditUserDato());
-        return "user-list";
+        return "manageUsers";
     }
 
 
@@ -97,7 +96,7 @@ public class PageController {
         ManageUserDato userDato = new ManageUserDato(organisations, users);
         model.addAttribute("userlist", userDato);
         model.addAttribute("editUser", new EditUserDato());
-        return "user-list";
+        return "manageUsers";
     }
 
     @GetMapping("/admin/manage-user/edit/{userId}")
@@ -143,6 +142,6 @@ public class PageController {
             }
         }
 
-        return "user-list";
+        return "manageUsers";
     }
 }
