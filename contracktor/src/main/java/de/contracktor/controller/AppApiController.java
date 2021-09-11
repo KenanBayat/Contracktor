@@ -3,6 +3,9 @@ package de.contracktor.controller;
 import de.contracktor.model.*;
 import de.contracktor.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -41,6 +45,9 @@ public class AppApiController {
     @Autowired
     private ReportRepository reportRepository;
 
+    @Autowired
+    private PictureRepository pictureRepository;
+
     @GetMapping("/api/download")
     @ResponseBody
     public APIResponse downloadController(Model model) {
@@ -50,24 +57,34 @@ public class AppApiController {
         }
         return apiDownloadConstructor(user);
     }
-/**
+
     @PostMapping("/api/update")
     @ResponseBody
     public APIResponse updateController(@RequestParam(name = "json") APIUpdate update) {
-        for (String billingItemID : update.getBillingItemIDList()) {
-            Optional<BillingItem> savedItem = billingItemRepository.findByBillingItemID(getBillingItemUpdates());
-            if (savedItem.isPresent() && savedItem.get().getLastModified() >= billingItem.getLastModified()) {
-                billingItemRepository.save(billingItem);
+        Map<String, Pair<State, Long>> billingItemUpdates = update.getBillingItemIDList();
+
+        for (Map.Entry<String,Pair<State,Long>> item : billingItemUpdates.entrySet()) {
+            Optional<BillingItem> savedItem = billingItemRepository.findByBillingItemID(item.getKey());
+            if (savedItem.isEmpty()) {
+                return new APIResponse("UNKNOWN_BILLINGITEM");
+            }
+            if (savedItem.get().getLastModified() >= item.getValue().getSecond()) {
+                savedItem.get().setStatus(item.getValue().getFirst());
+                savedItem.get().setLastModified(item.getValue().getSecond());
+                billingItemRepository.save(savedItem.get());
             }
         }
 
         for (Report report : update.getReportList()) {
+            for (Picture picture : report.getPictures()) {
+                pictureRepository.save(picture);
+            }
             reportRepository.save(report);
         }
 
         return new APIResponse("OK");
     }
-**/
+
     @RequestMapping("/api/login")
     @ResponseBody
     public void loginController() {
@@ -77,13 +94,13 @@ public class AppApiController {
         Optional<UserAccount> user =  userRepository.findByUsername(username);
         if (user.isEmpty()) {
             return new APIResponse("UNKNOWN_USER");
-        } else if (!hasPerm(user.get(), new Permission("r"))) {
+        } else if (!hasPerm(user.get(), "r") && !hasPerm(user.get(),"w")) {
             return new APIResponse("NO_READ_PERM");
         }
 
         APIResponse response = new APIResponse();
         Organisation organisation = user.get().getOrganisation();
-        response.setWritePerm(hasPerm(user.get(), new Permission("w")));
+        response.setWritePerm(hasPerm(user.get(), "w"));
         response.setProjects(projectRepository.findByOwner_OrganisationNameIgnoreCase(organisation.getOrganisationName()));
         response.setContracts(contractRepository.findByContractorIgnoreCaseOrConsigneeIgnoreCase(organisation.getOrganisationName(),
                 organisation.getOrganisationName()));
@@ -95,8 +112,8 @@ public class AppApiController {
         return response;
     }
 
-    private boolean hasPerm(UserAccount user, Permission permission) {
-        List<Permission> permissions = user.getRoles().stream().map((p) -> p.getPermission()).collect(Collectors.toList());
-        return permissions.contains(new Permission("w"));
+    private boolean hasPerm(UserAccount user, String permission) {
+        List<String> permissions = user.getRoles().stream().map((r) -> r.getPermission().getPermissionName()).collect(Collectors.toList());
+        return permissions.contains(permission);
     }
 }
