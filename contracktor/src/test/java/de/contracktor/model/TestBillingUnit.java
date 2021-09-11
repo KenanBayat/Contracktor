@@ -59,8 +59,6 @@ public class TestBillingUnit {
 	ArrayList<BillingItem> billingItems;
 	
 	State state;
-	
-	BillingUnit billingUnit;
 
 	Contract contract;
 	
@@ -95,8 +93,8 @@ public class TestBillingUnit {
 		billingItemRepo.save(billingItem2);
 		billingItemRepo.save(billingItem3);
 		
-		address1 = new Address("straße", "houseNumber", "city", "12345", "country");
-		address2 = new Address("street", "42", "hamburg", "187", "de");
+		address1 = new Address(1000, "straße", "houseNumber", "city", "12345", "country");
+		address2 = new Address(100, "street", "42", "hamburg", "187", "de");
 		
 		addressRepo.save(address1);
 		addressRepo.save(address2);
@@ -107,7 +105,7 @@ public class TestBillingUnit {
 		picture = new Picture(null,null);
 		pictureRepo.save(picture);
 		
-		project = new Project(2, "project", creationDate, completionDate, address2,100.0, organisation, "hans", state, picture, "");
+		project = new Project(200, "project", creationDate, completionDate, address2, 100.0, organisation, "hans", state, picture, "");
 		projectRepo.save(project);
 		
 		contract = new Contract(42, project, "contract", "consignee", state, "Contractor", "test");
@@ -128,66 +126,47 @@ public class TestBillingUnit {
 		billingItemRepo.delete(billingItem3);
 		
 		stateRepo.delete(state);
+		
+		addressRepo.delete(address1);
+		addressRepo.delete(address2);
 	}
 	
 	@Test
 	public void null_ID_Test() {
-		BillingUnit unit = new BillingUnit(null, "Meter", completionDate ,42.42, 
-		           1337.0 ,contract, billingItems ,true, 
-		           "shortDescription", "longDescription");
+		BillingUnit unit = new BillingUnit(null, "Meter", completionDate , 42.42, 
+		           1337.0 , contract, billingItems ,true, 
+		           "shortDescription", "longDescription", state);
 		assertThrows(Exception.class, () -> billingUnitRepo.save(unit));
 	}
 	
-	@Test
-	public void null_Unit_Test() {
-		BillingUnit unit = new BillingUnit("1", null, completionDate ,42.42, 
-		           1337.0 ,contract, billingItems ,true, 
-		           "shortDescription", "longDescription");
-		assertThrows(Exception.class, () -> billingUnitRepo.save(unit));
-	}
-	
-	@Test
-	public void null_CompletionDate_Test() {
-		BillingUnit unit = new BillingUnit("1", "Meter", null ,42.42, 
-		           1337.0 ,contract, billingItems ,true, 
-		           "shortDescription", "longDescription");
-		assertThrows(Exception.class, () -> billingUnitRepo.save(unit));
-	}
 	@Test
 	public void null_TotalPrice_Test() {
-		BillingUnit unit = new BillingUnit("1", "Meter", completionDate ,null, 
+		BillingUnit unit = new BillingUnit("1234", "Meter", completionDate ,null, 
 		           1337.0 ,contract, billingItems ,true, 
-		           "shortDescription", "longDescription");
+		           "shortDescription", "longDescription", state);
 		assertThrows(Exception.class, () -> billingUnitRepo.save(unit));
 	}
+	
 	@Test
 	public void null_TotalQuantity_Test() {
-		BillingUnit unit = new BillingUnit("1", "Meter", completionDate ,42.42, 
+		BillingUnit unit = new BillingUnit("1234", "Meter", completionDate ,42.42, 
 		           null ,contract, billingItems ,true, 
-		           "shortDescription", "longDescription");
-		assertThrows(Exception.class, () -> billingUnitRepo.save(unit));
-	}
-	@Test
-	public void null_ownContractDefined_Test() {
-		BillingUnit unit = new BillingUnit("1", "Meter", completionDate ,42.42, 
-		           1337.0 ,contract, billingItems ,null, 
-		           "shortDescription", "longDescription");
+		           "shortDescription", "longDescription", state);
 		assertThrows(Exception.class, () -> billingUnitRepo.save(unit));
 	}
 
 	@Test
 	public void null_shortDescriptionDefined_Test() {
-		BillingUnit unit = new BillingUnit("1", "Meter", completionDate ,42.42, 
+		BillingUnit unit = new BillingUnit("1234", "Meter", completionDate ,42.42, 
 		           1337.0 ,contract, billingItems ,true, 
-		           null, "longDescription");
+		           null, "longDescription", state);
 		assertThrows(Exception.class, () -> billingUnitRepo.save(unit));
 	}
 	@Test
 	public void null_longDescriptionDefined_Test() {
-		BillingUnit unit = new BillingUnit("1", "Meter", completionDate ,42.42, 
+		BillingUnit unit = new BillingUnit("1234", "Meter", completionDate ,42.42, 
 		           1337.0 ,contract, billingItems ,true, 
-		           "shortDescription", null);
+		           "shortDescription", null, state);
 		assertThrows(Exception.class, () -> billingUnitRepo.save(unit));
 	}
-	
 }

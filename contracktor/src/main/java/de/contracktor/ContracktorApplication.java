@@ -6,7 +6,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpEntity;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
 
@@ -28,6 +27,6 @@ public class ContracktorApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... arg0) throws Exception {
-		initDatabaseService.init();
+		//initDatabaseService.init();
 	}
 }

@@ -56,7 +56,7 @@ public class TestContract {
 	
 	@BeforeEach
 	public void init() {
-		address = new Address( "straße", "42", "city", "12345", "Land");
+		address = new Address(2000, "straße", "42", "city", "12345", "Land");
 		addressRepo.save(address);
 		creationDate = LocalDate.of(2022, 12, 12);
 		completionDate = LocalDate.of(2022, 12, 12);
@@ -66,7 +66,7 @@ public class TestContract {
 		organisationRepo.save(organisation);
 		picture = new Picture(null,null);
 		pictureRepo.save(picture);
-		project = new Project(2, "project", creationDate, completionDate, address, 
+		project = new Project(5000, "project", creationDate, completionDate, address, 
 				100.0, organisation, "hans", state, picture, "");
 		projectRepo.save(project);
 	}

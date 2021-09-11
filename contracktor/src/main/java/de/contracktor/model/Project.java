@@ -29,7 +29,7 @@ public class Project {
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String creator;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private State status;
 	@Getter @Setter @OneToOne private Picture image;
-	@Getter @Setter @Column(nullable = false) private String description;
+	@Getter @Setter @Column(nullable = false, length = 8192) private String description;
 	@Getter @Setter @Transient @JsonProperty("creationDate") private String creationDateString;
 	@Getter @Setter @Transient @JsonProperty("completionDate") private String completionDateString;
 	@Getter @Setter @Transient private String ownerGroupIdentifier;

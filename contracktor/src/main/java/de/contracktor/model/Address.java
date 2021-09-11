@@ -14,6 +14,7 @@ import javax.validation.constraints.NotEmpty;
 public class Address {
 
 	@Getter	@Id @GeneratedValue(strategy = GenerationType.AUTO) @JsonIgnore private int id;
+	@Getter @Setter @Column(nullable = false, unique = true) @JsonProperty("id") private int addressId;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String street;
     @Getter @Setter @Column(nullable = false) @NotEmpty private String houseNumber;
     @Getter @Setter @Column(nullable = false) @NotEmpty private String city;
@@ -23,7 +24,8 @@ public class Address {
     public Address() { 
     }
   
-    public Address(String street, String houseNumber, String city, String zipCode, String country) {
+    public Address(int addressId, String street, String houseNumber, String city, String zipCode, String country) {
+    	this.addressId = addressId;
     	this.street = street;
     	this.houseNumber = houseNumber;
     	this.city = city;

@@ -19,7 +19,7 @@ import lombok.Setter;
 public class Organisation {
 	
 	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	private int id;
-	@Getter @Column(nullable = false) @NotEmpty private String organisationName;
+	@Getter @Setter @Column(nullable = false) @NotEmpty private String organisationName;
 	
 	public Organisation() {
 		
