@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -17,15 +18,17 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.stream.Collectors;
 
-public class APITokenFilter extends UsernamePasswordAuthenticationFilter {
+public class APITokenFilter extends BasicAuthenticationFilter {
 
-    private final AuthenticationManager authenticationManager;
+   // private final AuthenticationManager authenticationManager;
+
 
     public APITokenFilter(AuthenticationManager authenticationManager) {
-        setFilterProcessesUrl("/api/login");
-        this.authenticationManager = authenticationManager;
+        super(authenticationManager);
+        //this.authenticationManager = authenticationManager;
     }
 
+/**
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         String username = request.getHeader("username");
@@ -34,9 +37,9 @@ public class APITokenFilter extends UsernamePasswordAuthenticationFilter {
         UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username,password);
         return authenticationManager.authenticate(authRequest);
     }
-
+**/
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+    protected void onSuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, Authentication authResult) throws IOException {
         Algorithm encoder = Algorithm.HMAC256("test".getBytes());
         String token = JWT.create()
                 .withSubject(authResult.getName())
@@ -45,5 +48,12 @@ public class APITokenFilter extends UsernamePasswordAuthenticationFilter {
                 .withClaim("authorities", authResult.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(encoder);
         response.setHeader("api_token", token);
+        response.setStatus(200);
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getServletPath();
+        return !path.startsWith("/api/login");
     }
 }

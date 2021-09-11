@@ -13,6 +13,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 
 @EnableWebSecurity
@@ -45,11 +47,13 @@ public class SecurityConfigs {
 			http.csrf().disable()
 					.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
+			APITokenFilter apiTokenFilter = new APITokenFilter(authenticationManagerBean());
 
 			APIAuthorizationFilter apiAuthFilter =  new APIAuthorizationFilter(authenticationManagerBean());
 
-			APITokenFilter apiFilter = new APITokenFilter(authenticationManagerBean());
-			http.addFilter(apiFilter).addFilter(apiAuthFilter);
+
+			http.addFilter(apiTokenFilter);
+			http.addFilterBefore(apiAuthFilter, BasicAuthenticationFilter.class);
 		}
 	}
 

@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
-public class WebAPI {
+public class AppApiController {
 
     @Autowired
     private UserRepository userRepository;
@@ -66,6 +66,11 @@ public class WebAPI {
         }
 
         return new APIResponse("OK");
+    }
+
+    @RequestMapping("/api/login")
+    @ResponseBody
+    public void loginController() {
     }
 
     private APIResponse apiDownloadConstructor(String username) {
