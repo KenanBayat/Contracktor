@@ -43,11 +43,12 @@ docker-deploy:
     - main
 
   script:
+    - docker network create --subnet=172.18.0.0/16 deploy-net
     - docker build -t adessoapi -f contracktor/docker/adessoAPI/Dockerfile .
     - docker stop adessoapi-container || true
     - docker rm adessoapi-container || true
-    - docker run -d -p 3000:3000 --name adessoapi-container adessoapi
+    - docker run -d -p 3000:3000 --name adessoapi-container --net deploy-net --ip 172.18.0.1 adessoapi
     - docker build -t contracktor-web -f contracktor/docker/app/Dockerfile .
     - docker stop contracktor-web-container || true
     - docker rm contracktor-web-container || true
-    - docker run -d -p 8080:8080 --name contracktor-web-container contracktor-web
+    - docker run -d -p 8080:8080 --name --net deploy-net --ip 172.18.0.2 contracktor-web-container contracktor-web
