@@ -1,2 +1,4 @@
-package de.contracktor.controller;public class SearchController {
+package de.contracktor.controller;
+
+public class SearchController {
 }

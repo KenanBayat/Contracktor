@@ -1,5 +1,6 @@
 package de.contracktor.controller;
 
+import de.contracktor.UserManager;
 import de.contracktor.model.Organisation;
 import de.contracktor.model.Role;
 import de.contracktor.model.UserAccount;
@@ -19,7 +20,7 @@ import java.util.List;
 public class RegisterAdminController {
 
     @Autowired
-    UserRepository userRepository;
+    UserManager userManager;
 
     @Autowired
     OrganisationRepository organisationRepository;
@@ -53,7 +54,7 @@ public class RegisterAdminController {
                            @RequestParam String organisation,
                            @RequestParam String password,
                            @RequestParam String passwordCheck,
-                           @RequestParam String admin,
+                           @RequestParam(value = "admin", required = false) String admin,
                            Model model) {
 
         // Data:
@@ -63,13 +64,19 @@ public class RegisterAdminController {
         Organisation org = organisationRepository.findByOrganisationName(organisation);
 
         // Logic:
+        if(admin == null) {
+            admin = "no";
+        }
         if(admin.contains("admin")) {
             isAdmin = true;
         }
         if(admin.contains("sysadmin")) {
             isSysadmin = true;
         }
-        UserAccount user = userRepository.save(new UserAccount(username, password, forename, surname, org,
+
+        System.out.println(admin);
+
+        UserAccount user = userManager.addUser(new UserAccount(username, password, forename, surname, org,
                 isAdmin, isSysadmin, new ArrayList<Role>()));
 
         // Model:
