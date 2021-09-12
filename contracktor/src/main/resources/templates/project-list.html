@@ -8,6 +8,10 @@
             <ul>
                 <li><a th:href="@{'/project-details/?projectId=' + 1}">Projekt 1</a></li>
             </ul>
+
+            <ul>
+                <li th:each="project : ${projects}" th:text="${project.getName()}"></li>
+            </ul>
         </div>
     </th:block>
 </body>

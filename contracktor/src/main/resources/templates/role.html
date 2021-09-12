@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org" th:include="layout :: page">
+<head>
+    <title>
+        Admin - Contracktor
+    </title>
+</head>
+<body>
+<th:block th:fragment="content">
+    <div class="container">
+
+        <!-- Beginn Content -->
+
+        <!-- Begin Head of the Page -->
+        <!-- Set with of the page -->
+        <div class="py-3 text-center col-md-7 col-lg-8 mx-auto">
+
+            <!-- Set icon of the page -->
+            <div class="feature-icon bg-primary bg-gradient mx-auto">
+                <!-- Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="white" class="bi bi-briefcase" viewBox="0 0 16 16">
+                    <path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5zm1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0zM1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5z"/>
+                </svg>
+            </div>
+
+            <!-- Heading and explanation of the page -->
+            <h2>
+                Rollen verwalten
+            </h2>
+            <p class="lead">
+                Fügen Sie neue Rollen hinzu oder löschen Sie existierende Rollen.
+            </p>
+
+        </div>
+        <!-- End Head of the Page -->
+
+        <!-- Beginn Body of the Page -->
+        <!-- Set with of the page -->
+        <div class="col-md-7 col-lg-8 mx-auto">
+
+            <div class="card">
+                <div class="card-body">
+                    <h3>Rolle hinzufügen</h3>
+                    <form th:action="@{/admin/role/add}" method="post">
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="name" class="form-label">
+                                    Rollenname
+                                </label>
+                                <input id="name" placeholder="Rollenname eingeben.." class="form-control" name="roleName" th:value="${roleName}">
+                            </div>
+                            <div class="col-6">
+                                <label for="permission" class="form-label">Rechte</label>
+                                <select id="permission" class="form-select" name="permissionId">
+                                    <div th:each="permission : ${permissions}">
+                                        <option th:if="${permission.getPermissionName() == 'r'}" th:value="${permission.getId()}">Leserechte</option>
+                                        <option th:if="${permission.getPermissionName() == 'w'}" th:value="${permission.getId()}">Lese- und Schreibrechte</option>
+                                    </div>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <label for="organisation" class="form-label pt-2">Organisation</label>
+                                <select id="organisation" class="form-select" name="organisationId">
+                                    <div th:each="organisation : ${organisations}">
+                                        <option th:value="${organisation.getId()}" th:text="${organisation.getOrganisationName()}"></option>
+                                    </div>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="pt-3"></div>
+                        <button type="submit" class="btn btn-success">Bestätigen</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Search -->
+
+            <!-- Role list -->
+            <div class="card" th:each="organisation : ${organisations}" th:unless="${roles.get(0).existsOrganisationWithRole(organisation, roles)}" th:style="'margin-top: 20px'">
+                <div class="card-body">
+                    <h3 th:text="${organisation.getOrganisationName()}"></h3>
+                    <div class="accordion" id="userAccordion">
+                    <div class="accordion-item" th:each="role : ${roles.get(0).getRolesForOrganisation(organisation, roles)}">
+                        <h2 class="accordion-header" id="header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" th:data-bs-target="'#' + ${role.getRoleName()}" aria-expanded="false" aria-controls="flush-collapse" th:text="${role.getRoleName()}"></button>
+                        </h2>
+                        <div th:id="${role.getRoleName()}" class="accordion-collapse collapse" th:data-bs-parent="userAccordion">
+                            <div class="accordion-body">
+                            <form th:action="@{/admin/role/edit}" method="post">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label for="name2" class="form-label">
+                                            Rollenname
+                                        </label>
+                                        <input id="name2" class="form-control" name="roleChangeName" th:value="${role.getRoleName()}">
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="permission2" class="form-label">Rechte</label>
+                                        <select id="permission2" class="form-select" name="permissionChangeId">
+                                            <div th:each="permission : ${permissions}">
+                                                <option th:if="${permission.getPermissionName() == 'r' && permission.getPermissionName().equals(role.getPermission().getPermissionName())}" th:value="${permission.getId()}" selected>Leserechte</option>
+                                                <option th:if="${permission.getPermissionName() == 'w' && permission.getPermissionName().equals(role.getPermission().getPermissionName())}" th:value="${permission.getId()}" selected>Lese- und Schreibrechte</option>
+                                                <option th:if="${permission.getPermissionName() == 'r' && !permission.getPermissionName().equals(role.getPermission().getPermissionName())}" th:value="${permission.getId()}">Leserechte</option>
+                                                <option th:if="${permission.getPermissionName() == 'w' && !permission.getPermissionName().equals(role.getPermission().getPermissionName())}" th:value="${permission.getId()}">Lese- und Schreibrechte</option>
+                                            </div>
+                                        </select>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="organisation2" class="form-label pt-2">Organisation</label>
+                                        <select id="organisation2" class="form-select" name="organisationChangeId" th:value="${organisation.getId()}">
+                                            <div th:each="organisation : ${organisations}">
+                                                <option th:value="${organisation.getId()}" th:text="${organisation.getOrganisationName()}" th:if="${organisation.getOrganisationName().equals(role.getOrganisation().getOrganisationName())}" selected></option>
+                                                <option th:value="${organisation.getId()}" th:text="${organisation.getOrganisationName()}" th:unless="${organisation.getOrganisationName().equals(role.getOrganisation().getOrganisationName())}"></option>
+                                            </div>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="pt-3"></div>
+                                <button type="submit" class="btn btn-primary" name="roleChangeId" th:value="${role.getId()}">Änderungen speichern</button>
+                            </form>
+
+                            <div class="pt-2">
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" th:data-bs-target="'#' + ${role.getRoleName()} + 'd'">
+                                    Löschen
+                                </button>
+
+                                <!-- Modal -->
+                                <div class="modal fade" th:id="${role.getRoleName() + 'd'}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Rolle löschen?</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Möchten Sie die Rolle  <strong th:text="'@' + ${role.getRoleName()}"></strong> sicher löschen?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                                                <form th:action="@{/admin/role/delete}" method="post">
+                                                    <button type="submit" class="btn btn-primary" name="deleteId" th:value="${role.getId()}">Nutzer löschen</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <!-- End Body of the Page -->
+
+        <!-- End Content -->
+
+    </div>
+</th:block>
+</body>
+</html>

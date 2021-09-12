@@ -12,6 +12,9 @@ import javax.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Entity
 public class Role {
 	
@@ -28,5 +31,13 @@ public class Role {
 		this.roleName = roleName;
 		this.permission = permission;
 		this.organisation = organisation;
+	}
+
+	public boolean existsOrganisationWithRole(Organisation organisation, List<Role> roles) {
+		return roles.stream().filter(role -> role.getOrganisation().getOrganisationName().equals(organisation.getOrganisationName())).collect(Collectors.toList()).isEmpty();
+	}
+
+	public List<Role> getRolesForOrganisation(Organisation organisation, List<Role> roles) {
+		return roles.stream().filter(role -> role.getOrganisation().getOrganisationName().equals(organisation.getOrganisationName())).collect(Collectors.toList());
 	}
 }
