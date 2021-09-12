@@ -1,13 +1,13 @@
 package de.contracktor.controller;
 
+import de.contracktor.controller.dato.EditUserDato;
+import de.contracktor.controller.dato.ManageUserDato;
 import de.contracktor.model.Organisation;
-import de.contracktor.model.Project;
 import de.contracktor.model.UserAccount;
 import de.contracktor.model.Role;
 
 import de.contracktor.UserManager;
 import de.contracktor.repository.OrganisationRepository;
-import de.contracktor.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Controller;
@@ -20,8 +20,6 @@ import java.util.List;
 @Controller
 public class PageController {
 
-    @Autowired
-    ProjectRepository projectRepository;
 
     @Autowired
     UserManager userManager;
@@ -40,39 +38,110 @@ public class PageController {
         return "statistic";
     }
 
-    @GetMapping("/projects")
-    public String getProjectList(Model model) {
-        List<Project> projects = projectRepository.findAll();
 
-        model.addAttribute("projects", projects);
-        return "project-list";
+    @GetMapping("/admin/manage-user")
+    public String getUserList(Model model) {
+        Organisation hochtief = new Organisation("Hochtief");
+        Organisation zublin = new Organisation("Züblin");
+        List<Organisation> organisations = List.of(
+                zublin, hochtief
+        );
+        List<UserAccount> users = List.of(
+                new UserAccount("lion", "pwd", "Lion", "Grabau", hochtief, true, true, new ArrayList<Role>()),
+                new UserAccount("alex", "hallo", "Alex", "Meier", hochtief, true, false, new ArrayList<Role>()),
+                new UserAccount("nils", "imDreieck", "Nils", "Fischer", zublin, false, false, new ArrayList<Role>())
+
+        );
+        ManageUserDato userDato = new ManageUserDato(organisations, users);
+        model.addAttribute("userlist", userDato);
+        return "manageUsers";
     }
 
-    @GetMapping("/project-details")
-    public String getProjectDetails(@RequestParam(value = "projectId") String projectId, Model model) {
-        model.addAttribute("projectId", projectId);
-        return "project-details";
+    @PostMapping("/admin/manage-user")
+    public String getFilteredUserList(@RequestParam String search, Model model) {
+        model.addAttribute("search", search);
+        Organisation hochtief = new Organisation("Hochtief");
+        Organisation zublin = new Organisation("Züblin");
+        List<Organisation> organisations = List.of(
+                zublin, hochtief
+        );
+        List<UserAccount> users = List.of(
+                new UserAccount("lion", "pwd", "Lion", "Grabau", hochtief, true, true, new ArrayList<Role>()),
+                new UserAccount("alex", "hallo", "Alex", "Meier", hochtief, true, false, new ArrayList<Role>()),
+                new UserAccount("nils", "imDreieck", "Nils", "Fischer", zublin, false, false, new ArrayList<Role>())
+
+        );
+        ManageUserDato userDato = new ManageUserDato(organisations, users);
+        userDato.setUserList(userDato.getFilteredUserList(search));
+        model.addAttribute("userlist", userDato);
+        model.addAttribute("editUser", new EditUserDato());
+        return "manageUsers";
     }
 
-    @GetMapping("/contracts")
-    public String getContractList() {
-        return "contract-list";
+
+    @GetMapping("/admin/manage-user/delete/{userId}")
+    public String deleteUser(@PathVariable String userId, Model model) {
+        System.out.println(userId);
+        Organisation hochtief = new Organisation("Hochtief");
+        Organisation zublin = new Organisation("Züblin");
+        List<Organisation> organisations = List.of(
+                zublin, hochtief
+        );
+        List<UserAccount> users = List.of(
+                new UserAccount("lion", "pwd", "Lion", "Grabau", hochtief, true, true, new ArrayList<Role>()),
+                new UserAccount("alex", "hallo", "Alex", "Meier", hochtief, true, false, new ArrayList<Role>()),
+                new UserAccount("nils", "imDreieck", "Nils", "Fischer", zublin, false, false, new ArrayList<Role>())
+
+        );
+        ManageUserDato userDato = new ManageUserDato(organisations, users);
+        model.addAttribute("userlist", userDato);
+        model.addAttribute("editUser", new EditUserDato());
+        return "manageUsers";
     }
 
-    @GetMapping("/contract-details")
-    public String getContractDetails(@RequestParam(value = "contractId") String contractId, Model model) {
-        model.addAttribute("contractId", contractId);
-        return "contract-details";
+    @GetMapping("/admin/manage-user/edit/{userId}")
+    public String editUser(@PathVariable String userId, Model model) {
+        Organisation hochtief = new Organisation("Hochtief");
+        Organisation zublin = new Organisation("Züblin");
+        List<UserAccount> users = List.of(
+                new UserAccount("lion", "pwd", "Lion", "Grabau", hochtief, true, true, new ArrayList<Role>()),
+                new UserAccount("alex", "hallo", "Alex", "Meier", hochtief, true, false, new ArrayList<Role>()),
+                new UserAccount("nils", "imDreieck", "Nils", "Fischer", zublin, false, false, new ArrayList<Role>())
+
+        );
+        for(UserAccount user : users) {
+            if(user.getUsername().equals(userId)) {
+                model.addAttribute("oldUser", user);
+            }
+        }
+        model.addAttribute("newUser", new EditUserDato());
+        return "edit-user";
     }
 
-    @GetMapping("/billingitems")
-    public String getBillingItems() {
-        return "billingitem-list";
-    }
+    @PostMapping("/admin/manage-user/edit")
+    public String setUserEdit(@ModelAttribute EditUserDato newUser, Model model) {
+        System.out.println(newUser.getNewUsername());
+        Organisation hochtief = new Organisation("Hochtief");
+        Organisation zublin = new Organisation("Züblin");
+        List<Organisation> organisations = List.of(
+                zublin, hochtief
+        );
+        List<UserAccount> users = List.of(
+                new UserAccount("lion", "pwd", "Lion", "Grabau", hochtief, true, true, new ArrayList<Role>()),
+                new UserAccount("alex", "hallo", "Alex", "Meier", hochtief, true, false, new ArrayList<Role>()),
+                new UserAccount("nils", "imDreieck", "Nils", "Fischer", zublin, false, false, new ArrayList<Role>())
 
-    @GetMapping("/billingitem-details")
-    public String getBillingitemDetails(@RequestParam(value = "billingitemId") String billingitemId, Model model) {
-        model.addAttribute("billingitemId", billingitemId);
-        return "billingitem-details";
+        );
+        ManageUserDato userDato = new ManageUserDato(organisations, users);
+        model.addAttribute("userlist", userDato);
+
+        UserAccount oldUser;
+        for(UserAccount user : users) {
+            if(user.getUsername().equals(newUser.getOldUsername())) {
+                oldUser = user;
+            }
+        }
+
+        return "manageUsers";
     }
 }

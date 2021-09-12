@@ -4,10 +4,14 @@ import org.springframework.data.repository.CrudRepository;
 
 import de.contracktor.model.BillingItem;
 
+import java.util.List;
 import java.util.Optional;
 
-public interface BillingItemRepository extends CrudRepository<BillingItem, Integer> {    
+public interface BillingItemRepository extends CrudRepository<BillingItem, Integer> {
     boolean existsByBillingItemID(String id);
-    
-	Optional<BillingItem> findByBillingItemID(String id);
+
+    List<BillingItem> findAll();
+    Optional<BillingItem> findByBillingItemID(String billingItemID);
+
+	
 }
