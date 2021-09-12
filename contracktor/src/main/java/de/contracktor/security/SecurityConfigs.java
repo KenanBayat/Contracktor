@@ -72,8 +72,15 @@ public class SecurityConfigs {
 			http.authorizeRequests()
 					.antMatchers("/register").permitAll()
 					.antMatchers("/h2-console/**").permitAll()
-					.antMatchers("/admin").access("hasAuthority('ADMIN') or hasAuthority('APP_ADMIN')")
-					.antMatchers("/**").hasAuthority("USER")
+
+					// ignore login -> change
+					 .antMatchers("/admin").permitAll()
+					//.antMatchers("/admin").access("hasAuthority('ADMIN') or hasAuthority('APP_ADMIN')")
+
+					// ignore login -> change
+					.antMatchers("/**").permitAll()
+					// .antMatchers("/**").hasAuthority("USER")
+
 					.and()
 					.formLogin()
 					.and()
