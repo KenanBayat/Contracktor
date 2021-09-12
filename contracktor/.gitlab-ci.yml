@@ -43,7 +43,6 @@ docker-deploy:
     - main
 
   script:
-    - docker network create --subnet=172.18.0.0/16 deploy-net
     - docker build -t adessoapi -f contracktor/docker/adessoAPI/Dockerfile .
     - docker stop adessoapi-container || true
     - docker rm adessoapi-container || true
