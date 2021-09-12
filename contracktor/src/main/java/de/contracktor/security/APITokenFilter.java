@@ -2,6 +2,7 @@ package de.contracktor.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -49,6 +50,8 @@ public class APITokenFilter extends BasicAuthenticationFilter {
                 .sign(encoder);
         response.setHeader("api_token", token);
         response.setStatus(200);
+        response.setContentType("application/json");
+        new ObjectMapper().writeValue(response.getOutputStream(), token);
     }
 
     @Override
