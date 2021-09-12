@@ -69,16 +69,17 @@ public class SecurityConfigs {
 
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
-			http
-					.authorizeRequests()
-					.antMatchers("/api/**").authenticated()
+			http.authorizeRequests()
 					.antMatchers("/register").permitAll()
 					.antMatchers("/h2-console/**").permitAll()
-					.antMatchers("/**").permitAll()
+					.antMatchers("/admin").access("hasAuthority('ADMIN') or hasAuthority('APP_ADMIN')")
+					.antMatchers("/**").hasAnyAuthority()
 					.and()
 					.formLogin()
 					.and()
-					.httpBasic();
+					.httpBasic()
+					.and()
+					.logout();
 
 			// Comment in to enable H2 console on test server (not recommended for release version!)
 			//http.csrf().disable();
