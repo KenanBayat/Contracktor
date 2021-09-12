@@ -55,6 +55,11 @@ public class APITokenFilter extends BasicAuthenticationFilter {
     }
 
     @Override
+    protected void onUnsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException {
+        response.setStatus(401);
+    }
+
+    @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getServletPath();
         return !path.startsWith("/api/login");
