@@ -20,7 +20,7 @@ import java.util.List;
 @Component
 public class ScheduledREST {
 
-    private String url = "http://172.17.0.5:3000/api/v1/";
+    private String url = "http://172.17.0.1:3000/api/v1/";
     private final String credentials = "Bearer 123";
     private static HttpEntity entity;
     
