@@ -1,110 +1,218 @@
 <!DOCTYPE html>
 <html lang="de" xmlns:th="http://www.thymeleaf.org" th:include="layout :: page">
-<head/>
+<head>
+    <title>
+        Admin - Contracktor
+    </title>
+</head>
 <body>
-<th:block th:fragment="content">
-    <div class="container" th:object="${userlist}">
-        <div class="py-3 text-center col-md-7 col-lg-8 mx-auto">
-            <div class="feature-icon bg-primary bg-gradient mx-auto">
-                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="white" class="bi bi-people-fill" viewBox="0 0 16 16">
-                    <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                    <path fill-rule="evenodd" d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z"/>
-                    <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
-                </svg>
-            </div>
-            <h2>Verwalten Sie Nutzer</h2>
-            <p class="lead">Suchen Sie nach Nutzernamen, Namen oder Organisation und lassen Sie sich Details anzeigen. Bearbeiten oder löschen Sie dann Nutzer.</p>
-        </div>
+    <th:block th:fragment="content">
+        <div class="container">
 
-        <div class="col-md-7 col-lg-8 mx-auto">
+            <!-- Beginn Content -->
 
-            <div class="card mb-4">
-                <div class="card-body">
-                    <form action="#" th:action="@{'/admin/manage-user'}" method="post">
-                        <label for="search">Nach Nutzernamen, Namen oder Organisation suchen</label>
-                        <div class="form-group input-group py-3">
-                            <input id="search" type="text" class="form-control" placeholder="Suchen.." name="search" th:value="${search}"/>
-                            <button type="submit" class="btn btn-primary">Suchen</button>
-                        </div>
-                    </form>
+            <!-- Begin Head of the Page -->
+            <!-- Set with of the page -->
+            <div class="py-3 text-center col-md-7 col-lg-8 mx-auto">
+
+                <!-- Set icon of the page -->
+                <div class="feature-icon bg-primary bg-gradient mx-auto">
+                    <!-- Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="white" class="bi bi-people-fill" viewBox="0 0 16 16">
+                        <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                        <path fill-rule="evenodd" d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z"/>
+                        <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
+                    </svg>
                 </div>
+
+                <!-- Heading and explanation of the page -->
+                <h2>
+                    Verwalten Sie Nutzer
+                </h2>
+                <p class="lead">
+                    Suchen Sie nach Nutzernamen, Namen oder Organisation und bearbeiten oder löschen Sie dann Nutzer.
+                </p>
+
             </div>
+            <!-- End Head of the Page -->
 
-        <div th:each="organisation : ${userlist.organisationList}">
-            <h4 th:text="${organisation.getOrganisationName()}" th:if="${!userlist.getUserOfOrganisation(organisation).isEmpty()}" class="py-3"></h4>
+            <!-- Beginn Body of the Page -->
+            <!-- Set with of the page -->
+            <div class="col-md-7 col-lg-8 mx-auto">
 
-            <div class="accordion" id="accordionFlushExample" th:style="'margin-bottom: 20px'">
-                <div class="accordion-item" th:each="user : ${userlist.getUserOfOrganisation(organisation)}">
-                    <h2 class="accordion-header" id="flush-headingOne">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" th:data-bs-target="'#' + ${user.getUsername()}" aria-expanded="false" aria-controls="flush-collapseOne"><strong><div th:text="${user.getForename()} + ' ' + ${user.getSurname()} "></div></strong><div th:style="'margin-left: 5px'" th:if="${user.getIsAdmin()}" th:text="'- Admin'"></div>
-                        </button>
-                    </h2>
-                    <div th:id="${user.getUsername()}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                        <div class="accordion-body">
-                            <form>
-                                <div class="row g-3">
-                                    <div class="col-sm-6">
-                                        <label for="firstName" class="form-label">Vorname</label>
-                                        <input type="text" class="form-control" id="firstName" th:value="${user.getForename()}" disabled>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label for="lastName" class="form-label">Nachname</label>
-                                        <input type="text" class="form-control" id="lastName" th:value="${user.getSurname()}" disabled>
-                                    </div>
-                                    <div class="col-6">
-                                        <label for="username" class="form-label">Nutzername</label>
-                                        <div class="input-group has-validation">
-                                            <input type="text" class="form-control" id="username" th:value="${user.getUsername()}" disabled>
+                <div class="card">
+                    <div class="card-body">
+
+                        <!-- Form search user -->
+                        <form th:action="@{/admin/user/search}" th:method="post">
+                            <!-- Label for input field -->
+                            <label for="search">
+                                Nutzer suchen
+                            </label>
+                            <!-- Input field with button -->
+                            <div class="form-group input-group py-3">
+                                <!-- Field for search term -->
+                                <input id="search" type="text" class="form-control" placeholder="Nutzer suchen.." name="search" th:value="${search}"/>
+                                <button type="submit" class="btn btn-primary">
+                                    Suchen
+                                </button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+
+                <div class="pt-2"></div>
+
+                <div class="card" th:each="organisation : ${organisations}" th:unless="${organisation.getUsers(users).isEmpty()}" th:style="'margin-top: 20px'">
+                    <div class="card-body">
+
+
+                        <h3 th:text="${organisation.getOrganisationName()}"></h3>
+                        <div class="py-2"></div>
+
+                            <div class="accordion" id="userAccordion">
+                                <!-- each user -->
+                                <div class="accordion-item" th:each="user : ${organisation.getUsers(users)}">
+                                    <h2 class="accordion-header" id="header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" th:data-bs-target="'#' + ${user.getUsername()}" aria-expanded="false" aria-controls="flush-collapse" th:text="${user.getForename()} + ' ' + ${user.getSurname()}"></button>
+                                    </h2>
+                                    <div th:id="${user.getUsername()}" class="accordion-collapse collapse" th:data-bs-parent="userAccordion">
+                                        <form th:action="@{/admin/user/edit}" method="post">
+                                        <!-- Accordion body -->
+                                        <div class="accordion-body">
+                                            <div class="row g-3">
+                                                <div class="col-6">
+                                                    <label for="forename" class="form-label pt-2">Vorname</label>
+                                                    <input id="forename" class="form-control" type="text" name="forename" th:value="${user.getForename()}"/>
+                                                </div>
+                                                <div class="col-6">
+                                                    <label for="surname" class="form-label pt-2">Nachname</label>
+                                                    <input id="surname" class="form-control" type="text" name="surname" th:value="${user.getSurname()}"/>
+                                                </div>
+                                                <div class="col-6">
+                                                    <label for="username" class="form-label pt-2">Nutzername</label>
+                                                    <input id="username" class="form-control" type="text" name="username" th:value="${user.getUsername()}"/>
+                                                </div>
+                                                <div class="col-6">
+                                                    <label for="organisation" class="form-label pt-2">Organisation</label>
+                                                    <select id="organisation" class="form-select" name="organisation" th:value="${organisation}">
+                                                        <div th:each="organisation : ${organisations}">
+                                                            <option th:value="${organisation.getOrganisationName()}" th:text="${organisation.getOrganisationName()}" th:if="${organisation.getOrganisationName().equals(user.getOrganisation().getOrganisationName())}" selected></option>
+                                                            <option th:value="${organisation.getOrganisationName()}" th:text="${organisation.getOrganisationName()}" th:unless="${organisation.getOrganisationName().equals(user.getOrganisation().getOrganisationName())}"></option>
+                                                        </div>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <!-- user rights fields -->
+                                            <label class="form-label">Nutzerrechte</label>
+                                            <div class="col-12 px-4">
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox"  id="isAdmin" name="admin" th:value="admin" th:checked="${user.getIsAdmin()}"/>
+                                                    <label class="form-check-label" for="isAdmin">
+                                                        Mit Admin-Rechten
+                                                    </label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" id="isApplicationAdmin" name="admin"
+                                                           th:value="sysadmin" type="checkbox" th:checked="${user.getIsApplicationAdmin()}"/>
+                                                    <label class="form-check-label" for="isApplicationAdmin">
+                                                        Mit Systemadmin-Rechten
+                                                    </label>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <label for="organisation" class="form-label">Organisation</label>
-                                        <select class="form-select" id="organisation" name="organisation" disabled>
-                                            <option th:text="${user.getOrganisation().getOrganisationName()}"></option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    <div class="px-4 pb-4 pt-2">
-                        <a  th:href="@{'/admin/manage-user/edit/' + ${user.getUsername()}}" type="button" class="btn btn-primary">
-                            Bearbeiten
-                        </a>
 
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" th:data-bs-target="'#' + ${user.getUsername()} + 'd'">
-                            Löschen
-                        </button>
+                                        <div class="px-4 pt-2">
 
-                        <!-- Modal -->
-                        <div class="modal fade" th:id="${user.getUsername() + 'd'}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Nutzer löschen?</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        Möchten Sie den Nutzer  <strong th:text="'@' + ${user.getUsername()}"></strong> sicher löschen?
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
-                                        <a th:href="@{'/admin/manage-user/delete/' + ${user.getUsername()}}" type="button" class="btn btn-primary">Nutzer löschen</a>
+                                            <button type="submit" class="btn btn-success" name="id" th:value="${user.getId()}">
+                                                Änderungen speichern
+                                            </button>
+
+                                        </div>
+                                        </form>
+
+                                            <div class="px-4 pt-2">
+                                            <!-- Button trigger modal -->
+                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" th:data-bs-target="'#' + ${user.getUsername()} + 'd'">
+                                                Löschen
+                                            </button>
+
+                                            <!-- Modal -->
+                                            <div class="modal fade" th:id="${user.getUsername() + 'd'}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Nutzer löschen?</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Möchten Sie den Nutzer  <strong th:text="'@' + ${user.getUsername()}"></strong> sicher löschen?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                                                            <form th:action="@{/admin/user/delete}" method="post">
+                                                                <button type="submit" class="btn btn-primary" name="deleteId" th:value="${user.getId()}">Nutzer löschen</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="px-4 pb-4 pt-2">
+                                            <!-- Button trigger modal -->
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-bs-target="'#' + ${user.getUsername()} + 'p'">
+                                                Neues Passwort
+                                            </button>
+
+                                            <!-- Modal -->
+                                            <div class="modal fade" th:id="${user.getUsername() + 'p'}" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel2">Neues Passwort setzten</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <form th:action="@{/admin/user/password}" method="post">
+                                                            <div class="modal-body">
+
+                                                                <!-- Password field -->
+                                                                <label for="password" class="form-label">
+                                                                    Passwort
+                                                                </label>
+                                                                <input type="password" class="form-control" id="password" placeholder="Passwort.." name="password" th:value="${password}">
+
+                                                                <div class="py-2"></div>
+
+                                                                <!-- Password Check field -->
+                                                                <label for="passwordCheck" class="form-label">
+                                                                    Passwort wiederholen
+                                                                </label>
+                                                                <input type="password" class="form-control" id="passwordCheck" placeholder="Passwort.." name="passwordCheck" th:value="${passwordCheck}">
+
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                                                                    <button type="submit" class="btn btn-primary" name="userId" th:value="${user.getId()}">Bestätigen</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-
-
-
-                    </div>
                     </div>
                 </div>
             </div>
+            <!-- End Body of the Page -->
+
+            <!-- End Content -->
+
         </div>
-        </div>
-    </div>
-</th:block>
+    </th:block>
 </body>
 </html>

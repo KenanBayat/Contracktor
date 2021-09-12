@@ -61,16 +61,17 @@ public class AppApiController {
     @PostMapping("/api/update")
     @ResponseBody
     public APIResponse updateController(@RequestParam(name = "json") APIUpdate update) {
-        Map<String, Pair<State, Long>> billingItemUpdates = update.getBillingItemIDList();
+        List<BillingItemUpdate> billingItemUpdates = update.getBillingItemUpdates();
 
-        for (Map.Entry<String,Pair<State,Long>> item : billingItemUpdates.entrySet()) {
-            Optional<BillingItem> savedItem = billingItemRepository.findByBillingItemID(item.getKey());
+        for (BillingItemUpdate billingItemUpdate : billingItemUpdates) {
+            Optional<BillingItem> savedItem = billingItemRepository.findByBillingItemID(billingItemUpdate.getBillingItemID());
             if (savedItem.isEmpty()) {
                 return new APIResponse("UNKNOWN_BILLINGITEM");
             }
-            if (savedItem.get().getLastModified() >= item.getValue().getSecond()) {
-                savedItem.get().setStatus(item.getValue().getFirst());
-                savedItem.get().setLastModified(item.getValue().getSecond());
+
+            if (savedItem.get().getLastModified() >= billingItemUpdate.getLastModified()) {
+                savedItem.get().setStatus(billingItemUpdate.getNewState());
+                savedItem.get().setLastModified(billingItemUpdate.getLastModified());
                 billingItemRepository.save(savedItem.get());
             }
         }
