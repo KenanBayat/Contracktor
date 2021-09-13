@@ -37,8 +37,7 @@ public class TestUserAccount {
 	
 	@AfterEach
 	public void delete() {
-		userRepo.delete(user1);
-		userRepo.delete(user2);
+		userRepo.deleteAll();
 		organisationRepo.delete(organisation);
 	}
 		
