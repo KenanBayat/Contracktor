@@ -49,6 +49,8 @@ public class TestOrganisation {
 		organisation1 = new Organisation("organisation1");
 		organisation1 = organisationRepo.save(organisation1);
 		
+		assertTrue(organisationRepo.existsByOrganisationName(organisation1.getOrganisationName()));
+		
 		user1 =  new UserAccount("hansPeter", "password", "hans", "peter", organisation1, true, true, null);
 		user1 = userRepo.save(user1);
 		int userID = user1.getId();
@@ -56,6 +58,22 @@ public class TestOrganisation {
 		userRepo.delete(user1);
 		assertFalse(userRepo.existsById(userID));
 		organisationRepo.delete(organisation1);
+	}
+	
+	@Test 
+	public void testDeleteOrganisation() {
+		
+		organisation1 = new Organisation("organisation1");
+		organisation1 = organisationRepo.save(organisation1);
+		
+		user1 =  new UserAccount("hansPeter", "password", "hans", "peter", organisation1, true, true, null);
+		user1 = userRepo.save(user1);
+	
+		assertTrue(organisationRepo.existsByOrganisationName(organisation1.getOrganisationName()));
+		
+		userRepo.delete(user1);
+		organisationRepo.delete(organisation1);
+		assertFalse(organisationRepo.existsByOrganisationName(organisation1.getOrganisationName()));
 	}
 	
 }

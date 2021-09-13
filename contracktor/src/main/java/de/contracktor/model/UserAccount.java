@@ -27,9 +27,7 @@ public class UserAccount {
 	@Getter	@Setter	@Column(nullable = false) private Boolean isApplicationAdmin;
 	@Getter	@Setter @ManyToMany	private List<Role> roles;
 
-	public UserAccount() {
-		
-	}
+	public UserAccount(){}
 	
 	public UserAccount(String username, String password, String forename, String surname, Organisation organisation, 
 			 Boolean isAdmin, Boolean isApplicationAdmin, ArrayList<Role> roles) {
@@ -41,6 +39,5 @@ public class UserAccount {
 		this.isAdmin = isAdmin;
 		this.isApplicationAdmin = isApplicationAdmin;
 		this.roles = roles;
-	}
-	
+	}	
 }
