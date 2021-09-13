@@ -31,15 +31,13 @@ public class ContractController {
     @GetMapping("/contract/{contractId}/details")
     public String getContractDetails(@PathVariable int contractId, Model model){
 
-        model.addAttribute("contract", contractRepository.findById(contractId));
+        model.addAttribute("contract", contractRepository.findById(contractId).get());
 
         List<BillingUnit> units = (List<BillingUnit>) billingUnitRepository.findAll();
         List<BillingItem> items = new ArrayList<>();
         for(BillingUnit unit: units){
             List<BillingItem> bItems = unit.getBillingItems();
-            for(BillingItem bItem:bItems){
-                items.add(bItem);
-            }
+            items.addAll(bItems);
         }
 
         model.addAttribute("items",items);

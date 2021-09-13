@@ -21,7 +21,7 @@ public class ItemController {
 
     @GetMapping("/billingItems/{itemId}/details")
     public String getBillingItemDetails(@PathVariable int itemId,Model model){
-        model.addAttribute("item", billingItemRepository.findById(itemId));
+        model.addAttribute("item", billingItemRepository.findById(itemId).get());
         return "billingitem-details";
     }
 }
