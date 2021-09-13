@@ -11,7 +11,11 @@ import java.util.List;
 public interface BillingUnitRepository extends CrudRepository<BillingUnit, Integer>{
     List<BillingUnit> findByContractIsIn(Collection<Contract> contracts);
 
+    List<BillingUnit> findByContract(Contract contract);
+    
     boolean existsByBillingUnitID(String id);
     
     BillingUnit findByBillingUnitID(String id);
+    
+    
 }
