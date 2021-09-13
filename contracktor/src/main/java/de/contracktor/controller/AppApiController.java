@@ -62,6 +62,13 @@ public class AppApiController {
     @ResponseBody
     public APIResponse updateController(@RequestParam(name = "json") APIUpdate update) {
         List<BillingItemUpdate> billingItemUpdates = update.getBillingItemUpdates();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Optional<UserAccount> userAccount = userRepository.findByUsername(username);
+        if (userAccount.isEmpty()) {
+            return new APIResponse("UNKNOWN_USER");
+        } else if (!hasPerm(userAccount.get(),"w")) {
+            return new APIResponse("NO_WRITE_PERM");
+        }
 
         for (BillingItemUpdate billingItemUpdate : billingItemUpdates) {
             Optional<BillingItem> savedItem = billingItemRepository.findByBillingItemID(billingItemUpdate.getBillingItemID());
@@ -92,7 +99,9 @@ public class AppApiController {
     }
 
     private APIResponse apiDownloadConstructor(String username) {
+
         Optional<UserAccount> user =  userRepository.findByUsername(username);
+
         if (user.isEmpty()) {
             return new APIResponse("UNKNOWN_USER");
         } else if (!hasPerm(user.get(), "r") && !hasPerm(user.get(),"w")) {

@@ -1,18 +1,34 @@
 package de.contracktor.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
 public class APIResponse {
 
+    @Getter @Setter
     private List<Project> projects;
+
+    @Getter @Setter
     private List<Contract> contracts;
+
+    @Getter @Setter
     private List<BillingUnit> billingUnits;
+
+    @Getter @Setter
     private List<State> states;
+
+    @Getter @Setter
     private List<StateTransition> stateTransitions;
+
+    @Getter @Setter
     private List<Report> reports;
 
+    @Getter @Setter
     boolean writePerm;
 
+    @Getter @Setter
     public String status;
 
     public APIResponse(List<Project> projects, List<Contract> contracts, List<BillingUnit> billingUnits,
@@ -32,70 +48,6 @@ public class APIResponse {
     }
 
     public APIResponse(String status) {
-        this.status = status;
-    }
-
-    public List<Project> getProjects() {
-        return projects;
-    }
-
-    public void setProjects(List<Project> projects) {
-        this.projects = projects;
-    }
-
-    public List<Contract> getContracts() {
-        return contracts;
-    }
-
-    public void setContracts(List<Contract> contracts) {
-        this.contracts = contracts;
-    }
-
-    public List<BillingUnit> getBillingUnits() {
-        return billingUnits;
-    }
-
-    public void setBillingUnits(List<BillingUnit> billingUnits) {
-        this.billingUnits = billingUnits;
-    }
-
-    public List<State> getStates() {
-        return states;
-    }
-
-    public void setStates(List<State> states) {
-        this.states = states;
-    }
-
-    public List<StateTransition> getStateTransitions() {
-        return stateTransitions;
-    }
-
-    public void setStateTransitions(List<StateTransition> stateTransitions) {
-        this.stateTransitions = stateTransitions;
-    }
-
-    public List<Report> getReports() {
-        return reports;
-    }
-
-    public void setReports(List<Report> reports) {
-        this.reports = reports;
-    }
-
-    public boolean isWritePerm() {
-        return writePerm;
-    }
-
-    public void setWritePerm(boolean writePerm) {
-        this.writePerm = writePerm;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
         this.status = status;
     }
 }

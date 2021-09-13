@@ -20,24 +20,12 @@ import java.util.stream.Collectors;
 
 public class APITokenFilter extends BasicAuthenticationFilter {
 
-   // private final AuthenticationManager authenticationManager;
 
 
     public APITokenFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
-        //this.authenticationManager = authenticationManager;
     }
 
-/**
-    @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        String username = request.getHeader("username");
-        String password = request.getHeader("password");
-
-        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username,password);
-        return authenticationManager.authenticate(authRequest);
-    }
-**/
     @Override
     protected void onSuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, Authentication authResult) throws IOException {
         Algorithm encoder = Algorithm.HMAC256("test".getBytes());
