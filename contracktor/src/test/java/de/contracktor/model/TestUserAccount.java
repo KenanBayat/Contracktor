@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import de.contracktor.model.Organisation;
+import de.contracktor.model.UserAccount;
 import de.contracktor.repository.AddressRepository;
 import de.contracktor.repository.OrganisationRepository;
 import de.contracktor.repository.UserRepository;
