@@ -2,6 +2,7 @@ package de.contracktor.model;
 
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -15,7 +16,7 @@ import de.contracktor.repository.OrganisationRepository;
 import de.contracktor.repository.UserRepository;
 
 @SpringBootTest
-public class TestUser {
+public class TestUserAccount {
 
 	private UserAccount user1;
 	private UserAccount user2;
@@ -36,6 +37,8 @@ public class TestUser {
 	
 	@AfterEach
 	public void delete() {
+		userRepo.delete(user1);
+		userRepo.delete(user2);
 		organisationRepo.delete(organisation);
 	}
 		
