@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 
 import de.contracktor.model.State;
 
+import java.util.List;
+
 
 @Repository
 public interface StateRepository extends CrudRepository<State, Integer> {
@@ -14,4 +16,6 @@ public interface StateRepository extends CrudRepository<State, Integer> {
 	boolean existsByStateName(String stateName);
 	
 	void deleteByStateName(String stateName);
+
+	List<State> findAll();
 }
