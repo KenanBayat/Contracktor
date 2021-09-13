@@ -50,7 +50,7 @@ public class AppApiController {
 
     @PostMapping("/api/update")
     @ResponseBody
-    public APIResponse updateController(@RequestParam(name = "json") APIUpdate update) {
+    public APIResponse updateController(@RequestBody APIUpdate update) {
         List<BillingItemUpdate> billingItemUpdates = update.getBillingItemUpdates();
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
