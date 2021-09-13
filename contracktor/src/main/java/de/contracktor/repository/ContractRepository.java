@@ -15,4 +15,5 @@ public interface ContractRepository extends CrudRepository<Contract, Integer>{
     Contract findByContractID(int id);
     
     List<Contract> findByProject(Project project);
+    
 }
