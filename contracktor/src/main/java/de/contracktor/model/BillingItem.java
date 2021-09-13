@@ -54,4 +54,23 @@ public class BillingItem {
 		this.billingItems = billingItems; 
 		this.shortDescription = shortDescription;
 	}	
+	
+	@Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (!BillingItem.class.isAssignableFrom(obj.getClass())) {
+            return false;
+        }
+        final BillingItem other = (BillingItem) obj;
+        if ((this.billingItemID == null) ? (other.billingItemID != null) : !this.billingItemID.equals(other.billingItemID)) {
+            return false;
+        }
+        if(this.id==other.id || this.billingItemID.equals(other.billingItemID)) {
+        	return true;
+        }
+        return false;
+    }
+
 }
