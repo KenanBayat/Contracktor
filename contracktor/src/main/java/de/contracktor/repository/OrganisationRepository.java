@@ -9,7 +9,9 @@ import java.util.List;
 
 @Repository
 public interface OrganisationRepository extends CrudRepository<Organisation, Integer> {
+    List<Organisation> findAll();
     Organisation findByOrganisationName(String organisationName);
     boolean existsByOrganisationName(String organisationName);
-
+    void deleteById(int id);
+    Organisation save(Organisation newOrganisation);
 }

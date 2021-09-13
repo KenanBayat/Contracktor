@@ -1,18 +1,17 @@
 package de.contracktor.model;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.data.util.Pair;
+
 import java.util.List;
+import java.util.Map;
 
 public class APIUpdate {
 
-    private List<BillingItem> billingItemList;
+    @Getter @Setter
+    private List<BillingItemUpdate> billingItemUpdates;
+    @Getter @Setter
     private List<Report> reportList;
-
-    public List<BillingItem> getBillingItemList() {
-        return billingItemList;
-    }
-
-    public List<Report> getReportList() {
-        return reportList;
-    }
 
 }

@@ -25,7 +25,7 @@ public class UserAccount {
 	@Getter	@Setter	@JoinColumn(nullable = false, name = "organisation_id") @ManyToOne private Organisation organisation;
 	@Getter	@Setter	@Column(nullable = false) private Boolean isAdmin;
 	@Getter	@Setter	@Column(nullable = false) private Boolean isApplicationAdmin;
-	@Getter	@Setter	@ManyToMany	private List<Role> roles;
+	@Getter	@Setter @ManyToMany	private List<Role> roles;
 
 	public UserAccount(){}
 	
