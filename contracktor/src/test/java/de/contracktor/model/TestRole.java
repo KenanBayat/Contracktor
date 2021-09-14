@@ -8,7 +8,11 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import de.contracktor.repository.AddressRepository;
 import de.contracktor.repository.OrganisationRepository;
@@ -16,6 +20,8 @@ import de.contracktor.repository.PermissionRepository;
 import de.contracktor.repository.RoleRepository;
 
 @SpringBootTest
+@AutoConfigureTestDatabase(replace=Replace.NONE)
+@Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class TestRole {
 
 	@Autowired

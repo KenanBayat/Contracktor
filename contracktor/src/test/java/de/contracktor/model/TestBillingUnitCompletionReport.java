@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import de.contracktor.repository.AddressRepository;
 import de.contracktor.repository.BillingItemRepository;
 import de.contracktor.repository.BillingUnitCompletionReportRepository;
@@ -23,6 +25,7 @@ import de.contracktor.repository.StateRepository;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace=Replace.NONE)
+@Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class TestBillingUnitCompletionReport {
 
 	@Autowired
@@ -45,9 +48,7 @@ public class TestBillingUnitCompletionReport {
 	
 	@Autowired
 	PictureRepository pictureRepo;
-	
-	@Autowired
-	private TestEntityManager em;
+
 	
 	private final LocalDate creationDate = LocalDate.of(2021, 9, 8);
 	private final LocalDate completionDate = LocalDate.of(2022, 12, 12);
@@ -82,10 +83,10 @@ public class TestBillingUnitCompletionReport {
 	@BeforeEach
 	public void init() {
 		address = new Address(10000, "straße", "42", "city", "12345", "Land");
-		em.persistAndFlush(address);
+		addressRepo.save(address);
 		
 		state = new State("BillingUnitState");
-		em.persistAndFlush(state);
+		stateRepo.save(state);
 		
 		billingItem1 =  new BillingItem("ID_3346_2929_38", "id", "meter", 1000.0, 105.0, 100050.0, 
                 "3m5_6h4uXAXvBoFEtks_QE", state, "", new ArrayList<BillingItem>());
@@ -97,22 +98,22 @@ public class TestBillingUnitCompletionReport {
 		billingItem3 = new BillingItem("ID_3346_2929_37", "id", "meter", 1000.0, 105.0, 100050.0, 
 				"3m7_6h4uXAXvBoFEtks_QE", state, "", billingItems);
 		
-		em.persistAndFlush(billingItem1);
-		em.persistAndFlush(billingItem2);
-		em.persistAndFlush(billingItem3);
+		billingItemRepo.save(billingItem1);
+		billingItemRepo.save(billingItem2);
+		billingItemRepo.save(billingItem3);
 		
 		organisation = new Organisation("organisation1");
-		em.persistAndFlush(organisation);
+		organisationRepo.save(organisation);
 		
 		picture = new Picture(null,null);
-		em.persistAndFlush(picture);
+		pictureRepo.save(picture);
 		
 		project = new Project(4000, "project", creationDate, completionDate, address, 
 				100.0, organisation, "hans", state, picture, "");
-		em.persistAndFlush(project);
+		projectRepo.save(project);
 		
 		contract = new Contract(3000, project, "contract", "consignee", state, "Contractor", "test");
-		em.persistAndFlush(contract);
+		contractRepo.save(contract);
 	}
 	
 	@AfterEach
@@ -137,20 +138,20 @@ public class TestBillingUnitCompletionReport {
 	public void testNullComment() {
 		billingUnitCR = new BillingUnitCompletionReport(contract, project, null, "hans",
 				                   new ArrayList<BillingUnit>(), new ArrayList<Picture>());
-		assertThrows(Exception.class, () -> em.persistAndFlush(billingUnitCR));
+		assertThrows(Exception.class, () -> billingUnitCRRepo.save(billingUnitCR));
 	}
 	
 	@Test
 	public void testNullUsername() {
 		billingUnitCR = new BillingUnitCompletionReport(contract, project, "", null,
                 new ArrayList<BillingUnit>(), new ArrayList<Picture>());
-		assertThrows(Exception.class, () -> em.persistAndFlush(billingUnitCR));
+		assertThrows(Exception.class, () -> billingUnitCRRepo.save(billingUnitCR));
 	}
 	
 	@Test
 	public void testEmptyUsername() {
 		billingUnitCR = new BillingUnitCompletionReport(contract, project, "", "",
                 new ArrayList<BillingUnit>(), new ArrayList<Picture>());
-		assertThrows(Exception.class, () -> em.persistAndFlush(billingUnitCR));
+		assertThrows(Exception.class, () -> billingUnitCRRepo.save(billingUnitCR));
 	}
 }
