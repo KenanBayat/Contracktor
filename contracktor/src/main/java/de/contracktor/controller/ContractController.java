@@ -43,7 +43,7 @@ public class ContractController {
     public String getContractDetails(@PathVariable int contractId, Model model){
         Contract contract = contractRepository.findById(contractId).get();
         model.addAttribute("contract", contract);
-
+        //Test
         List<BillingItem> items = DatabaseService.getAllBillingItemsOfContract(contract);
         model.addAttribute("items",items);
         return "contract-details";
