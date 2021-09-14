@@ -5,10 +5,7 @@ import de.contracktor.model.*;
 import de.contracktor.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.security.sasl.AuthenticationException;
 import java.util.List;
@@ -47,6 +44,17 @@ public class AppApiController {
 
     @Autowired
     UserManager userManager;
+
+    //REMOVE BEFORE END
+    @GetMapping("/api/download")
+    @ResponseBody
+    public APIResponse getController() {
+        try {
+            return apiDownloadConstructor(userManager.getCurrentUserName());
+        } catch (Exception e) {
+            return new APIResponse("ERROR");
+        }
+    }
 
     @PostMapping("/api/update")
     @ResponseBody
