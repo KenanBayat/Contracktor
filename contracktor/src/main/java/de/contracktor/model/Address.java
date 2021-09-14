@@ -13,7 +13,7 @@ import javax.validation.constraints.NotEmpty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Address {
 
-	@Getter	@Id @GeneratedValue(strategy = GenerationType.AUTO) @JsonIgnore private int id;
+	@Getter	@Id @GeneratedValue(strategy = GenerationType.IDENTITY) @JsonIgnore private int id;
 	@Getter @Setter @Column(nullable = false, unique = true) @JsonProperty("id") private int addressId;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String street;
     @Getter @Setter @Column(nullable = false) @NotEmpty private String houseNumber;

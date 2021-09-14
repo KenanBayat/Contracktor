@@ -17,7 +17,7 @@ import lombok.Setter;
 @Entity
 public class StateTransition implements Serializable {
 
-	@Getter @Column(nullable = false) @Id @GeneratedValue(strategy = GenerationType.AUTO) private int id;
+	@Getter @Column(nullable = false) @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private int id;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne State startState; 
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne State endState; 
 	@Getter	@Setter	@Column(nullable = false) private Boolean contractor;
