@@ -71,11 +71,13 @@ public class UserManager {
     }
 
     public boolean hasCurrentUserWritePerm() throws AuthenticationException{
-        return getCurrentUserRoles().stream().map((r) -> r.getPermission().getPermissionName()).collect(Collectors.toList()).contains("w");
+        return getCurrentUserRoles().stream().map((r) -> r.getPermission().getPermissionName()).collect(Collectors.toList()).contains("w")
+                || isCurrentUserAdmin() || isCurrentUserAppAdmin();
     }
 
     public boolean hasCurrentUserReadPerm() throws AuthenticationException {
-        return getCurrentUserRoles().stream().map((r) -> r.getPermission().getPermissionName()).collect(Collectors.toList()).contains("r");
+        return getCurrentUserRoles().stream().map((r) -> r.getPermission().getPermissionName()).collect(Collectors.toList()).contains("r")
+                || isCurrentUserAdmin() || isCurrentUserAppAdmin();
     }
 
     private ContracktorUserDetails getPrincipal() throws AuthenticationException {

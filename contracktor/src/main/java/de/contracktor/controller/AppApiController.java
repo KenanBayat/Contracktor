@@ -100,17 +100,17 @@ public class AppApiController {
     public void loginController() {
     }
 
-    private APIResponse apiDownloadConstructor(String username) {
+    private APIResponse apiDownloadConstructor(String username) throws AuthenticationException{
         Optional<UserAccount> user =  userRepository.findByUsername(username);
         if (user.isEmpty()) {
             return new APIResponse("UNKNOWN_USER");
-        } else if (!hasPerm(user.get(), "r") && !hasPerm(user.get(),"w")) {
+        } else if (!userManager.hasCurrentUserReadPerm() && !userManager.hasCurrentUserWritePerm()) {
             return new APIResponse("NO_READ_PERM");
         }
 
         APIResponse response = new APIResponse();
         Organisation organisation = user.get().getOrganisation();
-        response.setWritePerm(hasPerm(user.get(), "w"));
+        response.setWritePerm(userManager.hasCurrentUserWritePerm());
         response.setProjects(projectRepository.findByOwner_OrganisationNameIgnoreCase(organisation.getOrganisationName()));
         response.setContracts(contractRepository.findByContractorIgnoreCaseOrConsigneeIgnoreCase(organisation.getOrganisationName(),
                 organisation.getOrganisationName()));
@@ -122,8 +122,4 @@ public class AppApiController {
         return response;
     }
 
-    private boolean hasPerm(UserAccount user, String permission) {
-        List<String> permissions = user.getRoles().stream().map((r) -> r.getPermission().getPermissionName()).collect(Collectors.toList());
-        return permissions.contains(permission);
-    }
 }
