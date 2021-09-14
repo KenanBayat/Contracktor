@@ -96,5 +96,36 @@ public class DatabaseService {
 	 */
 	public List<BillingItem> getAllBillingItems() {
 		return billingItemRepo.findAll();
+	}	
+	
+	
+	/**
+	 * Finds all projects, which contain the given substring
+	 * 
+	 * @param search the given substring
+	 * @return the projects, that were founded
+	 */
+	public List<Project> findByProjectNameContains(String search) {
+		return projectRepo.findByNameContains(search);
+	}
+	
+	/**
+	 * Finds all contracts, which contain the given substring
+	 * 
+	 * @param search the given substring
+	 * @return the contracts, that were founded
+	 */
+	public List<Contract> findByContractNameContains(String search) {
+		return contractRepo.findByNameContains(search);
+	}
+	
+	/**
+	 * Finds all the billingItems, which contain the given substring
+	 * 
+	 * @param search the given substring
+	 * @return the billingItems, that were founded
+	 */
+	public List<BillingItem> findByBillingItemIDContains(String search) {
+		return billingItemRepo.findByBillingItemIDContains(search);
 	}
 }
