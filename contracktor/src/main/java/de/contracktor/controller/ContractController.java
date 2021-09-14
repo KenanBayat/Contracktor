@@ -25,6 +25,9 @@ public class ContractController {
 
     @Autowired
     BillingUnitRepository billingUnitRepository;
+    
+    @Autowired
+    DatabaseService databaseService;
 
     @GetMapping("/contracts")
     public String getContractList(Model model){
@@ -44,7 +47,7 @@ public class ContractController {
         Contract contract = contractRepository.findById(contractId).get();
         model.addAttribute("contract", contract);
         //Test
-        List<BillingItem> items = DatabaseService.getAllBillingItemsOfContract(contract);
+        List<BillingItem> items = databaseService.getAllBillingItemsOfContract(contract);
         model.addAttribute("items",items);
         return "contract-details";
     }

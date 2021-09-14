@@ -17,16 +17,16 @@ import de.contracktor.repository.ProjectRepository;
 public class DatabaseService {
 	
 	@Autowired
-	private static ProjectRepository projectRepo;
+	private ProjectRepository projectRepo;
 	
 	@Autowired
-	private static BillingItemRepository billingItemRepo;
+	private BillingItemRepository billingItemRepo;
 	
 	@Autowired
-	private static ContractRepository contractRepo;
+	private ContractRepository contractRepo;
 	
 	@Autowired
-	private static BillingUnitRepository billingUnitRepo;
+	private BillingUnitRepository billingUnitRepo;
 	
 	/**
 	 * Returns all billingItems of a project
@@ -34,7 +34,7 @@ public class DatabaseService {
 	 * @param project the given project
 	 * @return all billingItems of the given project
 	 */
-	public static List<BillingItem> getAllBillingItemsOfProject(Project project) {
+	public List<BillingItem> getAllBillingItemsOfProject(Project project) {
 		if(!projectRepo.existsById(project.getId())) {
 			throw new IllegalArgumentException("Project doesnt exists!");
 		}
@@ -44,7 +44,7 @@ public class DatabaseService {
 		List<Contract> contracts = contractRepo.findAllByProject(project);
 		
 		for(Contract contract : contracts) {
-			billingItems.addAll(DatabaseService.getAllBillingItemsOfContract(contract));
+			billingItems.addAll(getAllBillingItemsOfContract(contract));
 		}		
 		return billingItems;
 	}
@@ -55,7 +55,7 @@ public class DatabaseService {
 	 * @param contract the given contract
 	 * @return all billingItems of the given contract
 	 */
-	public static List<BillingItem> getAllBillingItemsOfContract(Contract contract) {
+	public List<BillingItem> getAllBillingItemsOfContract(Contract contract) {
 		if(!contractRepo.existsById(contract.getId())) {
 			throw new IllegalArgumentException("Contract doesnt exists!");
 		}
@@ -66,7 +66,7 @@ public class DatabaseService {
 		
 		for(BillingUnit billingUnit : billingUnits) {
 			for(BillingItem billingItem : billingUnit.getBillingItems()) {
-				DatabaseService.getBillingItemsOfBillingItem(billingItems, billingItem);
+				getBillingItemsOfBillingItem(billingItems, billingItem);
 			}
 		}		
 		return billingItems;
@@ -79,11 +79,11 @@ public class DatabaseService {
 	 * @param billingItem the given billingItem
 	 * @return the billingItems that belong to the given billingItem
 	 */
-	private static void getBillingItemsOfBillingItem(List<BillingItem> billingItems, BillingItem billingItem) {
+	private void getBillingItemsOfBillingItem(List<BillingItem> billingItems, BillingItem billingItem) {
 		billingItems.add(billingItem);
 		
 		if(billingItem.getBillingItems() != null && !billingItem.getBillingItems().isEmpty()) {
-			for(BillingItem billingItemChild : billingItems) {
+			for(BillingItem billingItemChild : billingItem.getBillingItems()) {
 				getBillingItemsOfBillingItem(billingItems, billingItemChild);
 			}
 		}	
