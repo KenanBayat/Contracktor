@@ -30,7 +30,7 @@ public class BillingItem {
 	private int id;
 	@Getter @Setter @Column(nullable = false, unique = true) @NotEmpty @JsonProperty("id")
 	String billingItemID;
-	@Getter @Setter @Column() @ManyToOne private BillingUnit billingUnit;
+	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private BillingUnit billingUnit;
 	
 	@Getter @Setter @Column(nullable = false) private String unit;
 	@Getter @Setter @Column(nullable = false) @JsonProperty("quantities") private Double quantity;
