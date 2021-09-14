@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -61,4 +62,16 @@ public class BillingUnit {
 		this.longDescription = longDescription;
 		this.status = status;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		BillingUnit other = (BillingUnit) obj;
+		return Objects.equals(billingUnitID, other.billingUnitID) && id == other.id;
+	}	
 }
