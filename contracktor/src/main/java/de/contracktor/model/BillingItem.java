@@ -69,5 +69,17 @@ public class BillingItem {
 			return false;
 		BillingItem other = (BillingItem) obj;
 		return Objects.equals(billingItemID, other.billingItemID) && id == other.id;
-	}	
+	}
+
+	public String getLowerDescription() {
+		return this.shortDescription.toLowerCase();
+	}
+
+	public String getLowerID() {
+		return this.billingItemID.toLowerCase();
+	}
+
+	public String getLowerStatus() {
+		return this.status.getStateName().toLowerCase();
+	}
 }

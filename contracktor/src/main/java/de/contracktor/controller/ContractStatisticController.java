@@ -88,8 +88,6 @@ public class ContractStatisticController {
         }
         selectedContracts = newSelected;
 
-
-
         model.addAttribute("labels", getContractLabels());
         model.addAttribute("count", getContractCount());
         model.addAttribute("contracts", contractRepository.findAll());
@@ -100,9 +98,7 @@ public class ContractStatisticController {
 
     @PostMapping("/contract-statistic/add")
     public String getAddProjectStatistic(@RequestParam int id, Model model) {
-        List<Contract> contracts = contractRepository.findAll();
         Contract contract = contractRepository.findByContractID(id);
-        List<Contract> newSelected = new ArrayList<>();
         boolean contains = false;
         for (Contract c : selectedContracts) {
             if(c.getContractID() == contract.getContractID()) {
@@ -112,8 +108,6 @@ public class ContractStatisticController {
         if (!contains) {
             selectedContracts.add(contract);
         }
-
-
 
         model.addAttribute("labels", getContractLabels());
         model.addAttribute("count", getContractCount());

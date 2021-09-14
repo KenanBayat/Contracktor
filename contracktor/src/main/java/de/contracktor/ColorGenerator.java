@@ -26,9 +26,4 @@ public class ColorGenerator {
         return (int) Math.round(Math.sqrt(sum));
     }
 
-    public static void main(String[] args) {
-        ColorGenerator colorGenerator = new ColorGenerator();
-        System.out.println(Arrays.toString(colorGenerator.getRandomColors(5)));
-    }
-
 }
