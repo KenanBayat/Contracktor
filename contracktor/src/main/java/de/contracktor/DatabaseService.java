@@ -178,8 +178,8 @@ public class DatabaseService {
 	 * 
 	 * @return the project that has the given project id
 	 */
-	public Project getProjectByID(int projectID) {
-		return projectRepo.findByProjectID(projectID);
+	public Project getProjectByID(int id) {
+		return projectRepo.findById(id).orElse(null);
 	}
 	
 	/**
@@ -187,8 +187,8 @@ public class DatabaseService {
 	 * 
 	 * @return the contract that has the given contract id
 	 */
-	public Contract getContractByID(int contractID) {
-		return contractRepo.findByContractID(contractID);
+	public Contract getContractByID(int id) {
+		return contractRepo.findById(id).orElse(null);
 	}
 	
 	/**
@@ -196,7 +196,34 @@ public class DatabaseService {
 	 * 
 	 * @return the billingItem that has the given billingItem id
 	 */
-	public BillingItem getBillingItemByID(String billingItemID) {
-		return billingItemRepo.findByBillingItemID(billingItemID).orElse(null);
+	public BillingItem getBillingItemByID(int id) {
+		return billingItemRepo.findById(id).orElse(null);
+	}
+	
+	/**
+	 * Find a project by the given project id.
+	 * 
+	 * @return the project that has the given project id
+	 */
+	public Project getProjectByProjectID(int id) {
+		return projectRepo.findByProjectID(id);
+	}
+	
+	/**
+	 * Find a contract by the given contract id.
+	 * 
+	 * @return the contract that has the given contract id
+	 */
+	public Contract getContractByContractID(int id) {
+		return contractRepo.findByContractID(id);
+	}
+	
+	/**
+	 * Find a billingItem by the given billingItem id.
+	 * 
+	 * @return the billingItem that has the given billingItem id
+	 */
+	public BillingItem getBillingItemByBillingItemID(String id) {
+		return billingItemRepo.findByBillingItemID(id).orElse(null);
 	}
 }
