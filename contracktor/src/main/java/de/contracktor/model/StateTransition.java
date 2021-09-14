@@ -27,7 +27,12 @@ public class StateTransition implements Serializable {
 		
 	}
 	
-	public StateTransition(State startState, State endState,boolean contractor,boolean consignee) {
+	public StateTransition(State startState, State endState, boolean contractor,boolean consignee) {
+		if(contractor && consignee) {
+			throw new IllegalArgumentException("Both, contractor and consignee "
+					+ "cant manage the state transition");
+		}
+		
 		this.startState = startState;
 		this.endState = endState;
 		this.contractor = contractor;
