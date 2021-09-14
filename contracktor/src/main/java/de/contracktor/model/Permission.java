@@ -12,7 +12,7 @@ import lombok.Setter;
 @Entity
 public class Permission {
 	
-	@Getter @Setter @Id @GeneratedValue(strategy = GenerationType.AUTO) private int id;
+	@Getter @Setter @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private int id;
 	@Getter @Setter @Column(nullable = false, unique=true) private String permissionName;
 	
 	public Permission() {

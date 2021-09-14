@@ -13,7 +13,7 @@ import lombok.Setter;
 @Entity
 public class Report {
 
-	@Getter @Id @GeneratedValue(strategy = GenerationType.AUTO) private int id;
+	@Getter @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private int id;
 	@Getter @Setter @OneToMany List<BillingItem> billingItems;
 	@Getter @Setter @JoinColumn(nullable = false) @OneToOne Organisation organisation;
 	@Getter @Setter @Column(nullable = false) LocalDate date;

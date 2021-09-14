@@ -1,5 +1,6 @@
 package de.contracktor.controller;
 
+import de.contracktor.DatabaseService;
 import de.contracktor.model.BillingItem;
 import de.contracktor.model.BillingUnit;
 import de.contracktor.model.Contract;
@@ -24,30 +25,30 @@ public class ContractController {
 
     @Autowired
     BillingUnitRepository billingUnitRepository;
+    
+    @Autowired
+    DatabaseService databaseService;
 
     @GetMapping("/contracts")
     public String getContractList(Model model){
-        model.addAttribute("contracts",contractRepository.findAll());
+        model.addAttribute("contracts",databaseService.getAllContracts());
         return "contract-list";
     }
 
     @PostMapping("/contracts")
     public String getSearchedContractList(@RequestParam String search, Model model){
         model.addAttribute("search",search);
-        model.addAttribute("contracts",contractRepository.findByNameContains(search));
+        model.addAttribute("contracts",databaseService.findByContractNameContains(search));
         return "contract-list";
     }
 
     @GetMapping("/contract/{contractId}/details")
     public String getContractDetails(@PathVariable int contractId, Model model){
-        Contract contract = contractRepository.findById(contractId).get();
+        //Contract contract = contractRepository.findById(contractId).get();
+        Contract contract = databaseService.getContractByContractID(contractId);
         model.addAttribute("contract", contract);
-        List<BillingUnit> bunits = billingUnitRepository.findByContract(contract);
-        List<BillingItem> items = new ArrayList<>();
-        for(BillingUnit unit : bunits){
-            items.addAll(unit.getBillingItems());
-        }
-
+        //Test
+        List<BillingItem> items = databaseService.getAllBillingItemsOfContract(contract);
         model.addAttribute("items",items);
         return "contract-details";
     }

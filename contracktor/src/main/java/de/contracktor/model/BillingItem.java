@@ -26,7 +26,7 @@ import lombok.Setter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BillingItem {
 
-	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	@Column(name = "id") @JsonIgnore
+	@Getter	@Id	@GeneratedValue(strategy = GenerationType.IDENTITY)	@Column(name = "id") @JsonIgnore
 	private int id;
 	@Getter @Setter @Column(nullable = false, unique = true) @NotEmpty @JsonProperty("id")
 	String billingItemID;

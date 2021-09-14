@@ -16,7 +16,7 @@ import lombok.Setter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Project {
 
-	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO) @JsonIgnore
+	@Getter	@Id	@GeneratedValue(strategy = GenerationType.IDENTITY) @JsonIgnore
 	private int id;
 	@Getter @Setter @Column(nullable = false, unique = true) @JsonProperty("id")
 	private int projectID;

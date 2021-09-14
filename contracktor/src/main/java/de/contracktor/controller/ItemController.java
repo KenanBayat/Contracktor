@@ -1,5 +1,6 @@
 package de.contracktor.controller;
 
+import de.contracktor.DatabaseService;
 import de.contracktor.model.BillingItem;
 import de.contracktor.model.BillingUnit;
 import de.contracktor.repository.BillingItemRepository;
@@ -20,6 +21,9 @@ public class ItemController {
     @Autowired
     BillingItemRepository billingItemRepository;
 
+    @Autowired
+    DatabaseService databaseService;
+
     @GetMapping("/billingitems")
     public String getBillingItems(Model model){
         model.addAttribute("items",billingItemRepository.findAll());
@@ -35,9 +39,8 @@ public class ItemController {
 
     @GetMapping("/billingitems/{itemId}/details")
     public String getBillingItemDetails(@PathVariable int itemId,Model model){
-        BillingItem item = billingItemRepository.findById(itemId).get();
+        BillingItem item = databaseService.getBillingItemByID(itemId);
         List<BillingItem> subitems = item.getBillingItems();
-
 
         model.addAttribute("item", item);
         model.addAttribute("subitems", subitems);
