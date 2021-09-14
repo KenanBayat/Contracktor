@@ -41,8 +41,7 @@ public class TestBillingItem {
 	BillingItem billingItemInList2;
 	
 	ArrayList<BillingItem> billingItems;
-		
-	
+
 	
 	@BeforeEach
 	public void init() {
@@ -60,39 +59,40 @@ public class TestBillingItem {
 	
 	@Test
 	public void testNullBillingItem() {
-		billingItem = new BillingItem(null, "meter", 1000.0, 105.0, 100050.0, 
-				                      "3m7_6h4uXAXvBoFEtks_QE", state, "", billingItems);
+		billingItem = new BillingItem(null, "test", "meter", 1000.0, 105.0,
+					100050.0, "3m7_6h4uXAXvBoFEtks_QE", state, "" ,billingItems);
 		assertThrows(Exception.class, () -> em.persistAndFlush(billingItem));
-		billingItem = new BillingItem("ID_3346", null, 1000.0, 105.0, 100050.0, 
+		billingItem = new BillingItem("ID_3346", null, "meter", 1000.0, 105.0,
+				100050.0, "3m7_6h4uXAXvBoFEtks_QE", state, "" ,billingItems);
+		assertThrows(Exception.class, () -> em.persistAndFlush(billingItem));
+		billingItem = new BillingItem("ID_3346", "test",null, 1000.0, 105.0, 100050.0, 
                 "3m7_6h4uXAXvBoFEtks_QE", state, "", billingItems);
 		assertThrows(Exception.class, () -> em.persistAndFlush(billingItem));
-		billingItem = new BillingItem("ID_3346", "meter", null, 105.0, 100050.0, 
+		billingItem = new BillingItem("ID_3346", "test","meter", null, 105.0, 100050.0, 
                 "3m7_6h4uXAXvBoFEtks_QE", state, "", billingItems);
 		assertThrows(Exception.class, () -> em.persistAndFlush(billingItem));
-		billingItem = new BillingItem("ID_3346", "meter", 1000.0, 105.0, null, 
+		billingItem = new BillingItem("ID_3346", "test","meter", 1000.0, 105.0, null, 
                 "3m7_6h4uXAXvBoFEtks_QE", state, "", billingItems);
 		assertThrows(Exception.class, () -> em.persistAndFlush(billingItem));
-		billingItem = new BillingItem("ID_3346", "meter", 1000.0, 105.0, 100050.0, 
+		billingItem = new BillingItem("ID_3346", "test","meter", 1000.0, 105.0, 100050.0, 
 				null, state, "", billingItems);
 		assertThrows(Exception.class, () -> em.persistAndFlush(billingItem));
-		billingItem = new BillingItem("ID_3346", "meter", 1000.0, 105.0, 100050.0, 
+		billingItem = new BillingItem("ID_3346", "test","meter", 1000.0, 105.0, 100050.0, 
 				  "3m7_6h4uXAXvBoFEtks_QE", null, "", billingItems);
 		assertThrows(Exception.class, () -> em.persistAndFlush(billingItem));
-		billingItem = new BillingItem("ID_334", "meter", 1000.0, 105.0, 100050.0, 
+		billingItem = new BillingItem("ID_334", "test","meter", 1000.0, 105.0, 100050.0, 
 				"3m7_6h4uXAXvBoFEtks_QE", state, null, billingItems);
 		assertThrows(Exception.class, () -> em.persistAndFlush(billingItem));
-		billingItem = new BillingItem("", "meter", 1000.0, 105.0, 100050.0, 
+		billingItem = new BillingItem("", "test","meter", 1000.0, 105.0, 100050.0, 
 				"3m7_6h4uXAXvBoFEtks_QE", state, "", billingItems);
 		assertThrows(Exception.class, () -> em.persistAndFlush(billingItem));
-
-		
 	}
 
 	@Test
 	public void testSaveBillingItem() {
-		billingItemInList1 = new BillingItem("ID_3346_2929_38", "meter", 1000.0, 105.0, 100050.0, 
+		billingItemInList1 = new BillingItem("ID_3346_2929_38", "test","meter", 1000.0, 105.0, 100050.0, 
 				                             "3m5_6h4uXAXvBoFEtks_QE", state, "", new ArrayList<BillingItem>());
-		billingItemInList2 = new BillingItem("ID_3346_2929_39", "meter", 1000.0, 105.0, 100050.0, 
+		billingItemInList2 = new BillingItem("ID_3346_2929_39", "test","meter", 1000.0, 105.0, 100050.0, 
                                              "3m6_6h4uXAXvBoFEtks_QE", state, "", new ArrayList<BillingItem>());
 		em.persistAndFlush(billingItemInList1);
 		em.persistAndFlush(billingItemInList2);
@@ -101,7 +101,7 @@ public class TestBillingItem {
 		billingItems.add(billingItemInList1);
 		billingItems.add(billingItemInList2);
 		
-		billingItem = new BillingItem("ID_3346_2929_37", "meter", 1000.0, 105.0, 100050.0,
+		billingItem = new BillingItem("ID_3346_2929_37", "test","meter", 1000.0, 105.0, 100050.0,
 				                      "3m7_6h4uXAXvBoFEtks_QE", state, "", billingItems);
 		em.persistAndFlush(billingItem);
 		
@@ -118,9 +118,9 @@ public class TestBillingItem {
 	
 	@Test
 	public void testBillingItemRepositoryExistsByBillingItemID() {
-		billingItemInList1 = new BillingItem("ID_3346_2929_38", "meter", 1000.0, 105.0, 100050.0, 
+		billingItemInList1 = new BillingItem("ID_3346_2929_38", "test","meter", 1000.0, 105.0, 100050.0, 
 				                             "3m5_6h4uXAXvBoFEtks_QE", state, "", new ArrayList<BillingItem>());
-		billingItemInList2 = new BillingItem("ID_3346_2929_39", "meter", 1000.0, 105.0, 100050.0, 
+		billingItemInList2 = new BillingItem("ID_3346_2929_39", "test","meter", 1000.0, 105.0, 100050.0, 
                                              "3m6_6h4uXAXvBoFEtks_QE", state, "", new ArrayList<BillingItem>());
 		em.persistAndFlush(billingItemInList1);
 		em.persistAndFlush(billingItemInList2);
@@ -129,7 +129,7 @@ public class TestBillingItem {
 		billingItems.add(billingItemInList1);
 		billingItems.add(billingItemInList2);
 		
-		billingItem = new BillingItem("ID_3346_2929_37", "meter", 1000.0, 105.0, 100050.0,
+		billingItem = new BillingItem("ID_3346_2929_37", "test","meter", 1000.0, 105.0, 100050.0,
 				                      "3m7_6h4uXAXvBoFEtks_QE", state, "", billingItems);
 		em.persistAndFlush(billingItem);
 				
@@ -147,16 +147,16 @@ public class TestBillingItem {
 	
 	@Test
 	public void testBillingItemRepositoryFindALL() {
-		billingItemInList1 = new BillingItem("ID_3346_2929_38", "meter", 1000.0, 105.0, 100050.0, 
+		billingItemInList1 = new BillingItem("ID_3346_2929_38", "test","meter", 1000.0, 105.0, 100050.0, 
 				                             "3m5_6h4uXAXvBoFEtks_QE", state, "", new ArrayList<BillingItem>());
-		billingItemInList2 = new BillingItem("ID_3346_2929_39", "meter", 1000.0, 105.0, 100050.0, 
+		billingItemInList2 = new BillingItem("ID_3346_2929_39", "test","meter", 1000.0, 105.0, 100050.0, 
                                              "3m6_6h4uXAXvBoFEtks_QE", state, "", new ArrayList<BillingItem>());
 		
 
 		billingItems.add(billingItemInList1);
 		billingItems.add(billingItemInList2);
 		
-		billingItem = new BillingItem("ID_3346_2929_37", "meter", 1000.0, 105.0, 100050.0,
+		billingItem = new BillingItem("ID_3346_2929_37", "test","meter", 1000.0, 105.0, 100050.0,
 				                      "3m7_6h4uXAXvBoFEtks_QE", state, "", billingItems);
 		
 		List<BillingItem> billingItems2 = Arrays.asList(billingItem,billingItemInList1,billingItemInList2);
@@ -180,9 +180,9 @@ public class TestBillingItem {
 	
 	@Test
 	public void testBillingItemRepositoryOptionalFindByBillingItemID() {
-		billingItemInList1 = new BillingItem("ID_3346_2929_38", "meter", 1000.0, 105.0, 100050.0, 
+		billingItemInList1 = new BillingItem("ID_3346_2929_38", "test","meter", 1000.0, 105.0, 100050.0, 
 				                             "3m5_6h4uXAXvBoFEtks_QE", state, "", new ArrayList<BillingItem>());
-		billingItemInList2 = new BillingItem("ID_3346_2929_39", "meter", 1000.0, 105.0, 100050.0, 
+		billingItemInList2 = new BillingItem("ID_3346_2929_39", "test","meter", 1000.0, 105.0, 100050.0, 
                                              "3m6_6h4uXAXvBoFEtks_QE", state, "", new ArrayList<BillingItem>());
 		em.persistAndFlush(billingItemInList1);
 		em.persistAndFlush(billingItemInList2);
@@ -191,7 +191,7 @@ public class TestBillingItem {
 		billingItems.add(billingItemInList1);
 		billingItems.add(billingItemInList2);
 		
-		billingItem = new BillingItem("ID_3346_2929_37", "meter", 1000.0, 105.0, 100050.0,
+		billingItem = new BillingItem("ID_3346_2929_37", "test","meter", 1000.0, 105.0, 100050.0,
 				                      "3m7_6h4uXAXvBoFEtks_QE", state, "", billingItems);
 		em.persistAndFlush(billingItem);
 				
