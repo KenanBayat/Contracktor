@@ -67,6 +67,7 @@ public class TestReport {
 		state = em.persistAndFlush(state);
 		organisation = new Organisation("testOrganisation");
 		organisation = em.persistAndFlush(organisation);
+		Bi
 		billingItems = new ArrayList<BillingItem>();
 		billingItem = new BillingItem("ID_3346_2929_37", "meter", 1000.0, 105.0, 100050.0, "3m5_6h4uXAXvBoFEtks_QE", state, "", billingItems);
 		billingItem = billingItemRepo.save(billingItem);
