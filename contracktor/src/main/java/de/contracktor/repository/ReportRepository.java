@@ -13,4 +13,7 @@ import java.util.List;
 public interface ReportRepository extends CrudRepository<Report, Integer> {
     List<Report> findByOrganisation(Organisation organisation);
 
+    List<Report> findByOrganisation_OrganisationNameIgnoreCase(String organisationName);
+
+
 }

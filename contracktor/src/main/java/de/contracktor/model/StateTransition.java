@@ -10,11 +10,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
 @SuppressWarnings("serial")
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class StateTransition implements Serializable {
 
 	@Getter @Column(nullable = false) @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private int id;

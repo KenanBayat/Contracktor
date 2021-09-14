@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +17,7 @@ public class Report {
 	@Getter @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private int id;
 	@Getter @Setter @OneToMany List<BillingItem> billingItems;
 	@Getter @Setter @JoinColumn(nullable = false) @OneToOne Organisation organisation;
-	@Getter @Setter @Column(nullable = false) LocalDate date;
+	@Getter @Setter @Column(nullable = false) @JsonIgnore LocalDate date;
 	@Getter @Setter @Column(nullable = false) @NotEmpty String username;
 	@Getter @Setter @Column(nullable = false) String comment;
 	@Getter @Setter @OneToMany List<Picture> pictures;

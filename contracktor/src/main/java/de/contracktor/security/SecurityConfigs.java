@@ -51,7 +51,7 @@ public class SecurityConfigs {
 
 			APITokenFilter apiTokenFilter = new APITokenFilter(authenticationManagerBean());
 
-			APIAuthorizationFilter apiAuthFilter =  new APIAuthorizationFilter(authenticationManagerBean());
+			APIAuthorizationFilter apiAuthFilter =  new APIAuthorizationFilter(authenticationManagerBean(), userDetailsServiceH2);
 
 
 			http.addFilter(apiTokenFilter);

@@ -4,10 +4,12 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.header.Header;
 
@@ -22,8 +24,11 @@ import java.util.stream.Collectors;
 
 public class APIAuthorizationFilter extends BasicAuthenticationFilter {
 
-    public APIAuthorizationFilter(AuthenticationManager authenticationManager) {
+    private UserDetailsServiceH2 userDetailsServiceH2;
+
+    public APIAuthorizationFilter(AuthenticationManager authenticationManager, UserDetailsServiceH2 userDetailsServiceH2) {
         super(authenticationManager);
+        this.userDetailsServiceH2 = userDetailsServiceH2;
     }
 
 
@@ -42,7 +47,10 @@ public class APIAuthorizationFilter extends BasicAuthenticationFilter {
                 String username = decodedJWT.getSubject();
                 List<String> roles = decodedJWT.getClaim("authorities").asList(String.class);
                 List<SimpleGrantedAuthority> authorities = roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
+
+                UserDetails userDetails = userDetailsServiceH2.loadUserByUsername(username);
+
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
             chain.doFilter(request, response);

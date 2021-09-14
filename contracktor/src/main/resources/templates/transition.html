@@ -164,7 +164,7 @@
 
                         <tbody>
                         <tr th:each="transition : ${transitions}">
-                            <th scope="row" th:text="${transition.getStartState().getStateName()}"></th>
+                            <td scope="row" th:text="${transition.getStartState().getStateName()}"></td>
 
                             <td th:text="${transition.getEndState().getStateName()}"></td>
 
