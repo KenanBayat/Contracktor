@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Entity
 public class Organisation {
 	
-	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	private int id;
+	@Getter	@Id	@GeneratedValue(strategy = GenerationType.IDENTITY)	private int id;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String organisationName;
 	
 	public Organisation() {

@@ -7,6 +7,17 @@
 <th:block th:fragment="content">
 <div class="container">
     <h3>Vertragsübersicht</h3>
+
+    <!-- Search Bar -->
+    <div class="container">
+        <form action="#" th:action="@{'/contracts'}" th:method="post">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Suche nach Vertrag" aria-label="Suche nach Vertrag" aria-describedby="search"  name="search" th:value="${search}">
+                <button type="submit" class="btn btn-outline-secondary bg-dark" id="search">Suchen</button>
+            </div>
+        </form>
+    </div>
+
     <table class="table table-striped">
         <thead>
         <tr>

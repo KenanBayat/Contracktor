@@ -15,7 +15,7 @@ import lombok.Setter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Contract {
 
-	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO) @JsonIgnore
+	@Getter	@Id	@GeneratedValue(strategy = GenerationType.IDENTITY) @JsonIgnore
 	private int id;
 	@Getter @Setter @Column(nullable = false, unique = true) @JsonProperty("id") private int contractID;
 	@Getter @Setter @ManyToOne @JoinColumn(nullable = false) @JsonIgnore private Project project;
@@ -54,5 +54,21 @@ public class Contract {
 			return false;
 		Contract other = (Contract) obj;
 		return contractID == other.contractID && id == other.id && projectId == other.projectId;
+	}
+
+	public String getLowerName() {
+		return this.name.toLowerCase();
+	}
+	public String getLowerProject() {
+		return this.project.getName().toLowerCase();
+	}
+	public String getLowerConsignee() {
+		return this.consignee.toLowerCase();
+	}
+	public String getLowerContractor() {
+		return this.contractor.toLowerCase();
+	}
+	public String getLowerStatus() {
+		return this.status.getStateName().toLowerCase();
 	}
 }

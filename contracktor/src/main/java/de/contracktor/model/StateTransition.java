@@ -20,7 +20,7 @@ import lombok.Setter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class StateTransition implements Serializable {
 
-	@Getter @Column(nullable = false) @Id @GeneratedValue(strategy = GenerationType.AUTO) private int id;
+	@Getter @Column(nullable = false) @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private int id;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne State startState; 
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne State endState; 
 	@Getter	@Setter	@Column(nullable = false) private Boolean contractor;
@@ -30,7 +30,12 @@ public class StateTransition implements Serializable {
 		
 	}
 	
-	public StateTransition(State startState, State endState,boolean contractor,boolean consignee) {
+	public StateTransition(State startState, State endState, boolean contractor,boolean consignee) {
+		if(contractor && consignee) {
+			throw new IllegalArgumentException("Both, contractor and consignee "
+					+ "cant manage the state transition");
+		}
+		
 		this.startState = startState;
 		this.endState = endState;
 		this.contractor = contractor;

@@ -1,6 +1,8 @@
 package de.contracktor.security;
 
+import de.contracktor.model.Role;
 import de.contracktor.model.UserAccount;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,10 +19,18 @@ public class ContracktorUserDetails implements UserDetails {
     private String username;
     private String password;
     private List<GrantedAuthority> authorities;
+    private boolean isAppAdmin;
+    private boolean isAdmin;
+    private String organisationName;
+    private List<Role> roles;
 
     public ContracktorUserDetails(UserAccount user) {
         this.username = user.getUsername();
         this.password = user.getPassword();
+        this.roles = user.getRoles();
+        this.isAppAdmin = user.getIsAdmin();
+        this.isAdmin = user.getIsAdmin();
+        this.organisationName = user.getOrganisation().getOrganisationName();
 
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("USER"));
@@ -69,5 +79,21 @@ public class ContracktorUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public boolean isAppAdmin() {
+        return isAppAdmin;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public String getOrganisationName() {
+        return organisationName;
     }
 }
