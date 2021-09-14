@@ -33,6 +33,7 @@ public class TestUserAccount {
 	private OrganisationRepository organisationRepo;
 	
 	
+	
 	@BeforeEach
 	private void init() {
 		organisation = new Organisation("organisation");
@@ -41,11 +42,9 @@ public class TestUserAccount {
 	
 	@AfterEach
 	public void delete() {
-		userRepo.delete(user1);
-		userRepo.delete(user2);
 		organisationRepo.delete(organisation);
 	}
-		
+	
 	@Test
 	public void testNullUsername() {
 		// Test null username.
@@ -85,7 +84,7 @@ public class TestUserAccount {
 	public void testNullIsAdmin() {
 		// Test null isAdmin.
 		user1 = new UserAccount("username", "password", "hans", "peter", organisation, true, null, null);
-		assertThrows(Exception.class, () -> em.persistAndFlush(user1));
+		assertThrows(Exception.class, () -> userRepo.save(user1));
 	}
 	
 	@Test
@@ -99,19 +98,19 @@ public class TestUserAccount {
 	public void testEmptyValues() {
 		//Test empty username.
 		user1 = new UserAccount("", "password", "hans", "peter", organisation, true, true, null);	
-		assertThrows(Exception.class, () -> em.persistAndFlush(user1));
+		assertThrows(Exception.class, () -> userRepo.save(user1));
 		
 		// Test empty password.
 		user1 = new UserAccount("username", "", "hans", "peter", organisation, true, true, null);	
-		assertThrows(Exception.class, () -> em.persistAndFlush(user1));
+		assertThrows(Exception.class, () -> userRepo.save(user1));
 		
 		// Test empty forename.
 		user1 = new UserAccount("username", "password", "", "peter", organisation, true, true, null);
-		assertThrows(Exception.class, () -> em.persistAndFlush(user1));
+		assertThrows(Exception.class, () -> userRepo.save(user1));
 		
 		// Test empty surname.
 		user1 = new UserAccount("username", "password", "hans", "", organisation, true, true, null);
-		assertThrows(Exception.class, () -> em.persistAndFlush(user1));
+		assertThrows(Exception.class, () -> userRepo.save(user1));
 	}
 	
 	@Test 
@@ -119,8 +118,8 @@ public class TestUserAccount {
 		user1 = new UserAccount("hansPeter", "password", "hans", "peter", organisation, true, true, null);
 		user2 = new UserAccount("hansMeier", "betterpassword", "hans", "meier", organisation, true, true, null);
 		
-		user1 = em.persistAndFlush(user1);
-		user2 = em.persistAndFlush(user2);
+		user1 = userRepo.save(user1);
+		user2 = userRepo.save(user2);
 		
 		// User should not get same loginID.
 		assertNotEquals(user1.getId(), user2.getId());	
@@ -128,4 +127,5 @@ public class TestUserAccount {
 		userRepo.delete(user1);
 		userRepo.delete(user2);
 	}
+	
 }
