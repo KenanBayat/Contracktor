@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import de.contracktor.repository.AddressRepository;
 import de.contracktor.repository.OrganisationRepository;
 import de.contracktor.repository.PictureRepository;
@@ -19,6 +21,7 @@ import de.contracktor.repository.ProjectRepository;
 import de.contracktor.repository.StateRepository;
 
 @DataJpaTest
+@Transactional(propagation = Propagation.NOT_SUPPORTED)
 @AutoConfigureTestDatabase(replace=Replace.NONE)
 public class TestProject {
 
@@ -37,9 +40,6 @@ public class TestProject {
 	@Autowired
 	AddressRepository addressRepo;
 	
-	@Autowired
-	private TestEntityManager em;
-	
 	Address address;
 	
 	private Picture picture;
@@ -56,13 +56,13 @@ public class TestProject {
 	@BeforeEach
 	public void init() {
 		address = new Address(200000, "straße", "houseNumber", "city", "12345", "country");
-		em.persistAndFlush(address);
+		addressRepo.save(address);
 		state = new State("status");
-		em.persistAndFlush(state);
+		stateRepo.save(state);
 		organisation = new Organisation("orga");
-		em.persistAndFlush(organisation);
+		organisationRepo.save(organisation);
 		picture = new Picture(null,null);
-		em.persistAndFlush(picture);
+		pictureRepo.save(picture);
 	}
 	
 	@AfterEach
@@ -79,7 +79,7 @@ public class TestProject {
 		// Test null projectName.
 		project = new Project(200000, null, creationDate, completionDate, address,
 				100.0, organisation, "hans", state, picture, "");
-		assertThrows(Exception.class, () -> em.persistAndFlush(project));
+		assertThrows(Exception.class, () -> projectRepo.save(project));
 	}
 	
 	@Test
@@ -87,7 +87,7 @@ public class TestProject {
 		// Test null creationDate.
 		project = new Project(200000, "project", null, completionDate, address, 
 				100.0, organisation, "hans", state, picture, "");
-				  assertThrows(Exception.class, () -> em.persistAndFlush(project));
+				  assertThrows(Exception.class, () -> projectRepo.save(project));
 	}
 	
 	@Test
@@ -95,7 +95,7 @@ public class TestProject {
 		// Test null completionDate.
 		project = new Project(200000, "project", creationDate, null, address,
 				100.0, organisation, "hans", state, picture, "");
-						  assertThrows(Exception.class, () -> em.persistAndFlush(project));
+						  assertThrows(Exception.class, () -> projectRepo.save(project));
 	}
 	
 	@Test
@@ -103,7 +103,7 @@ public class TestProject {
 		// Test null creator.
 		project = new Project(2000000, "project", creationDate, completionDate, address, 
 				100.0, organisation, null, state, picture, "");
-						  assertThrows(Exception.class, () -> em.persistAndFlush(project));
+						  assertThrows(Exception.class, () -> projectRepo.save(project));
 	}
 	
 	@Test
@@ -111,7 +111,7 @@ public class TestProject {
 		// Test null description.
 		project = new Project(200000, "project", creationDate, completionDate, address,
 				100.0, organisation, "hans", state, picture, null);
-						  assertThrows(Exception.class, () -> em.persistAndFlush(project));
+						  assertThrows(Exception.class, () -> projectRepo.save(project));
 	}
 	
 	@Test
@@ -119,7 +119,7 @@ public class TestProject {
 		// Test empty name.
 		project = new Project(2000000, "", creationDate, completionDate, address, 
 				100.0, organisation, "hans", state, picture, "");
-						  assertThrows(Exception.class, () -> em.persistAndFlush(project));
+						  assertThrows(Exception.class, () -> projectRepo.save(project));
 	}
 	
 	@Test
@@ -127,6 +127,6 @@ public class TestProject {
 		// Test empty creator.
 		project = new Project(2000000, "project", creationDate, completionDate, address,
 				100.0, organisation, "", state, picture, "");
-						  assertThrows(Exception.class, () -> em.persistAndFlush(project));
+						  assertThrows(Exception.class, () -> projectRepo.save(project));
 	}
 }
