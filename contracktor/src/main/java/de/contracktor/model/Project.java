@@ -2,6 +2,7 @@ package de.contracktor.model;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -54,4 +55,15 @@ public class Project {
 		this.description = description;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Project other = (Project) obj;
+		return id == other.id && projectID == other.projectID;
+	}
 }
