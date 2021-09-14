@@ -50,8 +50,9 @@ public class AppApiController {
 
     @PostMapping("/api/update")
     @ResponseBody
-    public APIResponse updateController(@RequestParam(name = "json") APIUpdate update) {
+    public APIResponse updateController(@RequestBody APIUpdate update) {
         List<BillingItemUpdate> billingItemUpdates = update.getBillingItemUpdates();
+        List<Report> reportUpdates = update.getReportList();
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
         if (username == null) {
@@ -64,24 +65,28 @@ public class AppApiController {
             return new APIResponse("UNKNOWN_USER");
         }
 
-        for (BillingItemUpdate billingItemUpdate : billingItemUpdates) {
-            Optional<BillingItem> savedItem = billingItemRepository.findByBillingItemID(billingItemUpdate.getBillingItemID());
-            if (savedItem.isEmpty()) {
-                return new APIResponse("UNKNOWN_BILLINGITEM");
-            }
+        if (billingItemUpdates != null) {
+            for (BillingItemUpdate billingItemUpdate : billingItemUpdates) {
+                Optional<BillingItem> savedItem = billingItemRepository.findByBillingItemID(billingItemUpdate.getBillingItemID());
+                if (savedItem.isEmpty()) {
+                    return new APIResponse("UNKNOWN_BILLINGITEM");
+                }
 
-            if (savedItem.get().getLastModified() >= billingItemUpdate.getLastModified()) {
-                savedItem.get().setStatus(billingItemUpdate.getNewState());
-                savedItem.get().setLastModified(billingItemUpdate.getLastModified());
-                billingItemRepository.save(savedItem.get());
+                if (savedItem.get().getLastModified() >= billingItemUpdate.getLastModified()) {
+                    savedItem.get().setStatus(billingItemUpdate.getNewState());
+                    savedItem.get().setLastModified(billingItemUpdate.getLastModified());
+                    billingItemRepository.save(savedItem.get());
+                }
             }
         }
 
-        for (Report report : update.getReportList()) {
-            for (Picture picture : report.getPictures()) {
-                pictureRepository.save(picture);
+        if (reportUpdates != null) {
+            for (Report report : update.getReportList()) {
+                for (Picture picture : report.getPictures()) {
+                    pictureRepository.save(picture);
+                }
+                reportRepository.save(report);
             }
-            reportRepository.save(report);
         }
 
         return apiDownloadConstructor(username);

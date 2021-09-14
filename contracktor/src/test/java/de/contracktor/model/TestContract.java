@@ -1,16 +1,15 @@
 package de.contracktor.model;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import java.time.LocalDate;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import de.contracktor.repository.AddressRepository;
 import de.contracktor.repository.ContractRepository;
 import de.contracktor.repository.OrganisationRepository;
@@ -18,7 +17,8 @@ import de.contracktor.repository.PictureRepository;
 import de.contracktor.repository.ProjectRepository;
 import de.contracktor.repository.StateRepository;
 
-@SpringBootTest
+@DataJpaTest
+@AutoConfigureTestDatabase(replace=Replace.NONE)
 public class TestContract {
 
 	@Autowired
@@ -35,6 +35,9 @@ public class TestContract {
 	
 	@Autowired
 	private PictureRepository pictureRepo;
+	
+	@Autowired
+	private TestEntityManager em;
 	
 	private Picture picture;
 	
@@ -57,18 +60,18 @@ public class TestContract {
 	@BeforeEach
 	public void init() {
 		address = new Address(2000, "straße", "42", "city", "12345", "Land");
-		addressRepo.save(address);
+		em.persistAndFlush(address);
 		creationDate = LocalDate.of(2022, 12, 12);
 		completionDate = LocalDate.of(2022, 12, 12);
 		state = new State("state");
-		stateRepo.save(state);
+		em.persistAndFlush(state);
 		organisation = new Organisation("orga");
-		organisationRepo.save(organisation);
+		em.persistAndFlush(organisation);
 		picture = new Picture(null,null);
-		pictureRepo.save(picture);
+		em.persistAndFlush(picture);
 		project = new Project(5000, "project", creationDate, completionDate, address, 
 				100.0, organisation, "hans", state, picture, "");
-		projectRepo.save(project);
+		em.persistAndFlush(project);
 	}
 	
 	@AfterEach
@@ -85,41 +88,41 @@ public class TestContract {
 	public void testNullName() {
 		// Test null name.
 		contract = new Contract(42, project, null, "consignee", state, "contractor", "");
-		assertThrows(Exception.class, () -> contractRepo.save(contract));
+		assertThrows(Exception.class, () -> em.persistAndFlush(contract));
 	}
 	
 	@Test
 	public void testNullConsignee() {
 		// Test null consignee.
 		contract = new Contract(42, project, "contract", null, state, "contractor", "");
-		assertThrows(Exception.class, () -> contractRepo.save(contract));
+		assertThrows(Exception.class, () -> em.persistAndFlush(contract));
 	}
 	
 	@Test
 	public void testNullContractor() {
 		// Test null contractor.
 		contract = new Contract(42, project, "contract", "consignee", state, null, "");
-		assertThrows(Exception.class, () -> contractRepo.save(contract));
+		assertThrows(Exception.class, () -> em.persistAndFlush(contract));
 	}
 	
 	@Test
 	public void testNullDescription() {
 		// Test null description.
 		contract = new Contract(42, project, "contract", "consignee", state, "contractor", null);
-		assertThrows(Exception.class, () -> contractRepo.save(contract));
+		assertThrows(Exception.class, () -> em.persistAndFlush(contract));
 	}
 	
 	@Test
 	public void testEmptyConsignee() {
 		// Test empty consignee.
 		contract = new Contract(42, project, "contract", "", state, "contractor", "");
-		assertThrows(Exception.class, () -> contractRepo.save(contract));
+		assertThrows(Exception.class, () -> em.persistAndFlush(contract));
 	}
 	
 	@Test
 	public void testEmptyContractor() {
 		// Test empty contractor.
 		contract = new Contract(42, project, "contract", "consignee", state, "", "");
-		assertThrows(Exception.class, () -> contractRepo.save(contract));
+		assertThrows(Exception.class, () -> em.persistAndFlush(contract));
 	}
 }

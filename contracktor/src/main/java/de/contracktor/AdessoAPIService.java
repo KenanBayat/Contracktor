@@ -101,6 +101,19 @@ public class AdessoAPIService {
 
 		if (projectRepo.existsByProjectID(contract.getProjectId())
 				&& stateRepo.existsByStateName(contract.getStatus().getStateName())) {
+			Organisation organisation;
+			if(!organisationRepo.existsByOrganisationName(contract.getContractor())) {
+				organisation = new Organisation(contract.getContractor());
+				organisationRepo.save(organisation);
+			}else {
+				organisation = organisationRepo.findByOrganisationName(contract.getContractor());
+			}
+			if(!organisationRepo.existsByOrganisationName(contract.getConsignee())) {
+				organisation = new Organisation(contract.getConsignee());
+				organisationRepo.save(organisation);
+			}else {
+				organisation = organisationRepo.findByOrganisationName(contract.getConsignee());
+			}
 			State state = stateRepo.findByStateName(contract.getStatus().getStateName());
 			contract.setStatus(state);
 			Project project = projectRepo.findByProjectID(contract.getProjectId());
@@ -117,14 +130,16 @@ public class AdessoAPIService {
 	 * 
 	 * @param billingItem the billingItem to be saved.
 	 */
-	public void save(BillingItem billingItem) {
+	public void save(BillingItem billingItem, String billingUnitID) {
 
+		billingItem.setBillingUnit_ID(billingUnitID);
+			
 		ArrayList<BillingItem> billingItems = new ArrayList<BillingItem>();
 		
 		if (billingItem.getBillingItems() != null &&
 				!billingItem.getBillingItems().isEmpty()) {
 			for (BillingItem billingItem1 : billingItem.getBillingItems()) {
-				adessoAPIService.save(billingItem1);
+				adessoAPIService.save(billingItem1, billingUnitID);
 				billingItems.add(billingItem1);
 			}
 		}
@@ -150,7 +165,7 @@ public class AdessoAPIService {
 		ArrayList<BillingItem> billingItems = new ArrayList<BillingItem>();
 		
 		for (BillingItem billingItem : billingUnit.getBillingItems()) {
-			adessoAPIService.save(billingItem);
+			adessoAPIService.save(billingItem, billingUnit.getBillingUnitID());
 			billingItems.add(billingItem);
 		}
 

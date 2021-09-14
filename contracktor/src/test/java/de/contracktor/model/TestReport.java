@@ -4,20 +4,21 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import de.contracktor.repository.AddressRepository;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import de.contracktor.repository.BillingItemRepository;
 import de.contracktor.repository.OrganisationRepository;
 import de.contracktor.repository.ReportRepository;
 import de.contracktor.repository.StateRepository;
 
-@SpringBootTest
+@DataJpaTest
+@AutoConfigureTestDatabase(replace=Replace.NONE)
 public class TestReport {
 
 	@Autowired
@@ -32,6 +33,9 @@ public class TestReport {
 	@Autowired
 	private OrganisationRepository organisationRepo;
 	
+	@Autowired
+	private TestEntityManager em;
+	
 	Organisation organisation;
 	
 	private Report report;
@@ -44,20 +48,15 @@ public class TestReport {
 	
 	private LocalDate date = LocalDate.of(2021, 9, 8);
 	
-	@Autowired
-	private AddressRepository addressRepo;
-	
-	Address address;
-	
 	@BeforeEach
 	public void init() {
 		state = new State("Processing");
-		stateRepo.save(state);
+		state = em.persistAndFlush(state);
 		organisation = new Organisation("testOrganisation");
-		organisation = organisationRepo.save(organisation);
+		organisation = em.persistAndFlush(organisation);
 		billingItems = new ArrayList<BillingItem>();
-		billingItem = new BillingItem("ID_3346_2929_37", "meter", 1000.0, 105.0, 100050.0, "3m5_6h4uXAXvBoFEtks_QE", state, "", billingItems);
-		billingItem = billingItemRepo.save(billingItem);
+		billingItem = new BillingItem("ID_3346_2929_37", "id", "meter", 1000.0, 105.0, 100050.0, "3m5_6h4uXAXvBoFEtks_QE", state, "", billingItems);
+		billingItem = em.persistAndFlush(billingItem);
 	}
 	
 	@AfterEach
@@ -72,27 +71,27 @@ public class TestReport {
 	public void testNullDate() {		
 		// Test null date.
 		report = new Report(billingItems, organisation, null, "hans", "", null);
-		assertThrows(Exception.class, () -> reportRepo.save(report));		
+		assertThrows(Exception.class, () -> em.persistAndFlush(report));		
 	}
 	
 	@Test
 	public void testNullUsername() {
 		// Test null username.
 		report = new Report(billingItems, organisation, date, null, "", null);
-		assertThrows(Exception.class, () -> reportRepo.save(report));
+		assertThrows(Exception.class, () -> em.persistAndFlush(report));
 	}
 	
 	@Test
 	public void testNullComment() {
 		// Test null username.
 		report = new Report(billingItems, organisation, date, "hans", null, null);
-		assertThrows(Exception.class, () -> reportRepo.save(report));
+		assertThrows(Exception.class, () -> em.persistAndFlush(report));
 	}
 	
 	@Test
 	public void testEmptyUsername() {
 		// Test empty username
 		report = new Report(billingItems, organisation, date, "", "", null);
-		assertThrows(Exception.class, () -> reportRepo.save(report));
+		assertThrows(Exception.class, () -> em.persistAndFlush(report));
 	}
 }
