@@ -196,7 +196,7 @@ public class DatabaseService {
 	 * 
 	 * @return the billingItem that has the given billingItem id
 	 */
-	public BillingItem getContractByID(String billingItemID) {
+	public BillingItem getBillingItemByID(String billingItemID) {
 		return billingItemRepo.findByBillingItemID(billingItemID).orElse(null);
 	}
 }
