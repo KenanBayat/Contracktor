@@ -10,11 +10,14 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import de.contracktor.repository.OrganisationRepository;
 import de.contracktor.repository.UserRepository;
 
 @DataJpaTest
+@Transactional(propagation = Propagation.NOT_SUPPORTED)
 @AutoConfigureTestDatabase(replace=Replace.NONE)
 public class TestUserAccount {
 
@@ -28,14 +31,12 @@ public class TestUserAccount {
 	
 	@Autowired
 	private OrganisationRepository organisationRepo;
-		
-	@Autowired
-	private TestEntityManager em;
+	
 	
 	@BeforeEach
 	private void init() {
 		organisation = new Organisation("organisation");
-		em.persistAndFlush(organisation);
+		organisationRepo.save(organisation);
 	}
 	
 	@AfterEach
@@ -49,35 +50,35 @@ public class TestUserAccount {
 	public void testNullUsername() {
 		// Test null username.
 		user1 = new UserAccount(null, "password", "hans", "peter", organisation, true, true, null);	
-		assertThrows(Exception.class, () -> em.persistAndFlush(user1));
+		assertThrows(Exception.class, () -> userRepo.save(user1));
 	}
 	
 	@Test
 	public void testNullPassword() {
 		// Test null password.
 		user1 = new UserAccount("username", null, "hans", "peter", organisation, true, true, null);	
-		assertThrows(Exception.class, () -> em.persistAndFlush(user1));
+		assertThrows(Exception.class, () -> userRepo.save(user1));
 	}
 	
 	@Test
 	public void testNullForename() {
 		// Test null forename.
 		user1 = new UserAccount("username", "password", null, "peter", organisation, true, true, null);
-		assertThrows(Exception.class, () -> em.persistAndFlush(user1));
+		assertThrows(Exception.class, () -> userRepo.save(user1));
 	}
 	
 	@Test
 	public void testNullSurname() {
 		// Test null surname.
 		user1 = new UserAccount("username", "password", "hans", null, organisation, true, true, null);
-		assertThrows(Exception.class, () -> em.persistAndFlush(user1));
+		assertThrows(Exception.class, () -> userRepo.save(user1));
 	}
 	
 	@Test
 	public void testNullOrganisation() {
 		// Test null organisation.
 		user1 = new UserAccount("username", "password", "hans", "peter", null, true, true, null);
-		assertThrows(Exception.class, () -> em.persistAndFlush(user1));
+		assertThrows(Exception.class, () -> userRepo.save(user1));
 	}
 	
 	@Test
@@ -91,7 +92,7 @@ public class TestUserAccount {
 	public void testNullIsApplicatonAdmin() {
 		// Test null isAdmin.
 		user1 = new UserAccount("username", "password", "hans", "peter", organisation, null, true, null);
-		assertThrows(Exception.class, () -> em.persistAndFlush(user1));
+		assertThrows(Exception.class, () -> userRepo.save(user1));
 	}
 	
 	@Test

@@ -195,14 +195,14 @@ public class TestBillingItem {
 		assertTrue(billingItemRepo.findByBillingItemID(billingItem.getBillingItemID()).isPresent());
 		assertTrue(billingItemRepo.findByBillingItemID(billingItemInList1.getBillingItemID()).isPresent());
 		assertTrue(billingItemRepo.findByBillingItemID(billingItemInList2.getBillingItemID()).isPresent());
-		assertFalse(billingItemRepo.findByBillingItemID("Pablos wei�e Weihnachten").isPresent());
+		assertFalse(billingItemRepo.findByBillingItemID("Pablos weisse Weihnachten").isPresent());
 		
 		billingItemRepo.delete(billingItem);
 		
 		assertFalse(billingItemRepo.findByBillingItemID(billingItem.getBillingItemID()).isPresent());
 		assertFalse(billingItemRepo.findByBillingItemID(billingItemInList1.getBillingItemID()).isPresent());
 		assertFalse(billingItemRepo.findByBillingItemID(billingItemInList2.getBillingItemID()).isPresent());
-		assertFalse(billingItemRepo.findByBillingItemID("Pablos wei�e Weihnachten").isPresent());
+		assertFalse(billingItemRepo.findByBillingItemID("Pablos weisse Weihnachten").isPresent());
 		
 	}
 	
