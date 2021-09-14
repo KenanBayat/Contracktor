@@ -60,7 +60,7 @@
           </div>
         </div>
       </div>
-      <div class="col-6">
+      <div class="col-6" th:unless="${items.isEmpty()}">
         <!-- Suchleiste -->
         <h5>Leistungspositionen</h5>
         <!-- Tabelle mit Filterfunktionen -->
@@ -71,15 +71,17 @@
             <th scope="col">Beschreibung</th>
             <th scope="col">Fläche</th>
             <th scope="col">Status</th>
+            <th scope="col">Preis</th>
             <th scope="col">Details</th>
           </tr>
           </thead>
           <tbody>
           <tr th:each="item:${items}">
-            <td th:text="${item.getId()}"></td>
+            <td th:text="${item.getBillingItemID()}"></td>
             <td th:text="${item.getShortDescription()}"></td>
             <td th:text="${item.getQuantity() + item.getUnit()}"></td>
             <td th:text="${item.getStatus().getStateName()}"></td>
+            <td th:text="${item.getTotalPrice()}"></td>
             <td>
               <a th:href="@{'/billingitem/' + ${item.getId()} + '/details'}" class="icon-link" title="Details">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16">

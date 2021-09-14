@@ -44,8 +44,7 @@ public class ContractController {
 
     @GetMapping("/contract/{contractId}/details")
     public String getContractDetails(@PathVariable int contractId, Model model){
-        //Contract contract = contractRepository.findById(contractId).get();
-        Contract contract = databaseService.getContractByContractID(contractId);
+        Contract contract = databaseService.getContractByID(contractId);
         model.addAttribute("contract", contract);
         //Test
         List<BillingItem> items = databaseService.getAllBillingItemsOfContract(contract);
