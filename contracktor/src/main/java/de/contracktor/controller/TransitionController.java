@@ -28,7 +28,7 @@ public class TransitionController {
     @Autowired
     StateTransitionRepository transitionRepository;
 
-    List<StateTransition> searchedTransitions = new ArrayList<StateTransition>();
+    List<StateTransition> searchedTransitions = new ArrayList<>();
 
     @GetMapping("/admin/transition")
     public String getTransitionPage(Model model) {
@@ -88,16 +88,24 @@ public class TransitionController {
     // Add
 
     @PostMapping("/admin/transition/add")
-    public String addTransition(@RequestParam int start, int end, Model model) {
+    public String addTransition(@RequestParam int start, @RequestParam int end, @RequestParam String who, Model model) {
         // Data:
         State startS = stateRepository.findById(start).get();
         State endS = stateRepository.findById(end).get();
-        List<State> states = stateRepository.findAll();
+        boolean nehmer = false;
+        boolean geber = false;
 
         // Logic:
         StateTransition transition = new StateTransition(startS, endS);
         transition = transitionRepository.save(transition);
         List<StateTransition> transitions = transitionRepository.findAll();
+        List<State> states = stateRepository.findAll();
+        if (who.equals("geber")) {
+            geber = true;
+        }
+        if (who.equals("nehmer")) {
+            nehmer = true;
+        }
 
         // Model attributes:
         model.addAttribute("states", states);
