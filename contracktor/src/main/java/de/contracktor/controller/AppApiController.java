@@ -48,20 +48,21 @@ public class AppApiController {
     @Autowired
     private PictureRepository pictureRepository;
 
-    @GetMapping("/api/download")
-    @ResponseBody
-    public APIResponse downloadController(Model model) {
-        String user = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (user == null) {
-            return new APIResponse("NOT_AUTHENTICATED");
-        }
-        return apiDownloadConstructor(user);
-    }
-
     @PostMapping("/api/update")
     @ResponseBody
     public APIResponse updateController(@RequestParam(name = "json") APIUpdate update) {
         List<BillingItemUpdate> billingItemUpdates = update.getBillingItemUpdates();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        if (username == null) {
+            return new APIResponse("NOT_AUTHENTICATED");
+        }
+
+        Optional<UserAccount> user = userRepository.findByUsername(username);
+
+        if (user.isEmpty()) {
+            return new APIResponse("UNKNOWN_USER");
+        }
 
         for (BillingItemUpdate billingItemUpdate : billingItemUpdates) {
             Optional<BillingItem> savedItem = billingItemRepository.findByBillingItemID(billingItemUpdate.getBillingItemID());
@@ -83,7 +84,7 @@ public class AppApiController {
             reportRepository.save(report);
         }
 
-        return new APIResponse("OK");
+        return apiDownloadConstructor(username);
     }
 
     @RequestMapping("/api/login")

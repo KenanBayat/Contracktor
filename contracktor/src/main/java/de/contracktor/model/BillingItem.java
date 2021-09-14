@@ -38,14 +38,12 @@ public class BillingItem {
 	@Getter @Setter @OneToMany(cascade = CascadeType.REMOVE) private List<BillingItem> billingItems;
 	@Getter @Setter @Column(nullable = false) private String shortDescription;
 	@Getter @Setter @Transient @JsonProperty("status") String statusName;
-	@Getter @Setter @Column(nullable = false) private long lastModified;
+	@Getter @Setter @Column private long lastModified;
 	
-	public BillingItem() {
-		
-	}
+	public BillingItem() {}
 	
 	public BillingItem(String billingItemID, String unit, Double quantity, Double pricePerUnit,
-			           Double totalPrice, String IFC, State status, String shortDescription, ArrayList<BillingItem> billingItems) {
+			           Double totalPrice, String IFC, State status, String shortDescription ,ArrayList<BillingItem> billingItems) {
 		this.billingItemID = billingItemID;
 		this.unit = unit;
 		this.quantity = quantity;
