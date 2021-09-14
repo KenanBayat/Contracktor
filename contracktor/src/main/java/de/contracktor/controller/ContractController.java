@@ -31,20 +31,21 @@ public class ContractController {
 
     @GetMapping("/contracts")
     public String getContractList(Model model){
-        model.addAttribute("contracts",contractRepository.findAll());
+        model.addAttribute("contracts",databaseService.getAllContracts());
         return "contract-list";
     }
 
     @PostMapping("/contracts")
     public String getSearchedContractList(@RequestParam String search, Model model){
         model.addAttribute("search",search);
-        model.addAttribute("contracts",contractRepository.findByNameContains(search));
+        model.addAttribute("contracts",databaseService.findByContractNameContains(search));
         return "contract-list";
     }
 
     @GetMapping("/contract/{contractId}/details")
     public String getContractDetails(@PathVariable int contractId, Model model){
-        Contract contract = contractRepository.findById(contractId).get();
+        //Contract contract = contractRepository.findById(contractId).get();
+        Contract contract = databaseService.getContractByContractID(contractId);
         model.addAttribute("contract", contract);
         //Test
         List<BillingItem> items = databaseService.getAllBillingItemsOfContract(contract);

@@ -109,9 +109,27 @@ public class DatabaseService {
 	 */
 	public List<BillingItem> getAllBillingItems() {
 		return billingItemRepo.findAll();
-	}	
-	
-	
+	}
+
+	/**
+	 * Return all projects in the database
+	 *
+	 * @return all projects in the database
+	 */
+	public List<Project> getAllProjects() {
+		return projectRepo.findAll();
+	}
+
+	/**
+	 * Return all contracts in the database
+	 *
+	 * @return all contracts in the database
+	 */
+	public List<Contract> getAllContracts() {
+		return contractRepo.findAll();
+	}
+
+
 	/**
 	 * Finds all projects, which contain the given substring
 	 * 
@@ -188,7 +206,7 @@ public class DatabaseService {
 	 * @return the contract that has the given contract id
 	 */
 	public Contract getContractByID(int id) {
-		return contractRepo.findById(id).orElse(null);
+		return contractRepo.findById(id).get();
 	}
 	
 	/**
@@ -217,7 +235,8 @@ public class DatabaseService {
 	public Contract getContractByContractID(int id) {
 		return contractRepo.findByContractID(id);
 	}
-	
+
+
 	/**
 	 * Find a billingItem by the given billingItem id.
 	 * 
@@ -225,5 +244,14 @@ public class DatabaseService {
 	 */
 	public BillingItem getBillingItemByBillingItemID(String id) {
 		return billingItemRepo.findByBillingItemID(id).orElse(null);
+	}
+
+	/**
+	 * returns a list of all contracts of a project
+	 * @param project: specific Project
+	 * @return all contracts that are included in the project
+	 */
+	public List<Contract> getContractsOfProject(Project project) {
+		return contractRepo.findByProject(project);
 	}
 }
