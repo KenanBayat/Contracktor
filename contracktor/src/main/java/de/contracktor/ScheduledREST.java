@@ -140,7 +140,7 @@ public class ScheduledREST {
 
                     for (BillingItem billingItem : billingItems ) {
 
-                        adesso.save(billingItem);
+                        adesso.save(billingItem, billingUnit.getBillingUnitID());
 
                         System.out.println(billingItem.getBillingItemID());
                         List<BillingItem> billingItemItems = billingItem.getBillingItems();
@@ -167,7 +167,7 @@ public class ScheduledREST {
 
                         for (BillingItem billingItemItem : billingItemItems) {
 
-                            adesso.save(billingItemItem);
+                            adesso.save(billingItemItem, billingUnit.getBillingUnitID());
 
                             System.out.println(billingItemItem.getBillingItemID());
 
