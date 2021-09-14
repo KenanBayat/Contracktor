@@ -16,6 +16,7 @@ public interface BillingItemRepository extends CrudRepository<BillingItem, Integ
 	boolean existsByBillingItemID(String id);
 
     List<BillingItem> findAll();
+    List<BillingItem> findByBillingItemIDContains(String substr);
 
     Optional<BillingItem> findByBillingItemID(String billingItemID);
 

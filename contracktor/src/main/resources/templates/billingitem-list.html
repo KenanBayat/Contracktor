@@ -6,19 +6,29 @@
 <body>
 <th:block th:fragment="content">
     <div class="container">
-        <h3>Leistungsposition</h3>
+        <h3>Liste der Leistungsposition</h3>
+
+        <!-- SearchBar -->
+        <div class="container">
+            <form action="#" th:action="@{'/billingitems'}" th:method="post">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Suche nach Namen" aria-label="Suche nach Namen" aria-describedby="search"  name="search" th:value="${search}">
+                    <button type="submit" class="btn btn-outline-secondary bg-dark" id="search">Suchen</button>
+                </div>
+            </form>
+        </div>
 
         <table class="table table-striped">
             <thead>
-                <th>LPID</th>
-                <th>LPName</th>
+                <th>#</th>
+                <th>Beschreibung</th>
                 <th>Details</th>
             </thead>
 
             <tbody>
                 <tr th:each="item:${items}">
                     <td th:text="${item.getBillingItemID()}"></td>
-                    <td th:text="${item.getUnit()}"></td>
+                    <td th:text="${item.getShortDescription()}"></td>
                     <td>
                         <a th:href="@{'/billingItems/' + ${item.getId()} + '/details'}" class="icon-link" title="Details">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16">
