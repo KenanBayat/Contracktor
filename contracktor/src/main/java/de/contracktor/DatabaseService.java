@@ -45,8 +45,7 @@ public class DatabaseService {
 		
 		for(Contract contract : contracts) {
 			billingItems.addAll(DatabaseService.getAllBillingItemsOfContract(contract));
-		}
-		
+		}		
 		return billingItems;
 	}
 
@@ -69,8 +68,7 @@ public class DatabaseService {
 			for(BillingItem billingItem : billingUnit.getBillingItems()) {
 				DatabaseService.getBillingItemsOfBillingItem(billingItems, billingItem);
 			}
-		}
-		
+		}		
 		return billingItems;
 	}
 	
