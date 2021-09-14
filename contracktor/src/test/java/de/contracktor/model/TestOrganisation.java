@@ -8,11 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import de.contracktor.repository.OrganisationRepository;
 import de.contracktor.repository.UserRepository;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace=Replace.NONE)
+@Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class TestOrganisation {
 
 	@Autowired
