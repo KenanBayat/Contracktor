@@ -3,20 +3,17 @@ package de.contracktor.model;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import javax.validation.ConstraintViolationException;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import de.contracktor.repository.AddressRepository;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import de.contracktor.repository.OrganisationRepository;
 import de.contracktor.repository.UserRepository;
 
-@SpringBootTest
+@DataJpaTest
+@AutoConfigureTestDatabase(replace=Replace.NONE)
 public class TestOrganisation {
 
 	@Autowired
@@ -27,32 +24,35 @@ public class TestOrganisation {
 	@Autowired
 	private UserRepository userRepo;
 	
+	@Autowired
+	private TestEntityManager em;
+	
 	private UserAccount user1;
 				
 	@Test
 	public void testNullName() {
 		// Test null organisationName.
 		organisation1 = new Organisation(null);
-		assertThrows(Exception.class, () -> organisationRepo.save(organisation1));	
+		assertThrows(Exception.class, () -> em.persistAndFlush(organisation1));	
 	}
 	
 	@Test
 	public void testEmptyOrganisationName() {
 		// Test null organisationName.
 		organisation1 = new Organisation("");
-		assertThrows(Exception.class, () -> organisationRepo.save(organisation1));		
+		assertThrows(Exception.class, () -> em.persistAndFlush(organisation1));		
 	}
 	
 	@Test 
 	public void testSaveOrganisation() {
 		
 		organisation1 = new Organisation("organisation1");
-		organisation1 = organisationRepo.save(organisation1);
+		organisation1 = em.persistAndFlush(organisation1);
 		
 		assertTrue(organisationRepo.existsByOrganisationName(organisation1.getOrganisationName()));
 		
 		user1 =  new UserAccount("hansPeter", "password", "hans", "peter", organisation1, true, true, null);
-		user1 = userRepo.save(user1);
+		user1 = em.persistAndFlush(user1);
 		int userID = user1.getId();
 		
 		userRepo.delete(user1);
@@ -64,10 +64,10 @@ public class TestOrganisation {
 	public void testDeleteOrganisation() {
 		
 		organisation1 = new Organisation("organisation1");
-		organisation1 = organisationRepo.save(organisation1);
+		organisation1 = em.persistAndFlush(organisation1);
 		
-		user1 =  new UserAccount("hansPeter", "password", "hans", "peter", organisation1, true, true, null);
-		user1 = userRepo.save(user1);
+		user1 = new UserAccount("hansPeter", "password", "hans", "peter", organisation1, true, true, null);
+		user1 = em.persistAndFlush(user1);
 	
 		assertTrue(organisationRepo.existsByOrganisationName(organisation1.getOrganisationName()));
 		

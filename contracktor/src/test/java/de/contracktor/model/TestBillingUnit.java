@@ -4,14 +4,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import de.contracktor.repository.AddressRepository;
 import de.contracktor.repository.BillingItemRepository;
 import de.contracktor.repository.BillingUnitRepository;
@@ -21,7 +21,8 @@ import de.contracktor.repository.PictureRepository;
 import de.contracktor.repository.ProjectRepository;
 import de.contracktor.repository.StateRepository;
 
-@SpringBootTest
+@DataJpaTest
+@AutoConfigureTestDatabase(replace=Replace.NONE)
 public class TestBillingUnit {
 
 	
@@ -49,6 +50,9 @@ public class TestBillingUnit {
 	@Autowired
 	PictureRepository pictureRepo;
 	
+	@Autowired
+	private TestEntityManager em;
+	
 	private final LocalDate creationDate = LocalDate.of(2021, 9, 8);
 	private final LocalDate completionDate = LocalDate.of(2022, 12, 12);
 	
@@ -75,41 +79,42 @@ public class TestBillingUnit {
 	@BeforeEach
 	public void init() {
 		state = new State("BillingUnitState");
-		stateRepo.save(state);
+		em.persistAndFlush(state);
 		
-		billingItem1 =  new BillingItem("ID_3346_2929_38", "meter", 1000.0, 105.0, 100050.0, 
+		billingItem1 =  new BillingItem("ID_3346_2929_38", "id", "meter", 1000.0, 105.0, 100050.0, 
                 "3m5_6h4uXAXvBoFEtks_QE", state, "", new ArrayList<BillingItem>());
-		billingItem2 = new BillingItem("ID_3346_2929_39", "meter", 1000.0, 105.0, 100050.0, 
+		billingItem2 = new BillingItem("ID_3346_2929_39", "id", "meter", 1000.0, 105.0, 100050.0, 
                 "3m6_6h4uXAXvBoFEtks_QE", state, "", new ArrayList<BillingItem>());
 		billingItemsi = new ArrayList<BillingItem>();
 		billingItemsi.add(billingItem1);
 		billingItemsi.add(billingItem2);
-		billingItem3 = new BillingItem("ID_3346_2929_37", "meter", 1000.0, 105.0, 100050.0, "3m7_6h4uXAXvBoFEtks_QE", state, "", billingItemsi);
+		billingItem3 = new BillingItem("ID_3346_2929_37", "meter", "id", 1000.0, 105.0, 100050.0, 
+				"3m7_6h4uXAXvBoFEtks_QE", state, "", billingItemsi);
 		
 		billingItems = new ArrayList<BillingItem>();
 		billingItems.add(billingItem3);
 		
-		billingItemRepo.save(billingItem1);
-		billingItemRepo.save(billingItem2);
-		billingItemRepo.save(billingItem3);
+		em.persistAndFlush(billingItem1);
+		em.persistAndFlush(billingItem2);
+		em.persistAndFlush(billingItem3);
 		
 		address1 = new Address(1000, "straße", "houseNumber", "city", "12345", "country");
 		address2 = new Address(100, "street", "42", "hamburg", "187", "de");
 		
-		addressRepo.save(address1);
-		addressRepo.save(address2);
+		em.persistAndFlush(address1);
+		em.persistAndFlush(address2);
 		
 		organisation = new Organisation("organisation1");
-		organisationRepo.save(organisation);
+		em.persistAndFlush(organisation);
 		
 		picture = new Picture(null,null);
-		pictureRepo.save(picture);
+		em.persistAndFlush(picture);
 		
 		project = new Project(200, "project", creationDate, completionDate, address2, 100.0, organisation, "hans", state, picture, "");
-		projectRepo.save(project);
+		em.persistAndFlush(project);
 		
 		contract = new Contract(42, project, "contract", "consignee", state, "Contractor", "test");
-		contractRepo.save(contract);
+		em.persistAndFlush(contract);
 	}
 	
 	@AfterEach
@@ -136,7 +141,7 @@ public class TestBillingUnit {
 		BillingUnit unit = new BillingUnit(null, "Meter", completionDate , 42.42, 
 		           1337.0 , contract, billingItems ,true, 
 		           "shortDescription", "longDescription", state);
-		assertThrows(Exception.class, () -> billingUnitRepo.save(unit));
+		assertThrows(Exception.class, () -> em.persistAndFlush(unit));
 	}
 	
 	@Test
@@ -144,7 +149,7 @@ public class TestBillingUnit {
 		BillingUnit unit = new BillingUnit("1234", "Meter", completionDate ,null, 
 		           1337.0 ,contract, billingItems ,true, 
 		           "shortDescription", "longDescription", state);
-		assertThrows(Exception.class, () -> billingUnitRepo.save(unit));
+		assertThrows(Exception.class, () -> em.persistAndFlush(unit));
 	}
 	
 	@Test
@@ -152,7 +157,7 @@ public class TestBillingUnit {
 		BillingUnit unit = new BillingUnit("1234", "Meter", completionDate ,42.42, 
 		           null ,contract, billingItems ,true, 
 		           "shortDescription", "longDescription", state);
-		assertThrows(Exception.class, () -> billingUnitRepo.save(unit));
+		assertThrows(Exception.class, () -> em.persistAndFlush(unit));
 	}
 
 	@Test
@@ -160,13 +165,13 @@ public class TestBillingUnit {
 		BillingUnit unit = new BillingUnit("1234", "Meter", completionDate ,42.42, 
 		           1337.0 ,contract, billingItems ,true, 
 		           null, "longDescription", state);
-		assertThrows(Exception.class, () -> billingUnitRepo.save(unit));
+		assertThrows(Exception.class, () -> em.persistAndFlush(unit));
 	}
 	@Test
 	public void null_longDescriptionDefined_Test() {
 		BillingUnit unit = new BillingUnit("1234", "Meter", completionDate ,42.42, 
 		           1337.0 ,contract, billingItems ,true, 
 		           "shortDescription", null, state);
-		assertThrows(Exception.class, () -> billingUnitRepo.save(unit));
+		assertThrows(Exception.class, () -> em.persistAndFlush(unit));
 	}
 }
