@@ -1,11 +1,13 @@
 package de.contracktor.controller;
 
-import de.contracktor.model.DateFormatter;
-import de.contracktor.model.Organisation;
-import de.contracktor.model.Project;
-import de.contracktor.model.Role;
+import de.contracktor.DatabaseService;
+import de.contracktor.model.*;
+import de.contracktor.repository.BillingItemRepository;
+import de.contracktor.repository.BillingUnitRepository;
+import de.contracktor.repository.ContractRepository;
 import de.contracktor.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -24,6 +23,15 @@ public class ProjectStatisticController {
 
     @Autowired
     ProjectRepository projectRepository;
+
+    @Autowired
+    ContractRepository contractRepository;
+
+    @Autowired
+    BillingUnitRepository billingUnitRepository;
+
+    @Autowired
+    BillingItemRepository billingItemRepository;
 
     List<Project> selectedProjects = new ArrayList<>();
 
@@ -34,6 +42,8 @@ public class ProjectStatisticController {
     @GetMapping("/project-statistic")
     public String getProjectStatistic(Model model) {
 
+        model.addAttribute("labels", getLabels());
+        model.addAttribute("count", getCount());
         model.addAttribute("projects", projectRepository.findAll());
         model.addAttribute("selectedProjects", selectedProjects);
         model.addAttribute("formatter", formatter);
@@ -45,6 +55,8 @@ public class ProjectStatisticController {
     public String getAddAllProjectStatistic(Model model) {
         selectedProjects = projectRepository.findAll();
 
+        model.addAttribute("labels", getLabels());
+        model.addAttribute("count", getCount());
         model.addAttribute("projects", projectRepository.findAll());
         model.addAttribute("selectedProjects", selectedProjects);
         model.addAttribute("formatter", formatter);
@@ -56,6 +68,8 @@ public class ProjectStatisticController {
     public String getRemoveAllProjectStatistic(Model model) {
         selectedProjects = new ArrayList<>();
 
+        model.addAttribute("labels", getLabels());
+        model.addAttribute("count", getCount());
         model.addAttribute("projects", projectRepository.findAll());
         model.addAttribute("selectedProjects", selectedProjects);
         model.addAttribute("formatter", formatter);
@@ -82,6 +96,8 @@ public class ProjectStatisticController {
                 )
                 .collect(Collectors.toList());
 
+        model.addAttribute("labels", getLabels());
+        model.addAttribute("count", getCount());
         model.addAttribute("projects", searchedProjects);
         model.addAttribute("selectedProjects", selectedProjects);
         model.addAttribute("formatter", formatter);
@@ -91,6 +107,7 @@ public class ProjectStatisticController {
 
     @PostMapping("/project-statistic/add")
     public String getAddProjectStatistic(@RequestParam int id, Model model) {
+
         List<Project> projects = projectRepository.findAll();
         Project project = projectRepository.findByProjectID(id);
         boolean contains = false;
@@ -103,8 +120,8 @@ public class ProjectStatisticController {
             selectedProjects.add(project);
         }
 
-
-
+        model.addAttribute("labels", getLabels());
+        model.addAttribute("count", getCount());
         model.addAttribute("projects", projects);
         model.addAttribute("selectedProjects", selectedProjects);
         model.addAttribute("formatter", formatter);
@@ -126,7 +143,8 @@ public class ProjectStatisticController {
 
 
 
-
+        model.addAttribute("labels", getLabels());
+        model.addAttribute("count", getCount());
         model.addAttribute("projects", projects);
         model.addAttribute("selectedProjects", selectedProjects);
         model.addAttribute("formatter", formatter);
@@ -199,11 +217,68 @@ public class ProjectStatisticController {
         }
 
 
-
+        model.addAttribute("labels", getLabels());
+        model.addAttribute("count", getCount());
         model.addAttribute("projects", sortList);
         model.addAttribute("selectedProjects", selectedProjects);
         model.addAttribute("formatter", formatter);
         model.addAttribute("filter", filter);
         return "project-statistic";
     }
+
+    public List<String> getLabels() {
+        List<String> labels = new ArrayList<>();
+        List<BillingItem> selectedBillingItems = getSelectedBillingItems();
+        for (BillingItem b: selectedBillingItems) {
+            labels.add(b.getStatus().getStateName());
+        }
+        Set<String> set = new HashSet<>(labels);
+        labels.clear();
+        labels.addAll(set);
+        return labels;
+    }
+
+    public List<Integer> getCount() {
+        List<BillingItem> selectedBillingItems = getSelectedBillingItems();
+        List<String> labels = getLabels();
+        List<Integer> count = new ArrayList<>();
+        for(String s : labels) {
+            int counter = 0;
+            for (BillingItem b : selectedBillingItems) {
+                if (b.getStatus().getStateName().equals(s)) {
+                    counter++;
+                }
+            }
+            count.add(counter);
+        }
+        return count;
+    }
+
+    public List<BillingItem> getSelectedBillingItems() {
+        List<Project> projects = selectedProjects;
+        List<Contract> contracts = contractRepository.findAll();
+        List<Contract> selectedContracts = new ArrayList<>();
+        for (Project p : projects) {
+            for (Contract c : contracts) {
+                if(p.getProjectID() == c.getProject().getProjectID()) {
+                    selectedContracts.add(c);
+                }
+            }
+        }
+        List<BillingUnit> billingUnits = new ArrayList<>();
+        for (Contract c : selectedContracts) {
+            billingUnits.addAll(billingUnitRepository.findAllByContract(c));
+        }
+        List<BillingItem> selectedBillingItems = new ArrayList<>();
+        for (BillingUnit bu : billingUnits) {
+            selectedBillingItems.addAll(bu.getBillingItems());
+        }
+        List<BillingItem> items = new ArrayList<>();
+        for (BillingItem b : selectedBillingItems) {
+            items.addAll(b.getBillingItems());
+        }
+        selectedBillingItems.addAll(items);
+        return selectedBillingItems;
+    }
+
 }
