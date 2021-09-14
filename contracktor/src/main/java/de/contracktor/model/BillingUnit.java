@@ -45,9 +45,7 @@ public class BillingUnit {
 	private String completionDateString;
 
 	
-	public BillingUnit() {
-		
-	}
+	public BillingUnit() {}
 	
 	public BillingUnit(String billingUnitID, String unit, LocalDate completionDate, Double totalPrice, 
 			           Double totalQuantity, Contract contract,ArrayList<BillingItem> billingItems ,Boolean ownContractDefined, 
