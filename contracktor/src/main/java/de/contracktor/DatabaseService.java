@@ -72,6 +72,19 @@ public class DatabaseService {
 		return billingItems;
 	}
 	
+	/**
+	 * Returns the billingItems of a billingItem
+	 * 
+	 * @param billingItem the given billingItem
+	 * @return the billingItems that belong to the given billingItem
+	 */
+	public List<BillingItem> getAllBillingItemsOfBillingItem(BillingItem billingItem) {
+		List<BillingItem> billingItems = new ArrayList<BillingItem>();
+		
+		getBillingItemsOfBillingItem(billingItems, billingItem);
+		
+		return billingItems; 
+	}
 	
 	/**
 	 * Returns the billingItems of a billingItem
@@ -127,5 +140,36 @@ public class DatabaseService {
 	 */
 	public List<BillingItem> findByBillingItemIDContains(String search) {
 		return billingItemRepo.findByBillingItemIDContains(search);
+	}
+	
+	
+	/**
+	 * Returns the childs of a billingItem to the depth 1
+	 * 
+	 * @param billingItem the given billingItem
+	 * @return the childs of the given billingItem
+	 */
+	public List<BillingItem> getChildOfBillingItem(BillingItem billingItem) {
+		List<BillingItem> billingItems = new ArrayList<BillingItem>();
+		
+		for(BillingItem billingItemChild : billingItem.getBillingItems()) {
+			billingItems.add(billingItemChild);
+		}	
+		return billingItems;
+	}
+	
+	/**
+	 * Returns the contract, to which the given billingItem belongs
+	 * 
+	 * @param billingItem the given billingItem
+	 * @return the Contract, to which the given billingItem belongs
+	 */
+	public Contract getContractOfBillingItem(BillingItem billingItem) {
+		if(!billingUnitRepo.existsByBillingUnitID(billingItem.getBillingUnit_ID())) {
+			throw new IllegalArgumentException("The billingItem has no billingUnit");
+		}
+		
+		BillingUnit billingUnit = billingUnitRepo.findByBillingUnitID(billingItem.getBillingUnit_ID());
+		return billingUnit.getContract();
 	}
 }
