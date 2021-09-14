@@ -4,7 +4,68 @@
 <body>
 <th:block th:fragment="content">
     <div class="container">
-        <h3 th:text="'Details zur Leistungsposition ' + ${billingitemId}" />
+        <!-- Creates two seperate Columns -->
+        <div class="row">
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        <p th:text="${'Leistungsposition-Daten Vertrag: ' + item}"></p>
+                    </div>
+                    <div class="card-body">
+
+                        <!-- shows long description on demand-->
+                        <div class="accordion" id="accordionExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="description">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                        <strong>Beschreibung</strong>
+                                    </button>
+                                </h2>
+                                <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="description" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <p th:text="${item.getShortDescription()}"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <!-- Suchleiste -->
+                <h5>Leistungspositionen</h5>
+                <!-- Tabelle mit Filterfunktionen -->
+                <table class="table table-responsive-sm">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Beschreibung</th>
+                        <th scope="col">Fläche</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Preis</th>
+                        <th scope="col">Details</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="subitem:${subitems}">
+                        <td th:text="${subitem.getId()}"></td>
+                        <td th:text="${subitem.getShortDescription()}"></td>
+                        <td th:text="${subitem.getQuantity() + item.getUnit()}"></td>
+                        <td th:text="${subitem.getStatus().getStateName()}"></td>
+                        <td th:text="${subitem.getTotalPrice()}"></td>
+                        <td>
+                            <a th:href="@{'/contract/' + ${subitem.getId()} + '/details'}" class="icon-link" title="Details">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5z"/>
+                                    <path fill-rule="evenodd" d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0v-5z"/>
+                                </svg>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </th:block>
 </body>

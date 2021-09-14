@@ -1,7 +1,9 @@
 package de.contracktor.controller;
 
+import de.contracktor.DatabaseService;
 import de.contracktor.model.BillingItem;
 import de.contracktor.model.BillingUnit;
+import de.contracktor.model.Contract;
 import de.contracktor.repository.BillingUnitRepository;
 import de.contracktor.repository.ContractRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,18 +32,19 @@ public class ContractController {
         return "contract-list";
     }
 
+    @PostMapping("/contracts")
+    public String getSearchedContractList(@RequestParam String search, Model model){
+        model.addAttribute("search",search);
+        model.addAttribute("contracts",contractRepository.findByNameContains(search));
+        return "contract-list";
+    }
+
     @GetMapping("/contract/{contractId}/details")
     public String getContractDetails(@PathVariable int contractId, Model model){
+        Contract contract = contractRepository.findById(contractId).get();
+        model.addAttribute("contract", contract);
 
-        model.addAttribute("contract", contractRepository.findById(contractId).get());
-
-        List<BillingUnit> units = (List<BillingUnit>) billingUnitRepository.findAll();
-        List<BillingItem> items = new ArrayList<>();
-        for(BillingUnit unit: units){
-            List<BillingItem> bItems = unit.getBillingItems();
-            items.addAll(bItems);
-        }
-
+        List<BillingItem> items = DatabaseService.getAllBillingItemsOfContract(contract);
         model.addAttribute("items",items);
         return "contract-details";
     }
