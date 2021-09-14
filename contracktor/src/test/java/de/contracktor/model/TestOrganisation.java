@@ -8,9 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+<<<<<<< HEAD
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+=======
+>>>>>>> 4f7a1b74dd4ddaf22c99ebc9720edb2e79cbc703
 import de.contracktor.repository.OrganisationRepository;
 import de.contracktor.repository.UserRepository;
 
