@@ -1,5 +1,6 @@
 package de.contracktor.controller;
 
+import de.contracktor.DatabaseService;
 import de.contracktor.model.BillingItem;
 import de.contracktor.model.BillingUnit;
 import de.contracktor.model.Contract;
@@ -42,12 +43,8 @@ public class ContractController {
     public String getContractDetails(@PathVariable int contractId, Model model){
         Contract contract = contractRepository.findById(contractId).get();
         model.addAttribute("contract", contract);
-        List<BillingUnit> bunits = billingUnitRepository.findByContract(contract);
-        List<BillingItem> items = new ArrayList<>();
-        for(BillingUnit unit : bunits){
-            items.addAll(unit.getBillingItems());
-        }
 
+        List<BillingItem> items = DatabaseService.getAllBillingItemsOfContract(contract);
         model.addAttribute("items",items);
         return "contract-details";
     }
