@@ -102,6 +102,12 @@ public class AdessoAPIService {
 		if (projectRepo.existsByProjectID(contract.getProjectId())
 				&& stateRepo.existsByStateName(contract.getStatus().getStateName())) {
 			Organisation organisation;
+			if(!organisationRepo.existsByOrganisationName(contract.getContractor())) {
+				organisation = new Organisation(contract.getContractor());
+				organisationRepo.save(organisation);
+			}else {
+				organisation = organisationRepo.findByOrganisationName(contract.getContractor());
+			}
 			if(!organisationRepo.existsByOrganisationName(contract.getConsignee())) {
 				organisation = new Organisation(contract.getConsignee());
 				organisationRepo.save(organisation);
