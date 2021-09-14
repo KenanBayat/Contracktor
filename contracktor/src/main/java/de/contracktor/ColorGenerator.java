@@ -17,11 +17,6 @@ public class ColorGenerator {
         return colors;
     }
 
-    public String[] getColorSteps(int numberOfColors) {
-        int stepSize = 255 * 3 / numberOfColors;
-
-
-    }
 
     private int colorDistance(int[] color1, int[] color2) {
         int sum = 0;
@@ -29,10 +24,6 @@ public class ColorGenerator {
             sum += Math.pow(color1[i] - color2[i], 2);
         }
         return (int) Math.round(Math.sqrt(sum));
-    }
-
-    private String hslToHex(int[] hsl) {
-
     }
 
     public static void main(String[] args) {
