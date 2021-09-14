@@ -50,13 +50,13 @@ public class TestStateTransition {
 	
 	@Test
 	public void testSaveStateTransition() {	
-		stateTransition1 = new StateTransition(state1, state2, true, true);
-		stateTransition2 = new StateTransition(state1, state2, true, true);
+		stateTransition1 = new StateTransition(state1, state2, false, true);
+		stateTransition2 = new StateTransition(state1, state2, true, false);
 		
 		stateTransitionRepo.save(stateTransition1);
 		//assertThrows(Exception.class, () -> stateTransitionRepo.save(stateTransition2));
 		
-		stateTransition2 = new StateTransition(state1, state2, true, true);
+		stateTransition2 = new StateTransition(state1, state2, false, true);
 		stateTransitionRepo.save(stateTransition2);
 		assertTrue(stateTransitionRepo.existsById(stateTransition1.getId()));
 		stateTransitionRepo.delete(stateTransition1);
