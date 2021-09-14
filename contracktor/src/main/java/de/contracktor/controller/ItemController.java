@@ -47,8 +47,8 @@ public class ItemController {
     }
 
     @GetMapping("/billingitem/{itemId}/details")
-    public String getBillingItemDetails(@PathVariable int itemId,Model model){
-        BillingItem item = databaseService.getBillingItemByID(itemId);
+    public String getBillingItemDetails(@PathVariable String itemId,Model model){
+        BillingItem item = databaseService.getBillingItemByBillingItemID(itemId);
         List<BillingItem> subitems = databaseService.getChildOfBillingItem(item);
         Contract contract = databaseService.getContractOfBillingItem(item);
 
@@ -57,6 +57,8 @@ public class ItemController {
         for(StateTransition transition:transitions){
             endstates.add(transition.getEndState());
         }
+
+        item = databaseService.getBillingItemByBillingItemID(itemId);
 
         model.addAttribute( "states", endstates);
         model.addAttribute("contract", contract);
@@ -67,9 +69,9 @@ public class ItemController {
         return "billingitem-details";
     }
 
-    @PostMapping("/billingitem/{itemId}/details")
-    public String setBillingItemDetails(@RequestParam int stateId, @PathVariable int itemId, Model model){
-        BillingItem item = databaseService.getBillingItemByID(itemId);
+    @PostMapping("/billingitem/{itemId}/details/edit")
+    public String setBillingItemDetails(@RequestParam int stateId, @PathVariable String itemId, Model model){
+        BillingItem item = databaseService.getBillingItemByBillingItemID(itemId);
         List<BillingItem> subitems = databaseService.getChildOfBillingItem(item);
         Contract contract = databaseService.getContractOfBillingItem(item);
 
@@ -83,11 +85,15 @@ public class ItemController {
         item.setStatus(newState);
         billingItemRepository.save(item);
 
+        item = databaseService.getBillingItemByBillingItemID(itemId);
+
         model.addAttribute("item",item);
         model.addAttribute("subitems",subitems);
         model.addAttribute("contract",contract);
         model.addAttribute("pprice", CurrencyFormatter.format(item.getPricePerUnit()));
         model.addAttribute("total", CurrencyFormatter.format(item.getTotalPrice()));
-        return "billingitem-details";
+
+        String redirect = "redirect:/" + "billingitem/" + itemId +"/details";
+        return redirect;
     }
 }
