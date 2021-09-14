@@ -69,7 +69,7 @@ class AppApiControllerTest {
     @BeforeEach
     void setUp() {
         Organisation testOrganisation = new Organisation("Testorg");
-        Permission permission = permissionRepository.
+        Permission permission = permissionRepository.findByPermissionName("r");
         Role role = new Role("Test",permission,testOrganisation);
         ArrayList<Role> roles = new ArrayList<Role>(List.of(role));
         UserAccount userAccount = new UserAccount("Testo","Test","Test","Test",
@@ -77,11 +77,11 @@ class AppApiControllerTest {
         Address address = new Address(1,"Test","2","Test","1234","Test");
         State state = new State("TestState");
         State state2 = new State("TestState2");
-        StateTransition stateTransition = new StateTransition(state,state2);
+        StateTransition stateTransition = new StateTransition(state,state2,true,true);
         Project project = new Project(1,"testProject", LocalDate.of(2000,2,2),
                 LocalDate.of(2000,2,2),address,100.0,testOrganisation, "Test", state,null,"Test");
         Contract contract = new Contract(1,project,"Test","Testorg",state,"test","Test");
-        BillingItem billingItem = new BillingItem("1","m",100.0,20.0,300.0,
+        BillingItem billingItem = new BillingItem("1","1","m",100.0,20.0,300.0,
                 "Test",state,"Test",null);
         ArrayList<BillingItem> billingItemList = new ArrayList<>();
         billingItemList.add(billingItem);

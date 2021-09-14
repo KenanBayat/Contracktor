@@ -11,4 +11,7 @@ import java.util.List;
 @Repository
 public interface PermissionRepository extends CrudRepository<Permission, Integer> {
     List<Permission> findAll();
+
+    Permission findByPermissionName(String permissionName);
+
 }
