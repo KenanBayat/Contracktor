@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Entity
 public class Role {
 	
-	@Getter @Id @GeneratedValue(strategy = GenerationType.AUTO) private int id;
+	@Getter @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private int id;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String roleName;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private Permission permission;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne Organisation organisation;
