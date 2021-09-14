@@ -13,14 +13,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import de.contracktor.repository.BillingItemRepository;
 import de.contracktor.repository.StateRepository;
 
 
 @DataJpaTest
+@Transactional(propagation = Propagation.NOT_SUPPORTED)
 @AutoConfigureTestDatabase(replace=Replace.NONE)
 public class TestBillingItem {
 
@@ -29,9 +30,6 @@ public class TestBillingItem {
 	
 	@Autowired
 	StateRepository stateRepo;
-	
-	@Autowired
-	private TestEntityManager em;
 	
 	State state;
 	
@@ -47,7 +45,6 @@ public class TestBillingItem {
 		billingItems = new ArrayList<BillingItem>();
 		state = new State("billingStatus");
 		stateRepo.save(state);
-	
 	}
 	
 	@AfterEach
@@ -60,31 +57,31 @@ public class TestBillingItem {
 	public void testNullBillingItem() {
 		billingItem = new BillingItem(null, "test", "meter", 1000.0, 105.0,
 					100050.0, "3m7_6h4uXAXvBoFEtks_QE", state, "" ,billingItems);
-		assertThrows(Exception.class, () -> em.persistAndFlush(billingItem));
+		assertThrows(Exception.class, () -> billingItemRepo.save(billingItem));
 		billingItem = new BillingItem("ID_3346", null, "meter", 1000.0, 105.0,
 				100050.0, "3m7_6h4uXAXvBoFEtks_QE", state, "" ,billingItems);
-		assertThrows(Exception.class, () -> em.persistAndFlush(billingItem));
+		assertThrows(Exception.class, () -> billingItemRepo.save(billingItem));
 		billingItem = new BillingItem("ID_3346", "test",null, 1000.0, 105.0, 100050.0, 
                 "3m7_6h4uXAXvBoFEtks_QE", state, "", billingItems);
-		assertThrows(Exception.class, () -> em.persistAndFlush(billingItem));
+		assertThrows(Exception.class, () -> billingItemRepo.save(billingItem));
 		billingItem = new BillingItem("ID_3346", "test","meter", null, 105.0, 100050.0, 
                 "3m7_6h4uXAXvBoFEtks_QE", state, "", billingItems);
-		assertThrows(Exception.class, () -> em.persistAndFlush(billingItem));
+		assertThrows(Exception.class, () -> billingItemRepo.save(billingItem));
 		billingItem = new BillingItem("ID_3346", "test","meter", 1000.0, 105.0, null, 
                 "3m7_6h4uXAXvBoFEtks_QE", state, "", billingItems);
-		assertThrows(Exception.class, () -> em.persistAndFlush(billingItem));
+		assertThrows(Exception.class, () -> billingItemRepo.save(billingItem));
 		billingItem = new BillingItem("ID_3346", "test","meter", 1000.0, 105.0, 100050.0, 
 				null, state, "", billingItems);
-		assertThrows(Exception.class, () -> em.persistAndFlush(billingItem));
+		assertThrows(Exception.class, () -> billingItemRepo.save(billingItem));
 		billingItem = new BillingItem("ID_3346", "test","meter", 1000.0, 105.0, 100050.0, 
 				  "3m7_6h4uXAXvBoFEtks_QE", null, "", billingItems);
-		assertThrows(Exception.class, () -> em.persistAndFlush(billingItem));
+		assertThrows(Exception.class, () -> billingItemRepo.save(billingItem));
 		billingItem = new BillingItem("ID_334", "test","meter", 1000.0, 105.0, 100050.0, 
 				"3m7_6h4uXAXvBoFEtks_QE", state, null, billingItems);
-		assertThrows(Exception.class, () -> em.persistAndFlush(billingItem));
+		assertThrows(Exception.class, () -> billingItemRepo.save(billingItem));
 		billingItem = new BillingItem("", "test","meter", 1000.0, 105.0, 100050.0, 
 				"3m7_6h4uXAXvBoFEtks_QE", state, "", billingItems);
-		assertThrows(Exception.class, () -> em.persistAndFlush(billingItem));
+		assertThrows(Exception.class, () -> billingItemRepo.save(billingItem));
 	}
 
 	@Test
@@ -93,8 +90,8 @@ public class TestBillingItem {
 				                             "3m5_6h4uXAXvBoFEtks_QE", state, "", new ArrayList<BillingItem>());
 		billingItemInList2 = new BillingItem("ID_3346_2929_39", "test","meter", 1000.0, 105.0, 100050.0, 
                                              "3m6_6h4uXAXvBoFEtks_QE", state, "", new ArrayList<BillingItem>());
-		em.persistAndFlush(billingItemInList1);
-		em.persistAndFlush(billingItemInList2);
+		billingItemRepo.save(billingItemInList1);
+		billingItemRepo.save(billingItemInList2);
 		
 		
 		billingItems.add(billingItemInList1);
@@ -102,7 +99,7 @@ public class TestBillingItem {
 		
 		billingItem = new BillingItem("ID_3346_2929_37", "test","meter", 1000.0, 105.0, 100050.0,
 				                      "3m7_6h4uXAXvBoFEtks_QE", state, "", billingItems);
-		em.persistAndFlush(billingItem);
+		billingItemRepo.save(billingItem);
 		
 		assertTrue(billingItemRepo.existsById(billingItemInList1.getId()));
 		assertTrue(billingItemRepo.existsById(billingItemInList2.getId()));
@@ -121,8 +118,8 @@ public class TestBillingItem {
 				                             "3m5_6h4uXAXvBoFEtks_QE", state, "", new ArrayList<BillingItem>());
 		billingItemInList2 = new BillingItem("ID_3346_2929_39", "test","meter", 1000.0, 105.0, 100050.0, 
                                              "3m6_6h4uXAXvBoFEtks_QE", state, "", new ArrayList<BillingItem>());
-		em.persistAndFlush(billingItemInList1);
-		em.persistAndFlush(billingItemInList2);
+		billingItemRepo.save(billingItemInList1);
+		billingItemRepo.save(billingItemInList2);
 		
 		
 		billingItems.add(billingItemInList1);
@@ -130,7 +127,7 @@ public class TestBillingItem {
 		
 		billingItem = new BillingItem("ID_3346_2929_37", "test","meter", 1000.0, 105.0, 100050.0,
 				                      "3m7_6h4uXAXvBoFEtks_QE", state, "", billingItems);
-		em.persistAndFlush(billingItem);
+		billingItemRepo.save(billingItem);
 				
 		
 		assertTrue(billingItemRepo.existsByBillingItemID(billingItem.getBillingItemID()));
@@ -163,9 +160,9 @@ public class TestBillingItem {
 		assertFalse(billingItemRepo.findAll().containsAll(billingItems2));
 		assertTrue(billingItemRepo.findAll().size()==0);
 		
-		em.persistAndFlush(billingItemInList1);
-		em.persistAndFlush(billingItemInList2);
-		em.persistAndFlush(billingItem);
+		billingItemRepo.save(billingItemInList1);
+		billingItemRepo.save(billingItemInList2);
+		billingItemRepo.save(billingItem);
 		
 		assertTrue(billingItemRepo.findAll().size()==3);
 		assertTrue(billingItemRepo.findAll().containsAll(billingItems2));
@@ -183,8 +180,8 @@ public class TestBillingItem {
 				                             "3m5_6h4uXAXvBoFEtks_QE", state, "", new ArrayList<BillingItem>());
 		billingItemInList2 = new BillingItem("ID_3346_2929_39", "test","meter", 1000.0, 105.0, 100050.0, 
                                              "3m6_6h4uXAXvBoFEtks_QE", state, "", new ArrayList<BillingItem>());
-		em.persistAndFlush(billingItemInList1);
-		em.persistAndFlush(billingItemInList2);
+		billingItemRepo.save(billingItemInList1);
+		billingItemRepo.save(billingItemInList2);
 		
 		
 		billingItems.add(billingItemInList1);
@@ -192,20 +189,20 @@ public class TestBillingItem {
 		
 		billingItem = new BillingItem("ID_3346_2929_37", "test","meter", 1000.0, 105.0, 100050.0,
 				                      "3m7_6h4uXAXvBoFEtks_QE", state, "", billingItems);
-		em.persistAndFlush(billingItem);
+		billingItemRepo.save(billingItem);
 				
 		
 		assertTrue(billingItemRepo.findByBillingItemID(billingItem.getBillingItemID()).isPresent());
 		assertTrue(billingItemRepo.findByBillingItemID(billingItemInList1.getBillingItemID()).isPresent());
 		assertTrue(billingItemRepo.findByBillingItemID(billingItemInList2.getBillingItemID()).isPresent());
-		assertFalse(billingItemRepo.findByBillingItemID("Pablos wei�e Weihnachten").isPresent());
+		assertFalse(billingItemRepo.findByBillingItemID("Pablos weisse Weihnachten").isPresent());
 		
 		billingItemRepo.delete(billingItem);
 		
 		assertFalse(billingItemRepo.findByBillingItemID(billingItem.getBillingItemID()).isPresent());
 		assertFalse(billingItemRepo.findByBillingItemID(billingItemInList1.getBillingItemID()).isPresent());
 		assertFalse(billingItemRepo.findByBillingItemID(billingItemInList2.getBillingItemID()).isPresent());
-		assertFalse(billingItemRepo.findByBillingItemID("Pablos wei�e Weihnachten").isPresent());
+		assertFalse(billingItemRepo.findByBillingItemID("Pablos weisse Weihnachten").isPresent());
 		
 	}
 	

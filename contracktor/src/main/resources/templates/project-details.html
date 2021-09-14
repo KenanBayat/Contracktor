@@ -15,7 +15,7 @@
                         <p th:text="${'Projekt-Daten Organisation: ' + project.getOwner().getOrganisationName()}"></p>
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title text-center" th:text="${project.getName}"> </h5>
+                        <h5 class="card-title text-center" th:text="${project.getName()}"> </h5>
                         <h6 class="card-subtitle mb-2 text-muted text-center" th:text="${'ProjectID: ' + project.getId()}"></h6>
 
                         <div class="container">
@@ -50,14 +50,13 @@
 
                         <!-- Status & Preis-->
                         <div class="card-group ">
-                            <div class="card border-0 " >
-
+                            <div class="card border-0 ">
                                 <div class="card-body text-dark">
                                     <p class="card-title"><strong>Projekt-Status</strong></p>
                                     <span class="badge rounded-pill bg-light text-dark" th:text="${project.getStatus().getStateName()}"></span>
                                 </div>
                             </div>
-                            <div class="card border-0 " >
+                            <div class="card border-0">
                                 <div class="card-body text-dark">
                                     <p class="card-title"><strong>Preis</strong></p>
                                     <p class="card-text" th:text="${price}"></p>
