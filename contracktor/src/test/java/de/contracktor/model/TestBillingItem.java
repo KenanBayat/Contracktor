@@ -31,7 +31,6 @@ public class TestBillingItem {
 	@Autowired
 	StateRepository stateRepo;
 	
-	
 	@Autowired
 	private TestEntityManager em;
 	
@@ -200,14 +199,14 @@ public class TestBillingItem {
 		assertTrue(billingItemRepo.findByBillingItemID(billingItem.getBillingItemID()).isPresent());
 		assertTrue(billingItemRepo.findByBillingItemID(billingItemInList1.getBillingItemID()).isPresent());
 		assertTrue(billingItemRepo.findByBillingItemID(billingItemInList2.getBillingItemID()).isPresent());
-		assertFalse(billingItemRepo.findByBillingItemID("Pablos weiße Weihnachten").isPresent());
+		assertFalse(billingItemRepo.findByBillingItemID("Pablos weiï¿½e Weihnachten").isPresent());
 		
 		billingItemRepo.delete(billingItem);
 		
 		assertFalse(billingItemRepo.findByBillingItemID(billingItem.getBillingItemID()).isPresent());
 		assertFalse(billingItemRepo.findByBillingItemID(billingItemInList1.getBillingItemID()).isPresent());
 		assertFalse(billingItemRepo.findByBillingItemID(billingItemInList2.getBillingItemID()).isPresent());
-		assertFalse(billingItemRepo.findByBillingItemID("Pablos weiße Weihnachten").isPresent());
+		assertFalse(billingItemRepo.findByBillingItemID("Pablos weiï¿½e Weihnachten").isPresent());
 		
 	}
 	

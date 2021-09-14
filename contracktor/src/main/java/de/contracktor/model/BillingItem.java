@@ -30,7 +30,7 @@ public class BillingItem {
 	private int id;
 	@Getter @Setter @Column(nullable = false, unique = true) @NotEmpty @JsonProperty("id")
 	String billingItemID;
-	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private BillingUnit billingUnit;
+	@Getter @Setter @Column(nullable = false) @ManyToOne private String billingUnit_ID;
 	
 	@Getter @Setter @Column(nullable = false) private String unit;
 	@Getter @Setter @Column(nullable = false) @JsonProperty("quantities") private Double quantity;
@@ -45,10 +45,10 @@ public class BillingItem {
 	
 	public BillingItem() {}
 	
-	public BillingItem(String billingItemID, BillingUnit billingUnit, String unit, Double quantity, Double pricePerUnit,
+	public BillingItem(String billingItemID, String billingUnit_ID, String unit, Double quantity, Double pricePerUnit,
 			           Double totalPrice, String IFC, State status, String shortDescription ,ArrayList<BillingItem> billingItems) {
 		this.billingItemID = billingItemID;
-		this.billingUnit = billingUnit;
+		this.billingUnit_ID = billingUnit_ID;
 		this.unit = unit;
 		this.quantity = quantity;
 		this.pricePerUnit = pricePerUnit;

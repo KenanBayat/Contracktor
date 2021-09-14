@@ -132,12 +132,7 @@ public class AdessoAPIService {
 	 */
 	public void save(BillingItem billingItem, String billingUnitID) {
 
-		if(!billingUnitRepo.existsByBillingUnitID(billingUnitID)) {
-			throw new IllegalArgumentException("BillingUnit doesnt exists");
-		} else {
-			BillingUnit billingUnit = billingUnitRepo.findByBillingUnitID(billingUnitID);
-			billingItem.setBillingUnit(billingUnit);
-		}
+		billingItem.setBillingUnit_ID(billingUnitID);
 			
 		ArrayList<BillingItem> billingItems = new ArrayList<BillingItem>();
 		
