@@ -1,7 +1,9 @@
 package de.contracktor.controller;
 
+import de.contracktor.DatabaseService;
 import de.contracktor.model.BillingItem;
 import de.contracktor.model.BillingUnit;
+import de.contracktor.model.Contract;
 import de.contracktor.repository.BillingItemRepository;
 import de.contracktor.repository.BillingUnitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ public class ItemController {
     @Autowired
     BillingItemRepository billingItemRepository;
 
+    @Autowired
+    DatabaseService databaseService;
+
     @GetMapping("/billingitems")
     public String getBillingItems(Model model){
         model.addAttribute("items",billingItemRepository.findAll());
@@ -36,8 +41,9 @@ public class ItemController {
     @GetMapping("/billingitems/{itemId}/details")
     public String getBillingItemDetails(@PathVariable int itemId,Model model){
         BillingItem item = billingItemRepository.findById(itemId).get();
-        List<BillingItem> subitems = item.getBillingItems();
+        List<BillingItem> subitems = databaseService.;
 
+        Contract contract = item.
 
         model.addAttribute("item", item);
         model.addAttribute("subitems", subitems);

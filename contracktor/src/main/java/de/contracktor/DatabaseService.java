@@ -71,8 +71,7 @@ public class DatabaseService {
 		}		
 		return billingItems;
 	}
-	
-	
+
 	/**
 	 * Returns the billingItems of a billingItem
 	 * 
