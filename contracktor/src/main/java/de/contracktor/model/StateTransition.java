@@ -29,4 +29,12 @@ public class StateTransition implements Serializable {
 		this.startState = startState;
 		this.endState = endState;
 	}
+
+	public String getStartStateName() {
+		return this.startState.getStateName();
+	}
+
+	public String getEndStateName() {
+		return this.endState.getStateName();
+	}
 }

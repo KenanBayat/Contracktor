@@ -48,42 +48,48 @@ public class AppApiController {
     @Autowired
     private PictureRepository pictureRepository;
 
-    @GetMapping("/api/download")
-    @ResponseBody
-    public APIResponse downloadController(Model model) {
-        String user = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (user == null) {
-            return new APIResponse("NOT_AUTHENTICATED");
-        }
-        return apiDownloadConstructor(user);
-    }
-
     @PostMapping("/api/update")
     @ResponseBody
-    public APIResponse updateController(@RequestParam(name = "json") APIUpdate update) {
+    public APIResponse updateController(@RequestBody APIUpdate update) {
         List<BillingItemUpdate> billingItemUpdates = update.getBillingItemUpdates();
+        List<Report> reportUpdates = update.getReportList();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        for (BillingItemUpdate billingItemUpdate : billingItemUpdates) {
-            Optional<BillingItem> savedItem = billingItemRepository.findByBillingItemID(billingItemUpdate.getBillingItemID());
-            if (savedItem.isEmpty()) {
-                return new APIResponse("UNKNOWN_BILLINGITEM");
-            }
+        if (username == null) {
+            return new APIResponse("NOT_AUTHENTICATED");
+        }
 
-            if (savedItem.get().getLastModified() >= billingItemUpdate.getLastModified()) {
-                savedItem.get().setStatus(billingItemUpdate.getNewState());
-                savedItem.get().setLastModified(billingItemUpdate.getLastModified());
-                billingItemRepository.save(savedItem.get());
+        Optional<UserAccount> user = userRepository.findByUsername(username);
+
+        if (user.isEmpty()) {
+            return new APIResponse("UNKNOWN_USER");
+        }
+
+        if (billingItemUpdates != null) {
+            for (BillingItemUpdate billingItemUpdate : billingItemUpdates) {
+                Optional<BillingItem> savedItem = billingItemRepository.findByBillingItemID(billingItemUpdate.getBillingItemID());
+                if (savedItem.isEmpty()) {
+                    return new APIResponse("UNKNOWN_BILLINGITEM");
+                }
+
+                if (savedItem.get().getLastModified() >= billingItemUpdate.getLastModified()) {
+                    savedItem.get().setStatus(billingItemUpdate.getNewState());
+                    savedItem.get().setLastModified(billingItemUpdate.getLastModified());
+                    billingItemRepository.save(savedItem.get());
+                }
             }
         }
 
-        for (Report report : update.getReportList()) {
-            for (Picture picture : report.getPictures()) {
-                pictureRepository.save(picture);
+        if (reportUpdates != null) {
+            for (Report report : update.getReportList()) {
+                for (Picture picture : report.getPictures()) {
+                    pictureRepository.save(picture);
+                }
+                reportRepository.save(report);
             }
-            reportRepository.save(report);
         }
 
-        return new APIResponse("OK");
+        return apiDownloadConstructor(username);
     }
 
     @RequestMapping("/api/login")

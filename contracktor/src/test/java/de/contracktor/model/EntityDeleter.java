@@ -63,12 +63,16 @@ public class EntityDeleter {
 	@Autowired
 	AddressRepository addressRepo;
 	
+	//Schmutz raus damit
 	public void deleteAllEntities() {
+		
+		stateRepo.deleteAll();
+		
+		billingItemRepo.deleteAll();
+		
 		billingUnitCompletionReportRepo.deleteAll();
 		
 		billingUnitRepo.deleteAll();
-		
-		billingItemRepo.deleteAll();
 		
 		contractRepo.deleteAll();
 		
@@ -80,15 +84,13 @@ public class EntityDeleter {
 		
 		stateTransitionRepo.deleteAll();
 		
-		stateRepo.deleteAll();
-		
 		userRepo.deleteAll();
 		
 		roleRepo.deleteAll();
 		
 		pemissionRepo.deleteAll();
 		
-		organisationRepo.deleteAll();
+		organisationRepo.deleteAll(); 
 	}
 	
 }

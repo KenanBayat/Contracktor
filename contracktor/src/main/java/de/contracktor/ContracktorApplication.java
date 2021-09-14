@@ -1,6 +1,5 @@
 package de.contracktor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,9 +11,6 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 @EnableScheduling
 public class ContracktorApplication implements CommandLineRunner {
-
-	@Autowired
-	private InitDatabaseService initDatabaseService;
 
 	@Bean
 	public RestTemplate getRestTemplate() {

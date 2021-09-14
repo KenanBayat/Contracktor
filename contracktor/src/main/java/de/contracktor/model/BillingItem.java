@@ -38,14 +38,12 @@ public class BillingItem {
 	@Getter @Setter @OneToMany(cascade = CascadeType.REMOVE) private List<BillingItem> billingItems;
 	@Getter @Setter @Column(nullable = false) private String shortDescription;
 	@Getter @Setter @Transient @JsonProperty("status") String statusName;
-	@Getter @Setter @Column(nullable = false) private long lastModified;
+	@Getter @Setter @Column private long lastModified;
 	
-	public BillingItem() {
-		
-	}
+	public BillingItem() {}
 	
 	public BillingItem(String billingItemID, String unit, Double quantity, Double pricePerUnit,
-			           Double totalPrice, String IFC, State status, String shortDescription, ArrayList<BillingItem> billingItems) {
+			           Double totalPrice, String IFC, State status, String shortDescription ,ArrayList<BillingItem> billingItems) {
 		this.billingItemID = billingItemID;
 		this.unit = unit;
 		this.quantity = quantity;
@@ -56,4 +54,23 @@ public class BillingItem {
 		this.billingItems = billingItems; 
 		this.shortDescription = shortDescription;
 	}	
+	
+	@Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (!BillingItem.class.isAssignableFrom(obj.getClass())) {
+            return false;
+        }
+        final BillingItem other = (BillingItem) obj;
+        if ((this.billingItemID == null) ? (other.billingItemID != null) : !this.billingItemID.equals(other.billingItemID)) {
+            return false;
+        }
+        if(this.id==other.id || this.billingItemID.equals(other.billingItemID)) {
+        	return true;
+        }
+        return false;
+    }
+
 }
