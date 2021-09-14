@@ -172,4 +172,31 @@ public class DatabaseService {
 		BillingUnit billingUnit = billingUnitRepo.findByBillingUnitID(billingItem.getBillingUnit_ID());
 		return billingUnit.getContract();
 	}
+	
+	/**
+	 * Find a project by the given project id.
+	 * 
+	 * @return the project that has the given project id
+	 */
+	public Project getProjectByID(int projectID) {
+		return projectRepo.findByProjectID(projectID);
+	}
+	
+	/**
+	 * Find a contract by the given contract id.
+	 * 
+	 * @return the contract that has the given contract id
+	 */
+	public Contract getContractByID(int contractID) {
+		return contractRepo.findByContractID(contractID);
+	}
+	
+	/**
+	 * Find a billingItem by the given billingItem id.
+	 * 
+	 * @return the billingItem that has the given billingItem id
+	 */
+	public BillingItem getContractByID(String billingItemID) {
+		return billingItemRepo.findByBillingItemID(billingItemID).orElse(null);
+	}
 }
