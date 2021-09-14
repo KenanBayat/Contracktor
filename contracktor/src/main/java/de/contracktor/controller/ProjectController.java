@@ -9,8 +9,7 @@ import de.contracktor.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,6 +33,13 @@ public class ProjectController {
         return "project-list";
     }
 
+    @PostMapping("/projects")
+    public String getSearchProjectList(@RequestParam String search, Model model){
+        model.addAttribute("search",search);
+        model.addAttribute("projects", projectRepository.findByNameContains(search));
+        return "project-list";
+    }
+
     /** Function
      * -view the project-details
      * projectId : ID of the specific project
@@ -51,4 +57,5 @@ public class ProjectController {
         model.addAttribute("completion", DateFormatter.format(project.getCompletionDate()));
         return "project-details";
     }
+
 }

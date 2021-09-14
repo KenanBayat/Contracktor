@@ -7,7 +7,7 @@ public final class CurrencyFormatter {
 
     public static String format(Double price){
         //0 is digit, #: zero shows as absent
-        DecimalFormat formatter = new DecimalFormat("###,###,###.00 €");
+        DecimalFormat formatter = new DecimalFormat("###,###,###,###.00 €");
         return formatter.format(price);
     }
 }
