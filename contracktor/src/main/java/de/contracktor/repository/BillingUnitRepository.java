@@ -19,7 +19,7 @@ public interface BillingUnitRepository extends CrudRepository<BillingUnit, Integ
     
     List<BillingUnit> findByContract(Contract contract);
     
-    List<BillingItem> findByid(int id);
+    BillingUnit findByid(int id);
     
-    
+    List<BillingUnit> findAllByContract(Contract contract);
 }

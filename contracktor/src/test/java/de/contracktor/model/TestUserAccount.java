@@ -40,8 +40,8 @@ public class TestUserAccount {
 	
 	@AfterEach
 	public void delete() {
-		em.remove(user1);
-		em.remove(user2);
+		userRepo.delete(user1);
+		userRepo.delete(user2);
 		organisationRepo.delete(organisation);
 	}
 		
