@@ -115,8 +115,8 @@ public class AppApiController {
         response.setContracts(contractRepository.findByContractorIgnoreCaseOrConsigneeIgnoreCase(organisation,
                 organisation));
         response.setBillingUnits(billingUnitRepository.findByContractIsIn(response.getContracts()));
-        response.setStates((List<State>) stateRepository.findAll());
-        response.setStateTransitions((List<StateTransition>) stateTransitionRepository.findAll());
+        response.setStates(stateRepository.findAll());
+        response.setStateTransitions(stateTransitionRepository.findAll());
         response.setReports(reportRepository.findByOrganisation_OrganisationNameIgnoreCase(organisation));
         response.setStatus("OK");
         return response;
