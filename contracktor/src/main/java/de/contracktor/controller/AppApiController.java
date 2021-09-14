@@ -1,18 +1,23 @@
 package de.contracktor.controller;
 
+import de.contracktor.UserManager;
 import de.contracktor.model.*;
 import de.contracktor.repository.*;
+import de.contracktor.security.ContracktorUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.security.sasl.AuthenticationException;
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -48,48 +53,46 @@ public class AppApiController {
     @Autowired
     private PictureRepository pictureRepository;
 
+    @Autowired
+    UserManager userManager;
+
     @PostMapping("/api/update")
     @ResponseBody
     public APIResponse updateController(@RequestBody APIUpdate update) {
         List<BillingItemUpdate> billingItemUpdates = update.getBillingItemUpdates();
         List<Report> reportUpdates = update.getReportList();
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        if (username == null) {
+        try {
+            String username = userManager.getCurrentUserName();
+
+            if (billingItemUpdates != null) {
+                for (BillingItemUpdate billingItemUpdate : billingItemUpdates) {
+                    Optional<BillingItem> savedItem = billingItemRepository.findByBillingItemID(billingItemUpdate.getBillingItemID());
+                    if (savedItem.isEmpty()) {
+                        return new APIResponse("UNKNOWN_BILLINGITEM");
+                    }
+
+                    if (savedItem.get().getLastModified() >= billingItemUpdate.getLastModified()) {
+                        savedItem.get().setStatus(billingItemUpdate.getNewState());
+                        savedItem.get().setLastModified(billingItemUpdate.getLastModified());
+                        billingItemRepository.save(savedItem.get());
+                    }
+                }
+            }
+
+            if (reportUpdates != null) {
+                for (Report report : update.getReportList()) {
+                    for (Picture picture : report.getPictures()) {
+                        pictureRepository.save(picture);
+                    }
+                    reportRepository.save(report);
+                }
+            }
+
+            return apiDownloadConstructor(username);
+        } catch (AuthenticationException e) {
             return new APIResponse("NOT_AUTHENTICATED");
         }
-
-        Optional<UserAccount> user = userRepository.findByUsername(username);
-
-        if (user.isEmpty()) {
-            return new APIResponse("UNKNOWN_USER");
-        }
-
-        if (billingItemUpdates != null) {
-            for (BillingItemUpdate billingItemUpdate : billingItemUpdates) {
-                Optional<BillingItem> savedItem = billingItemRepository.findByBillingItemID(billingItemUpdate.getBillingItemID());
-                if (savedItem.isEmpty()) {
-                    return new APIResponse("UNKNOWN_BILLINGITEM");
-                }
-
-                if (savedItem.get().getLastModified() >= billingItemUpdate.getLastModified()) {
-                    savedItem.get().setStatus(billingItemUpdate.getNewState());
-                    savedItem.get().setLastModified(billingItemUpdate.getLastModified());
-                    billingItemRepository.save(savedItem.get());
-                }
-            }
-        }
-
-        if (reportUpdates != null) {
-            for (Report report : update.getReportList()) {
-                for (Picture picture : report.getPictures()) {
-                    pictureRepository.save(picture);
-                }
-                reportRepository.save(report);
-            }
-        }
-
-        return apiDownloadConstructor(username);
     }
 
     @RequestMapping("/api/login")
