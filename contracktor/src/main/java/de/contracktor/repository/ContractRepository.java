@@ -10,7 +10,7 @@ import java.util.List;
 public interface ContractRepository extends CrudRepository<Contract, Integer>{
     List<Contract> findByContractorIgnoreCaseOrConsigneeIgnoreCase(String contractor, String consignee);
     List<Contract> findAll();
-
+    
     boolean existsByContractID(int id);
     
     Contract findByContractID(int id);
@@ -19,4 +19,5 @@ public interface ContractRepository extends CrudRepository<Contract, Integer>{
 
     List<Contract> findByNameContains(String substr);
     
+    List<Contract> findAllByProject(Project project);
 }

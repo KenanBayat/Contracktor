@@ -96,16 +96,16 @@ public class TransitionController {
         boolean geber = false;
 
         // Logic:
-        StateTransition transition = new StateTransition(startS, endS);
-        transition = transitionRepository.save(transition);
-        List<StateTransition> transitions = transitionRepository.findAll();
-        List<State> states = stateRepository.findAll();
         if (who.equals("geber")) {
             geber = true;
         }
         if (who.equals("nehmer")) {
             nehmer = true;
         }
+        StateTransition transition = new StateTransition(startS, endS, geber, nehmer);
+        transition = transitionRepository.save(transition);
+        List<StateTransition> transitions = transitionRepository.findAll();
+        List<State> states = stateRepository.findAll();
 
         // Model attributes:
         model.addAttribute("states", states);

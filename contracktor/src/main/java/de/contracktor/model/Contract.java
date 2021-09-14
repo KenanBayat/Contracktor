@@ -1,5 +1,7 @@
 package de.contracktor.model;
 
+import java.util.Objects;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
@@ -39,5 +41,18 @@ public class Contract {
 		this.status = status;
 		this.contractor = contractor;
 		this.description = description;
+	}
+	
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Contract other = (Contract) obj;
+		return contractID == other.contractID && id == other.id && projectId == other.projectId;
 	}
 }
