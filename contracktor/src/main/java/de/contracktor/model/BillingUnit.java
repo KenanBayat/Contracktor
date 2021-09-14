@@ -28,8 +28,7 @@ import lombok.Setter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BillingUnit {
 
-	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO) @JsonIgnore
-	private int id;
+	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO) @JsonIgnore private int id;
 	@Getter @Setter @Column(nullable = false, unique = true) @JsonProperty("id") private String billingUnitID;
 	@Getter @Setter @ManyToOne @JoinColumn(nullable = false) private Contract contract;
 	@Getter @Setter @Column private String unit;

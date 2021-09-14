@@ -87,15 +87,15 @@ public class TransitionController {
     //----------------------------------------------------------------------------
     // Add
 
-    @PostMapping("/admin/transition/add")
-    public String addTransition(@RequestParam int start, int end, Model model) {
+    @PostMapping("/admin/transition/add")				//Julius : Constructor bearbeitet !!!!!?!!?!
+    public String addTransition(@RequestParam int start, int end, Model model,boolean contractor,boolean consignee) {
         // Data:
         State startS = stateRepository.findById(start).get();
         State endS = stateRepository.findById(end).get();
         List<State> states = stateRepository.findAll();
 
-        // Logic:
-        StateTransition transition = new StateTransition(startS, endS);
+        // Logic:										//Julius : Constructor bearbeitet
+        StateTransition transition = new StateTransition(startS, endS, contractor, consignee);
         transition = transitionRepository.save(transition);
         List<StateTransition> transitions = transitionRepository.findAll();
 

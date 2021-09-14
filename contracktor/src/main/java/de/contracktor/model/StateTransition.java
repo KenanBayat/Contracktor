@@ -20,14 +20,18 @@ public class StateTransition implements Serializable {
 	@Getter @Column(nullable = false) @Id @GeneratedValue(strategy = GenerationType.AUTO) private int id;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne State startState; 
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne State endState; 
+	@Getter	@Setter	@Column(nullable = false) private Boolean contractor;
+	@Getter	@Setter	@Column(nullable = false) private Boolean consignee;
 	
 	public StateTransition() {
 		
 	}
 	
-	public StateTransition(State startState, State endState) {
+	public StateTransition(State startState, State endState,boolean contractor,boolean consignee) {
 		this.startState = startState;
 		this.endState = endState;
+		this.contractor = contractor;
+		this.consignee = consignee;
 	}
 
 	public String getStartStateName() {
