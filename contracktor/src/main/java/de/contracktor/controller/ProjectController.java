@@ -1,6 +1,7 @@
 package de.contracktor.controller;
 
 import de.contracktor.model.Contract;
+import de.contracktor.model.CurrencyFormatter;
 import de.contracktor.model.DateFormatter;
 import de.contracktor.model.Project;
 import de.contracktor.repository.ContractRepository;
@@ -39,12 +40,13 @@ public class ProjectController {
      */
     @GetMapping("/project/{projectId}/details")
     public String getProjectDetails(@PathVariable int projectId, Model model) {
-        List<Contract> contractList = contractRepository.findAll();
 
         Project project = projectRepository.findByProjectID(projectId);
+        List<Contract> contracts = contractRepository.findByProject(project);
 
         model.addAttribute("project", project);
-        model.addAttribute("contracts", contractList);
+        model.addAttribute("contracts", contracts);
+        model.addAttribute("price", CurrencyFormatter.format(project.getTotalPrice()));
         model.addAttribute("creation", DateFormatter.format(project.getCreationDate()));
         model.addAttribute("completion", DateFormatter.format(project.getCompletionDate()));
         return "project-details";

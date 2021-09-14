@@ -20,7 +20,8 @@ public class OrganisationController {
     @Autowired
     OrganisationRepository organisationRepository;
 
-    List<Organisation> searchedOrganisations = new ArrayList<Organisation>();
+    List<Organisation> searchedOrganisations
+            = new ArrayList<Organisation>();
 
 
     // Function of the Page:

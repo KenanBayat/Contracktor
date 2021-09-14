@@ -12,7 +12,7 @@
             <div class="col-6">
                 <div class="card">
                     <div class="card-header">
-                        <p th:text="${'Projekt-Daten ' + project.getOwner().getOrganisationName()}"></p>
+                        <p th:text="${'Projekt-Daten Organisation: ' + project.getOwner().getOrganisationName()}"></p>
                     </div>
                     <div class="card-body">
                         <h5 class="card-title text-center" th:text="${project.getName}"> </h5>
@@ -48,11 +48,19 @@
                             </div>
                         </div>
 
-                        <!-- Status -->
-                        <div class="container pb-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    <strong>Projekt-Status: </strong><p th:text="${project.getStatus().getStateName()}"></p>
+                        <!-- Status & Preis-->
+                        <div class="card-group ">
+                            <div class="card border-0 " >
+
+                                <div class="card-body text-dark">
+                                    <p class="card-title"><strong>Projekt-Status</strong></p>
+                                    <span class="badge rounded-pill bg-light text-dark" th:text="${project.getStatus().getStateName()}"></span>
+                                </div>
+                            </div>
+                            <div class="card border-0 " >
+                                <div class="card-body text-dark">
+                                    <p class="card-title"><strong>Preis</strong></p>
+                                    <p class="card-text" th:text="${price}"></p>
                                 </div>
                             </div>
                         </div>
@@ -106,7 +114,6 @@
                         </tr>
                     </tbody>
                 </table>
-
             </div>
         </div>
     </div>

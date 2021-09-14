@@ -28,8 +28,7 @@ import lombok.Setter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BillingUnit {
 
-	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO) @JsonIgnore
-	private int id;
+	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO) @JsonIgnore private int id;
 	@Getter @Setter @Column(nullable = false, unique = true) @JsonProperty("id") private String billingUnitID;
 	@Getter @Setter @ManyToOne @JoinColumn(nullable = false) private Contract contract;
 	@Getter @Setter @Column private String unit;
@@ -45,9 +44,7 @@ public class BillingUnit {
 	private String completionDateString;
 
 	
-	public BillingUnit() {
-		
-	}
+	public BillingUnit() {}
 	
 	public BillingUnit(String billingUnitID, String unit, LocalDate completionDate, Double totalPrice, 
 			           Double totalQuantity, Contract contract,ArrayList<BillingItem> billingItems ,Boolean ownContractDefined, 
