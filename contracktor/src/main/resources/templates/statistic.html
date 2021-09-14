@@ -40,7 +40,18 @@
 
             <div class="card">
                 <div class="card-body">
-
+                    <h5>Wozu möchten Sie die Statistik sehen?</h5>
+                    <form th:action="@{/statistic}" method="post">
+                        <select class="form-select" aria-label="Default select example" name="choice">
+                            <option th:value="1" >Projekten</option>
+                            <option th:value="2">Verträgen</option>
+                            <option th:value="3">Leistungspositionen</option>
+                        </select>
+                        <div class="py-2"></div>
+                        <button type="submit" class="btn btn-primary">
+                            Auswählen
+                        </button>
+                    </form>
                 </div>
             </div>
 

@@ -2,6 +2,7 @@ package de.contracktor.model;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -53,5 +54,34 @@ public class Project {
 		this.image = image;
 		this.description = description;
 	}
-	
+
+	public String getLowerName() {
+		return this.name.toLowerCase();
+	}
+
+	public String getLowerCity() {
+		return this.address.getCity().toLowerCase();
+	}
+
+	public String getLowerOwnerName() {
+		return this.owner.getOrganisationName().toLowerCase();
+	}
+
+	public String getLowerStatus() {
+		return this.status.getStateName().toLowerCase();
+	}
+
+	public String getLowerCreator() {
+		return this.creator.toLowerCase();
+	}
+
+	public String getCreationDateFormatted() {
+		DateFormatter formatter = new DateFormatter();
+		return formatter.format(this.creationDate);
+	}
+
+	public String getCompletionDateFormatted() {
+		DateFormatter formatter = new DateFormatter();
+		return formatter.format(this.completionDate);
+	}
 }
