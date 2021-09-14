@@ -3,25 +3,17 @@ package de.contracktor.controller;
 import de.contracktor.UserManager;
 import de.contracktor.model.*;
 import de.contracktor.repository.*;
-import de.contracktor.security.ContracktorUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Pair;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.security.sasl.AuthenticationException;
-import java.security.Principal;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 @Controller
 public class AppApiController {
@@ -109,15 +101,15 @@ public class AppApiController {
         }
 
         APIResponse response = new APIResponse();
-        Organisation organisation = user.get().getOrganisation();
+        String organisation = userManager.getCurrentOrganisation();
         response.setWritePerm(userManager.hasCurrentUserWritePerm());
-        response.setProjects(projectRepository.findByOwner_OrganisationNameIgnoreCase(organisation.getOrganisationName()));
-        response.setContracts(contractRepository.findByContractorIgnoreCaseOrConsigneeIgnoreCase(organisation.getOrganisationName(),
-                organisation.getOrganisationName()));
+        response.setProjects(projectRepository.findByOwner_OrganisationNameIgnoreCase(organisation));
+        response.setContracts(contractRepository.findByContractorIgnoreCaseOrConsigneeIgnoreCase(organisation,
+                organisation));
         response.setBillingUnits(billingUnitRepository.findByContractIsIn(response.getContracts()));
         response.setStates((List<State>) stateRepository.findAll());
         response.setStateTransitions((List<StateTransition>) stateTransitionRepository.findAll());
-        response.setReports(reportRepository.findByOrganisation(organisation));
+        response.setReports(reportRepository.findByOrganisation_OrganisationNameIgnoreCase(organisation));
         response.setStatus("OK");
         return response;
     }

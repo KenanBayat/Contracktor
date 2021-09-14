@@ -4,7 +4,6 @@ import de.contracktor.model.Role;
 import de.contracktor.model.UserAccount;
 import de.contracktor.repository.UserRepository;
 import de.contracktor.security.ContracktorUserDetails;
-import de.contracktor.security.UserDetailsServiceH2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.security.core.Authentication;
@@ -13,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.security.sasl.AuthenticationException;
-import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
