@@ -32,7 +32,12 @@ public class TestUserAccount {
 	@Autowired
 	private OrganisationRepository organisationRepo;
 	
+	@Test
+	public void testNullUsername() {
 	
+	}
+	
+	/*
 	@BeforeEach
 	private void init() {
 		organisation = new Organisation("organisation");
@@ -45,7 +50,7 @@ public class TestUserAccount {
 		em.remove(user2);
 		organisationRepo.delete(organisation);
 	}
-		
+	
 	@Test
 	public void testNullUsername() {
 		// Test null username.
@@ -128,4 +133,5 @@ public class TestUserAccount {
 		userRepo.delete(user1);
 		userRepo.delete(user2);
 	}
+	*/
 }
