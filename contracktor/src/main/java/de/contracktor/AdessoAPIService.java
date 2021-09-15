@@ -1,6 +1,8 @@
 package de.contracktor;
 
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import de.contracktor.model.BillingItem;
 import de.contracktor.model.BillingUnit;
 import de.contracktor.model.BillingUnitCompletionReport;
 import de.contracktor.model.Contract;
+import de.contracktor.model.DateFormatter;
 import de.contracktor.model.Organisation;
 import de.contracktor.model.Project;
 import de.contracktor.model.State;
@@ -62,16 +65,9 @@ public class AdessoAPIService {
 	 * @param project the project to be saved
 	 */
 	public void save(Project project) {
-		Date creationdate;
-		Date completiondate;
-		DateTimeFormatter formatter;
-		formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd");
-		creationdate = (Date) formatter.parse(project.getCreationDateString());
-		completiondate = (Date) formatter.parse(project.getCompletionDateString()); 
+		Long creationDate = DateFormatter.stringToLong(project.getCreationDateString());
+		Long completionDate = DateFormatter.stringToLong(project.getCompletionDateString());
 			
-		long creationDate = creationdate.getTime();
-		long completionDate = completiondate.getTime();
-		
 		project.setCreationDate(creationDate);
 		project.setCompletionDate(completionDate);
 		Organisation organisation;
@@ -181,7 +177,7 @@ public class AdessoAPIService {
 		if (contractRepo.existsByContractID(contractID)) {
 			Contract contract = contractRepo.findByContractID(contractID);
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-			LocalDate completionDate = LocalDate.parse(billingUnit.getCompletionDateString(), formatter);
+			Long completionDate = DateFormatter.stringToLong(billingUnit.getCompletionDateString());
 			billingUnit.setCompletionDate(completionDate);
 			billingUnit.setContract(contract);
 			billingUnit.setBillingItems(billingItems);

@@ -1,5 +1,7 @@
 package de.contracktor.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -30,6 +32,22 @@ public final class DateFormatter {
 			String day = "" + date.getDate();
 			return day + "." + month + "." + year;
 		}
+	}
+	
+	
+	public static Long stringToLong(String sDate) {
+		Date date = null;
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
+		try {
+		    date = formatter.parse(sDate);
+		    
+		} catch (ParseException e) {
+		    e.printStackTrace();
+		}
+		
+		Long lDate = date.getTime();
+		return lDate;
 	}
 
 }
