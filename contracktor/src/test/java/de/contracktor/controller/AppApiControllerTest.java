@@ -78,38 +78,50 @@ class AppApiControllerTest {
 
 	@Autowired
 	private PictureRepository pictureRepo;
-	private Picture picture;
 
 	private final long creationDate = 22222222;
 	private final long completionDate = 33333333;
 	
     @BeforeEach
     void setUp() {
-    	picture = new Picture(null,null);
-		pictureRepo.save(picture);
+        byte[] image = "Nice picture".getBytes(StandardCharsets.UTF_8);
+
         Organisation testOrganisation = new Organisation("Testorg");
+
         Permission permission = permissionRepository.findByPermissionName("r");
+
         Role role = new Role("Test",permission,testOrganisation);
+
         ArrayList<Role> roles = new ArrayList<Role>(List.of(role));
+
         UserAccount userAccount = new UserAccount("Testo","Test","Test","Test",
                 testOrganisation,false,false,roles);
+
         Address address = new Address(1,"Test","2","Test","1234","Test");
+
         State state = stateRepository.findByStateName("OPEN");
+
         State state2 = stateRepository.findByStateName("OK");
+
         Project project = new Project(200000, "test", creationDate, completionDate, address,
-				100.0, testOrganisation, "hans", state, picture, "");
+				100.0, testOrganisation, "hans", state, image, "");
+
         Contract contract = new Contract(32,project,"Test","Testorg",state,"test","Test");
+
         BillingItem billingItem = new BillingItem("1","1","m",100.0,20.0,300.0,
                 "Test",state,"Test",new ArrayList<>());
+
         ArrayList<BillingItem> billingItemList = new ArrayList<>();
+
         billingItemList.add(billingItem);
         BillingUnit billingUnit = new BillingUnit("1","m",11223344,
                 200.0,100.0,contract,billingItemList,false,"Test","Teest",state);
-        byte[] image = "Nice picture".getBytes(StandardCharsets.UTF_8);
-        Picture picture = new Picture("Test", image);
-        Report report = new Report(billingItemList,testOrganisation, creationDate,
-                "Testo","Test", new ArrayList(List.of(picture)));
 
+        Report report = new Report(billingItem,testOrganisation, creationDate,
+                "Testo","Test");
+        Picture picture = new Picture(3, image, report);
+
+        pictureRepo.save(picture);
         organisationRepository.save(testOrganisation);
         roleRepository.save(role);
         userRepository.save(userAccount);
@@ -153,14 +165,14 @@ class AppApiControllerTest {
         State newState = stateRepository.findByStateName("DENY");
         BillingItemUpdate billingItemUpdate = new BillingItemUpdate("1",newState,2000);
         apiUpdate.setBillingItemUpdates(List.of(billingItemUpdate));
-        apiUpdate.setReportList(new ArrayList<>());
+        apiUpdate.setPictureList(new ArrayList<>());
         mockMvc.perform(post("/api/update").content(objectMapper.writeValueAsString(apiUpdate)).contentType("application/json")).andReturn();
         BillingItem updatedItem = billingItemRepository.findByBillingItemID("1").get();
         assertTrue(updatedItem.getStatus().getStateName() == newState.getStateName() && updatedItem.getLastModified() == 2000);
     }
 /**
     @Test
-    void testValidReportUpdate() throws Exception{
+    void testValidImageUpdate() throws Exception{
         APIUpdate apiUpdate = new APIUpdate();
         State newState = stateRepository.findByStateName("DENY");
         apiUpdate.setBillingItemUpdates(new ArrayList<>());
@@ -182,7 +194,7 @@ class AppApiControllerTest {
         State newState = stateRepository.findByStateName("DENY");
         BillingItemUpdate billingItemUpdate = new BillingItemUpdate("420",newState,2000);
         apiUpdate.setBillingItemUpdates(List.of(billingItemUpdate));
-        apiUpdate.setReportList(new ArrayList<>());
+        apiUpdate.setPictureList(new ArrayList<>());
         MvcResult result = mockMvc.perform(post("/api/update").content(objectMapper.writeValueAsString(apiUpdate))
                 .contentType("application/json")).andReturn();
         assertEquals(objectMapper.writeValueAsString(new APIResponse("UNKNOWN_BILLINGITEM")), result.getResponse().getContentAsString());
@@ -214,13 +226,13 @@ class AppApiControllerTest {
         State newState = stateRepository.findByStateName("DENY");
         BillingItemUpdate billingItemUpdate = new BillingItemUpdate("1",newState,2000);
         apiUpdate.setBillingItemUpdates(List.of(billingItemUpdate));
-        apiUpdate.setReportList(new ArrayList<>());
+        apiUpdate.setPictureList(new ArrayList<>());
 
         APIUpdate apiUpdate2 = new APIUpdate();
         State newState2 = stateRepository.findByStateName("OK");
         BillingItemUpdate billingItemUpdate2 = new BillingItemUpdate("1",newState2,1000);
         apiUpdate2.setBillingItemUpdates(List.of(billingItemUpdate2));
-        apiUpdate2.setReportList(new ArrayList<>());
+        apiUpdate2.setPictureList(new ArrayList<>());
 
         mockMvc.perform(post("/api/update").content(objectMapper.writeValueAsString(apiUpdate)).contentType("application/json")).andReturn();
         mockMvc.perform(post("/api/update").content(objectMapper.writeValueAsString(apiUpdate2)).contentType("application/json")).andReturn();

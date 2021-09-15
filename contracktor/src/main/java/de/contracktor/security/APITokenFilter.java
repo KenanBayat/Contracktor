@@ -22,7 +22,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class APITokenFilter extends BasicAuthenticationFilter {
@@ -45,7 +47,9 @@ public class APITokenFilter extends BasicAuthenticationFilter {
         response.setHeader("api_token", token);
         response.setStatus(200);
         response.setContentType("application/json");
-        new ObjectMapper().writeValue(response.getOutputStream(), token);
+        String organisation = ((ContracktorUserDetails) authResult.getPrincipal()).getOrganisationName();
+        List<String> content = new ArrayList<>(List.of(token,organisation));
+        new ObjectMapper().writeValue(response.getOutputStream(), content);
     }
 
     @Override
