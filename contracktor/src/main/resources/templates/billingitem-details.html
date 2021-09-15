@@ -51,15 +51,19 @@
                                 </div>
                             </div>
 
-                            <div class="col-4" th:unless="${states.isEmpty()}">
+                            <div class="col-5" th:unless="${states.isEmpty()}">
                                 <form th:action="@{'/billingitem/' + *{getBillingItemID()} + '/details/edit'}" th:object="${item}" method="post">
                                     <label for="state" class="form-label pt-2">Status</label>
-                                    <select id="state" class="form-select" name="stateId">
-                                        <div th:each="state : ${states}">
-                                            <option th:value="${state.getId()}" th:text="${state.getStateName()}"></option>
-                                        </div>
-                                    </select>
-                                    <button type="submit" class="btn btn-success">Bestätigen</button>
+                                    <div class="input-group mb-3">
+
+                                        <select id="state" class="form-select" name="stateId">
+                                            <div th:each="state : ${states}">
+                                                <option th:value="${state.getId()}" th:text="${state.getStateName()}"></option>
+                                            </div>
+                                        </select>
+                                        <button type="submit" class="btn btn-success">Bestätigen</button>
+
+                                    </div>
                                 </form>
 
 
