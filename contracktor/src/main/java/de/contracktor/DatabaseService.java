@@ -23,7 +23,7 @@ public class DatabaseService {
 	
 	@Autowired
 	private ProjectRepository projectRepo;
-	
+
 	@Autowired
 	private BillingItemRepository billingItemRepo;
 	
@@ -93,7 +93,7 @@ public class DatabaseService {
 	 * @return the billingItems that belong to the given billingItem
 	 */
 	public List<BillingItem> getAllBillingItemsOfBillingItem(BillingItem billingItem) {
-		if (getOrg(billingItem) != userManager.getCurrentOrganisation()) {
+		if (getOrg(billingItem).contains(userManager.getCurrentOrganisation())) {
 			throw new IllegalArgumentException("No access to this resource!");
 		}
 		List<BillingItem> billingItems = new ArrayList<BillingItem>();
@@ -204,7 +204,7 @@ public class DatabaseService {
 		}
 		List<BillingItem> billingItems =  billingItemRepo.findByBillingItemIDContains(search);
 		for (BillingItem billingItem : billingItems) {
-			if (getOrg(billingItem) != userManager.getCurrentOrganisation()) {
+			if (!getOrg(billingItem).contains(userManager.getCurrentOrganisation())) {
 				billingItems.remove(billingItem);
 			}
 		}
@@ -219,7 +219,7 @@ public class DatabaseService {
 	 * @return the childs of the given billingItem
 	 */
 	public List<BillingItem> getChildOfBillingItem(BillingItem billingItem) {
-		if (getOrg(billingItem) != userManager.getCurrentOrganisation() || !userManager.hasCurrentUserReadPerm()) {
+		if (!getOrg(billingItem).contains(userManager.getCurrentOrganisation()) || !userManager.hasCurrentUserReadPerm()) {
 			throw new IllegalArgumentException("No access to this resource!");
 		}
 		List<BillingItem> billingItems = new ArrayList<BillingItem>();
@@ -291,7 +291,7 @@ public class DatabaseService {
 		Optional<BillingItem> billingItem = billingItemRepo.findById(id);
 		if (billingItem.isEmpty()) {
 			return null;
-		} else if (getOrg(billingItem.get()) != userManager.getCurrentOrganisation() || !userManager.hasCurrentUserReadPerm()) {
+		} else if (!getOrg(billingItem.get()).contains(userManager.getCurrentOrganisation()) || !userManager.hasCurrentUserReadPerm()) {
 			throw new IllegalArgumentException("No access to this resource!");
 		}
 		return billingItem.get();
@@ -337,7 +337,7 @@ public class DatabaseService {
 		Optional<BillingItem> billingItem = billingItemRepo.findByBillingItemID(id);
 		if (billingItem.isEmpty()) {
 			return null;
-		} else if (getOrg(billingItem.get()) != userManager.getCurrentOrganisation() || !userManager.hasCurrentUserReadPerm()) {
+		} else if (!getOrg(billingItem.get()).contains(userManager.getCurrentOrganisation()) || !userManager.hasCurrentUserReadPerm()) {
 			throw new IllegalArgumentException("No access to this resource!");
 		}
 		return billingItem.get();
@@ -363,13 +363,12 @@ public class DatabaseService {
 		return new ArrayList<>(List.of(contract.getConsignee(),contract.getContractor()));
 	}
 
-	private String getOrg(BillingUnit billingUnit) {
-		return billingUnit.getContract().getProject().getOwner().getOrganisationName();
+	private List<String> getOrg(BillingUnit billingUnit) {
+		return getOrg(billingUnit.getContract());
 	}
 
-	private String getOrg(BillingItem billingItem) {
-		return billingUnitRepo.findByBillingUnitID(billingItem.getBillingUnit_ID()).getContract().getProject().getOwner()
-				.getOrganisationName();
+	private List<String> getOrg(BillingItem billingItem) {
+		return getOrg(billingUnitRepo.findByBillingUnitID(billingItem.getBillingUnit_ID()).getContract());
 	}
 
 }
