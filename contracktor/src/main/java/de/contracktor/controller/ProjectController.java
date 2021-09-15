@@ -34,12 +34,7 @@ public class ProjectController {
     */
     @GetMapping("/projects")
     public String getProjectList(Model model) {
-        try {
-			model.addAttribute("projects", databaseService.getAllProjects());
-		} catch (AuthenticationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        model.addAttribute("projects", databaseService.getAllProjects());
         return "project-list";
     }
 

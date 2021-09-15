@@ -24,7 +24,7 @@ public class UserManager {
     @Autowired
     PasswordEncoder encoder;
 
-    public UserAccount addUser(UserAccount user) throws AuthorizationServiceException {
+    public UserAccount addUser(UserAccount user) {
         if (userRepository.existsByUsername(user.getUsername())) {
             throw new AuthorizationServiceException("Username already exists");
         }
@@ -33,14 +33,14 @@ public class UserManager {
 
     }
 
-    public void removeUser(UserAccount user) throws AuthorizationServiceException{
+    public void removeUser(UserAccount user) {
         if(!userRepository.existsByUsername(user.getUsername())) {
             throw new AuthorizationServiceException("User does not exist");
         }
         userRepository.delete(user);
     }
 
-    public UserAccount updateUser(UserAccount user) throws AuthorizationServiceException{
+    public UserAccount updateUser(UserAccount user) {
         if (!userRepository.existsByUsername(user.getUsername())) {
             throw new AuthorizationServiceException("User does not exist");
         }
@@ -48,43 +48,39 @@ public class UserManager {
         return userRepository.save(user);
     }
 
-    public String getCurrentUserName() throws AuthenticationException{
+    public String getCurrentUserName() {
         return getPrincipal().getUsername();
     }
 
-    public String getCurrentOrganisation() throws AuthenticationException{
+    public String getCurrentOrganisation() {
         return getPrincipal().getOrganisationName();
     }
 
-    public boolean isCurrentUserAdmin() throws AuthenticationException{
+    public boolean isCurrentUserAdmin() {
         return getPrincipal().isAdmin();
     }
 
-    public boolean isCurrentUserAppAdmin() throws AuthenticationException{
+    public boolean isCurrentUserAppAdmin() {
         return getPrincipal().isAppAdmin();
     }
 
-    public List<Role> getCurrentUserRoles() throws AuthenticationException{
+    public List<Role> getCurrentUserRoles() {
         return getPrincipal().getRoles();
     }
 
-    public boolean hasCurrentUserWritePerm() throws AuthenticationException{
+    public boolean hasCurrentUserWritePerm() {
         return getCurrentUserRoles().stream().map((r) -> r.getPermission().getPermissionName()).collect(Collectors.toList()).contains("w")
                 || isCurrentUserAdmin() || isCurrentUserAppAdmin();
     }
 
-    public boolean hasCurrentUserReadPerm() throws AuthenticationException {
+    public boolean hasCurrentUserReadPerm() {
         return getCurrentUserRoles().stream().map((r) -> r.getPermission().getPermissionName()).collect(Collectors.toList()).contains("r")
                || hasCurrentUserWritePerm();
     }
 
-    private ContracktorUserDetails getPrincipal() throws AuthenticationException {
+    private ContracktorUserDetails getPrincipal() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if(auth != null && auth.isAuthenticated()) {
             return (ContracktorUserDetails) auth.getPrincipal();
-        } else {
-            throw new AuthenticationException("Not logged in.");
-        }
     }
 
 }

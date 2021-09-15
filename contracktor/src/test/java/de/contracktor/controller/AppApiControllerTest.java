@@ -169,6 +169,7 @@ class AppApiControllerTest {
         assertTrue(updatedItem.getStatus().getStateName() == newState.getStateName() && updatedItem.getLastModified() == 2000);
     }
 **/
+
     @Test
     void testUndefinedBillingItemUpdate() throws Exception{
         ContracktorUserDetails contracktorUserDetails = userDetailsServiceH2.loadUserByUsername("Testo");

@@ -64,19 +64,15 @@ public class BillingItemController {
 		//Zugriffsbeschraenkung auf StateTransition ueber Contracktor Consignee 
 		Boolean isApplicationAdmin = false;
 		String organisationNameOfUser = "";
-		try {
-			organisationNameOfUser = userManager.getCurrentOrganisation();
-			isApplicationAdmin = userManager.isCurrentUserAppAdmin();
-		} catch (AuthenticationException e) {
-			e.printStackTrace();
-		}
+		organisationNameOfUser = userManager.getCurrentOrganisation();
+		isApplicationAdmin = userManager.isCurrentUserAppAdmin();
 
 		for (StateTransition transition : transitions) {
 			if (organisationNameOfUser.equals(contract.getContractor()) && transition.getContractor()
 					|| organisationNameOfUser.equals(contract.getConsignee()) && transition.getConsignee() ||
 					isApplicationAdmin) {
 				endstates.add(transition.getEndState());
-			}			
+			}
 		}
 
 		item = databaseService.getBillingItemByBillingItemID(itemId);

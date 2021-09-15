@@ -32,13 +32,8 @@ public class ContractController {
     DatabaseService databaseService;
 
     @GetMapping("/contracts")
-    public String getContractList(Model model){
-        try {
-			model.addAttribute("contracts",databaseService.getAllContracts());
-		} catch (AuthenticationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    public String getContractList(Model model) {
+        model.addAttribute("contracts", databaseService.getAllContracts());
         return "contract-list";
     }
 
@@ -55,12 +50,9 @@ public class ContractController {
         model.addAttribute("contract", contract);
         //Test
         List<BillingItem> items = new ArrayList<BillingItem>();
-		try {
-			items = databaseService.getAllBillingItemsOfContract(contract);
-		} catch (AuthenticationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+        items = databaseService.getAllBillingItemsOfContract(contract);
+
         model.addAttribute("items",items);
         return "contract-details";
     }
