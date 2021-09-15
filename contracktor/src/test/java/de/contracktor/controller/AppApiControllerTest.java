@@ -28,6 +28,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
@@ -71,6 +72,7 @@ class AppApiControllerTest {
     private ReportRepository reportRepository;
 
     private APIResponse apiResponse;
+
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
@@ -81,12 +83,14 @@ class AppApiControllerTest {
 
 	private final long creationDate = 22222222;
 	private final long completionDate = 33333333;
+    Organisation testOrganisation;
+    BillingItem billingItem;
 	
     @BeforeEach
     void setUp() {
         byte[] image = "Nice picture".getBytes(StandardCharsets.UTF_8);
 
-        Organisation testOrganisation = new Organisation("Testorg");
+        testOrganisation = new Organisation("Testorg");
 
         Permission permission = permissionRepository.findByPermissionName("r");
 
@@ -108,7 +112,7 @@ class AppApiControllerTest {
 
         Contract contract = new Contract(32,project,"Test","Testorg",state,"test","Test");
 
-        BillingItem billingItem = new BillingItem("1","1","m",100.0,20.0,300.0,
+        billingItem = new BillingItem("1","1","m",100.0,20.0,300.0,
                 "Test",state,"Test",new ArrayList<>());
 
         ArrayList<BillingItem> billingItemList = new ArrayList<>();
@@ -170,20 +174,20 @@ class AppApiControllerTest {
         BillingItem updatedItem = billingItemRepository.findByBillingItemID("1").get();
         assertTrue(updatedItem.getStatus().getStateName() == newState.getStateName() && updatedItem.getLastModified() == 2000);
     }
-/**
+
     @Test
     void testValidImageUpdate() throws Exception{
         APIUpdate apiUpdate = new APIUpdate();
-        State newState = stateRepository.findByStateName("DENY");
         apiUpdate.setBillingItemUpdates(new ArrayList<>());
-        BillingItem billingItem = billingItemRepository.findByBillingItemID("1").get();
-        Report newReport = new Report(List.of(billingItem),organisationRepository.findByOrganisationName("Testorg"))
-        apiUpdate.setReportList();
+        Report report = new Report(25,billingItem,testOrganisation,(long) 20000,"Testo","Bla");
+        Picture newPicture = new Picture(123,"Test".getBytes(StandardCharsets.UTF_8),report);
+        apiUpdate.setPictureList(List.of(newPicture));
         mockMvc.perform(post("/api/update").content(objectMapper.writeValueAsString(apiUpdate)).contentType("application/json")).andReturn();
-        BillingItem updatedItem = billingItemRepository.findByBillingItemID("1").get();
-        assertTrue(updatedItem.getStatus().getStateName() == newState.getStateName() && updatedItem.getLastModified() == 2000);
+        Optional<Report> savedReport = reportRepository.findById(25);
+        Optional<Picture> savedPicture = pictureRepo.findById(123);
+        assertTrue(savedPicture.isPresent() && savedReport.isPresent() && savedReport.get().equals(report)
+                && savedPicture.equals(newPicture));
     }
-**/
 
     @Test
     void testUndefinedBillingItemUpdate() throws Exception{
