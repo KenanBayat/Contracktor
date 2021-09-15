@@ -68,7 +68,7 @@ public class AdessoAPIService {
 		formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd");
 		creationdate = (Date) formatter.parse(project.getCreationDateString());
 		completiondate = (Date) formatter.parse(project.getCompletionDateString()); 
-				
+			
 		long creationDate = creationdate.getTime();
 		long completionDate = completiondate.getTime();
 		

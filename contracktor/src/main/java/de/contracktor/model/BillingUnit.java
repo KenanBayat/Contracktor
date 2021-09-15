@@ -34,7 +34,7 @@ public class BillingUnit {
 	@Getter @Setter @Column(nullable = false, unique = true) @JsonProperty("id") private String billingUnitID;
 	@Getter @Setter @ManyToOne @JoinColumn(nullable = false) private Contract contract;
 	@Getter @Setter @Column private String unit;
-	@Getter @Setter @Column(nullable = false) @JsonIgnore private LocalDate completionDate;
+	@Getter @Setter @Column(nullable = false) @JsonIgnore private long completionDate;
 	@Getter @Setter @Column(nullable = false) private Double totalPrice;
 	@Getter @Setter @Column(nullable = false) private Double totalQuantity;
 	@Getter @Setter @OneToMany(fetch = FetchType.EAGER) private List<BillingItem> billingItems;
@@ -48,7 +48,7 @@ public class BillingUnit {
 	
 	public BillingUnit() {}
 	
-	public BillingUnit(String billingUnitID, String unit, LocalDate completionDate, Double totalPrice, 
+	public BillingUnit(String billingUnitID, String unit, long completionDate, Double totalPrice, 
 			           Double totalQuantity, Contract contract,ArrayList<BillingItem> billingItems ,Boolean ownContractDefined, 
 			           String shortDescription, String longDescription, State status) {
 		this.billingUnitID = billingUnitID;

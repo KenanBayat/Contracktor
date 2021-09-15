@@ -50,8 +50,8 @@ public class TestProject {
 	
 	private Project project;
 	
-	private final LocalDate creationDate = LocalDate.of(2021, 9, 8);
-	private final LocalDate completionDate = LocalDate.of(2022, 12, 12);
+	private final long creationDate = 22222222;
+	private final long completionDate = 33333333;
 	
 	@BeforeEach
 	public void init() {

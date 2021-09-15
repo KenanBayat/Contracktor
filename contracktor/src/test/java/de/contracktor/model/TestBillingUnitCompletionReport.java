@@ -50,8 +50,8 @@ public class TestBillingUnitCompletionReport {
 	PictureRepository pictureRepo;
 
 	
-	private final LocalDate creationDate = LocalDate.of(2021, 9, 8);
-	private final LocalDate completionDate = LocalDate.of(2022, 12, 12);
+	private final long creationDate = 12345678;
+	private final long completionDate = 12345678;
 	
 	BillingItem billingItem1;
 	BillingItem billingItem2;

@@ -46,7 +46,7 @@ public class TestReport {
 	
 	private State state;
 	
-	private LocalDate date = LocalDate.of(2021, 9, 8);
+	private long date = 20210707;
 	
 	@BeforeEach
 	public void init() {

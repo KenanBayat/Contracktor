@@ -49,8 +49,8 @@ public class TestContract {
 	
 	private Contract contract;
 	
-	private LocalDate creationDate;
-	private LocalDate completionDate;
+	private long creationDate = 22112211;
+	private long completionDate = 34567890;
 	
 	@Autowired
 	private AddressRepository addressRepo;
@@ -61,8 +61,6 @@ public class TestContract {
 	public void init() {
 		address = new Address(2000, "straße", "42", "city", "12345", "Land");
 		addressRepo.save(address);
-		creationDate = LocalDate.of(2022, 12, 12);
-		completionDate = LocalDate.of(2022, 12, 12);
 		state = new State("state");
 		stateRepo.save(state);
 		organisation = new Organisation("orga");
