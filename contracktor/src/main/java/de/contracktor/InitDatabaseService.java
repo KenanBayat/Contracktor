@@ -112,10 +112,7 @@ public class InitDatabaseService {
 			initStates();
 		
 		if(stateTransitionRepo.count() == 0) 
-			initStateTransitions();
-			
-		
-		
+			initStateTransitions();	
 		
 		if(projectRepo.count() == 0 && 
 		   contractRepo.count() == 0 && 

@@ -28,16 +28,14 @@ public class Project {
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private Organisation owner;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String creator;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private State status;
-	@Getter @Setter @OneToOne private Picture image;
+	@Getter @Setter @OneToOne private byte[] image;
 	@Getter @Setter @Column(nullable = false, length = 8192) private String description;
 	@Getter @Setter @Transient @JsonProperty("creationDate") private String creationDateString;
 	@Getter @Setter @Transient @JsonProperty("completionDate") private String completionDateString;
 	@Getter @Setter @Transient private String ownerGroupIdentifier;
 
 
-	public Project() {
-		
-	}
+	public Project() {}
 	
 	public Project(int projectID, String name, Long creationDate, Long completionDate, Address address, Double totalPrice, Organisation owner, String creator,
 			       State status, Picture image, String description) {
