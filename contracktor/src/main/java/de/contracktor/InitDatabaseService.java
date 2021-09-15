@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import de.contracktor.model.Organisation;
 import de.contracktor.model.Permission;
+import de.contracktor.model.Picture;
+import de.contracktor.model.Report;
 import de.contracktor.model.Role;
 import de.contracktor.model.State;
 import de.contracktor.model.StateTransition;
@@ -19,6 +21,7 @@ import de.contracktor.repository.BillingUnitRepository;
 import de.contracktor.repository.ContractRepository;
 import de.contracktor.repository.OrganisationRepository;
 import de.contracktor.repository.PermissionRepository;
+import de.contracktor.repository.PictureRepository;
 import de.contracktor.repository.ProjectRepository;
 import de.contracktor.repository.ReportRepository;
 import de.contracktor.repository.RoleRepository;
@@ -68,6 +71,9 @@ public class InitDatabaseService {
 	
 	@Autowired
 	private UserManager userManager;
+	
+	@Autowired
+	private PictureRepository pictureRepo;
 		
 	private Permission read;
 	private Permission write;
@@ -107,13 +113,17 @@ public class InitDatabaseService {
 		
 		if(stateTransitionRepo.count() == 0) 
 			initStateTransitions();
+			
+		
+		
 		
 		if(projectRepo.count() == 0 && 
 		   contractRepo.count() == 0 && 
 		   billingItemRepo.count() == 0 && 
 		   billingUnitRepo.count() == 0 &&
 		   billingUnitCompletionReportRepo.count() == 0 &&
-		   reportRepo.count() == 0){}
+		   reportRepo.count() == 0 &&
+		   pictureRepo.count() == 0){}
 		
 	}
 	

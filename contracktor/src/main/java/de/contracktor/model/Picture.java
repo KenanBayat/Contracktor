@@ -17,13 +17,13 @@ public class Picture {
     @Getter @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private int pictureID;
     @Getter @Setter @Column(nullable = false, unique = true) @NotEmpty Integer imageID;
     @Getter @Setter byte[] picture;
-    @Getter @Setter @NotEmpty @ManyToOne Report reportID;
+    @Getter @Setter @NotEmpty @ManyToOne Report report;
 
     protected Picture() {}
 
-    public Picture(Integer imageId, byte[] picture, Report reportID) {
+    public Picture(Integer imageId, byte[] picture, Report report) {
         this.imageID = imageId;
         this.picture = picture;
-        this.reportID = reportID;
+        this.report = report;
     }
 }

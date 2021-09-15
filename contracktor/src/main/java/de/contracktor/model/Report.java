@@ -1,9 +1,5 @@
 package de.contracktor.model;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
@@ -22,9 +18,7 @@ public class Report {
 	@Getter @Setter @Column(nullable = false) @NotEmpty String username;
 	@Getter @Setter @Column(nullable = false) String comment;
 	
-	public Report() {
-		
-	}
+	public Report() {}
 	
 	public Report(BillingItem billingItem, Organisation organisation, Long date,
 			      String username, String comment) {
