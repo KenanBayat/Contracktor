@@ -28,7 +28,7 @@ public class Project {
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private Organisation owner;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String creator;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private State status;
-	@Getter @Setter @OneToOne private byte[] image;
+	@Getter @Setter private byte[] image;
 	@Getter @Setter @Column(nullable = false, length = 8192) private String description;
 	@Getter @Setter @Transient @JsonProperty("creationDate") private String creationDateString;
 	@Getter @Setter @Transient @JsonProperty("completionDate") private String completionDateString;
@@ -38,7 +38,7 @@ public class Project {
 	public Project() {}
 	
 	public Project(int projectID, String name, Long creationDate, Long completionDate, Address address, Double totalPrice, Organisation owner, String creator,
-			       State status, Picture image, String description) {
+			       State status, private byte[] image, String description) {
 		this.projectID = projectID;
 		this.name = name;
 		this.creationDate = creationDate;
