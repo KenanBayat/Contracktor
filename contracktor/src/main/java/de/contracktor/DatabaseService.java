@@ -45,7 +45,7 @@ public class DatabaseService {
 	public List<BillingItem> getAllBillingItemsOfProject(Project project) {
 		if(!projectRepo.existsById(project.getId())) {
 			throw new IllegalArgumentException("Project doesnt exists!");
-		} else if (getOrg(project) != userManager.getCurrentOrganisation()
+		} else if (!getOrg(project).equals( userManager.getCurrentOrganisation())
 				|| !userManager.hasCurrentUserReadPerm()) {
 			throw new IllegalArgumentException("No access to this resource!");
 		}
@@ -259,7 +259,7 @@ public class DatabaseService {
 		Optional<Project> project = projectRepo.findById(id);
 		if (project.isEmpty()) {
 			return null;
-		} else if (getOrg(project.get()) != userManager.getCurrentOrganisation() || !userManager.hasCurrentUserReadPerm()) {
+		} else if (!getOrg(project.get()).equals(userManager.getCurrentOrganisation()) || !userManager.hasCurrentUserReadPerm()) {
 			throw new IllegalArgumentException("No access to this resource!");
 		}
 		return project.get();
@@ -306,7 +306,7 @@ public class DatabaseService {
 		Optional<Project> project = projectRepo.findById(id);
 		if (project.isEmpty()) {
 			return null;
-		} else if (getOrg(project.get()) != userManager.getCurrentOrganisation() || !userManager.hasCurrentUserReadPerm()) {
+		} else if (!getOrg(project.get()).equals(userManager.getCurrentOrganisation()) || !userManager.hasCurrentUserReadPerm()) {
 			throw new IllegalArgumentException("No access to this resource!");
 		}
 		return project.get();
@@ -349,7 +349,7 @@ public class DatabaseService {
 	 * @return all contracts that are included in the project
 	 */
 	public List<Contract> getContractsOfProject(Project project) {
-		if (getOrg(project) != userManager.getCurrentOrganisation() || !userManager.hasCurrentUserReadPerm()) {
+		if (!getOrg(project).equals(userManager.getCurrentOrganisation()) || !userManager.hasCurrentUserReadPerm()) {
 			throw new IllegalArgumentException("No access to this resource!");
 		}
 		return contractRepo.findByProject(project);
