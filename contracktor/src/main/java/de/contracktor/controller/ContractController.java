@@ -36,13 +36,16 @@ public class ContractController {
     @Autowired
     StateRepository stateRepository;
 
+    @Autowired
+    DatabaseService databaseService;
+
     List<Contract> searchedContracts = new ArrayList<>();
 
     Contract contract = null;
     
     @GetMapping("/contracts")
     public String getContracts(Model model) {
-        model.addAttribute("contracts", contractRepository.findAll());
+        model.addAttribute("contracts", databaseService.getAllContracts());
         model.addAttribute("filter", "");
 
         return "contracts";
