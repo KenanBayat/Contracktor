@@ -75,7 +75,7 @@ public class UserManager {
 
     public boolean hasCurrentUserReadPerm() throws AuthenticationException {
         return getCurrentUserRoles().stream().map((r) -> r.getPermission().getPermissionName()).collect(Collectors.toList()).contains("r")
-                || isCurrentUserAdmin() || isCurrentUserAppAdmin();
+               || hasCurrentUserWritePerm();
     }
 
     private ContracktorUserDetails getPrincipal() throws AuthenticationException {
