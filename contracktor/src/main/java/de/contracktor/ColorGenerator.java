@@ -17,13 +17,4 @@ public class ColorGenerator {
         return colors;
     }
 
-
-    private int colorDistance(int[] color1, int[] color2) {
-        int sum = 0;
-        for (int i = 0; i < color1.length; i++) {
-            sum += Math.pow(color1[i] - color2[i], 2);
-        }
-        return (int) Math.round(Math.sqrt(sum));
-    }
-
 }
