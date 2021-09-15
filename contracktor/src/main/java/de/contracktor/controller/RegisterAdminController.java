@@ -31,11 +31,16 @@ public class RegisterAdminController {
     public String getRegisterAdminPage(Model model) {
         // Data:
         List<Organisation> organisations = organisationRepository.findAll();
+        boolean isSystemAdmin = userManager.isCurrentUserAppAdmin();
+        String orgName = userManager.getCurrentOrganisation();
+        System.out.println(userManager.isCurrentUserAppAdmin());
 
         // Model:
         model.addAttribute("organisations", organisations);
 
         // For form input
+        model.addAttribute("userOrganisation", orgName);
+        model.addAttribute("isSystemAdmin", isSystemAdmin);
         model.addAttribute("username", "");
         model.addAttribute("forename", "");
         model.addAttribute("surname", "");
@@ -62,6 +67,8 @@ public class RegisterAdminController {
         boolean isSysadmin = false;
         List<Organisation> organisations = organisationRepository.findAll();
         Organisation org = organisationRepository.findByOrganisationName(organisation);
+        boolean isSystemAdmin = userManager.isCurrentUserAppAdmin();
+        String orgName = userManager.getCurrentOrganisation();
 
         // Logic:
         if(admin == null) {
@@ -83,6 +90,8 @@ public class RegisterAdminController {
         model.addAttribute("organisations", organisations);
 
         // For form input
+        model.addAttribute("userOrganisation", orgName);
+        model.addAttribute("isSystemAdmin", isSystemAdmin);
         model.addAttribute("username", "");
         model.addAttribute("forename", "");
         model.addAttribute("surname", "");

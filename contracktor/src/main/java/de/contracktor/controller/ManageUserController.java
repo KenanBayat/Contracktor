@@ -93,8 +93,7 @@ public class ManageUserController {
             Optional<UserAccount> user = userRepository.findById(id);
         }
 
-        Optional<UserAccount> userOptional = userRepository.findById(id);
-        UserAccount user = userOptional.get();
+        UserAccount user = userRepository.findById(id).get();
         user.setUsername(username);
         user.setForename(forename);
         user.setSurname(surname);

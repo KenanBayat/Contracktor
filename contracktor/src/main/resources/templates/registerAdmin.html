@@ -76,7 +76,8 @@
                                         Organisation
                                     </label>
                                     <select id="organisation" class="form-select" name="organisation">
-                                        <option th:each="organisation : ${organisations}" th:value="${organisation.getOrganisationName()}" th:text="${organisation.getOrganisationName()}">
+                                        <option th:each="organisation : ${organisations}" th:value="${organisation.getOrganisationName()}" th:text="${organisation.getOrganisationName()}" th:if="${isSystemAdmin}">
+                                        <option th:unless="${!isSystemAdmin}" th:value="${userOrganisation}" th:text="${userOrganisation}"></option>
                                     </select>
                                 </div>
 
