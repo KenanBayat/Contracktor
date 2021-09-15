@@ -120,17 +120,19 @@ class AppApiControllerTest {
                 "Testo","Test");
         Picture picture = new Picture(3, image, report);
 
-        pictureRepo.save(picture);
+        
+        stateRepository.save(state);
         organisationRepository.save(testOrganisation);
+        billingItemRepository.save(billingItem);
+        reportRepository.save(report);
+        pictureRepo.save(picture);
         roleRepository.save(role);
         userRepository.save(userAccount);
         addressRepository.save(address);
         projectRepository.save(project);
         contractRepository.save(contract);
-        billingItemRepository.save(billingItem);
         pictureRepository.save(picture);
         billingUnitRepository.save(billingUnit);
-        reportRepository.save(report);
 
         List<Project> projectList = List.of(project);
         List<Contract> contractList = List.of(contract);
