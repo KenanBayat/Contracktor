@@ -1,6 +1,7 @@
 package de.contracktor.controller;
 
 import de.contracktor.DatabaseService;
+import de.contracktor.UserManager;
 import de.contracktor.model.*;
 import de.contracktor.repository.BillingItemRepository;
 import de.contracktor.repository.BillingUnitRepository;
@@ -18,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.security.sasl.AuthenticationException;
+
 @Controller
 public class ItemController {
 
@@ -32,6 +35,9 @@ public class ItemController {
 
     @Autowired
     DatabaseService databaseService;
+    
+    @Autowired
+    UserManager userManager;
 
     @GetMapping("/billingitems")
     public String getBillingItems(Model model){
@@ -51,11 +57,23 @@ public class ItemController {
         BillingItem item = databaseService.getBillingItemByBillingItemID(itemId);
         List<BillingItem> subitems = databaseService.getChildOfBillingItem(item);
         Contract contract = databaseService.getContractOfBillingItem(item);
+        
+        String organisationNameOfUser = "";
+        try {
+			organisationNameOfUser = userManager.getCurrentOrganisation();
+		} catch (AuthenticationException e) {
+			e.printStackTrace();
+		}
 
         List<StateTransition> transitions = stateTransitionRepository.findByStartState(item.getStatus());
         List<State> endstates = new ArrayList<>();
         for(StateTransition transition:transitions){
-            endstates.add(transition.getEndState());
+        	if(organisationNameOfUser.equals(contract.getContractor()) && transition.getContractor()) {
+        		endstates.add(transition.getEndState());
+            }
+        	if(organisationNameOfUser.equals(contract.getConsignee()) && transition.getConsignee()) {
+        		endstates.add(transition.getEndState());
+            }   
         }
 
         item = databaseService.getBillingItemByBillingItemID(itemId);
