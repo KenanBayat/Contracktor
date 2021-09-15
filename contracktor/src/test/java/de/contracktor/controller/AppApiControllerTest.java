@@ -93,7 +93,7 @@ class AppApiControllerTest {
         Address address = new Address(1,"Test","2","Test","1234","Test");
         State state = stateRepository.findByStateName("OPEN");
         State state2 = stateRepository.findByStateName("OK");
-        Project project = new Project(200000, null, creationDate, completionDate, address,
+        Project project = new Project(200000, "test", creationDate, completionDate, address,
 				100.0, testOrganisation, "hans", state, picture, "");
         Contract contract = new Contract(32,project,"Test","Testorg",state,"test","Test");
         BillingItem billingItem = new BillingItem("1","1","m",100.0,20.0,300.0,
