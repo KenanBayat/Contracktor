@@ -17,7 +17,7 @@ public class Report {
 	@Getter @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private int id;
 	@Getter @Setter @OneToMany List<BillingItem> billingItems;
 	@Getter @Setter @JoinColumn(nullable = false) @OneToOne Organisation organisation;
-	@Getter @Setter @Column(nullable = false) @JsonIgnore LocalDate date;
+	@Getter @Setter @Column(nullable = false) @JsonIgnore Long date;
 	@Getter @Setter @Column(nullable = false) @NotEmpty String username;
 	@Getter @Setter @Column(nullable = false) String comment;
 	@Getter @Setter @OneToMany List<Picture> pictures;
@@ -26,7 +26,7 @@ public class Report {
 		
 	}
 	
-	public Report(List<BillingItem> billingItems, Organisation organisation, LocalDate date,
+	public Report(List<BillingItem> billingItems, Organisation organisation, Long date,
 			      String username, String comment, ArrayList<Picture> pictures) {
 		this.billingItems = billingItems;
 		this.organisation = organisation;

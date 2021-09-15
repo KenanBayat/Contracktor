@@ -39,7 +39,7 @@ public class APIAuthorizationFilter extends BasicAuthenticationFilter {
         } else {
             String auth = request.getHeader("authorization");
 
-            if (auth.startsWith("Bearer ")) {
+            if (auth != null && auth.startsWith("Bearer ")) {
                 auth = auth.substring("Bearer ".length());
                 Algorithm algorithm = Algorithm.HMAC256("test".getBytes());
                 JWTVerifier verifier = JWT.require(algorithm).build();
@@ -52,8 +52,10 @@ public class APIAuthorizationFilter extends BasicAuthenticationFilter {
 
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+                chain.doFilter(request, response);
+            } else {
+                response.setStatus(401);
             }
-            chain.doFilter(request, response);
         }
     }
 }

@@ -17,4 +17,8 @@ public interface ProjectRepository extends CrudRepository<Project, Integer>{
 
     List<Project> findAll();
 
+    List<Project> findByNameContainsIgnoreCaseAndOwner_OrganisationNameIgnoreCase(String name, String organisationName);
+
+
+
 }

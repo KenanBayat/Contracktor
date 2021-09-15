@@ -20,4 +20,8 @@ public interface ContractRepository extends CrudRepository<Contract, Integer>{
     List<Contract> findByNameContains(String substr);
     
     List<Contract> findAllByProject(Project project);
+
+    List<Contract> findByNameContainsIgnoreCaseAndProject_Owner_OrganisationNameIgnoreCase(String name, String organisationName);
+
+
 }

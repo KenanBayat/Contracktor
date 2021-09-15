@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import de.contracktor.model.*;
 import de.contracktor.repository.*;
+import de.contracktor.security.ContracktorUserDetails;
+import de.contracktor.security.UserDetailsServiceH2;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -29,7 +33,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
-@SpringBootTest
+@SpringBootTest(properties = {
+        "spring.datasource.url=jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1;IGNORECASE=TRUE;DB_CLOSE_ON_EXIT=FALSE;",
+        "spring.jpa.hibernate.ddl-auto=create-drop"
+})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureMockMvc(addFilters = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -66,9 +73,20 @@ class AppApiControllerTest {
     private APIResponse apiResponse;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private UserDetailsServiceH2 userDetailsServiceH2;
 
+	@Autowired
+	private PictureRepository pictureRepo;
+	private Picture picture;
+
+	private final long creationDate = 22222222;
+	private final long completionDate = 33333333;
+	
     @BeforeEach
     void setUp() {
+    	picture = new Picture(null,null);
+		pictureRepo.save(picture);
         Organisation testOrganisation = new Organisation("Testorg");
         Permission permission = permissionRepository.findByPermissionName("r");
         Role role = new Role("Test",permission,testOrganisation);
@@ -78,18 +96,18 @@ class AppApiControllerTest {
         Address address = new Address(1,"Test","2","Test","1234","Test");
         State state = stateRepository.findByStateName("OPEN");
         State state2 = stateRepository.findByStateName("OK");
-        Project project = new Project(15,"testProject", LocalDate.of(2000,2,2),
-                LocalDate.of(2000,2,2),address,100.0,testOrganisation, "Test", state,null,"Test");
+        Project project = new Project(200000, "test", creationDate, completionDate, address,
+				100.0, testOrganisation, "hans", state, picture, "");
         Contract contract = new Contract(32,project,"Test","Testorg",state,"test","Test");
         BillingItem billingItem = new BillingItem("1","1","m",100.0,20.0,300.0,
                 "Test",state,"Test",new ArrayList<>());
         ArrayList<BillingItem> billingItemList = new ArrayList<>();
         billingItemList.add(billingItem);
-        BillingUnit billingUnit = new BillingUnit("1","m",LocalDate.of(2000,2,2),
+        BillingUnit billingUnit = new BillingUnit("1","m",11223344,
                 200.0,100.0,contract,billingItemList,false,"Test","Teest",state);
         byte[] image = "Nice picture".getBytes(StandardCharsets.UTF_8);
         Picture picture = new Picture("Test", image);
-        Report report = new Report(billingItemList,testOrganisation,LocalDate.of(2000,2,2),
+        Report report = new Report(billingItemList,testOrganisation, creationDate,
                 "Testo","Test", new ArrayList(List.of(picture)));
 
         organisationRepository.save(testOrganisation);
@@ -111,13 +129,14 @@ class AppApiControllerTest {
         List<Report> reportList = List.of(report);
 
         apiResponse = new APIResponse(projectList,contractList,billingUnitList,stateList,stateTransitionList,reportList,false,"OK");
-        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken("Testo","test",
-                List.of(new SimpleGrantedAuthority("USER"))));
 
     }
 
     @Test
     void testValidDownload() throws Exception {
+        ContracktorUserDetails contracktorUserDetails = userDetailsServiceH2.loadUserByUsername("Testo");
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(contracktorUserDetails,"test",
+                List.of(new SimpleGrantedAuthority("USER"))));
         MvcResult result = mockMvc.perform(post("/api/update").content("{}").contentType("application/json")).andReturn();
         String actualResponse = result.getResponse().getContentAsString();
         String expectedResponse = objectMapper.writeValueAsString(apiResponse);
@@ -127,6 +146,9 @@ class AppApiControllerTest {
 
     @Test
     void testValidBillingItemUpdate() throws Exception {
+        ContracktorUserDetails contracktorUserDetails = userDetailsServiceH2.loadUserByUsername("Testo");
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(contracktorUserDetails,"test",
+                List.of(new SimpleGrantedAuthority("USER"))));
         APIUpdate apiUpdate = new APIUpdate();
         State newState = stateRepository.findByStateName("DENY");
         BillingItemUpdate billingItemUpdate = new BillingItemUpdate("1",newState,2000);
@@ -150,8 +172,12 @@ class AppApiControllerTest {
         assertTrue(updatedItem.getStatus().getStateName() == newState.getStateName() && updatedItem.getLastModified() == 2000);
     }
 **/
+
     @Test
     void testUndefinedBillingItemUpdate() throws Exception{
+        ContracktorUserDetails contracktorUserDetails = userDetailsServiceH2.loadUserByUsername("Testo");
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(contracktorUserDetails,"test",
+                List.of(new SimpleGrantedAuthority("USER"))));
         APIUpdate apiUpdate = new APIUpdate();
         State newState = stateRepository.findByStateName("DENY");
         BillingItemUpdate billingItemUpdate = new BillingItemUpdate("420",newState,2000);
@@ -162,20 +188,15 @@ class AppApiControllerTest {
         assertEquals(objectMapper.writeValueAsString(new APIResponse("UNKNOWN_BILLINGITEM")), result.getResponse().getContentAsString());
     }
 
-    @Test
-    void testUnknownUser() throws Exception{
-        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken("unknown","test",
-                List.of(new SimpleGrantedAuthority("USER"))));
 
-        MvcResult result = mockMvc.perform(post("/api/update").content("{}").contentType("application/json")).andReturn();
-        String actualResponse = result.getResponse().getContentAsString();
-        String expectedResponse = objectMapper.writeValueAsString(new APIResponse("UNKNOWN_USER"));
-        assertEquals(expectedResponse,actualResponse);
-    }
     @Test
     void testNoReadPerm() throws Exception {
-        UserAccount user =  userRepository.findByUsername("testo").get();
+        UserAccount user =  userRepository.findByUsername("Testo").get();
         user.setRoles(new ArrayList<>());
+        userRepository.save(user);
+        ContracktorUserDetails contracktorUserDetails = userDetailsServiceH2.loadUserByUsername("Testo");
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(contracktorUserDetails,"test",
+                List.of(new SimpleGrantedAuthority("USER"))));
         userRepository.save(user);
         MvcResult result = mockMvc.perform(post("/api/update").content("{}").contentType("application/json")).andReturn();
         String actualResponse = result.getResponse().getContentAsString();
@@ -183,8 +204,12 @@ class AppApiControllerTest {
         assertEquals(expectedResponse,actualResponse);
     }
 
+
     @Test
     void testNoOverride() throws Exception {
+        ContracktorUserDetails contracktorUserDetails = userDetailsServiceH2.loadUserByUsername("Testo");
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(contracktorUserDetails,"test",
+                List.of(new SimpleGrantedAuthority("USER"))));
         APIUpdate apiUpdate = new APIUpdate();
         State newState = stateRepository.findByStateName("DENY");
         BillingItemUpdate billingItemUpdate = new BillingItemUpdate("1",newState,2000);

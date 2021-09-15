@@ -54,6 +54,7 @@ public class AppApiController {
         } catch (Exception e) {
             return new APIResponse("ERROR");
         }
+
     }
 
     @PostMapping("/api/update")
@@ -101,10 +102,7 @@ public class AppApiController {
     }
 
     private APIResponse apiDownloadConstructor(String username) throws AuthenticationException{
-        Optional<UserAccount> user =  userRepository.findByUsername(username);
-        if (user.isEmpty()) {
-            return new APIResponse("UNKNOWN_USER");
-        } else if (!userManager.hasCurrentUserReadPerm() && !userManager.hasCurrentUserWritePerm()) {
+        if (!userManager.hasCurrentUserReadPerm() && !userManager.hasCurrentUserWritePerm()) {
             return new APIResponse("NO_READ_PERM");
         }
 
@@ -115,8 +113,8 @@ public class AppApiController {
         response.setContracts(contractRepository.findByContractorIgnoreCaseOrConsigneeIgnoreCase(organisation,
                 organisation));
         response.setBillingUnits(billingUnitRepository.findByContractIsIn(response.getContracts()));
-        response.setStates((List<State>) stateRepository.findAll());
-        response.setStateTransitions((List<StateTransition>) stateTransitionRepository.findAll());
+        response.setStates(stateRepository.findAll());
+        response.setStateTransitions(stateTransitionRepository.findAll());
         response.setReports(reportRepository.findByOrganisation_OrganisationNameIgnoreCase(organisation));
         response.setStatus("OK");
         return response;

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import javax.security.sasl.AuthenticationException;
+
 @Controller
 public class ProjectController {
 
