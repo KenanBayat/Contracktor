@@ -3,20 +3,19 @@ package de.contracktor.model;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import javax.validation.ConstraintViolationException;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import de.contracktor.repository.AddressRepository;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import de.contracktor.repository.OrganisationRepository;
 import de.contracktor.repository.UserRepository;
 
-@SpringBootTest
+@DataJpaTest
+@AutoConfigureTestDatabase(replace=Replace.NONE)
+@Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class TestOrganisation {
 
 	@Autowired
@@ -49,6 +48,8 @@ public class TestOrganisation {
 		organisation1 = new Organisation("organisation1");
 		organisation1 = organisationRepo.save(organisation1);
 		
+		assertTrue(organisationRepo.existsByOrganisationName(organisation1.getOrganisationName()));
+		
 		user1 =  new UserAccount("hansPeter", "password", "hans", "peter", organisation1, true, true, null);
 		user1 = userRepo.save(user1);
 		int userID = user1.getId();
@@ -56,6 +57,22 @@ public class TestOrganisation {
 		userRepo.delete(user1);
 		assertFalse(userRepo.existsById(userID));
 		organisationRepo.delete(organisation1);
+	}
+	
+	@Test 
+	public void testDeleteOrganisation() {
+		
+		organisation1 = new Organisation("organisation1");
+		organisation1 = organisationRepo.save(organisation1);
+		
+		user1 = new UserAccount("hansPeter", "password", "hans", "peter", organisation1, true, true, null);
+		user1 = userRepo.save(user1);
+	
+		assertTrue(organisationRepo.existsByOrganisationName(organisation1.getOrganisationName()));
+		
+		userRepo.delete(user1);
+		organisationRepo.delete(organisation1);
+		assertFalse(organisationRepo.existsByOrganisationName(organisation1.getOrganisationName()));
 	}
 	
 }

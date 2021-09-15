@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org" th:include="layout :: page">
+<head>
+    <title>
+        Admin - Contracktor
+    </title>
+</head>
+<body>
+<th:block th:fragment="content">
+    <div class="container">
+
+        <!-- Beginn Content -->
+
+        <!-- Begin Head of the Page -->
+        <!-- Set with of the page -->
+        <div class="py-3 text-center col-md-7 col-lg-8 mx-auto">
+
+            <!-- Set icon of the page -->
+            <div class="feature-icon bg-primary bg-gradient mx-auto">
+                <!-- Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"/>
+                </svg>
+            </div>
+
+            <!-- Heading and explanation of the page -->
+            <h2>
+                Zustandsübergange verwalten
+            </h2>
+            <p class="lead">
+                Fügen Sie weitere Zustandsübergänge hinzu oder löschen Sie bestehende Zustandsübergänge.
+            </p>
+
+        </div>
+        <!-- End Head of the Page -->
+
+        <!-- Beginn Body of the Page -->
+        <!-- Set with of the page -->
+        <div class="col-md-7 col-lg-8 mx-auto">
+
+            <div class="card">
+                <div class="card-body">
+                    <h5>Zustandsübergang hinzufügen</h5>
+                    <form th:action="@{/admin/transition/add}" method="post">
+                        <div class="row">
+                            <div class="col">
+                                <label for="start" class="form-label">Startzustand</label>
+                                <select id="start" class="form-select" name="start">
+                                    <option th:each="state : ${states}" th:value="${state.getId()}" th:text="${state.getStateName()}"></option>
+                                </select>
+                            </div>
+                            <div class="col-1 pt-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                                </svg>
+                            </div>
+                            <div class="col">
+                                <label for="end" class="form-label">Endzustand</label>
+                                <select id="end" class="form-select" name="end">
+                                    <option th:each="state : ${states}" th:value="${state.getId()}" th:text="${state.getStateName()}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- user rights fields -->
+                        <div class="py-2"></div>
+                        <p>Wer darf den Zustandübergang machen?</p>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="flexRadioDefault1" name="who" th:value="geber">
+                            <label class="form-check-label" for="flexRadioDefault1">
+                                Auftragnehmer
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="flexRadioDefault2" name="who" th:value="nehmer" checked>
+                            <label class="form-check-label" for="flexRadioDefault2">
+                                Auftrgageber
+                            </label>
+                        </div>
+
+                        <div class="py-2"></div>
+                        <button type="submit" class="btn btn-success">Hinzufügen</button>
+                    </form>
+
+                </div>
+            </div>
+
+            <div class="py-3"></div>
+
+            <div class="card">
+                <div class="card-body">
+
+                    <!-- Form search organisation -->
+                    <form th:action="@{/admin/transition/search}" method="post">
+                        <!-- Label for input field -->
+                        <label for="search" class="form-label">
+                            Zustandsübergang suchen
+                        </label>
+                        <!-- Input field with button -->
+                        <div class="form-group input-group py-3">
+                            <!-- Field for search term -->
+                            <input id="search" type="text" class="form-control" placeholder="Zustandsübergang suchen.." name="search"/>
+                            <button type="submit" class="btn btn-primary">
+                                Suchen
+                            </button>
+                            <button type="submit" class="btn btn-outline-secondary" th:value="''">
+                                Zurücksetzten
+                            </button>
+                        </div>
+                    </form>
+
+
+                    <!-- Table of organisations -->
+                    <table class="table table-bordered">
+
+                        <thead>
+                        <tr>
+                            <th>
+
+                                <!-- Sorting ID ascending -->
+                                <a class="text-decoration-none text-reset" th:href="@{'/admin/transition/start_desc'}" th:unless="${filter.equals('start_desc')}">
+                                    Startzustand
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" fill="currentColor" class="bi bi-sort-alpha-down" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M10.082 5.629 9.664 7H8.598l1.789-5.332h1.234L13.402 7h-1.12l-.419-1.371h-1.781zm1.57-.785L11 2.687h-.047l-.652 2.157h1.351z"/>
+                                        <path d="M12.96 14H9.028v-.691l2.579-3.72v-.054H9.098v-.867h3.785v.691l-2.567 3.72v.054h2.645V14zM4.5 2.5a.5.5 0 0 0-1 0v9.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L4.5 12.293V2.5z"/>
+                                    </svg>
+                                </a>
+
+                                <!-- Sorting ID descending -->
+                                <a class="text-decoration-none text-reset" th:href="@{'/admin/transition/start_asc'}" th:if="${filter.equals('start_desc')}">
+                                    Startzustand
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" fill="currentColor" class="bi bi-sort-alpha-up-alt" viewBox="0 0 16 16">
+                                        <path d="M12.96 7H9.028v-.691l2.579-3.72v-.054H9.098v-.867h3.785v.691l-2.567 3.72v.054h2.645V7z"/>
+                                        <path fill-rule="evenodd" d="M10.082 12.629 9.664 14H8.598l1.789-5.332h1.234L13.402 14h-1.12l-.419-1.371h-1.781zm1.57-.785L11 9.688h-.047l-.652 2.156h1.351z"/>
+                                        <path d="M4.5 13.5a.5.5 0 0 1-1 0V3.707L2.354 4.854a.5.5 0 1 1-.708-.708l2-1.999.007-.007a.498.498 0 0 1 .7.006l2 2a.5.5 0 1 1-.707.708L4.5 3.707V13.5z"/>
+                                    </svg>
+                                </a>
+                            </th>
+
+                            <!-- Sorting Organisation name -->
+                            <th scope="col">
+                                <a class="text-decoration-none text-reset" th:href="@{'/admin/transition/end_desc'}" th:unless="${filter.equals('end_desc')}">
+                                    Endzustand
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" fill="currentColor" class="bi bi-sort-alpha-down" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M10.082 5.629 9.664 7H8.598l1.789-5.332h1.234L13.402 7h-1.12l-.419-1.371h-1.781zm1.57-.785L11 2.687h-.047l-.652 2.157h1.351z"/>
+                                        <path d="M12.96 14H9.028v-.691l2.579-3.72v-.054H9.098v-.867h3.785v.691l-2.567 3.72v.054h2.645V14zM4.5 2.5a.5.5 0 0 0-1 0v9.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L4.5 12.293V2.5z"/>
+                                    </svg>
+                                </a>
+
+                                <!-- Sorting ID descending -->
+                                <a class="text-decoration-none text-reset" th:href="@{'/admin/transition/end_asc'}" th:if="${filter.equals('end_desc')}">
+                                    Endzustand
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" fill="currentColor" class="bi bi-sort-alpha-up-alt" viewBox="0 0 16 16">
+                                        <path d="M12.96 7H9.028v-.691l2.579-3.72v-.054H9.098v-.867h3.785v.691l-2.567 3.72v.054h2.645V7z"/>
+                                        <path fill-rule="evenodd" d="M10.082 12.629 9.664 14H8.598l1.789-5.332h1.234L13.402 14h-1.12l-.419-1.371h-1.781zm1.57-.785L11 9.688h-.047l-.652 2.156h1.351z"/>
+                                        <path d="M4.5 13.5a.5.5 0 0 1-1 0V3.707L2.354 4.854a.5.5 0 1 1-.708-.708l2-1.999.007-.007a.498.498 0 0 1 .7.006l2 2a.5.5 0 1 1-.707.708L4.5 3.707V13.5z"/>
+                                    </svg>
+                                </a>
+                            </th>
+                            <th scope="col">
+                                Löschen
+                            </th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr th:each="transition : ${transitions}">
+                            <td scope="row" th:text="${transition.getStartState().getStateName()}"></td>
+
+                            <td th:text="${transition.getEndState().getStateName()}"></td>
+
+                            <!-- Icon for delete -->
+                            <th>
+                                <form th:action="@{/admin/transition/delete}" method="post">
+
+                                    <!-- Trigger modal -->
+                                    <button class="btn btn-outline-danger btn-sm" type="button" data-bs-toggle="modal" th:data-bs-target="${'#' + transition.getStartStateName()+transition.getEndStateName()}">
+                                        Löschen
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" th:id="${transition.getStartStateName()+transition.getEndStateName()}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+
+                                                    <!-- Modal header -->
+                                                    <h5 class="modal-title" id="exampleModalLabel">Zustandsübergang löschen</h5>
+
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+
+                                                    <!-- Modal body -->
+                                                    Möchten Sie den Zustandsübergang von <strong th:text="'' + ${transition.getStartState().getStateName()}"></strong> nach <strong th:text="'' + ${transition.getEndState().getStateName()}"></strong> sicher löschen?
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                                                    <button type="submit" class="btn btn-danger" name="id" th:value="${transition.getId()}">Löschen</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </th>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+        <!-- End Body of the Page -->
+
+        <!-- End Content -->
+
+    </div>
+</th:block>
+</body>
+</html>

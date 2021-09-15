@@ -1,15 +1,16 @@
 package de.contracktor.model;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import java.time.LocalDate;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import de.contracktor.repository.AddressRepository;
 import de.contracktor.repository.ContractRepository;
@@ -18,7 +19,9 @@ import de.contracktor.repository.PictureRepository;
 import de.contracktor.repository.ProjectRepository;
 import de.contracktor.repository.StateRepository;
 
-@SpringBootTest
+@DataJpaTest
+@AutoConfigureTestDatabase(replace=Replace.NONE)
+@Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class TestContract {
 
 	@Autowired
@@ -46,8 +49,8 @@ public class TestContract {
 	
 	private Contract contract;
 	
-	private LocalDate creationDate;
-	private LocalDate completionDate;
+	private long creationDate = 22112211;
+	private long completionDate = 34567890;
 	
 	@Autowired
 	private AddressRepository addressRepo;
@@ -58,8 +61,6 @@ public class TestContract {
 	public void init() {
 		address = new Address(2000, "straße", "42", "city", "12345", "Land");
 		addressRepo.save(address);
-		creationDate = LocalDate.of(2022, 12, 12);
-		completionDate = LocalDate.of(2022, 12, 12);
 		state = new State("state");
 		stateRepo.save(state);
 		organisation = new Organisation("orga");

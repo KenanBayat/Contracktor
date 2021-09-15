@@ -16,13 +16,13 @@ import lombok.Setter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Project {
 
-	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO) @JsonIgnore
+	@Getter	@Id	@GeneratedValue(strategy = GenerationType.IDENTITY) @JsonIgnore
 	private int id;
 	@Getter @Setter @Column(nullable = false, unique = true) @JsonProperty("id")
 	private int projectID;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String name;
-    @Getter @Setter @Column(nullable = false) @JsonIgnore private LocalDate creationDate;
-	@Getter @Setter @Column(nullable = false) @JsonIgnore private LocalDate completionDate;
+    @Getter @Setter @Column(nullable = false) @JsonIgnore private Long creationDate;
+	@Getter @Setter @Column(nullable = false) @JsonIgnore private Long completionDate;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private Address address;
 	@Getter @Setter @Column(nullable = false) @JsonProperty("overallCost") private Double totalPrice;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private Organisation owner;
@@ -39,7 +39,7 @@ public class Project {
 		
 	}
 	
-	public Project(int projectID, String name, LocalDate creationDate, LocalDate completionDate, Address address, Double totalPrice, Organisation owner, String creator,
+	public Project(int projectID, String name, Long creationDate, Long completionDate, Address address, Double totalPrice, Organisation owner, String creator,
 			       State status, Picture image, String description) {
 		this.projectID = projectID;
 		this.name = name;
@@ -53,5 +53,46 @@ public class Project {
 		this.image = image;
 		this.description = description;
 	}
-	
+
+	public String getLowerName() {
+		return this.name.toLowerCase();
+	}
+
+	public String getLowerCity() {
+		return this.address.getCity().toLowerCase();
+	}
+
+	public String getLowerOwnerName() {
+		return this.owner.getOrganisationName().toLowerCase();
+	}
+
+	public String getLowerStatus() {
+		return this.status.getStateName().toLowerCase();
+	}
+
+	public String getLowerCreator() {
+		return this.creator.toLowerCase();
+	}
+
+	public String getCreationDateFormatted() {
+		DateFormatter formatter = new DateFormatter();
+		return formatter.format(this.creationDate);
+	}
+
+	public String getCompletionDateFormatted() {
+		DateFormatter formatter = new DateFormatter();
+		return formatter.format(this.completionDate);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Project other = (Project) obj;
+		return id == other.id && projectID == other.projectID;
+	}
 }

@@ -4,11 +4,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,15 +30,14 @@ import lombok.Setter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BillingUnit {
 
-	@Getter	@Id	@GeneratedValue(strategy = GenerationType.AUTO) @JsonIgnore
-	private int id;
+	@Getter	@Id	@GeneratedValue(strategy = GenerationType.IDENTITY) @JsonIgnore private int id;
 	@Getter @Setter @Column(nullable = false, unique = true) @JsonProperty("id") private String billingUnitID;
 	@Getter @Setter @ManyToOne @JoinColumn(nullable = false) private Contract contract;
 	@Getter @Setter @Column private String unit;
-	@Getter @Setter @Column(nullable = false) @JsonIgnore private LocalDate completionDate;
+	@Getter @Setter @Column(nullable = false) @JsonIgnore private long completionDate;
 	@Getter @Setter @Column(nullable = false) private Double totalPrice;
 	@Getter @Setter @Column(nullable = false) private Double totalQuantity;
-	@Getter @Setter @OneToMany private List<BillingItem> billingItems;
+	@Getter @Setter @OneToMany(fetch = FetchType.EAGER) private List<BillingItem> billingItems;
 	@Getter @Setter @Column private Boolean ownContractDefined;
 	@Getter @Setter @Column(nullable = false, length = 8192) private String shortDescription;
 	@Getter @Setter @Column(nullable = false, length = 8192) private String longDescription;
@@ -45,11 +46,9 @@ public class BillingUnit {
 	private String completionDateString;
 
 	
-	public BillingUnit() {
-		
-	}
+	public BillingUnit() {}
 	
-	public BillingUnit(String billingUnitID, String unit, LocalDate completionDate, Double totalPrice, 
+	public BillingUnit(String billingUnitID, String unit, long completionDate, Double totalPrice, 
 			           Double totalQuantity, Contract contract,ArrayList<BillingItem> billingItems ,Boolean ownContractDefined, 
 			           String shortDescription, String longDescription, State status) {
 		this.billingUnitID = billingUnitID;
@@ -64,4 +63,16 @@ public class BillingUnit {
 		this.longDescription = longDescription;
 		this.status = status;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		BillingUnit other = (BillingUnit) obj;
+		return Objects.equals(billingUnitID, other.billingUnitID) && id == other.id;
+	}	
 }

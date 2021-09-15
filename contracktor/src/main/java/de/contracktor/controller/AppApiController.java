@@ -1,22 +1,16 @@
 package de.contracktor.controller;
 
+import de.contracktor.UserManager;
 import de.contracktor.model.*;
 import de.contracktor.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Pair;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-
 import org.springframework.web.bind.annotation.*;
 
-
+import javax.security.sasl.AuthenticationException;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 @Controller
 public class AppApiController {
@@ -48,42 +42,58 @@ public class AppApiController {
     @Autowired
     private PictureRepository pictureRepository;
 
+    @Autowired
+    UserManager userManager;
+
+    //REMOVE BEFORE END
     @GetMapping("/api/download")
     @ResponseBody
-    public APIResponse downloadController(Model model) {
-        String user = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (user == null) {
-            return new APIResponse("NOT_AUTHENTICATED");
+    public APIResponse getController() {
+        try {
+            return apiDownloadConstructor(userManager.getCurrentUserName());
+        } catch (Exception e) {
+            return new APIResponse("ERROR");
         }
-        return apiDownloadConstructor(user);
+
     }
 
     @PostMapping("/api/update")
     @ResponseBody
-    public APIResponse updateController(@RequestParam(name = "json") APIUpdate update) {
+    public APIResponse updateController(@RequestBody APIUpdate update) {
         List<BillingItemUpdate> billingItemUpdates = update.getBillingItemUpdates();
+        List<Report> reportUpdates = update.getReportList();
 
-        for (BillingItemUpdate billingItemUpdate : billingItemUpdates) {
-            Optional<BillingItem> savedItem = billingItemRepository.findByBillingItemID(billingItemUpdate.getBillingItemID());
-            if (savedItem.isEmpty()) {
-                return new APIResponse("UNKNOWN_BILLINGITEM");
+        try {
+            String username = userManager.getCurrentUserName();
+
+            if (billingItemUpdates != null) {
+                for (BillingItemUpdate billingItemUpdate : billingItemUpdates) {
+                    Optional<BillingItem> savedItem = billingItemRepository.findByBillingItemID(billingItemUpdate.getBillingItemID());
+                    if (savedItem.isEmpty()) {
+                        return new APIResponse("UNKNOWN_BILLINGITEM");
+                    }
+
+                    if (savedItem.get().getLastModified() <= billingItemUpdate.getLastModified()) {
+                        savedItem.get().setStatus(billingItemUpdate.getNewState());
+                        savedItem.get().setLastModified(billingItemUpdate.getLastModified());
+                        billingItemRepository.save(savedItem.get());
+                    }
+                }
             }
 
-            if (savedItem.get().getLastModified() >= billingItemUpdate.getLastModified()) {
-                savedItem.get().setStatus(billingItemUpdate.getNewState());
-                savedItem.get().setLastModified(billingItemUpdate.getLastModified());
-                billingItemRepository.save(savedItem.get());
+            if (reportUpdates != null) {
+                for (Report report : update.getReportList()) {
+                    for (Picture picture : report.getPictures()) {
+                        pictureRepository.save(picture);
+                    }
+                    reportRepository.save(report);
+                }
             }
+
+            return apiDownloadConstructor(username);
+        } catch (AuthenticationException e) {
+            return new APIResponse("NOT_AUTHENTICATED");
         }
-
-        for (Report report : update.getReportList()) {
-            for (Picture picture : report.getPictures()) {
-                pictureRepository.save(picture);
-            }
-            reportRepository.save(report);
-        }
-
-        return new APIResponse("OK");
     }
 
     @RequestMapping("/api/login")
@@ -91,30 +101,23 @@ public class AppApiController {
     public void loginController() {
     }
 
-    private APIResponse apiDownloadConstructor(String username) {
-        Optional<UserAccount> user =  userRepository.findByUsername(username);
-        if (user.isEmpty()) {
-            return new APIResponse("UNKNOWN_USER");
-        } else if (!hasPerm(user.get(), "r") && !hasPerm(user.get(),"w")) {
+    private APIResponse apiDownloadConstructor(String username) throws AuthenticationException{
+        if (!userManager.hasCurrentUserReadPerm() && !userManager.hasCurrentUserWritePerm()) {
             return new APIResponse("NO_READ_PERM");
         }
 
         APIResponse response = new APIResponse();
-        Organisation organisation = user.get().getOrganisation();
-        response.setWritePerm(hasPerm(user.get(), "w"));
-        response.setProjects(projectRepository.findByOwner_OrganisationNameIgnoreCase(organisation.getOrganisationName()));
-        response.setContracts(contractRepository.findByContractorIgnoreCaseOrConsigneeIgnoreCase(organisation.getOrganisationName(),
-                organisation.getOrganisationName()));
+        String organisation = userManager.getCurrentOrganisation();
+        response.setWritePerm(userManager.hasCurrentUserWritePerm());
+        response.setProjects(projectRepository.findByOwner_OrganisationNameIgnoreCase(organisation));
+        response.setContracts(contractRepository.findByContractorIgnoreCaseOrConsigneeIgnoreCase(organisation,
+                organisation));
         response.setBillingUnits(billingUnitRepository.findByContractIsIn(response.getContracts()));
-        response.setStates((List<State>) stateRepository.findAll());
-        response.setStateTransitions((List<StateTransition>) stateTransitionRepository.findAll());
-        response.setReports(reportRepository.findByOrganisation(organisation));
+        response.setStates(stateRepository.findAll());
+        response.setStateTransitions(stateTransitionRepository.findAll());
+        response.setReports(reportRepository.findByOrganisation_OrganisationNameIgnoreCase(organisation));
         response.setStatus("OK");
         return response;
     }
 
-    private boolean hasPerm(UserAccount user, String permission) {
-        List<String> permissions = user.getRoles().stream().map((r) -> r.getPermission().getPermissionName()).collect(Collectors.toList());
-        return permissions.contains(permission);
-    }
 }

@@ -47,11 +47,12 @@ public class SecurityConfigs {
 					.antMatchers("/api/**").hasAuthority("USER");
 
 			http.csrf().disable()
-					.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+					.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+					.and().anonymous().disable();
 
 			APITokenFilter apiTokenFilter = new APITokenFilter(authenticationManagerBean());
 
-			APIAuthorizationFilter apiAuthFilter =  new APIAuthorizationFilter(authenticationManagerBean());
+			APIAuthorizationFilter apiAuthFilter =  new APIAuthorizationFilter(authenticationManagerBean(), userDetailsServiceH2);
 
 
 			http.addFilter(apiTokenFilter);
@@ -86,11 +87,13 @@ public class SecurityConfigs {
 					.and()
 					.httpBasic()
 					.and()
-					.logout();
+					.logout()
+					.and()
+					.anonymous().disable();
 
 			// Comment in to enable H2 console on test server (not recommended for release version!)
-			//http.csrf().disable();
-			//http.headers().frameOptions().disable();
+			http.csrf().disable();
+			http.headers().frameOptions().disable();
 		}
 
 		@Bean

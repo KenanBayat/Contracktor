@@ -1,28 +1,43 @@
 <!DOCTYPE html>
 <html lang="de" xmlns:th="http://www.thymeleaf.org" th:include="layout :: page">
 <head>
-
+    <title>ProjektListe</title>
 </head>
 <body>
     <th:block th:fragment="content">
         <div class="container">
             <h3>Projektübersicht</h3>
-            <table class="table table-striped">
+
+            <!-- Search Bar -->
+            <div class="container">
+                <form action="#" th:action="@{'/projects'}" th:method="post">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Suche nach Namen" aria-label="Suche nach Namen" aria-describedby="search"  name="search" th:value="${search}">
+                        <button type="submit" class="btn btn-outline-secondary bg-dark" id="search">Suchen</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tabelle -->
+            <table class="table table-striped table-hover">
                 <thead>
                     <tr>
                         <th>Projekt ID</th>
                         <th>Projektname</th>
+                        <th>Status</th>
+                        <th>Projekt-Owner</th>
                         <th>Details</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     <tr th:each="project: ${projects}">
-                        <td th:text="${project.projectID}"></td>
-                        <td th:text="${project.name}"></td>
-
+                        <td th:text="${project.getProjectID()}"></td>
+                        <td th:text="${project.getName()}"></td>
+                        <td th:text="${project.getStatus().getStateName()}"></td>
+                        <td th:text="${project.getOwner().getOrganisationName()}"></td>
                         <td>
-                            <a th:href="@{'/project/' + ${project.projectID} + '/details'}" class="icon-link" title="Details">
+                            <a th:href="@{'/project/' + ${project.getProjectID()} + '/details'}" class="icon-link" title="Details">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5z"/>
                                     <path fill-rule="evenodd" d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0v-5z"/>

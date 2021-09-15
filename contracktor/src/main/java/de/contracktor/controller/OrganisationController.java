@@ -20,7 +20,8 @@ public class OrganisationController {
     @Autowired
     OrganisationRepository organisationRepository;
 
-    List<Organisation> searchedOrganisations = new ArrayList<Organisation>();
+    List<Organisation> searchedOrganisations
+            = new ArrayList<Organisation>();
 
 
     // Function of the Page:
@@ -44,25 +45,6 @@ public class OrganisationController {
 
     //----------------------------------------------------------------------------
     // Search Organisation
-
-    // Function of the Page:
-    // - Add new organisations
-    // - Search in organisations
-    // - List all organisations
-    // - Delete organisations
-    @GetMapping("/admin/organisation/search/")
-    public String getSearchOrganisationManagement(Model model) {
-        // Data:
-        List<Organisation> organisationList = organisationRepository.findAll();
-
-        // Logic:
-
-        // Model attributes:
-        model.addAttribute("organisations", organisationList);
-        model.addAttribute("filter", "");
-
-        return "organisation";
-    }
 
     // Function of the page:
     // - Add new organisations
@@ -90,25 +72,6 @@ public class OrganisationController {
     //----------------------------------------------------------------------------
     // Delete Organisation
 
-    // Function of the Page:
-    // - Add new organisations
-    // - Search in organisations
-    // - List all organisations
-    // - Delete organisations
-    @GetMapping("/admin/organisation/delete")
-    public String getDeleteOrganisationManagement(Model model) {
-        // Data:
-        List<Organisation> organisationList = organisationRepository.findAll();
-
-        // Logic:
-
-        // Model attributes:
-        model.addAttribute("organisations", organisationList);
-        model.addAttribute("filter", "");
-
-        return "organisation";
-    }
-
     // Function of the page:
     // - Add new organisations
     // - Search in organisations
@@ -132,25 +95,6 @@ public class OrganisationController {
 
     //----------------------------------------------------------------------------
     // Add new Organisation
-
-    // Function of the Page:
-    // - Add new organisations
-    // - Search in organisations
-    // - List all organisations
-    // - Delete organisations
-    @GetMapping("/admin/organisation/add")
-    public String getAddOrganisationManagement(Model model) {
-        // Data:
-        List<Organisation> organisationList = organisationRepository.findAll();
-
-        // Logic:
-
-        // Model attributes:
-        model.addAttribute("organisations", organisationList);
-        model.addAttribute("filter", "");
-
-        return "organisation";
-    }
 
     // Function of the page:
     // - Add new organisations

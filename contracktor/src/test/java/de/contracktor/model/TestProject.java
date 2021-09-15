@@ -8,7 +8,11 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import de.contracktor.repository.AddressRepository;
 import de.contracktor.repository.OrganisationRepository;
@@ -16,7 +20,9 @@ import de.contracktor.repository.PictureRepository;
 import de.contracktor.repository.ProjectRepository;
 import de.contracktor.repository.StateRepository;
 
-@SpringBootTest
+@DataJpaTest
+@Transactional(propagation = Propagation.NOT_SUPPORTED)
+@AutoConfigureTestDatabase(replace=Replace.NONE)
 public class TestProject {
 
 	@Autowired
@@ -44,8 +50,8 @@ public class TestProject {
 	
 	private Project project;
 	
-	private final LocalDate creationDate = LocalDate.of(2021, 9, 8);
-	private final LocalDate completionDate = LocalDate.of(2022, 12, 12);
+	private final long creationDate = 22222222;
+	private final long completionDate = 33333333;
 	
 	@BeforeEach
 	public void init() {

@@ -4,7 +4,124 @@
 <body>
 <th:block th:fragment="content">
     <div class="container">
-        <h3 th:text="'Details zur Leistungsposition ' + ${billingitemId}" />
+        <!--Testen <p th:text="${item.getId()}"></p> -->
+
+        <!-- Creates two seperate Columns -->
+        <div class="row">
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        <p th:text="${'Leistungsposition-Daten Vertrag:' + contract.getName()}"></p>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title text-center" th:text="${item.getBillingItemID()}"></h5>
+                        <!--<h6 class="card-subtitle mb-2 text-muted text-center" th:text="${'IFC: ' + item.getIFC()}"></h6>
+                        -->
+                        <!-- Preis anzeige-->
+                        <div class="card-group ">
+                            <div class="card border-0 ">
+                                <div class="card-body text-dark">
+                                    <p class="card-title"><strong>Stückpreis</strong></p>
+                                    <span class="card-text" th:text="${pprice}"></span>
+                                </div>
+                            </div>
+                            <div class="card border-0">
+                                <div class="card-body text-dark">
+                                    <p class="card-title"><strong>Menge</strong></p>
+                                    <p class="card-text" th:text="${item.getQuantity() + ' ' + item.getUnit()}"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card border-0">
+                            <div class="card-body text-dark">
+                                <p class="card-title"><strong>Gesamtpreis</strong></p>
+                                <p class="card-text" th:text="${total}"></p>
+                            </div>
+                        </div>
+
+                        <!-- change the state -->
+                        <div class="row">
+                            <div class="col-2">
+                                <div class="card border-0">
+                                    <div class="card-body text-dark text-center">
+                                        <p class="card-title"><strong>Status</strong></p>
+                                        <span class="badge rounded-pill bg-light text-dark" th:text="${item.getStatus().getStateName()}"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-5" th:unless="${states.isEmpty()}">
+                                <form th:action="@{'/billingitem/' + *{getBillingItemID()} + '/details/edit'}" th:object="${item}" method="post">
+                                    <label for="state" class="form-label pt-2">Status</label>
+                                    <div class="input-group mb-3">
+
+                                        <select id="state" class="form-select" name="stateId">
+                                            <div th:each="state : ${states}">
+                                                <option th:value="${state.getId()}" th:text="${state.getStateName()}"></option>
+                                            </div>
+                                        </select>
+                                        <button type="submit" class="btn btn-success">Bestätigen</button>
+
+                                    </div>
+                                </form>
+
+
+                            </div>
+
+                        </div>
+
+                        <!-- shows long description on demand-->
+                        <div class="card">
+                            <div class="card-header">
+                                <strong>Beschreibung</strong>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text" th:text="${item.getShortDescription()}"></p>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabelle -->
+            <div class="col-6" >
+                <!-- Suchleiste -->
+                <h5>Leistungspositionen</h5>
+                <!-- Tabelle mit Filterfunktionen -->
+                <table class="table table-responsive-sm" >
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Beschreibung</th>
+                        <th scope="col">Fläche</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Preis</th>
+                        <th scope="col">Details</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="subitem:${subitems}">
+                        <td th:text="${subitem.getBillingItemID()}"></td>
+                        <td th:text="${subitem.getShortDescription()}"></td>
+                        <td th:text="${subitem.getQuantity() + item.getUnit()}"></td>
+                        <td th:text="${subitem.getStatus().getStateName()}"></td>
+                        <td th:text="${subitem.getTotalPrice()}"></td>
+                        <td>
+                            <a th:href="@{'/billingitem/' + ${subitem.getBillingItemID()} + '/details'}" class="icon-link" title="Details">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5z"/>
+                                    <path fill-rule="evenodd" d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0v-5z"/>
+                                </svg>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </th:block>
 </body>

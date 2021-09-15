@@ -154,9 +154,9 @@ public class InitDatabaseService {
 	}
 	
 	private void initStateTransitions() {
-		noStatusOpen = new StateTransition(nostatus, open);
-		openOk = new StateTransition(open, ok);
-		openDeny = new StateTransition(open, deny);
+		noStatusOpen = new StateTransition(nostatus, open,false,true);
+		openOk = new StateTransition(open, ok,true,false);
+		openDeny = new StateTransition(open, deny,false,true);
 		stateTransitionRepo.save(noStatusOpen);
 		stateTransitionRepo.save(openOk);
 		stateTransitionRepo.save(openDeny);

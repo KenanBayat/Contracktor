@@ -1,10 +1,65 @@
 <!DOCTYPE html>
 <html lang="de" xmlns:th="http://www.thymeleaf.org" th:include="layout :: page">
-<head/>
+<head>
+    <title>
+        Admin - Contracktor
+    </title>
+</head>
 <body>
 <th:block th:fragment="content">
     <div class="container">
-        <h3>Statistik</h3>
+
+        <!-- Beginn Content -->
+
+        <!-- Begin Head of the Page -->
+        <!-- Set with of the page -->
+        <div class="py-3 text-center col-md-7 col-lg-8 mx-auto">
+
+            <!-- Set icon of the page -->
+            <div class="feature-icon bg-primary bg-gradient mx-auto">
+                <!-- Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="white" class="bi bi-bar-chart" viewBox="0 0 16 16" th:style="'margin-right:5px'">
+                    <path d="M4 11H2v3h2v-3zm5-4H7v7h2V7zm5-5v12h-2V2h2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1h-2zM6 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm-5 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-3z"/>
+                </svg>
+            </div>
+
+            <!-- Heading and explanation of the page -->
+            <h2>
+                Statistik erstellen
+            </h2>
+            <p class="lead">
+                Wählen Sie Projekt, Vertrag oder Leistungsposition und lassen Sie sich eine Statistik erstellen.
+            </p>
+
+        </div>
+        <!-- End Head of the Page -->
+
+        <!-- Beginn Body of the Page -->
+        <!-- Set with of the page -->
+        <div class="col-md-7 col-lg-8 mx-auto">
+
+            <div class="card">
+                <div class="card-body">
+                    <h5>Wozu möchten Sie die Statistik sehen?</h5>
+                    <form th:action="@{/statistic}" method="post">
+                        <select class="form-select" aria-label="Default select example" name="choice">
+                            <option th:value="1" >Projekten</option>
+                            <option th:value="2">Verträgen</option>
+                            <option th:value="3">Leistungspositionen</option>
+                        </select>
+                        <div class="py-2"></div>
+                        <button type="submit" class="btn btn-primary">
+                            Auswählen
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <!-- End Body of the Page -->
+
+        <!-- End Content -->
+
     </div>
 </th:block>
 </body>

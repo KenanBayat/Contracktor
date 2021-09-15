@@ -52,4 +52,4 @@ docker-deploy:
     - docker network rm deploy-net || true
     - docker network create --subnet=172.18.0.0/16 deploy-net
     - docker run -d -p 3000:3000 --name adessoapi-container --net deploy-net --ip 172.18.0.5 adessoapi
-    - docker run -d -p 8080:8080 --name contracktor-web-container --net deploy-net --ip 172.18.0.6 contracktor-web
+    - docker run -d -p 8080:8080 --name contracktor-web-container --net deploy-net --ip 172.18.0.6 -v db-volume:/data contracktor-web

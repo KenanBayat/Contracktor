@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org" th:include="layout :: page">
+<head>
+  <title>
+    Admin - Contracktor
+  </title>
+</head>
+<body>
+<th:block th:fragment="content">
+  <div class="container">
+
+    <!-- Beginn Content -->
+
+    <!-- Begin Head of the Page -->
+    <!-- Set with of the page -->
+    <div class="py-3 text-center col-md-7 col-lg-8 mx-auto">
+
+      <!-- Set icon of the page -->
+      <div class="feature-icon bg-primary bg-gradient mx-auto">
+        <!-- Icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="white" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
+          <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+        </svg>
+      </div>
+
+      <!-- Heading and explanation of the page -->
+      <h2>
+        Nutzern Rollen zuweisen
+      </h2>
+      <p class="lead">
+        Weisen Sie Nutzern Rollen zu oder entfernen Sie Rollen wieder.
+      </p>
+
+    </div>
+    <!-- End Head of the Page -->
+
+    <!-- Beginn Body of the Page -->
+    <!-- Set with of the page -->
+    <div class="col-md-7 col-lg-8 mx-auto">
+
+      <div class="card">
+        <div class="card-body">
+
+          <!-- Form search user -->
+          <form th:action="@{/admin/userrole/search}" th:method="post">
+            <!-- Label for input field -->
+            <label for="search">
+              Nutzer suchen
+            </label>
+            <!-- Input field with button -->
+            <div class="form-group input-group py-3">
+              <!-- Field for search term -->
+              <input id="search" type="text" class="form-control" placeholder="Nutzer suchen.." name="search" th:value="${search}"/>
+              <button type="submit" class="btn btn-primary">
+                Suchen
+              </button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+
+      <div class="pt-2"></div>
+
+      <div class="card" th:each="organisation : ${organisations}" th:unless="${organisation.getUsers(users).isEmpty()}" th:style="'margin-top: 20px'">
+        <div class="card-body">
+
+
+          <h3 th:text="${organisation.getOrganisationName()}"></h3>
+          <div class="py-2"></div>
+
+          <div class="accordion" id="userAccordion">
+            <!-- each user -->
+            <div class="accordion-item" th:each="user : ${organisation.getUsers(users)}">
+              <h2 class="accordion-header" id="header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" th:data-bs-target="'#' + ${user.getUsername()}" aria-expanded="false" aria-controls="flush-collapse" th:text="${user.getForename()} + ' ' + ${user.getSurname()}"></button>
+              </h2>
+              <div th:id="${user.getUsername()}" class="accordion-collapse collapse" th:data-bs-parent="userAccordion">
+                  <!-- Accordion body -->
+                  <div class="accordion-body">
+                    <div th:if="${user.getRoles().isEmpty()}">
+                      <p>Dem Nutzer sind keine Rollen zugewiesen.</p>
+                    </div>
+                    <div th:unless="${user.getRoles().isEmpty()}">
+                      <p>Dieser Nutzer hat folgende Rollen:</p>
+                      <ul>
+                        <li th:each="role : ${user.getRoles()}" th:text="${role.getRoleName()}"></li>
+                      </ul>
+                    </div>
+                    <hr/>
+                    <form th:action="@{/admin/userrole/add}" method="post">
+                      <label for="add" class="form-label">Rolle hinzufügen</label>
+                      <div class="input-group mb-3">
+                        <select id="add" class="form-select" name="addRole">
+                          <option th:each="role : ${roles}" th:value="${role.getId()}" th:text="${role.getRoleName()}" th:if="${!user.getRoles().contains(role)}"></option>
+                        </select>
+                        <button type="submit" class="btn btn-success" name="userId" th:value="${user.getId()}">Hinzufügen</button>
+                      </div>
+                    </form>
+                    <form th:action="@{/admin/userrole/delete}" method="post">
+                      <label for="delete" class="form-label">Rolle entfernen</label>
+                      <div class="input-group mb-3">
+                        <select id="delete" class="form-select" name="addRole">
+                          <option th:each="role : ${roles}" th:value="${role.getId()}" th:text="${role.getRoleName()}" th:if="${user.getRoles().contains(role)}"></option>
+                        </select>
+                        <button type="submit" class="btn btn-danger" name="userId" th:value="${user.getId()}">Entfernen</button>
+                      </div>
+                    </form>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Body of the Page -->
+
+    <!-- End Content -->
+
+  </div>
+</th:block>
+</body>
+</html>

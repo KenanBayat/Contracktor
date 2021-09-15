@@ -1,19 +1,23 @@
 package de.contracktor.model;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import de.contracktor.repository.StateRepository;
 import de.contracktor.repository.StateTransitionRepository;
 
-@SpringBootTest
+@DataJpaTest
+@AutoConfigureTestDatabase(replace=Replace.NONE)
+@Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class TestStateTransition {
 
 	@Autowired
@@ -46,13 +50,13 @@ public class TestStateTransition {
 	
 	@Test
 	public void testSaveStateTransition() {	
-		stateTransition1 = new StateTransition(state1, state2);
-		stateTransition2 = new StateTransition(state1, state2);
+		stateTransition1 = new StateTransition(state1, state2, false, true);
+		stateTransition2 = new StateTransition(state1, state2, true, false);
 		
 		stateTransitionRepo.save(stateTransition1);
 		//assertThrows(Exception.class, () -> stateTransitionRepo.save(stateTransition2));
 		
-		stateTransition2 = new StateTransition(state1, state2);
+		stateTransition2 = new StateTransition(state1, state2, false, true);
 		stateTransitionRepo.save(stateTransition2);
 		assertTrue(stateTransitionRepo.existsById(stateTransition1.getId()));
 		stateTransitionRepo.delete(stateTransition1);
