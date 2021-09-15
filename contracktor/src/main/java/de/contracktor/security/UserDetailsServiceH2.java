@@ -18,7 +18,7 @@ public class UserDetailsServiceH2 implements UserDetailsService {
     UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public ContracktorUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<UserAccount> user = userRepository.findByUsername(username);
 
         if (user.isEmpty()) {
