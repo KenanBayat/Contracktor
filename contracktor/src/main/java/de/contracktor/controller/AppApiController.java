@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.security.sasl.AuthenticationException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,7 +62,7 @@ public class AppApiController {
     @ResponseBody
     public APIResponse updateController(@RequestBody APIUpdate update) {
         List<BillingItemUpdate> billingItemUpdates = update.getBillingItemUpdates();
-        List<Report> reportUpdates = update.getReportList();
+        List<Picture> pictureUpdates = update.getPictureList();
 
         try {
             String username = userManager.getCurrentUserName();
@@ -80,16 +81,27 @@ public class AppApiController {
                     }
                 }
             }
-            /* Fuer Jonas
-            if (reportUpdates != null) {
-                for (Report report : update.getReportList()) {
-                    for (Picture picture : report.getPictures()) {
-                        pictureRepository.save(picture);
+
+            if (pictureUpdates != null) {
+                Report maxReport = reportRepository.findFirstByOrderByReportIDDesc();
+                Picture maxPicture = pictureRepository.findFirstByOrderByImageIDDesc();
+
+                int maxReportID = maxReport == null ? 0 : maxReport.getReportID();
+                int maxImageID = maxPicture == null ? 0 : maxPicture.getImageID();
+
+                List<Report> reportUpdates = new ArrayList<>();
+                for (Picture picture : pictureUpdates) {
+                    picture.setImageID(++maxImageID);
+                    Report report = picture.getReport();
+                    if (!reportUpdates.contains(report)) {
+                        report.setReportID(++maxReportID);
+                        reportUpdates.add(report);
                     }
-                    reportRepository.save(report);
                 }
+                reportRepository.saveAll(reportUpdates);
+                pictureRepository.saveAll(pictureUpdates);
             }
-			*/
+
             return apiDownloadConstructor(username);
         } catch (AuthenticationException e) {
             return new APIResponse("NOT_AUTHENTICATED");

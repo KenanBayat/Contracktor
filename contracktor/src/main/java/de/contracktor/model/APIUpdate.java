@@ -11,7 +11,8 @@ public class APIUpdate {
 
     @Getter @Setter
     private List<BillingItemUpdate> billingItemUpdates;
+
     @Getter @Setter
-    private List<Report> reportList;
+    private List<Picture> pictureList;
 
 }
