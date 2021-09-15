@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +38,7 @@ import de.contracktor.repository.StateRepository;
         "spring.jpa.hibernate.ddl-auto=create-drop"
 })
 @AutoConfigureTestDatabase(replace=Replace.NONE)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class TestBillingUnit{
 
@@ -136,7 +138,7 @@ public class TestBillingUnit{
 		report.setId(1);
 		reportRepo.save(report);
 		
-		picture = new Picture(1,new byte[0],null);
+		picture = new Picture(1,new byte[0],report);
 		pictureRepo.save(picture);
 		
 		project = new Project(200, "project", creationDate, completionDate, address1, 100.0, organisation, "hans", state, new byte[0], "");
@@ -151,26 +153,6 @@ public class TestBillingUnit{
 		contractRepo.save(contract2);
 	}
 	
-	@AfterEach
-	public void delete() {
-		
-		contractRepo.delete(contract1);
-		contractRepo.delete(contract2);
-		
-		projectRepo.delete(project);
-		projectRepo.delete(project2);
-		
-		pictureRepo.delete(picture);
-		
-		organisationRepo.delete(organisation);
-		
-		billingItemRepo.delete(billingItem3);
-		
-		stateRepo.delete(state);
-		
-		addressRepo.delete(address1);
-		addressRepo.delete(address2);
-	}
 	
 	@Test
 	public void testNullBillingUnit() {

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,8 +20,12 @@ import de.contracktor.repository.OrganisationRepository;
 import de.contracktor.repository.PermissionRepository;
 import de.contracktor.repository.RoleRepository;
 
-@SpringBootTest
+@SpringBootTest(properties = {
+        "spring.datasource.url=jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1;IGNORECASE=TRUE;DB_CLOSE_ON_EXIT=FALSE;",
+        "spring.jpa.hibernate.ddl-auto=create-drop"
+})
 @AutoConfigureTestDatabase(replace=Replace.NONE)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class TestRole {
 
@@ -58,14 +63,6 @@ public class TestRole {
 		organisationRepo.save(organisation);
 	}
 	
-	@AfterEach
-	public void delete() {
-		permissionRepo.delete(permission1);
-		permissionRepo.delete(permission2);
-		organisationRepo.delete(organisation);
-		roleRepo.delete(role1);
-		addressRepo.delete(address);
-	}
 	
 	@Test
 	public void testNullValue() {

@@ -1,6 +1,8 @@
 package de.contracktor.model;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import org.junit.jupiter.api.AfterEach;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,9 +24,14 @@ import de.contracktor.repository.ContractRepository;
 import de.contracktor.repository.OrganisationRepository;
 import de.contracktor.repository.PictureRepository;
 import de.contracktor.repository.ProjectRepository;
+import de.contracktor.repository.ReportRepository;
 import de.contracktor.repository.StateRepository;
 
-@DataJpaTest
+@DataJpaTest(properties = {
+        "spring.datasource.url=jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1;IGNORECASE=TRUE;DB_CLOSE_ON_EXIT=FALSE;",
+        "spring.jpa.hibernate.ddl-auto=create-drop"
+})
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureTestDatabase(replace=Replace.NONE)
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class TestBillingUnitCompletionReport {
@@ -48,10 +56,20 @@ public class TestBillingUnitCompletionReport {
 	
 	@Autowired
 	PictureRepository pictureRepo;
+	
+	@Autowired
+	BillingUnitCompletionReportRepository billingUnitCRRepo;
+	
+	@Autowired
+	private AddressRepository addressRepo;
+	
+	@Autowired
+	private ReportRepository reportRepo;
 
 	
 	private final long creationDate = 12345678;
 	private final long completionDate = 12345678;
+	private final long date = 12345678;
 	
 	BillingItem billingItem1;
 	BillingItem billingItem2;
@@ -72,16 +90,14 @@ public class TestBillingUnitCompletionReport {
 	
 	BillingUnitCompletionReport billingUnitCR;
 	
-	@Autowired
-	BillingUnitCompletionReportRepository billingUnitCRRepo;
+	Report report;
 	
-	@Autowired
-	private AddressRepository addressRepo;
 	
 	Address address;
 	
 	@BeforeEach
 	public void init() {
+		byte[] image = "Nice picture".getBytes(StandardCharsets.UTF_8);
 		address = new Address(10000, "strasse", "42", "city", "12345", "Land");
 		addressRepo.save(address);
 		
@@ -105,34 +121,20 @@ public class TestBillingUnitCompletionReport {
 		organisation = new Organisation("organisation1");
 		organisationRepo.save(organisation);
 		
-		picture = new Picture(null,null);
+		report = new Report(200,billingItem1, organisation, date, "hans", "jio");
+		reportRepo.save(report);
+		picture = new Picture(1,image,report);
 		pictureRepo.save(picture);
 		
 		project = new Project(4000, "project", creationDate, completionDate, address, 
-				100.0, organisation, "hans", state, picture, "");
+				100.0, organisation, "hans", state, image, "");
 		projectRepo.save(project);
 		
 		contract = new Contract(3000, project, "contract", "consignee", state, "Contractor", "test");
 		contractRepo.save(contract);
 	}
 	
-	@AfterEach
-	public void delete() {
-		
-		contractRepo.delete(contract);
-		
-		projectRepo.delete(project);
-		
-		pictureRepo.delete(picture);
-		
-		organisationRepo.delete(organisation);
-		
-		billingItemRepo.delete(billingItem3);
-		
-		stateRepo.delete(state);
-		
-		addressRepo.delete(address);
-	}
+	
 	
 	@Test
 	public void testNullComment() {

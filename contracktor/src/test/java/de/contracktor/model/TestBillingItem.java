@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,7 @@ import de.contracktor.repository.StateRepository;
 })
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 @AutoConfigureTestDatabase(replace=Replace.NONE)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class TestBillingItem {
 
 	@Autowired
@@ -51,12 +53,6 @@ public class TestBillingItem {
 		billingItems = new ArrayList<BillingItem>();
 		state = new State("billingStatus");
 		stateRepo.save(state);
-	}
-	
-	@AfterEach
-	public void delete() {
-		billingItemRepo.delete(billingItem);
-		stateRepo.delete(state);
 	}
 	
 	@Test

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,7 @@ import de.contracktor.repository.StateRepository;
         "spring.jpa.hibernate.ddl-auto=create-drop"
 })
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureTestDatabase(replace=Replace.NONE)
 public class TestReport {
 
@@ -61,14 +63,7 @@ public class TestReport {
 		billingItem = new BillingItem("ID_3346_2929_37", "id", "meter", 1000.0, 105.0, 100050.0, "3m5_6h4uXAXvBoFEtks_QE", state, "", billingItems);
 		billingItem = billingItemRepo.save(billingItem);
 	}
-	
-	@AfterEach
-	public void delete() {
-		billingItemRepo.delete(billingItem);
-		stateRepo.delete(state);
-		reportRepo.delete(report);
-		organisationRepo.delete(organisation);
-	}
+
 	
 	@Test
 	public void testNullOrganisation() {		
