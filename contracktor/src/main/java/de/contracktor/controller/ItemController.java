@@ -24,94 +24,95 @@ import javax.security.sasl.AuthenticationException;
 @Controller
 public class ItemController {
 
-    @Autowired
-    BillingItemRepository billingItemRepository;
+	@Autowired
+	BillingItemRepository billingItemRepository;
 
-    @Autowired
-    StateRepository stateRepository;
+	@Autowired
+	StateRepository stateRepository;
 
-    @Autowired
-    StateTransitionRepository stateTransitionRepository;
+	@Autowired
+	StateTransitionRepository stateTransitionRepository;
 
-    @Autowired
-    DatabaseService databaseService;
-    
-    @Autowired
-    UserManager userManager;
+	@Autowired
+	DatabaseService databaseService;
 
-    @GetMapping("/billingitems")
-    public String getBillingItems(Model model){
-        model.addAttribute("items",billingItemRepository.findAll());
-        return "billingitem-list";
-    }
+	@Autowired
+	UserManager userManager;
 
-    @PostMapping("/billingitems")
-    public String getBillingItems(@RequestParam String search, Model model){
-        model.addAttribute("search",search);
-        model.addAttribute("items",billingItemRepository.findByBillingItemIDContains(search));
-        return "billingitem-list";
-    }
+	@GetMapping("/billingitems")
+	public String getBillingItems(Model model) {
+		model.addAttribute("items", billingItemRepository.findAll());
+		return "billingitem-list";
+	}
 
-    @GetMapping("/billingitem/{itemId}/details")
-    public String getBillingItemDetails(@PathVariable String itemId,Model model){
-        BillingItem item = databaseService.getBillingItemByBillingItemID(itemId);
-        List<BillingItem> subitems = databaseService.getChildOfBillingItem(item);
-        Contract contract = databaseService.getContractOfBillingItem(item);
-        
-        String organisationNameOfUser = "";
-        try {
+	@PostMapping("/billingitems")
+	public String getBillingItems(@RequestParam String search, Model model) {
+		model.addAttribute("search", search);
+		model.addAttribute("items", billingItemRepository.findByBillingItemIDContains(search));
+		return "billingitem-list";
+	}
+
+	@GetMapping("/billingitem/{itemId}/details")
+	public String getBillingItemDetails(@PathVariable String itemId, Model model) {
+		BillingItem item = databaseService.getBillingItemByBillingItemID(itemId);
+		List<BillingItem> subitems = databaseService.getChildOfBillingItem(item);
+		Contract contract = databaseService.getContractOfBillingItem(item);
+
+		Boolean isApplicationAdmin = false;
+		String organisationNameOfUser = "";
+		try {
 			organisationNameOfUser = userManager.getCurrentOrganisation();
+			isApplicationAdmin = userManager.isCurrentUserAppAdmin();
 		} catch (AuthenticationException e) {
 			e.printStackTrace();
 		}
 
-        List<StateTransition> transitions = stateTransitionRepository.findByStartState(item.getStatus());
-        List<State> endstates = new ArrayList<>();
-        for(StateTransition transition:transitions){
-        	if(organisationNameOfUser.equals(contract.getContractor()) && transition.getContractor()) {
-        		endstates.add(transition.getEndState());
-            }
-        	if(organisationNameOfUser.equals(contract.getConsignee()) && transition.getConsignee()) {
-        		endstates.add(transition.getEndState());
-            }   
-        }
+		List<StateTransition> transitions = stateTransitionRepository.findByStartState(item.getStatus());
+		List<State> endstates = new ArrayList<>();
+		for (StateTransition transition : transitions) {
+			if (organisationNameOfUser.equals(contract.getContractor()) && transition.getContractor()
+					|| organisationNameOfUser.equals(contract.getConsignee()) && transition.getConsignee() ||
+					isApplicationAdmin) {
+				endstates.add(transition.getEndState());
+			}			
+		}
 
-        item = databaseService.getBillingItemByBillingItemID(itemId);
+		item = databaseService.getBillingItemByBillingItemID(itemId);
 
-        model.addAttribute( "states", endstates);
-        model.addAttribute("contract", contract);
-        model.addAttribute("item", item);
-        model.addAttribute("subitems", subitems);
-        model.addAttribute("pprice", CurrencyFormatter.format(item.getPricePerUnit()));
-        model.addAttribute("total", CurrencyFormatter.format(item.getTotalPrice()));
-        return "billingitem-details";
-    }
+		model.addAttribute("states", endstates);
+		model.addAttribute("contract", contract);
+		model.addAttribute("item", item);
+		model.addAttribute("subitems", subitems);
+		model.addAttribute("pprice", CurrencyFormatter.format(item.getPricePerUnit()));
+		model.addAttribute("total", CurrencyFormatter.format(item.getTotalPrice()));
+		return "billingitem-details";
+	}
 
-    @PostMapping("/billingitem/{itemId}/details/edit")
-    public String setBillingItemDetails(@RequestParam int stateId, @PathVariable String itemId, Model model){
-        BillingItem item = databaseService.getBillingItemByBillingItemID(itemId);
-        List<BillingItem> subitems = databaseService.getChildOfBillingItem(item);
-        Contract contract = databaseService.getContractOfBillingItem(item);
+	@PostMapping("/billingitem/{itemId}/details/edit")
+	public String setBillingItemDetails(@RequestParam int stateId, @PathVariable String itemId, Model model) {
+		BillingItem item = databaseService.getBillingItemByBillingItemID(itemId);
+		List<BillingItem> subitems = databaseService.getChildOfBillingItem(item);
+		Contract contract = databaseService.getContractOfBillingItem(item);
 
-        List<StateTransition> transitions = stateTransitionRepository.findByStartState(item.getStatus());
-        List<State> endstates = new ArrayList<>();
-        for(StateTransition transition:transitions){
-            endstates.add(transition.getEndState());
-        }
-        model.addAttribute( "states", endstates);
-        State newState = stateRepository.findById(stateId).get();
-        item.setStatus(newState);
-        billingItemRepository.save(item);
+		List<StateTransition> transitions = stateTransitionRepository.findByStartState(item.getStatus());
+		List<State> endstates = new ArrayList<>();
+		for (StateTransition transition : transitions) {
+			endstates.add(transition.getEndState());
+		}
+		model.addAttribute("states", endstates);
+		State newState = stateRepository.findById(stateId).get();
+		item.setStatus(newState);
+		billingItemRepository.save(item);
 
-        item = databaseService.getBillingItemByBillingItemID(itemId);
+		item = databaseService.getBillingItemByBillingItemID(itemId);
 
-        model.addAttribute("item",item);
-        model.addAttribute("subitems",subitems);
-        model.addAttribute("contract",contract);
-        model.addAttribute("pprice", CurrencyFormatter.format(item.getPricePerUnit()));
-        model.addAttribute("total", CurrencyFormatter.format(item.getTotalPrice()));
+		model.addAttribute("item", item);
+		model.addAttribute("subitems", subitems);
+		model.addAttribute("contract", contract);
+		model.addAttribute("pprice", CurrencyFormatter.format(item.getPricePerUnit()));
+		model.addAttribute("total", CurrencyFormatter.format(item.getTotalPrice()));
 
-        String redirect = "redirect:/" + "billingitem/" + itemId +"/details";
-        return redirect;
-    }
+		String redirect = "redirect:/" + "billingitem/" + itemId + "/details";
+		return redirect;
+	}
 }
