@@ -2,51 +2,54 @@
 <html lang="de" xmlns:th="http://www.thymeleaf.org" th:include="layout :: page">
 <head>
     <title>
-        Admin - Contracktor
+        Organisation - Contracktor
     </title>
 </head>
 <body>
 <th:block th:fragment="content">
+    <div class="container">
 
-    <!-- Begin Head of the Page -->
-    <!-- Set with of the page -->
-    <div class="py-3 text-center col-md-7 col-lg-8 mx-auto">
+        <!-- Beginn Content -->
 
-        <!-- Set icon of the page -->
-        <div class="feature-icon bg-primary bg-gradient mx-auto">
-            <!-- Icon -->
-            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="white" class="bi bi-cone-striped" viewBox="0 0 16 16">
-                <path d="m9.97 4.88.953 3.811C10.159 8.878 9.14 9 8 9c-1.14 0-2.158-.122-2.923-.309L6.03 4.88C6.635 4.957 7.3 5 8 5s1.365-.043 1.97-.12zm-.245-.978L8.97.88C8.718-.13 7.282-.13 7.03.88L6.275 3.9C6.8 3.965 7.382 4 8 4c.618 0 1.2-.036 1.725-.098zm4.396 8.613a.5.5 0 0 1 .037.96l-6 2a.5.5 0 0 1-.316 0l-6-2a.5.5 0 0 1 .037-.96l2.391-.598.565-2.257c.862.212 1.964.339 3.165.339s2.303-.127 3.165-.339l.565 2.257 2.391.598z"/>
-            </svg>
+        <!-- Begin Head of the Page -->
+        <!-- Set with of the page -->
+        <div class="py-3 text-center col-md-7 col-lg-8 mx-auto">
+
+            <!-- Set icon of the page -->
+            <div class="feature-icon bg-primary bg-gradient mx-auto">
+                <!-- Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="white" class="bi bi-cone-striped" viewBox="0 0 16 16">
+                    <path d="m9.97 4.88.953 3.811C10.159 8.878 9.14 9 8 9c-1.14 0-2.158-.122-2.923-.309L6.03 4.88C6.635 4.957 7.3 5 8 5s1.365-.043 1.97-.12zm-.245-.978L8.97.88C8.718-.13 7.282-.13 7.03.88L6.275 3.9C6.8 3.965 7.382 4 8 4c.618 0 1.2-.036 1.725-.098zm4.396 8.613a.5.5 0 0 1 .037.96l-6 2a.5.5 0 0 1-.316 0l-6-2a.5.5 0 0 1 .037-.96l2.391-.598.565-2.257c.862.212 1.964.339 3.165.339s2.303-.127 3.165-.339l.565 2.257 2.391.598z"/>
+                </svg>
+            </div>
+
+            <!-- Heading and explanation of the page -->
+            <h2>
+                Leistungspositionen anzeigen
+            </h2>
+            <p class="lead">
+                Lassen Sie sich alle Leistungspositionen anzeigen und sehen Sie sich einzelne Leistungspositionen im Detail an.
+            </p>
+
         </div>
+        <!-- End Head of the Page -->
 
-        <!-- Heading and explanation of the page -->
-        <h2>
-            Statistik erstellen
-        </h2>
-        <p class="lead">
-            Wählen Sie die relevanten Leistungspositionen aus und lassen Sie sich ein Diagramm über den Fortschritt ausgeben.
-        </p>
+        <!-- Beginn Body of the Page -->
+        <!-- Set with of the page -->
+        <div class="col-md-7 col-lg-11 mx-auto">
 
-    </div>
-
-
-    <div class="row mx-auto">
-        <div class="col-8">
+            <!-- Add Organisation -->
+            <!-- Box around add form -->
             <div class="card">
-                <div th:class="card-body">
-                    <h5>Wählen Sie Leistungspositionen aus:</h5>
+                <div class="card-body">
 
-                    <div class="py-2">
-                        <form th:action="@{/billingitem-statistic/addAll}" method="post">
-                            <button type="submit" class="btn btn-primary">Alle Leistungspositionen hinzufügen</button>
-                        </form>
-                    </div>
+
+
 
                     <div class="py-2">
                         <div class="card">
                             <div class="card-body">
-                                <form th:action="@{/billingitem-statistic/search}" method="post">
+                                <form th:action="@{/billingitems/search}" method="post">
                                     <label for="search" class="form-label">Suchen</label>
                                     <div class="input-group">
                                         <input id="search" class="form-control" placeholder="Beschreibung, ID, Status, Preise und Mengen durchsuchen..." name="search">
@@ -64,7 +67,7 @@
                         <thead>
                         <tr>
                             <th>
-                                <a class="text-decoration-none text-reset" th:href="@{'/billingitem-statistic/description_desc'}" th:unless="${filter.equals('description_desc')}">
+                                <a class="text-decoration-none text-reset" th:href="@{'/billingitems/description_desc'}" th:unless="${filter.equals('description_desc')}">
                                     Beschreibung
                                     <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" fill="currentColor" class="bi bi-sort-alpha-down" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd" d="M10.082 5.629 9.664 7H8.598l1.789-5.332h1.234L13.402 7h-1.12l-.419-1.371h-1.781zm1.57-.785L11 2.687h-.047l-.652 2.157h1.351z"/>
@@ -72,7 +75,7 @@
                                     </svg>
                                 </a>
 
-                                <a class="text-decoration-none text-reset" th:href="@{'/billingitem-statistic/description_asc'}" th:if="${filter.equals('description_desc')}">
+                                <a class="text-decoration-none text-reset" th:href="@{'/billingitems/description_asc'}" th:if="${filter.equals('description_desc')}">
                                     Beschreibung
                                     <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" fill="currentColor" class="bi bi-sort-alpha-up-alt" viewBox="0 0 16 16">
                                         <path d="M12.96 7H9.028v-.691l2.579-3.72v-.054H9.098v-.867h3.785v.691l-2.567 3.72v.054h2.645V7z"/>
@@ -82,7 +85,7 @@
                                 </a>
                             </th>
                             <th>
-                                <a class="text-decoration-none text-reset" th:href="@{'/billingitem-statistic/id_desc'}" th:unless="${filter.equals('id_desc')}">
+                                <a class="text-decoration-none text-reset" th:href="@{'/billingitems/id_desc'}" th:unless="${filter.equals('id_desc')}">
                                     ID
                                     <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" fill="currentColor" class="bi bi-sort-alpha-down" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd" d="M10.082 5.629 9.664 7H8.598l1.789-5.332h1.234L13.402 7h-1.12l-.419-1.371h-1.781zm1.57-.785L11 2.687h-.047l-.652 2.157h1.351z"/>
@@ -90,7 +93,7 @@
                                     </svg>
                                 </a>
 
-                                <a class="text-decoration-none text-reset" th:href="@{'/billingitem-statistic/id_asc'}" th:if="${filter.equals('id_desc')}">
+                                <a class="text-decoration-none text-reset" th:href="@{'/billingitems/id_asc'}" th:if="${filter.equals('id_desc')}">
                                     ID
                                     <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" fill="currentColor" class="bi bi-sort-alpha-up-alt" viewBox="0 0 16 16">
                                         <path d="M12.96 7H9.028v-.691l2.579-3.72v-.054H9.098v-.867h3.785v.691l-2.567 3.72v.054h2.645V7z"/>
@@ -100,7 +103,7 @@
                                 </a>
                             </th>
                             <th>
-                                <a class="text-decoration-none text-reset" th:href="@{'/billingitem-statistic/quantity_desc'}" th:unless="${filter.equals('quantity_desc')}">
+                                <a class="text-decoration-none text-reset" th:href="@{'/billingitems/quantity_desc'}" th:unless="${filter.equals('quantity_desc')}">
                                     Menge
                                     <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" fill="currentColor" class="bi bi-sort-numeric-down pl-3" viewBox="0 0 16 16">
                                         <path d="M12.438 1.668V7H11.39V2.684h-.051l-1.211.859v-.969l1.262-.906h1.046z"/>
@@ -110,7 +113,7 @@
                                 </a>
 
                                 <!-- Sorting ID descending -->
-                                <a class="text-decoration-none text-reset" th:href="@{'/billingitem-statistic/quantity_asc'}" th:if="${filter.equals('quantity_desc')}">
+                                <a class="text-decoration-none text-reset" th:href="@{'/billingitems/quantity_asc'}" th:if="${filter.equals('quantity_desc')}">
                                     Menge
                                     <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" fill="currentColor" class="bi bi-sort-numeric-up-alt pl-3" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd" d="M11.36 7.098c-1.137 0-1.708-.657-1.762-1.278h1.004c.058.223.343.45.773.45.824 0 1.164-.829 1.133-1.856h-.059c-.148.39-.57.742-1.261.742-.91 0-1.72-.613-1.72-1.758 0-1.148.848-1.836 1.973-1.836 1.09 0 2.063.637 2.063 2.688 0 1.867-.723 2.848-2.145 2.848zm.062-2.735c.504 0 .933-.336.933-.972 0-.633-.398-1.008-.94-1.008-.52 0-.927.375-.927 1 0 .64.418.98.934.98z"/>
@@ -122,7 +125,7 @@
                                 Einzelpreis
                             </th>
                             <th>
-                                <a class="text-decoration-none text-reset" th:href="@{'/billingitem-statistic/total_desc'}" th:unless="${filter.equals('total_desc')}">
+                                <a class="text-decoration-none text-reset" th:href="@{'/billingitems/total_desc'}" th:unless="${filter.equals('total_desc')}">
                                     Gesamtpreis
                                     <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" fill="currentColor" class="bi bi-sort-numeric-down pl-3" viewBox="0 0 16 16">
                                         <path d="M12.438 1.668V7H11.39V2.684h-.051l-1.211.859v-.969l1.262-.906h1.046z"/>
@@ -132,7 +135,7 @@
                                 </a>
 
                                 <!-- Sorting ID descending -->
-                                <a class="text-decoration-none text-reset" th:href="@{'/billingitem-statistic/total_asc'}" th:if="${filter.equals('total_desc')}">
+                                <a class="text-decoration-none text-reset" th:href="@{'/billingitems/total_asc'}" th:if="${filter.equals('total_desc')}">
                                     Gesamtpreis
                                     <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" fill="currentColor" class="bi bi-sort-numeric-up-alt pl-3" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd" d="M11.36 7.098c-1.137 0-1.708-.657-1.762-1.278h1.004c.058.223.343.45.773.45.824 0 1.164-.829 1.133-1.856h-.059c-.148.39-.57.742-1.261.742-.91 0-1.72-.613-1.72-1.758 0-1.148.848-1.836 1.973-1.836 1.09 0 2.063.637 2.063 2.688 0 1.867-.723 2.848-2.145 2.848zm.062-2.735c.504 0 .933-.336.933-.972 0-.633-.398-1.008-.94-1.008-.52 0-.927.375-.927 1 0 .64.418.98.934.98z"/>
@@ -141,7 +144,7 @@
                                 </a>
                             </th>
                             <th>
-                                <a class="text-decoration-none text-reset" th:href="@{'/billingitem-statistic/status_desc'}" th:unless="${filter.equals('status_desc')}">
+                                <a class="text-decoration-none text-reset" th:href="@{'/billingitems/status_desc'}" th:unless="${filter.equals('status_desc')}">
                                     Status
                                     <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" fill="currentColor" class="bi bi-sort-alpha-down" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd" d="M10.082 5.629 9.664 7H8.598l1.789-5.332h1.234L13.402 7h-1.12l-.419-1.371h-1.781zm1.57-.785L11 2.687h-.047l-.652 2.157h1.351z"/>
@@ -149,7 +152,7 @@
                                     </svg>
                                 </a>
 
-                                <a class="text-decoration-none text-reset" th:href="@{'/billingitem-statistic/status_asc'}" th:if="${filter.equals('status_desc')}">
+                                <a class="text-decoration-none text-reset" th:href="@{'/billingitems/status_asc'}" th:if="${filter.equals('status_desc')}">
                                     Status
                                     <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" fill="currentColor" class="bi bi-sort-alpha-up-alt" viewBox="0 0 16 16">
                                         <path d="M12.96 7H9.028v-.691l2.579-3.72v-.054H9.098v-.867h3.785v.691l-2.567 3.72v.054h2.645V7z"/>
@@ -159,7 +162,7 @@
                                 </a>
                             </th>
                             <th>
-                                Hinzufügen
+                                Details
                             </th>
                         </tr>
                         </thead>
@@ -172,9 +175,9 @@
                             <td th:text="${billingitem.getTotalPrice()}"></td>
                             <td th:text="${billingitem.getStatus().getStateName()}"></td>
                             <td>
-                                <form th:action="@{/billingitem-statistic/add}" method="post">
+                                <form th:action="@{/billingitem}" method="post">
                                     <button class="btn btn-sm btn-outline-success" type="submit" name="id" th:value="${billingitem.getBillingItemID()}">
-                                        Hinzufügen
+                                        Details
                                     </button>
                                 </form>
                             </td>
@@ -184,83 +187,18 @@
                     </table>
 
 
+
+
+
                 </div>
             </div>
+            <div class="py-5"></div>
         </div>
-        <div class="col-4">
-            <div class="row">
-                <div class="col-2"></div>
-                <div class="col-8">
-                    <canvas th:if="${!selectedBillingitems.isEmpty()}" id="myChart"></canvas>
-                </div>
-                <div class="col-2"></div>
-            </div>
-            <div class="py-2"></div>
-            <div class="card">
-                <div th:class="card-body">
-                    <h5>Folgende Leistungspositionen sind ausgewählt:</h5>
-                    <div th:if="${selectedBillingitems.isEmpty()}">
-                        <p>Es sind keine Verträge ausgewählt.</p>
-                    </div>
-                    <div th:unless="${selectedBillingitems.isEmpty()}">
+        <!-- End Body of the Page -->
 
-                        <div class="py-2">
-                            <form th:action="@{/billingitem-statistic/removeAll}" method="post">
-                                <button type="submit" class="btn btn-danger">Alle entfernen</button>
-                            </form>
-                        </div>
+        <!-- End Content -->
 
-
-
-                        <table class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th>Beschreibung</th>
-                                <th>ID</th>
-                                <th>Entfernen</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="selectedBillingitem : ${selectedBillingitems}">
-                                <td><span th:text="${selectedBillingitem.getShortDescription()}" class="d-inline-block text-truncate" style="max-width: 200px;"></span></td>
-                                <td th:text="${selectedBillingitem.getBillingItemID()}"></td>
-                                <td><form th:action="@{/billingitem-statistic/remove}" method="post"><button class="btn btn-sm btn-outline-danger" type="submit" name="id" th:value="${selectedBillingitem.getBillingItemID()}">Entfernen</button></form></td>
-                            </tr>
-                            </tbody>
-
-                        </table>
-                    </div>
-
-
-                </div>
-            </div>
-        </div>
     </div>
-    <div class="py-4"></div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script th:inline="javascript">
-        // setup
-        const data = {
-            labels: [[${labels}]],
-            datasets: [{
-                label: 'Baufortschritt',
-                data: [[${count}]],
-                backgroundColor: ["#D35AED", "#5EA9F7", "#60E076", "#F7E15E", "#F0855E", "#ED2E2B", "#5F2DF7", "#34E0D6", "#98F72D", "#F0AE37"],
-                hoverOffset: 4
-            }]
-        };
-
-        // config
-        const config = {
-            type: 'doughnut',
-            data: data,
-        };
-
-        var myChart = new Chart(
-            document.getElementById('myChart'),
-            config
-        );
-    </script>
 </th:block>
 </body>
 </html>

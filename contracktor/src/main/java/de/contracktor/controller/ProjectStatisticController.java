@@ -105,6 +105,19 @@ public class ProjectStatisticController {
         return "project-statistic";
     }
 
+    @PostMapping("/project-statistic/generate")
+    public String getStatistic(@RequestParam int id, Model model) {
+        selectedProjects = List.of(projectRepository.findByProjectID(id));
+
+        model.addAttribute("labels", getLabels());
+        model.addAttribute("count", getCount());
+        model.addAttribute("projects", projectRepository.findAll());
+        model.addAttribute("selectedProjects", selectedProjects);
+        model.addAttribute("formatter", formatter);
+        model.addAttribute("filter", "");
+        return "project-statistic";
+    }
+
     @PostMapping("/project-statistic/add")
     public String getAddProjectStatistic(@RequestParam int id, Model model) {
 

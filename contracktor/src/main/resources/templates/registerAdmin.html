@@ -75,10 +75,9 @@
                                     <label for="organisation" class="form-label">
                                         Organisation
                                     </label>
-                                    <input class="form-control" list="datalistOptions" id="organisation" placeholder="Tippen zum Suchen..." name="organisation" th:value="${organisation}">
-                                    <datalist id="datalistOptions">
-                                        <option th:each="organisation : ${organisations}" th:value="${organisation.getOrganisationName()}">
-                                    </datalist>
+                                    <select id="organisation" class="form-select" name="organisation">
+                                        <option th:each="organisation : ${organisations}" th:value="${organisation.getOrganisationName()}" th:text="${organisation.getOrganisationName()}">
+                                    </select>
                                 </div>
 
                                 <!-- Password field -->
