@@ -117,7 +117,7 @@ class AppApiControllerTest {
         BillingUnit billingUnit = new BillingUnit("1","m",11223344,
                 200.0,100.0,contract,billingItemList,false,"Test","Teest",state);
 
-        Report report = new Report(billingItem,testOrganisation, creationDate,
+        Report report = new Report(22,billingItem,testOrganisation, creationDate,
                 "Testo","Test");
         Picture picture = new Picture(3, image, report);
 

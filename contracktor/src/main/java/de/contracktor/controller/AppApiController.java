@@ -46,18 +46,13 @@ public class AppApiController {
     @Autowired
     UserManager userManager;
 
-    //REMOVE BEFORE END
-    @GetMapping("/api/download")
-    @ResponseBody
-    public APIResponse getController() {
-        try {
-            return apiDownloadConstructor(userManager.getCurrentUserName());
-        } catch (Exception e) {
-            return new APIResponse("ERROR");
-        }
-
-    }
-
+    /**
+     * The controller for all synchronisation operations between the web application and the app. Integrates updates
+     * into the database when they are provided, and always sends back all data that is accessible by the
+     * currently authenticated user in JSON.
+     * @param update app-updates in JSON-format.
+     * @return a JSON representation of all user-accessible data.
+     */
     @PostMapping("/api/update")
     @ResponseBody
     public APIResponse updateController(@RequestBody APIUpdate update) {
@@ -108,6 +103,9 @@ public class AppApiController {
         }
     }
 
+    /**
+     * Controller for initial API-Login, actual authentication and token dispensation is done in the APITokenFilter-Class.
+     */
     @RequestMapping("/api/login")
     @ResponseBody
     public void loginController() {

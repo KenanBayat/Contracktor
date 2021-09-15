@@ -40,19 +40,26 @@ public class APIAuthorizationFilter extends BasicAuthenticationFilter {
             String auth = request.getHeader("authorization");
 
             if (auth != null && auth.startsWith("Bearer ")) {
-                auth = auth.substring("Bearer ".length());
-                Algorithm algorithm = Algorithm.HMAC256("test".getBytes());
-                JWTVerifier verifier = JWT.require(algorithm).build();
-                DecodedJWT decodedJWT = verifier.verify(auth);
-                String username = decodedJWT.getSubject();
-                List<String> roles = decodedJWT.getClaim("authorities").asList(String.class);
-                List<SimpleGrantedAuthority> authorities = roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+                try {
+                    auth = auth.substring("Bearer ".length());
+                    Algorithm algorithm = Algorithm.HMAC256("test".getBytes());
+                    JWTVerifier verifier = JWT.require(algorithm).build();
+                    DecodedJWT decodedJWT = verifier.verify(auth);
+                    String username = decodedJWT.getSubject();
+                    List<String> roles = decodedJWT.getClaim("authorities").asList(String.class);
+                    List<SimpleGrantedAuthority> authorities = roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 
-                UserDetails userDetails = userDetailsServiceH2.loadUserByUsername(username);
+                    UserDetails userDetails = userDetailsServiceH2.loadUserByUsername(username);
 
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-                chain.doFilter(request, response);
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                    chain.doFilter(request, response);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    response.setStatus(401);
+                    response.setContentType("application/json");
+                    response.getOutputStream().print(e.getMessage());
+                }
             } else {
                 response.setStatus(401);
             }

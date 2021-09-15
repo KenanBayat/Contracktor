@@ -27,6 +27,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Filter for creating API-Tokens for app-clients that successfully authenticate.
+ */
 public class APITokenFilter extends BasicAuthenticationFilter {
 
     private BasicAuthenticationConverter authenticationConverter = new BasicAuthenticationConverter();
@@ -41,7 +44,7 @@ public class APITokenFilter extends BasicAuthenticationFilter {
         String token = JWT.create()
                 .withSubject(authResult.getName())
                 .withIssuer("ContracktorWEB")
-                .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 60 * 60 * 1000))
                 .withClaim("authorities", authResult.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(encoder);
         response.setHeader("api_token", token);

@@ -75,12 +75,15 @@ public class SecurityConfigs {
 					.antMatchers("/h2-console/**").permitAll()
 
 					// ignore login -> change
-					 .antMatchers("/admin").permitAll()
-					//.antMatchers("/admin").access("hasAuthority('ADMIN') or hasAuthority('APP_ADMIN')")
+					//.antMatchers("/admin").permitAll()
+					.antMatchers("/admin").access("hasAuthority('ADMIN') or hasAuthority('APP_ADMIN')")
+					.antMatchers("/admin/state").hasAuthority("APP_ADMIN")
+					.antMatchers("/admin/organisation").hasAuthority("APP_ADMIN")
+					.antMatchers("/admin/transition").hasAuthority("APP_ADMIN")
 
 					// ignore login -> change
-					.antMatchers("/**").permitAll()
-					// .antMatchers("/**").hasAuthority("USER")
+					// .antMatchers("/**").permitAll()
+					.antMatchers("/**").hasAuthority("USER")
 
 					.and()
 					.formLogin()

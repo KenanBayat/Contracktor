@@ -13,6 +13,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Custom UserDetails-implementation that includes the admin-status, information about the organisation and roles of the currently
+ * logged-in user.
+ */
 public class ContracktorUserDetails implements UserDetails {
 
 
