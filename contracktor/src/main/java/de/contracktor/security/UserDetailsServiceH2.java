@@ -3,6 +3,7 @@ package de.contracktor.security;
 import de.contracktor.model.UserAccount;
 import de.contracktor.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,7 +22,6 @@ public class UserDetailsServiceH2 implements UserDetailsService {
         Optional<UserAccount> user = userRepository.findByUsername(username);
 
         if (user.isEmpty()) {
-            System.out.println("TEST");
             throw new UsernameNotFoundException("The requested account does not exist.");
         }
 
