@@ -22,9 +22,7 @@ public class ProjectController {
 
     //connection of the database
     @Autowired
-    ProjectRepository projectRepository;
-    @Autowired
-    ContractRepository contractRepository;
+    DatabaseService databaseService;
 
     List<Project> searchedProjects = new ArrayList<>();
 
@@ -35,7 +33,7 @@ public class ProjectController {
     @GetMapping("/projects")
     public String getProjects(Model model) {
 
-        model.addAttribute("projects", projectRepository.findAll());
+        model.addAttribute("projects", databaseService.getAllProjects());
         model.addAttribute("formatter", formatter);
         model.addAttribute("filter", "");
         return "projects";
@@ -43,7 +41,7 @@ public class ProjectController {
 
     @PostMapping("/projects/search")
     public String getSearchProjects(@RequestParam String search, Model model) {
-        List<Project> projects = projectRepository.findAll();
+        List<Project> projects = databaseService.getAllProjects();
 
         String finalSearch = search.toLowerCase();
         searchedProjects = projects.stream().filter(project -> project.getName().toLowerCase().contains(finalSearch)
@@ -71,7 +69,7 @@ public class ProjectController {
         List<Project> sortList = searchedProjects;
 
         if(searchedProjects.isEmpty()) {
-            sortList = projectRepository.findAll();
+            sortList = databaseService.getAllProjects();
         }
         if(filter.equals("name_asc")) {
             sortList = sortList.stream().sorted(Comparator.comparing(Project::getLowerName)).collect(Collectors.toList());
@@ -154,7 +152,7 @@ public class ProjectController {
     @GetMapping("/project/contract")
     public String getContractsOfProject(Model model) {
         Project project = selectedProject;
-        List<Contract> contracts = contractRepository.findAll();
+        List<Contract> contracts = databaseService.getAllContracts();
         List<Contract> selectedContracts = new ArrayList<>();
             for (Contract c : contracts) {
                 if(project.getProjectID() == c.getProject().getProjectID()) {
@@ -168,7 +166,7 @@ public class ProjectController {
 
     @PostMapping("/project")
     public String getProjectDetails(@RequestParam int id, Model model) {
-        Project project = projectRepository.findByProjectID(id);
+        Project project = databaseService.getProjectByID(id);
         selectedProject = project;
         DateFormatter formatter = new DateFormatter();
         String creationDate = formatter.format(project.getCreationDate());
