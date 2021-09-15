@@ -23,6 +23,7 @@ public class ContracktorUserDetails implements UserDetails {
     private boolean isAdmin;
     private String organisationName;
     private List<Role> roles;
+    private int organisationId;
 
     public ContracktorUserDetails(UserAccount user) {
         this.username = user.getUsername();
@@ -31,6 +32,7 @@ public class ContracktorUserDetails implements UserDetails {
         this.isAppAdmin = user.getIsAdmin();
         this.isAdmin = user.getIsAdmin();
         this.organisationName = user.getOrganisation().getOrganisationName();
+        this.organisationId = user.getOrganisation().getId();
 
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("USER"));
@@ -96,4 +98,9 @@ public class ContracktorUserDetails implements UserDetails {
     public String getOrganisationName() {
         return organisationName;
     }
+
+    public int getOrganisationId() {
+        return organisationId;
+    }
 }
+

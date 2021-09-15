@@ -56,6 +56,10 @@ public class UserManager {
         return getPrincipal().getOrganisationName();
     }
 
+    public int getCurrentOrganisationId() {
+        return getPrincipal().getOrganisationId();
+    }
+
     public boolean isCurrentUserAdmin() {
         return getPrincipal().isAdmin();
     }
