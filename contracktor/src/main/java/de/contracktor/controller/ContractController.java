@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.security.sasl.AuthenticationException;
+
 @Controller
 public class ContractController {
 
@@ -31,7 +33,12 @@ public class ContractController {
 
     @GetMapping("/contracts")
     public String getContractList(Model model){
-        model.addAttribute("contracts",databaseService.getAllContracts());
+        try {
+			model.addAttribute("contracts",databaseService.getAllContracts());
+		} catch (AuthenticationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return "contract-list";
     }
 
@@ -47,7 +54,13 @@ public class ContractController {
         Contract contract = databaseService.getContractByID(contractId);
         model.addAttribute("contract", contract);
         //Test
-        List<BillingItem> items = databaseService.getAllBillingItemsOfContract(contract);
+        List<BillingItem> items = new ArrayList<BillingItem>();
+		try {
+			items = databaseService.getAllBillingItemsOfContract(contract);
+		} catch (AuthenticationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         model.addAttribute("items",items);
         return "contract-details";
     }

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.security.sasl.AuthenticationException;
+
 @Controller
 public class ProjectController {
 
@@ -32,7 +34,12 @@ public class ProjectController {
     */
     @GetMapping("/projects")
     public String getProjectList(Model model) {
-        model.addAttribute("projects", databaseService.getAllProjects());
+        try {
+			model.addAttribute("projects", databaseService.getAllProjects());
+		} catch (AuthenticationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return "project-list";
     }
 
