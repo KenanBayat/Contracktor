@@ -35,7 +35,9 @@ out/
 
 
 ### DataBase ###
-
+*.mv
+*.mv.db
+*.db
 
 ### VS Code ###
 .vscode/
