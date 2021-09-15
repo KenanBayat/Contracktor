@@ -142,7 +142,7 @@ public class ContractStatisticController {
     public String getFilteredContracts(@PathVariable String filter, Model model) {
         List<Contract> sortList = searchedContracts;
 
-        if(selectedContracts.isEmpty()) {
+        if(searchedContracts.isEmpty()) {
             sortList = contractRepository.findAll();
         }
         if(filter.equals("name_asc")) {
@@ -190,10 +190,18 @@ public class ContractStatisticController {
         return "contract-statistic";
     }
 
+    @PostMapping("/contract-statistic/generate")
+    public String getGenerateContractStatistic(@RequestParam int id, Model model) {
+        selectedContracts = List.of(contractRepository.findByContractID(id));
 
+        model.addAttribute("labels", getContractLabels());
+        model.addAttribute("count", getContractCount());
+        model.addAttribute("contracts", contractRepository.findAll());
+        model.addAttribute("selectedContracts", selectedContracts);
+        model.addAttribute("filter", "");
 
-
-
+        return "redirect:/contract-statistic";
+    }
 
     public List<String> getContractLabels() {
         List<String> labels = new ArrayList<>();

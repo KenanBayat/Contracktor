@@ -182,6 +182,19 @@ public class BillingItemStatisticController {
         return "billingitem-statistic";
     }
 
+    @PostMapping("/billingitem-statistic/generate")
+    public String getAddAllBillingItemStatistic(@RequestParam String id, Model model) {
+        selectedBillingItems = List.of(billingItemRepository.findByBillingItemID(id).get());
+
+        model.addAttribute("labels", getLabels());
+        model.addAttribute("count", getCount());
+        model.addAttribute("billingitems", billingItemRepository.findAll());
+        model.addAttribute("selectedBillingitems", selectedBillingItems);
+        model.addAttribute("filter", "");
+
+        return "billingitem-statistic";
+    }
+
 
     //------------------------------------------------------
     // Helper

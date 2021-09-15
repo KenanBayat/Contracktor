@@ -4,16 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -38,7 +29,7 @@ public class BillingItem {
 	@Getter @Setter @Column(nullable = false) @JsonProperty("price") private Double totalPrice;
 	@Getter @Setter @Column(nullable = false) @JsonProperty("shortDesLinkedIFC") private String IFC;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne @JsonIgnore private State status;
-	@Getter @Setter @OneToMany(cascade = CascadeType.REMOVE) private List<BillingItem> billingItems;
+	@Getter @Setter @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER) private List<BillingItem> billingItems;
 	@Getter @Setter @Column(nullable = false) private String shortDescription;
 	@Getter @Setter @Transient @JsonProperty("status") String statusName;
 	@Getter @Setter @Column private long lastModified;

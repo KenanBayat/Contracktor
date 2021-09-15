@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org" th:include="layout :: page">
+<head>
+    <title>
+        Organisation - Contracktor
+    </title>
+</head>
+<body>
+<th:block th:fragment="content">
+    <div class="container">
+
+        <!-- Beginn Content -->
+
+        <!-- Begin Head of the Page -->
+        <!-- Set with of the page -->
+        <div class="py-2 text-center col-md-7 col-lg-8 mx-auto">
+
+            <!-- Set icon of the page -->
+            <div class="feature-icon bg-primary bg-gradient mx-auto">
+                <!-- Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="white" class="bi bi-building" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022zM6 8.694 1 10.36V15h5V8.694zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5V15z"/>
+                    <path d="M2 11h1v1H2v-1zm2 0h1v1H4v-1zm-2 2h1v1H2v-1zm2 0h1v1H4v-1zm4-4h1v1H8V9zm2 0h1v1h-1V9zm-2 2h1v1H8v-1zm2 0h1v1h-1v-1zm2-2h1v1h-1V9zm0 2h1v1h-1v-1zM8 7h1v1H8V7zm2 0h1v1h-1V7zm2 0h1v1h-1V7zM8 5h1v1H8V5zm2 0h1v1h-1V5zm2 0h1v1h-1V5zm0-2h1v1h-1V3z"/>
+                </svg>
+            </div>
+
+            <!-- Heading and explanation of the page -->
+            <h2>
+                Projekt anzeigen
+            </h2>
+            <p class="lead">
+                Lassen Sie sich Projektdetails und zugehörige Verträge anzeigen.
+            </p>
+
+        </div>
+        <div class="pb-1 col-md-7 col-lg-8 mx-auto">
+            <a th:href="@{/projects}">Zurück</a>
+        </div>
+        <!-- End Head of the Page -->
+
+        <!-- Beginn Body of the Page -->
+        <!-- Set with of the page -->
+        <div class="col-md-7 col-lg-8 mx-auto">
+
+            <!-- Add Organisation -->
+            <!-- Box around add form -->
+            <div class="card">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/project}">Projektdetails</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="true">Zugehörige Verträge</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+
+
+
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>
+                                Vertragsname
+                            </th>
+                            <th>
+                                Projekt
+                            </th>
+                            <th>
+                                Auftraggeber
+                            </th>
+                            <th>
+                                Auftragnehmer
+                            </th>
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Details
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="contract : ${contracts}">
+                            <td th:text="${contract.getName()}"></td>
+                            <td th:text="${contract.getProject().getName()}"></td>
+                            <td th:text="${contract.getConsignee()}"></td>
+                            <td th:text="${contract.getContractor()}"></td>
+                            <td th:text="${contract.getStatus().getStateName()}"></td>
+                            <td>
+                                <form th:action="@{/contract}" method="post">
+                                    <button class="btn btn-sm btn-outline-success" type="submit" name="id" th:value="${contract.getContractID()}">
+                                        Details
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+
+
+
+                </div>
+            </div>
+            <div class="py-5"></div>
+        </div>
+        <!-- End Body of the Page -->
+
+        <!-- End Content -->
+
+    </div>
+</th:block>
+</body>
+</html>
