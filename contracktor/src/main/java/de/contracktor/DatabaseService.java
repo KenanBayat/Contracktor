@@ -2,6 +2,8 @@ package de.contracktor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import de.contracktor.model.BillingItem;
@@ -12,6 +14,8 @@ import de.contracktor.repository.BillingItemRepository;
 import de.contracktor.repository.BillingUnitRepository;
 import de.contracktor.repository.ContractRepository;
 import de.contracktor.repository.ProjectRepository;
+
+import javax.security.sasl.AuthenticationException;
 
 @Service
 public class DatabaseService {
@@ -27,6 +31,9 @@ public class DatabaseService {
 	
 	@Autowired
 	private BillingUnitRepository billingUnitRepo;
+
+	@Autowired
+	private UserManager userManager;
 	
 	/**
 	 * Returns all billingItems of a project
@@ -34,9 +41,12 @@ public class DatabaseService {
 	 * @param project the given project
 	 * @return all billingItems of the given project
 	 */
-	public List<BillingItem> getAllBillingItemsOfProject(Project project) {
+	public List<BillingItem> getAllBillingItemsOfProject(Project project) throws AuthenticationException {
 		if(!projectRepo.existsById(project.getId())) {
 			throw new IllegalArgumentException("Project doesnt exists!");
+		} else if (project.getOwner().getOrganisationName() != userManager.getCurrentOrganisation()
+				|| !userManager.hasCurrentUserReadPerm()) {
+			throw new IllegalArgumentException("No access to this resource!");
 		}
 		
 		List<BillingItem> billingItems = new ArrayList<BillingItem>();
@@ -55,9 +65,12 @@ public class DatabaseService {
 	 * @param contract the given contract
 	 * @return all billingItems of the given contract
 	 */
-	public List<BillingItem> getAllBillingItemsOfContract(Contract contract) {
+	public List<BillingItem> getAllBillingItemsOfContract(Contract contract) throws AuthenticationException {
 		if(!contractRepo.existsById(contract.getId())) {
 			throw new IllegalArgumentException("Contract doesnt exists!");
+		} else if (contract.getProject().getOwner().getOrganisationName() != userManager.getCurrentOrganisation()
+				|| !userManager.hasCurrentUserReadPerm()) {
+			throw new IllegalArgumentException("No access to this resource!");
 		}
 		
 		List<BillingItem> billingItems = new ArrayList<BillingItem>();
@@ -101,32 +114,51 @@ public class DatabaseService {
 			}
 		}	
 	}
-	
+
 	/**
-	 * Return all billingItems in the database
-	 * 
-	 * @return all billingItems in the database
+	 * Returns all billingUnits the user has access to.
+	 * @return a list of billingUnits
+	 * @throws AuthenticationException
 	 */
-	public List<BillingItem> getAllBillingItems() {
-		return billingItemRepo.findAll();
+	public List<BillingUnit> getAllBillingUnits() throws AuthenticationException{
+		return billingUnitRepo.findByContractIsIn(getAllContracts());
+	}
+
+
+	/**
+	 * Returns all billingItems the user has access to.
+	 * @return a list of billingItems
+	 * @throws AuthenticationException
+	 */
+	public List<BillingItem> getAllBillingItems() throws AuthenticationException {
+		return getAllBillingUnits().stream().flatMap(b -> b.getBillingItems().stream()).collect(Collectors.toList());
 	}
 
 	/**
-	 * Return all projects in the database
-	 *
-	 * @return all projects in the database
+	 * Returns all projects the user has access to.
+	 * @return a list of projects
+	 * @throws AuthenticationException
 	 */
-	public List<Project> getAllProjects() {
-		return projectRepo.findAll();
+	public List<Project> getAllProjects() throws AuthenticationException {
+		if (userManager.hasCurrentUserReadPerm()) {
+			return projectRepo.findByOwner_OrganisationNameIgnoreCase(userManager.getCurrentOrganisation());
+		} else {
+			return null;
+		}
 	}
 
 	/**
-	 * Return all contracts in the database
-	 *
-	 * @return all contracts in the database
+	 * Returns all contracts the user has access to.
+	 * @return a list of contracts
+	 * @throws AuthenticationException
 	 */
-	public List<Contract> getAllContracts() {
-		return contractRepo.findAll();
+	public List<Contract> getAllContracts() throws AuthenticationException {
+		String orgName = userManager.getCurrentOrganisation();
+		if(userManager.hasCurrentUserReadPerm()) {
+			return contractRepo.findByContractorIgnoreCaseOrConsigneeIgnoreCase(orgName, orgName);
+		} else {
+			return null;
+		}
 	}
 
 
