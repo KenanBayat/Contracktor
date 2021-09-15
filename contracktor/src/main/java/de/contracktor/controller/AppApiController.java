@@ -80,7 +80,7 @@ public class AppApiController {
                     }
                 }
             }
-
+            /* Fuer Jonas
             if (reportUpdates != null) {
                 for (Report report : update.getReportList()) {
                     for (Picture picture : report.getPictures()) {
@@ -89,7 +89,7 @@ public class AppApiController {
                     reportRepository.save(report);
                 }
             }
-
+			*/
             return apiDownloadConstructor(username);
         } catch (AuthenticationException e) {
             return new APIResponse("NOT_AUTHENTICATED");
