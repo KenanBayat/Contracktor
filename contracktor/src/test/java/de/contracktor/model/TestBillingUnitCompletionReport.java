@@ -82,7 +82,7 @@ public class TestBillingUnitCompletionReport {
 	
 	@BeforeEach
 	public void init() {
-		address = new Address(10000, "straße", "42", "city", "12345", "Land");
+		address = new Address(10000, "strasse", "42", "city", "12345", "Land");
 		addressRepo.save(address);
 		
 		state = new State("BillingUnitState");

@@ -23,7 +23,10 @@ import de.contracktor.repository.BillingItemRepository;
 import de.contracktor.repository.StateRepository;
 
 
-@DataJpaTest
+@DataJpaTest(properties = {
+        "spring.datasource.url=jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1;IGNORECASE=TRUE;DB_CLOSE_ON_EXIT=FALSE;",
+        "spring.jpa.hibernate.ddl-auto=create-drop"
+})
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 @AutoConfigureTestDatabase(replace=Replace.NONE)
 public class TestBillingItem {

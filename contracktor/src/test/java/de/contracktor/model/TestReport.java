@@ -19,7 +19,10 @@ import de.contracktor.repository.OrganisationRepository;
 import de.contracktor.repository.ReportRepository;
 import de.contracktor.repository.StateRepository;
 
-@DataJpaTest
+@DataJpaTest(properties = {
+        "spring.datasource.url=jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1;IGNORECASE=TRUE;DB_CLOSE_ON_EXIT=FALSE;",
+        "spring.jpa.hibernate.ddl-auto=create-drop"
+})
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 @AutoConfigureTestDatabase(replace=Replace.NONE)
 public class TestReport {
@@ -68,30 +71,37 @@ public class TestReport {
 	}
 	
 	@Test
+	public void testNullOrganisation() {		
+		// Test null date.
+		report = new Report(1,billingItem, null, date, "hans", "");
+		assertThrows(Exception.class, () -> reportRepo.save(report));		
+	}
+	
+	@Test
 	public void testNullDate() {		
 		// Test null date.
-		report = new Report(billingItems, organisation, null, "hans", "", null);
+		report = new Report(1,billingItem, organisation, null, "hans", "");
 		assertThrows(Exception.class, () -> reportRepo.save(report));		
 	}
 	
 	@Test
 	public void testNullUsername() {
 		// Test null username.
-		report = new Report(billingItems, organisation, date, null, "", null);
+		report = new Report(1,billingItem, organisation, date, null, "");
 		assertThrows(Exception.class, () -> reportRepo.save(report));
 	}
 	
 	@Test
 	public void testNullComment() {
 		// Test null username.
-		report = new Report(billingItems, organisation, date, "hans", null, null);
+		report = new Report(1,billingItem, organisation, date, "hans", null);
 		assertThrows(Exception.class, () -> reportRepo.save(report));
 	}
 	
 	@Test
 	public void testEmptyUsername() {
 		// Test empty username
-		report = new Report(billingItems, organisation, date, "", "", null);
+		report = new Report(1,billingItem, organisation, date, "", "");
 		assertThrows(Exception.class, () -> reportRepo.save(report));
 	}
 }

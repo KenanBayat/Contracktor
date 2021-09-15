@@ -29,9 +29,13 @@ import de.contracktor.repository.ContractRepository;
 import de.contracktor.repository.OrganisationRepository;
 import de.contracktor.repository.PictureRepository;
 import de.contracktor.repository.ProjectRepository;
+import de.contracktor.repository.ReportRepository;
 import de.contracktor.repository.StateRepository;
 
-@DataJpaTest
+@DataJpaTest(properties = {
+        "spring.datasource.url=jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1;IGNORECASE=TRUE;DB_CLOSE_ON_EXIT=FALSE;",
+        "spring.jpa.hibernate.ddl-auto=create-drop"
+})
 @AutoConfigureTestDatabase(replace=Replace.NONE)
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class TestBillingUnit{
@@ -61,6 +65,9 @@ public class TestBillingUnit{
 	@Autowired
 	PictureRepository pictureRepo;
 	
+	@Autowired
+	ReportRepository reportRepo;
+	
 	private final long creationDate = 11111111;
 	private final long completionDate = 10101010;
 	
@@ -89,6 +96,10 @@ public class TestBillingUnit{
 	BillingUnit unit2;
 	BillingUnit unit3;
 	
+	Report report;
+	
+	private long date = 20210707;
+	
 		
 	@BeforeEach
 	public void init() {
@@ -112,7 +123,7 @@ public class TestBillingUnit{
 		billingItemRepo.save(billingItem2);
 		billingItemRepo.save(billingItem3);
 		
-		address1 = new Address(1000, "straße", "houseNumber", "city", "12345", "country");
+		address1 = new Address(1000, "street", "houseNumber", "city", "12345", "country");
 		address2 = new Address(100, "street", "42", "hamburg", "187", "de");
 		
 		addressRepo.save(address1);
@@ -121,13 +132,17 @@ public class TestBillingUnit{
 		organisation = new Organisation("organisation1");
 		organisationRepo.save(organisation);
 		
-		picture = new Picture(null,null);
+		report = new Report(200,billingItem1, organisation, date, "hans", "jio");
+		report.setId(1);
+		reportRepo.save(report);
+		
+		picture = new Picture(1,new byte[0],null);
 		pictureRepo.save(picture);
 		
-		project = new Project(200, "project", creationDate, completionDate, address2, 100.0, organisation, "hans", state, picture, "");
+		project = new Project(200, "project", creationDate, completionDate, address1, 100.0, organisation, "hans", state, new byte[0], "");
 		projectRepo.save(project);
 		
-		project2 = new Project(300, "project", creationDate, completionDate, address2, 100.0, organisation, "hans", state, picture, "");
+		project2 = new Project(300, "project", creationDate, completionDate, address2, 100.0, organisation, "hans", state, new byte[0], "");
 		projectRepo.save(project2);
 		
 		contract1 = new Contract(42, project, "contract", "consignee", state, "Contractor", "test");
@@ -326,6 +341,7 @@ public class TestBillingUnit{
 		assertFalse(billingUnitRepo.findByContract(contract1).contains(unit1));
 		assertFalse(billingUnitRepo.findByContract(contract2).containsAll(Arrays.asList(unit2,unit3)));
 	}
+	
 	@Test
 	public void testfindByid() {
 		unit1 = new BillingUnit("BillingUnit1", "Meter", completionDate , 42.42, 

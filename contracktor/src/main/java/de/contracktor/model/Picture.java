@@ -18,7 +18,7 @@ public class Picture {
     @Getter @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private int pictureID;
     @Getter @Setter @Column(nullable = false, unique = true) @NotEmpty Integer imageID;
     @Getter @Setter @Lob @Column(columnDefinition="BLOB") byte[] picture;
-    @Getter @Setter @NotEmpty @ManyToOne Report report;
+    @Getter @Setter @ManyToOne Report report;
 
     protected Picture() {}
 

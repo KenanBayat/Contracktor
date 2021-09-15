@@ -10,7 +10,7 @@ import lombok.Setter;
 @Entity
 public class Report {
 
-	@Getter @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private int id;
+	@Getter @Setter @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private int id;
 	@Getter @Setter @Column(nullable = false, unique = true) @NotEmpty Integer reportID;
 	@Getter @Setter @ManyToOne BillingItem billingItem;
 	@Getter @Setter @JoinColumn(nullable = false) @OneToOne Organisation organisation;
@@ -20,8 +20,9 @@ public class Report {
 	
 	public Report() {}
 	
-	public Report(BillingItem billingItem, Organisation organisation, Long date,
+	public Report(Integer reportID,BillingItem billingItem, Organisation organisation, Long date,
 			      String username, String comment) {
+		this.reportID=reportID;
 		this.billingItem = billingItem;
 		this.organisation = organisation;
 		this.date = date;
