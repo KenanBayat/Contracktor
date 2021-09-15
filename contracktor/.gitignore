@@ -33,5 +33,9 @@ out/
 /nbdist/
 /.nb-gradle/
 
+
+### DataBase ###
+
+
 ### VS Code ###
 .vscode/
