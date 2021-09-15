@@ -1,8 +1,10 @@
 package de.contracktor;
 
+import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,9 +62,16 @@ public class AdessoAPIService {
 	 * @param project the project to be saved
 	 */
 	public void save(Project project) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		LocalDate creationDate = LocalDate.parse(project.getCreationDateString(), formatter);
-		LocalDate completionDate = LocalDate.parse(project.getCompletionDateString(), formatter);
+		Date creationdate;
+		Date completiondate;
+		DateTimeFormatter formatter;
+		formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd");
+		creationdate = (Date) formatter.parse(project.getCreationDateString());
+		completiondate = (Date) formatter.parse(project.getCompletionDateString()); 
+				
+		long creationDate = creationdate.getTime();
+		long completionDate = completiondate.getTime();
+		
 		project.setCreationDate(creationDate);
 		project.setCompletionDate(completionDate);
 		Organisation organisation;
