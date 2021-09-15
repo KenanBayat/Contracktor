@@ -29,7 +29,7 @@ public class ContracktorUserDetails implements UserDetails {
         this.username = user.getUsername();
         this.password = user.getPassword();
         this.roles = user.getRoles();
-        this.isAppAdmin = user.getIsAdmin();
+        this.isAppAdmin = user.getIsApplicationAdmin();
         this.isAdmin = user.getIsAdmin();
         this.organisationName = user.getOrganisation().getOrganisationName();
         this.organisationId = user.getOrganisation().getId();

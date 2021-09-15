@@ -1,15 +1,12 @@
 package de.contracktor.model;
 
 
-import javax.persistence.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.NotEmpty;
 
 import lombok.Getter;
@@ -23,7 +20,7 @@ import java.util.stream.Collectors;
 public class Organisation {
 	
 	@Getter	@Id	@GeneratedValue(strategy = GenerationType.IDENTITY)	private int id;
-	@Getter @Setter @Column(nullable = false) @NotEmpty private String organisationName;
+	@Getter @Setter @Column(nullable = false, unique = true) @NotEmpty private String organisationName;
 	
 	public Organisation() {
 		

@@ -360,9 +360,7 @@ public class DatabaseService {
 	}
 
 	private List<String> getOrg(Contract contract) {
-		List<String> list = new ArrayList<>(List.of(contract.getConsignee(),contract.getContractor()));
-		boolean b = true;
-		return list;
+		return new ArrayList<>(List.of(contract.getConsignee(),contract.getContractor()));
 	}
 
 	private String getOrg(BillingUnit billingUnit) {
@@ -374,8 +372,4 @@ public class DatabaseService {
 				.getOrganisationName();
 	}
 
-
-	
-
-	
 }
