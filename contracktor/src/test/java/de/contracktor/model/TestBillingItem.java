@@ -1,11 +1,14 @@
 package de.contracktor.model;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -98,12 +101,23 @@ public class TestBillingItem {
 		billingItems.add(billingItemInList2);
 		
 		billingItem = new BillingItem("ID_3346_2929_37", "test","meter", 1000.0, 105.0, 100050.0,
-				                      "3m7_6h4uXAXvBoFEtks_QE", state, "", billingItems);
+				                      "3m7_6h4uXAXvBoFEtks_QE", state, "shortDescripton", billingItems);
 		billingItemRepo.save(billingItem);
 		
 		assertTrue(billingItemRepo.existsById(billingItemInList1.getId()));
 		assertTrue(billingItemRepo.existsById(billingItemInList2.getId()));
 		assertTrue(billingItemRepo.existsById(billingItem.getId()));
+		
+		Optional<BillingItem> billingItemC = billingItemRepo.findById(billingItem.getId());
+		
+		assertEquals(billingItemC.get().billingItemID,"ID_3346_2929_37");
+		assertEquals(billingItemC.get().getBillingUnit_ID(),"test");
+		assertEquals(billingItemC.get().getUnit(),"meter");
+		assertEquals(billingItemC.get().getQuantity(),1000.0);
+		assertEquals(billingItemC.get().getPricePerUnit(),105.0);
+		assertEquals(billingItemC.get().getTotalPrice(),100050.0);
+		assertEquals(billingItemC.get().getIFC(),"3m7_6h4uXAXvBoFEtks_QE");
+		assertEquals(billingItemC.get().getShortDescription(),"shortDescripton");
 		
 		billingItemRepo.delete(billingItem);
 		
@@ -113,7 +127,7 @@ public class TestBillingItem {
 	}
 	
 	@Test
-	public void testBillingItemRepositoryExistsByBillingItemID() {
+	public void testExistsByBillingItemID() {
 		billingItemInList1 = new BillingItem("ID_3346_2929_38", "test","meter", 1000.0, 105.0, 100050.0, 
 				                             "3m5_6h4uXAXvBoFEtks_QE", state, "", new ArrayList<BillingItem>());
 		billingItemInList2 = new BillingItem("ID_3346_2929_39", "test","meter", 1000.0, 105.0, 100050.0, 
@@ -142,7 +156,7 @@ public class TestBillingItem {
 	}
 	
 	@Test
-	public void testBillingItemRepositoryFindALL() {
+	public void testFindALL() {
 		billingItemInList1 = new BillingItem("ID_3346_2929_38", "test","meter", 1000.0, 105.0, 100050.0, 
 				                             "3m5_6h4uXAXvBoFEtks_QE", state, "", new ArrayList<BillingItem>());
 		billingItemInList2 = new BillingItem("ID_3346_2929_39", "test","meter", 1000.0, 105.0, 100050.0, 
@@ -175,7 +189,37 @@ public class TestBillingItem {
 	}
 	
 	@Test
-	public void testBillingItemRepositoryOptionalFindByBillingItemID() {
+	public void testfindByBillingItemIDContains() {
+		billingItemInList1 = new BillingItem("ID_3346_2929_38", "test","meter", 1000.0, 105.0, 100050.0, 
+                "3m5_6h4uXAXvBoFEtks_QE", state, "", new ArrayList<BillingItem>());
+		billingItemInList2 = new BillingItem("ID_3346_2929_39", "test","meter", 1000.0, 105.0, 100050.0, 
+                "3m6_6h4uXAXvBoFEtks_QE", state, "", new ArrayList<BillingItem>());
+
+
+		billingItems.add(billingItemInList1);
+		billingItems.add(billingItemInList2);
+
+		billingItem = new BillingItem("ID_3346_2929_37", "test","meter", 1000.0, 105.0, 100050.0,
+				"3m7_6h4uXAXvBoFEtks_QE", state, "", billingItems);
+
+		List<BillingItem> billingItems2 = Arrays.asList(billingItem,billingItemInList1,billingItemInList2);
+
+		assertFalse(billingItemRepo.findByBillingItemIDContains("ID").containsAll(billingItems2));
+		assertFalse(billingItemRepo.findByBillingItemIDContains("39").contains(billingItemInList2));
+		
+		billingItemRepo.save(billingItemInList1);
+		billingItemRepo.save(billingItemInList2);
+		billingItemRepo.save(billingItem);
+		assertTrue(billingItemRepo.findByBillingItemIDContains("39").contains(billingItemInList2));
+		assertTrue(billingItemRepo.findByBillingItemIDContains("ID").containsAll(billingItems2));
+		billingItemRepo.delete(billingItem);
+		assertFalse(billingItemRepo.findByBillingItemIDContains("ID").containsAll(billingItems2));
+		assertFalse(billingItemRepo.findByBillingItemIDContains("39").contains(billingItemInList2));
+		
+	}
+	
+	@Test
+	public void testOptionalFindByBillingItemID() {
 		billingItemInList1 = new BillingItem("ID_3346_2929_38", "test","meter", 1000.0, 105.0, 100050.0, 
 				                             "3m5_6h4uXAXvBoFEtks_QE", state, "", new ArrayList<BillingItem>());
 		billingItemInList2 = new BillingItem("ID_3346_2929_39", "test","meter", 1000.0, 105.0, 100050.0, 
