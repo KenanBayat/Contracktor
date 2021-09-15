@@ -90,6 +90,8 @@ public class AppApiController {
                     Report report = picture.getReport();
                     if (!reportUpdates.contains(report)) {
                         report.setReportID(++maxReportID);
+                        Optional<BillingItem> savedItem = billingItemRepository.findByBillingItemID(report.getBillingItem().getBillingItemID());
+                        report.setBillingItem(savedItem.get());
                         reportUpdates.add(report);
                     }
                 }

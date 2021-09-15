@@ -22,6 +22,9 @@ import java.net.http.HttpHeaders;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Filter for Token-based authentication, extracts the Token from the request and validates it.
+ */
 public class APIAuthorizationFilter extends BasicAuthenticationFilter {
 
     private UserDetailsServiceH2 userDetailsServiceH2;

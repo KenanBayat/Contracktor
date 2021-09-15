@@ -59,7 +59,7 @@ public class BillingItem {
 		if (getClass() != obj.getClass())
 			return false;
 		BillingItem other = (BillingItem) obj;
-		return Objects.equals(billingItemID, other.billingItemID) && id == other.id;
+		return Objects.equals(billingItemID, other.billingItemID); //&& id == other.id;
 	}
 
 	public String getLowerDescription() {

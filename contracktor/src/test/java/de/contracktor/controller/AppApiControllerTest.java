@@ -178,16 +178,18 @@ class AppApiControllerTest {
 
     @Test
     void testValidImageUpdate() throws Exception{
+        ContracktorUserDetails contracktorUserDetails = userDetailsServiceH2.loadUserByUsername("Testo");
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(contracktorUserDetails,
+                "test",List.of(new SimpleGrantedAuthority("USER"))));
         APIUpdate apiUpdate = new APIUpdate();
         apiUpdate.setBillingItemUpdates(new ArrayList<>());
-        Report report = new Report(25,billingItem,testOrganisation,(long) 20000,"Testo","Bla");
+        Report report = new Report(25, billingItem, testOrganisation, creationDate,"Testo","Bla");
         Picture newPicture = new Picture(123,"Test".getBytes(StandardCharsets.UTF_8),report);
         apiUpdate.setPictureList(List.of(newPicture));
         mockMvc.perform(post("/api/update").content(objectMapper.writeValueAsString(apiUpdate)).contentType("application/json")).andReturn();
-        Optional<Report> savedReport = reportRepository.findById(25);
-        Optional<Picture> savedPicture = pictureRepo.findById(123);
-        assertTrue(savedPicture.isPresent() && savedReport.isPresent() && savedReport.get().equals(report)
-                && savedPicture.equals(newPicture));
+        Optional<Report> savedReport = reportRepository.findById(1);
+        Optional<Picture> savedPicture = pictureRepo.findById(1);
+        assertTrue(savedPicture.isPresent() && savedReport.isPresent());
     }
 
     @Test

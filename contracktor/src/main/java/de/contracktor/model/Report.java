@@ -14,7 +14,7 @@ public class Report {
 	@Getter @Setter @Column(nullable = false, unique = true) Integer reportID;
 	@Getter @Setter @ManyToOne BillingItem billingItem;
 	@Getter @Setter @JoinColumn(nullable = false) @OneToOne Organisation organisation;
-	@Getter @Setter @Column(nullable = false) @JsonIgnore Long date;
+	@Getter @Setter @Column(nullable = false) Long date;
 	@Getter @Setter @Column(nullable = false) @NotEmpty String username;
 	@Getter @Setter @Column(nullable = false) String comment;
 	
