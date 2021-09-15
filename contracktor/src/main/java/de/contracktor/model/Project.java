@@ -38,7 +38,7 @@ public class Project {
 	public Project() {}
 	
 	public Project(int projectID, String name, Long creationDate, Long completionDate, Address address, Double totalPrice, Organisation owner, String creator,
-			       State status, private byte[] image, String description) {
+			       State status, byte[] image, String description) {
 		this.projectID = projectID;
 		this.name = name;
 		this.creationDate = creationDate;
