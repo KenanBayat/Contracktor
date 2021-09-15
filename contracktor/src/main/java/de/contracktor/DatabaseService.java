@@ -254,4 +254,7 @@ public class DatabaseService {
 	public List<Contract> getContractsOfProject(Project project) {
 		return contractRepo.findByProject(project);
 	}
+	
+
+	
 }
