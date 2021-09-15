@@ -46,6 +46,7 @@ public class AppApiController {
     UserManager userManager;
 
     //REMOVE BEFORE END
+    /**
     @GetMapping("/api/download")
     @ResponseBody
     public APIResponse getController() {
@@ -54,8 +55,9 @@ public class AppApiController {
         } catch (Exception e) {
             return new APIResponse("ERROR");
         }
-    }
 
+    }
+**/
     @PostMapping("/api/update")
     @ResponseBody
     public APIResponse updateController(@RequestBody APIUpdate update) {
@@ -101,10 +103,7 @@ public class AppApiController {
     }
 
     private APIResponse apiDownloadConstructor(String username) throws AuthenticationException{
-        Optional<UserAccount> user =  userRepository.findByUsername(username);
-        if (user.isEmpty()) {
-            return new APIResponse("UNKNOWN_USER");
-        } else if (!userManager.hasCurrentUserReadPerm() && !userManager.hasCurrentUserWritePerm()) {
+        if (!userManager.hasCurrentUserReadPerm() && !userManager.hasCurrentUserWritePerm()) {
             return new APIResponse("NO_READ_PERM");
         }
 
