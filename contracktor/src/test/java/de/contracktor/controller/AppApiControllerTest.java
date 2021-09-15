@@ -73,9 +73,17 @@ class AppApiControllerTest {
     @Autowired
     private UserDetailsServiceH2 userDetailsServiceH2;
 
+	@Autowired
+	private PictureRepository pictureRepo;
+	private Picture picture;
 
+	private final long creationDate = 22222222;
+	private final long completionDate = 33333333;
+	
     @BeforeEach
     void setUp() {
+    	picture = new Picture(null,null);
+		pictureRepo.save(picture);
         Organisation testOrganisation = new Organisation("Testorg");
         Permission permission = permissionRepository.findByPermissionName("r");
         Role role = new Role("Test",permission,testOrganisation);
@@ -85,18 +93,18 @@ class AppApiControllerTest {
         Address address = new Address(1,"Test","2","Test","1234","Test");
         State state = stateRepository.findByStateName("OPEN");
         State state2 = stateRepository.findByStateName("OK");
-        Project project = new Project(15,"testProject", LocalDate.of(2000,2,2),
-                LocalDate.of(2000,2,2),address,100.0,testOrganisation, "Test", state,null,"Test");
+        Project project = new Project(200000, null, creationDate, completionDate, address,
+				100.0, testOrganisation, "hans", state, picture, "");
         Contract contract = new Contract(32,project,"Test","Testorg",state,"test","Test");
         BillingItem billingItem = new BillingItem("1","1","m",100.0,20.0,300.0,
                 "Test",state,"Test",new ArrayList<>());
         ArrayList<BillingItem> billingItemList = new ArrayList<>();
         billingItemList.add(billingItem);
-        BillingUnit billingUnit = new BillingUnit("1","m",LocalDate.of(2000,2,2),
+        BillingUnit billingUnit = new BillingUnit("1","m",11223344,
                 200.0,100.0,contract,billingItemList,false,"Test","Teest",state);
         byte[] image = "Nice picture".getBytes(StandardCharsets.UTF_8);
         Picture picture = new Picture("Test", image);
-        Report report = new Report(billingItemList,testOrganisation,LocalDate.of(2000,2,2),
+        Report report = new Report(billingItemList,testOrganisation, creationDate,
                 "Testo","Test", new ArrayList(List.of(picture)));
 
         organisationRepository.save(testOrganisation);
