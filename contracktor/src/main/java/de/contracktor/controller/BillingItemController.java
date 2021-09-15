@@ -1,4 +1,4 @@
-package de.contracktor.controller;
+/*package de.contracktor.controller;
 
 import de.contracktor.DatabaseService;
 import de.contracktor.UserManager;
@@ -114,3 +114,4 @@ public class BillingItemController {
 		return redirect;
 	}
 }
+*/

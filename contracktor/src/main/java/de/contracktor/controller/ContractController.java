@@ -72,7 +72,7 @@ public class ContractController {
         BillingUnit billingUnit;
         List<BillingUnit> billingUnits = billingUnitRepository.findAllByContract(contract);
         if (billingUnits.isEmpty()) {
-            billingUnit = new BillingUnit("Keine", "", LocalDate.of(2000,1,1), 0.0, 0.0, contract, new ArrayList<>(), false, "", "", stateRepository.findByStateName("NO_STATUS"));
+            billingUnit = new BillingUnit("Keine", "", 0, 0.0, 0.0, contract, new ArrayList<>(), false, "", "", stateRepository.findByStateName("NO_STATUS"));
             billingUnit = billingUnitRepository.save(billingUnit);
         } else {
             billingUnit = billingUnitRepository.findByBillingUnitID(billingUnitID);
