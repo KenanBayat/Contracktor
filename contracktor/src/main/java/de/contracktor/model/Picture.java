@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
@@ -16,9 +17,9 @@ import javax.validation.constraints.NotEmpty;
 public class Picture {
 
     @Getter @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private int pictureID;
-    @Getter @Setter @Column(nullable = false, unique = true) @NotEmpty Integer imageID;
+    @Getter @Setter @Column(nullable = false, unique = true) Integer imageID;
     @Getter @Setter @Lob @Column(columnDefinition="BLOB") byte[] picture;
-    @Getter @Setter @ManyToOne Report report;
+    @Getter @Setter @JoinColumn(nullable = false, name = "report_id")@ManyToOne Report report;
 
     protected Picture() {}
 
