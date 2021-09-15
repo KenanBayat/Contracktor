@@ -21,8 +21,8 @@ public class Project {
 	@Getter @Setter @Column(nullable = false, unique = true) @JsonProperty("id")
 	private int projectID;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String name;
-    @Getter @Setter @Column(nullable = false) @JsonIgnore private LocalDate creationDate;
-	@Getter @Setter @Column(nullable = false) @JsonIgnore private LocalDate completionDate;
+    @Getter @Setter @Column(nullable = false) @JsonIgnore private Long creationDate;
+	@Getter @Setter @Column(nullable = false) @JsonIgnore private Long completionDate;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private Address address;
 	@Getter @Setter @Column(nullable = false) @JsonProperty("overallCost") private Double totalPrice;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private Organisation owner;
@@ -39,7 +39,7 @@ public class Project {
 		
 	}
 	
-	public Project(int projectID, String name, LocalDate creationDate, LocalDate completionDate, Address address, Double totalPrice, Organisation owner, String creator,
+	public Project(int projectID, String name, Long creationDate, Long completionDate, Address address, Double totalPrice, Organisation owner, String creator,
 			       State status, Picture image, String description) {
 		this.projectID = projectID;
 		this.name = name;

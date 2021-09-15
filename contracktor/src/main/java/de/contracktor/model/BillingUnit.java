@@ -10,6 +10,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,7 +37,7 @@ public class BillingUnit {
 	@Getter @Setter @Column(nullable = false) @JsonIgnore private LocalDate completionDate;
 	@Getter @Setter @Column(nullable = false) private Double totalPrice;
 	@Getter @Setter @Column(nullable = false) private Double totalQuantity;
-	@Getter @Setter @OneToMany private List<BillingItem> billingItems;
+	@Getter @Setter @OneToMany(fetch = FetchType.EAGER) private List<BillingItem> billingItems;
 	@Getter @Setter @Column private Boolean ownContractDefined;
 	@Getter @Setter @Column(nullable = false, length = 8192) private String shortDescription;
 	@Getter @Setter @Column(nullable = false, length = 8192) private String longDescription;
