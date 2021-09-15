@@ -133,7 +133,6 @@ class AppApiControllerTest {
     }
 
 
-    /**
     @Test
     void testValidBillingItemUpdate() throws Exception {
         ContracktorUserDetails contracktorUserDetails = userDetailsServiceH2.loadUserByUsername("Testo");
@@ -148,7 +147,6 @@ class AppApiControllerTest {
         BillingItem updatedItem = billingItemRepository.findByBillingItemID("1").get();
         assertTrue(updatedItem.getStatus().getStateName() == newState.getStateName() && updatedItem.getLastModified() == 2000);
     }
-    **/
 /**
     @Test
     void testValidReportUpdate() throws Exception{
@@ -178,11 +176,12 @@ class AppApiControllerTest {
         assertEquals(objectMapper.writeValueAsString(new APIResponse("UNKNOWN_BILLINGITEM")), result.getResponse().getContentAsString());
     }
 
-/**
+
     @Test
     void testNoReadPerm() throws Exception {
         UserAccount user =  userRepository.findByUsername("Testo").get();
         user.setRoles(new ArrayList<>());
+        userRepository.save(user);
         ContracktorUserDetails contracktorUserDetails = userDetailsServiceH2.loadUserByUsername("Testo");
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(contracktorUserDetails,"test",
                 List.of(new SimpleGrantedAuthority("USER"))));
@@ -192,10 +191,13 @@ class AppApiControllerTest {
         String expectedResponse = objectMapper.writeValueAsString(new APIResponse("NO_READ_PERM"));
         assertEquals(expectedResponse,actualResponse);
     }
-**/
-/**
+
+
     @Test
     void testNoOverride() throws Exception {
+        ContracktorUserDetails contracktorUserDetails = userDetailsServiceH2.loadUserByUsername("Testo");
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(contracktorUserDetails,"test",
+                List.of(new SimpleGrantedAuthority("USER"))));
         APIUpdate apiUpdate = new APIUpdate();
         State newState = stateRepository.findByStateName("DENY");
         BillingItemUpdate billingItemUpdate = new BillingItemUpdate("1",newState,2000);
@@ -215,6 +217,6 @@ class AppApiControllerTest {
         assertTrue(updatedItem.getStatus().getStateName() == newState.getStateName() && updatedItem.getLastModified() == 2000);
     }
 
-**/
+
 
 }
