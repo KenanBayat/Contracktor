@@ -46,7 +46,6 @@ public class AppApiController {
     UserManager userManager;
 
     //REMOVE BEFORE END
-    /**
     @GetMapping("/api/download")
     @ResponseBody
     public APIResponse getController() {
@@ -57,7 +56,7 @@ public class AppApiController {
         }
 
     }
-**/
+
     @PostMapping("/api/update")
     @ResponseBody
     public APIResponse updateController(@RequestBody APIUpdate update) {
