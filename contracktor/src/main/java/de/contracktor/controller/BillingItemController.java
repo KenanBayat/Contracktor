@@ -22,7 +22,7 @@ import java.util.Objects;
 import javax.security.sasl.AuthenticationException;
 
 @Controller
-public class ItemController {
+public class BillingItemController {
 
 	@Autowired
 	BillingItemRepository billingItemRepository;
@@ -57,7 +57,11 @@ public class ItemController {
 		BillingItem item = databaseService.getBillingItemByBillingItemID(itemId);
 		List<BillingItem> subitems = databaseService.getChildOfBillingItem(item);
 		Contract contract = databaseService.getContractOfBillingItem(item);
+		
+		List<StateTransition> transitions = stateTransitionRepository.findByStartState(item.getStatus());
+		List<State> endstates = new ArrayList<>();
 
+		//Zugriffsbeschraenkung auf StateTransition ueber Contracktor Consignee 
 		Boolean isApplicationAdmin = false;
 		String organisationNameOfUser = "";
 		try {
@@ -67,8 +71,6 @@ public class ItemController {
 			e.printStackTrace();
 		}
 
-		List<StateTransition> transitions = stateTransitionRepository.findByStartState(item.getStatus());
-		List<State> endstates = new ArrayList<>();
 		for (StateTransition transition : transitions) {
 			if (organisationNameOfUser.equals(contract.getContractor()) && transition.getContractor()
 					|| organisationNameOfUser.equals(contract.getConsignee()) && transition.getConsignee() ||
