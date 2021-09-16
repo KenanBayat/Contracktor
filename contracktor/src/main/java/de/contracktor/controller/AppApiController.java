@@ -140,6 +140,7 @@ public class AppApiController {
         response.setStates(stateRepository.findAll());
         response.setStateTransitions(stateTransitionRepository.findAll());
         response.setPictures(pictureRepository.findByReport_Organisation_OrganisationNameIgnoreCase(organisation));
+        response.setReports(reportRepository.findByOrganisation_OrganisationNameIgnoreCase(organisation));
         response.setStatus("OK");
         return response;
     }
