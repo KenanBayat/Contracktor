@@ -17,7 +17,7 @@
                         </svg>
                     </div>
                     <h2>Statistiken</h2>
-                    <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+                    <p>Wählen Sie Projekte, Verträge oder Leistungspostionen und lassen Sie sich eine Statistik erstellen, die den Baufortschritt über die jeweiligen gewählten Entitäten anzeigt.</p>
                     <a th:href="@{'/statistic'}" class="btn btn-outline-primary">
                         Zu den Statistiken
                     </a>
@@ -32,7 +32,7 @@
                         </svg>
                     </div>
                     <h2>Projekte</h2>
-                    <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+                    <p>Sehen Sie sich alle Projekte in einer Übersicht an und betrachten Sie ein ausgewähltes Projekt im Detail.</p>
                     <a th:href="@{'/projects'}" class="btn btn-outline-primary">
                         Zu den Projekten
                     </a>
@@ -46,7 +46,7 @@
                         </svg>
                     </div>
                     <h2>Verträge</h2>
-                    <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+                    <p>Sehen Sie sich alle Verträge in einer Übersicht an und betrachten Sie einen ausgewählten Vertrag. Fügen Sie einem Vertrag eine Leistungspostion hinzu.</p>
                     <a th:href="@{'/contracts'}" class="btn btn-outline-primary">
                         Zu den Verträgen
                     </a>
@@ -64,21 +64,21 @@
                         </svg>
                     </div>
                     <h2>Leistungspositionen</h2>
-                    <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+                    <p>Sehen Sie sich alle Leistungspositionen in einer Übersicht an und betrachten Sie eine ausgewählte Leistungsposition. Fügen Sie einer Leistungsposition weitere Leistungspositionen hinzu.</p>
                     <a th:href="@{'/billingitems'}" class="btn btn-outline-primary">
                         Zu den Leistungspositionen
                     </a>
                 </div>
 
                 <!-- Admin -->
-                <div class="feature col">
+                <div class="feature col" th:if="${userManager.isCurrentUserAdmin()}">
                     <div class="feature-icon bg-primary bg-gradient">
                         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="white" class="bi bi-toggles" viewBox="0 0 16 16">
                             <path d="M4.5 9a3.5 3.5 0 1 0 0 7h7a3.5 3.5 0 1 0 0-7h-7zm7 6a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm-7-14a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zm2.45 0A3.49 3.49 0 0 1 8 3.5 3.49 3.49 0 0 1 6.95 6h4.55a2.5 2.5 0 0 0 0-5H6.95zM4.5 0h7a3.5 3.5 0 1 1 0 7h-7a3.5 3.5 0 1 1 0-7z"/>
                         </svg>
                     </div>
                     <h2>Admin</h2>
-                    <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+                    <p>Verwalten Sie im Adminbereich die Nutzer der Anwendung sowie Rollen und Zustände.</p>
                     <a th:href="@{'/admin'}" class="btn btn-outline-primary">
                         Zum Adminbereich
                     </a>

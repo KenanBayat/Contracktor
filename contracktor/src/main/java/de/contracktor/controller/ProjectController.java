@@ -1,6 +1,7 @@
 package de.contracktor.controller;
 
 import de.contracktor.DatabaseService;
+import de.contracktor.UserManager;
 import de.contracktor.model.Contract;
 import de.contracktor.model.CurrencyFormatter;
 import de.contracktor.model.DateFormatter;
@@ -24,6 +25,9 @@ public class ProjectController {
     @Autowired
     DatabaseService databaseService;
 
+    @Autowired
+    UserManager userManager;
+
     List<Project> searchedProjects = new ArrayList<>();
 
     Project selectedProject = null;
@@ -33,6 +37,7 @@ public class ProjectController {
     @GetMapping("/projects")
     public String getProjects(Model model) {
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("projects", databaseService.getAllProjects());
         model.addAttribute("formatter", formatter);
         model.addAttribute("filter", "");
@@ -58,6 +63,7 @@ public class ProjectController {
                 )
                 .collect(Collectors.toList());
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("projects", searchedProjects);
         model.addAttribute("formatter", formatter);
         model.addAttribute("filter", "");
@@ -130,6 +136,7 @@ public class ProjectController {
 
 
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("projects", sortList);
         model.addAttribute("formatter", formatter);
         model.addAttribute("filter", filter);
@@ -143,6 +150,7 @@ public class ProjectController {
         DateFormatter formatter = new DateFormatter();
         String creationDate = formatter.format(project.getCreationDate());
         String completionDate = formatter.format(project.getCompletionDate());
+        model.addAttribute("userManager", userManager);
         model.addAttribute("project", project);
         model.addAttribute("creationDate", creationDate);
         model.addAttribute("completionDate", completionDate);
@@ -159,6 +167,7 @@ public class ProjectController {
                     selectedContracts.add(c);
                 }
             }
+        model.addAttribute("userManager", userManager);
         model.addAttribute("project", project);
         model.addAttribute("contracts", selectedContracts);
         return "contractsOfProject";
@@ -171,6 +180,7 @@ public class ProjectController {
         DateFormatter formatter = new DateFormatter();
         String creationDate = formatter.format(project.getCreationDate());
         String completionDate = formatter.format(project.getCompletionDate());
+        model.addAttribute("userManager", userManager);
         model.addAttribute("project", project);
         model.addAttribute("creationDate", creationDate);
         model.addAttribute("completionDate", completionDate);

@@ -33,6 +33,9 @@ public class ProjectStatisticController {
     @Autowired
     BillingItemRepository billingItemRepository;
 
+    @Autowired
+    DatabaseService databaseService;
+
     List<Project> selectedProjects = new ArrayList<>();
 
     List<Project> searchedProjects = new ArrayList<>();
@@ -44,7 +47,7 @@ public class ProjectStatisticController {
 
         model.addAttribute("labels", getLabels());
         model.addAttribute("count", getCount());
-        model.addAttribute("projects", projectRepository.findAll());
+        model.addAttribute("projects", databaseService.getAllProjects());
         model.addAttribute("selectedProjects", selectedProjects);
         model.addAttribute("formatter", formatter);
         model.addAttribute("filter", "");
@@ -53,11 +56,11 @@ public class ProjectStatisticController {
 
     @PostMapping("/project-statistic/addAll")
     public String getAddAllProjectStatistic(Model model) {
-        selectedProjects = projectRepository.findAll();
+        selectedProjects = databaseService.getAllProjects();
 
         model.addAttribute("labels", getLabels());
         model.addAttribute("count", getCount());
-        model.addAttribute("projects", projectRepository.findAll());
+        model.addAttribute("projects", databaseService.getAllProjects());
         model.addAttribute("selectedProjects", selectedProjects);
         model.addAttribute("formatter", formatter);
         model.addAttribute("filter", "");
@@ -70,7 +73,7 @@ public class ProjectStatisticController {
 
         model.addAttribute("labels", getLabels());
         model.addAttribute("count", getCount());
-        model.addAttribute("projects", projectRepository.findAll());
+        model.addAttribute("projects", databaseService.getAllProjects());
         model.addAttribute("selectedProjects", selectedProjects);
         model.addAttribute("formatter", formatter);
         model.addAttribute("filter", "");
@@ -79,7 +82,7 @@ public class ProjectStatisticController {
 
     @PostMapping("/project-statistic/search")
     public String getSearchAllProjectStatistic(@RequestParam String search, Model model) {
-        List<Project> projects = projectRepository.findAll();
+        List<Project> projects = databaseService.getAllProjects();
 
         String finalSearch = search.toLowerCase();
         searchedProjects = projects.stream().filter(project -> project.getName().toLowerCase().contains(finalSearch)
@@ -107,11 +110,11 @@ public class ProjectStatisticController {
 
     @PostMapping("/project-statistic/generate")
     public String getStatistic(@RequestParam int id, Model model) {
-        selectedProjects = List.of(projectRepository.findByProjectID(id));
+        selectedProjects = List.of(databaseService.getProjectByProjectID(id));
 
         model.addAttribute("labels", getLabels());
         model.addAttribute("count", getCount());
-        model.addAttribute("projects", projectRepository.findAll());
+        model.addAttribute("projects", databaseService.getAllProjects());
         model.addAttribute("selectedProjects", selectedProjects);
         model.addAttribute("formatter", formatter);
         model.addAttribute("filter", "");
@@ -121,8 +124,8 @@ public class ProjectStatisticController {
     @PostMapping("/project-statistic/add")
     public String getAddProjectStatistic(@RequestParam int id, Model model) {
 
-        List<Project> projects = projectRepository.findAll();
-        Project project = projectRepository.findByProjectID(id);
+        List<Project> projects = databaseService.getAllProjects();
+        Project project = databaseService.getProjectByProjectID(id);
         boolean contains = false;
         for (Project p : selectedProjects) {
             if(p.getProjectID() == project.getProjectID()) {
@@ -144,8 +147,8 @@ public class ProjectStatisticController {
 
     @PostMapping("/project-statistic/remove")
     public String getRemoveProjectStatistic(@RequestParam int id, Model model) {
-        List<Project> projects = projectRepository.findAll();
-        Project project = projectRepository.findByProjectID(id);
+        List<Project> projects = databaseService.getAllProjects();
+        Project project = databaseService.getProjectByProjectID(id);
         List<Project> newSelected = new ArrayList<>();
         for (Project p : selectedProjects) {
             if(p.getProjectID() != project.getProjectID()) {
@@ -170,7 +173,7 @@ public class ProjectStatisticController {
         List<Project> sortList = searchedProjects;
 
         if(searchedProjects.isEmpty()) {
-            sortList = projectRepository.findAll();
+            sortList = databaseService.getAllProjects();
         }
         if(filter.equals("name_asc")) {
             sortList = sortList.stream().sorted(Comparator.comparing(Project::getLowerName)).collect(Collectors.toList());
@@ -241,7 +244,10 @@ public class ProjectStatisticController {
 
     public List<String> getLabels() {
         List<String> labels = new ArrayList<>();
-        List<BillingItem> selectedBillingItems = getSelectedBillingItems();
+        List<BillingItem> selectedBillingItems = new ArrayList<>();
+        for(Project p : selectedProjects) {
+            selectedBillingItems.addAll(databaseService.getAllBillingItemsOfProject(p));
+        }
         for (BillingItem b: selectedBillingItems) {
             labels.add(b.getStatus().getStateName());
         }
@@ -252,7 +258,10 @@ public class ProjectStatisticController {
     }
 
     public List<Integer> getCount() {
-        List<BillingItem> selectedBillingItems = getSelectedBillingItems();
+        List<BillingItem> selectedBillingItems = new ArrayList<>();
+        for(Project p : selectedProjects) {
+            selectedBillingItems.addAll(databaseService.getAllBillingItemsOfProject(p));
+        }
         List<String> labels = getLabels();
         List<Integer> count = new ArrayList<>();
         for(String s : labels) {
@@ -265,33 +274,6 @@ public class ProjectStatisticController {
             count.add(counter);
         }
         return count;
-    }
-
-    public List<BillingItem> getSelectedBillingItems() {
-        List<Project> projects = selectedProjects;
-        List<Contract> contracts = contractRepository.findAll();
-        List<Contract> selectedContracts = new ArrayList<>();
-        for (Project p : projects) {
-            for (Contract c : contracts) {
-                if(p.getProjectID() == c.getProject().getProjectID()) {
-                    selectedContracts.add(c);
-                }
-            }
-        }
-        List<BillingUnit> billingUnits = new ArrayList<>();
-        for (Contract c : selectedContracts) {
-            billingUnits.addAll(billingUnitRepository.findAllByContract(c));
-        }
-        List<BillingItem> selectedBillingItems = new ArrayList<>();
-        for (BillingUnit bu : billingUnits) {
-            selectedBillingItems.addAll(bu.getBillingItems());
-        }
-        List<BillingItem> items = new ArrayList<>();
-        for (BillingItem b : selectedBillingItems) {
-            items.addAll(b.getBillingItems());
-        }
-        selectedBillingItems.addAll(items);
-        return selectedBillingItems;
     }
 
 }

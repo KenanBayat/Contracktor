@@ -1,6 +1,7 @@
 package de.contracktor.controller;
 
 import de.contracktor.DatabaseService;
+import de.contracktor.UserManager;
 import de.contracktor.model.BillingItem;
 import de.contracktor.model.BillingUnit;
 import de.contracktor.model.Contract;
@@ -39,6 +40,9 @@ public class ContractController {
     @Autowired
     DatabaseService databaseService;
 
+    @Autowired
+    UserManager userManager;
+
     List<Contract> searchedContracts = new ArrayList<>();
 
     Contract contract = null;
@@ -47,6 +51,7 @@ public class ContractController {
     public String getContracts(Model model) {
         model.addAttribute("contracts", databaseService.getAllContracts());
         model.addAttribute("filter", "");
+        model.addAttribute("userManager", userManager);
 
         return "contracts";
     }
@@ -56,6 +61,7 @@ public class ContractController {
         model.addAttribute("contract", contract);
         model.addAttribute("billingUnitIDs", getBillingUnitIDs());
         model.addAttribute("states", stateRepository.findAll());
+        model.addAttribute("userManager", userManager);
         return "contract";
     }
 
@@ -65,6 +71,7 @@ public class ContractController {
         model.addAttribute("contract", contract);
         model.addAttribute("billingUnitIDs", getBillingUnitIDs());
         model.addAttribute("states", stateRepository.findAll());
+        model.addAttribute("userManager", userManager);
         return "contract";
     }
 
@@ -75,7 +82,7 @@ public class ContractController {
         BillingUnit billingUnit;
         List<BillingUnit> billingUnits = billingUnitRepository.findAllByContract(contract);
         if (billingUnits.isEmpty()) {
-            billingUnit = new BillingUnit("Keine", "", 0, 0.0, 0.0, contract, new ArrayList<>(), false, "", "", stateRepository.findByStateName("NO_STATUS"));
+            billingUnit = new BillingUnit("BUID_" + billingItemID, "", 0, 0.0, 0.0, contract, new ArrayList<>(), false, "", "", stateRepository.findByStateName("NO_STATUS"));
             billingUnit = billingUnitRepository.save(billingUnit);
         } else {
             billingUnit = billingUnitRepository.findByBillingUnitID(billingUnitID);
@@ -95,6 +102,7 @@ public class ContractController {
         model.addAttribute("contract", contract);
         model.addAttribute("billingUnitIDs", getBillingUnitIDs());
         model.addAttribute("states", stateRepository.findAll());
+        model.addAttribute("userManager", userManager);
         return "contract";
     }
 
@@ -107,6 +115,7 @@ public class ContractController {
             selectedBillingItems.addAll(bu.getBillingItems());
         }
         model.addAttribute("billingitems", selectedBillingItems);
+        model.addAttribute("userManager", userManager);
         return "itemsOfContract";
     }
 
@@ -125,6 +134,7 @@ public class ContractController {
 
         model.addAttribute("contracts", searchedContracts);
         model.addAttribute("filter", "");
+        model.addAttribute("userManager", userManager);
         return "contracts";
     }
 
@@ -173,6 +183,7 @@ public class ContractController {
 
         model.addAttribute("contracts", sortList);
         model.addAttribute("filter", filter);
+        model.addAttribute("userManager", userManager);
 
         return "contracts";
     }
