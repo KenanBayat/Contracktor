@@ -75,10 +75,8 @@ public class ContractController {
         List<BillingUnit> billingUnits = billingUnitRepository.findAllByContract(contract);
         if (billingUnitID.equals("Neue anlegen")) {
             billingUnit = new BillingUnit(("BUID_" + billingItemID), "", 0, 0.0, 0.0, contract, new ArrayList<>(), false, "", "", stateRepository.findByStateName("NO_STATUS"));
-            System.out.println(billingUnit.getBillingUnitID());
             billingUnit = billingUnitRepository.save(billingUnit);
-        } else {
-            billingUnit = billingUnitRepository.findByBillingUnitID(billingUnitID);
+            System.out.println(billingUnit.getBillingUnitID());
         }
         BillingItem billingItem = new BillingItem(billingItemID, ("BUID_" + billingItemID), unit, quantity, pricePerUnit, totalPrice, ifc, stateRepository.findByStateName(state), shortDescription, new ArrayList<>());
         billingItem = billingItemRepository.save(billingItem);
