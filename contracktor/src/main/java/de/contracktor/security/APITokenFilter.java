@@ -59,7 +59,6 @@ public class APITokenFilter extends BasicAuthenticationFilter {
 
     @Override
     protected void onUnsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException {
-        super.onUnsuccessfulAuthentication(request,response,failed);
         response.setStatus(401);
     }
 
