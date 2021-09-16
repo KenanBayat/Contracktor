@@ -24,6 +24,8 @@ public class APIResponse {
 
     @Getter @Setter
     private List<Picture> pictures;
+    @Getter @Setter
+    private List<Report> reports;
 
     @Getter @Setter
     boolean writePerm;
@@ -33,7 +35,7 @@ public class APIResponse {
 
     public APIResponse(List<Project> projects, List<Contract> contracts, List<BillingUnit> billingUnits,
                        List<State> states, List<StateTransition> stateTransitions, List<Picture> pictures,
-                       boolean writePerm, String status) {
+                       List<Report> reports, boolean writePerm, String status) {
         this.projects = projects;
         this.contracts = contracts;
         this.billingUnits = billingUnits;
@@ -42,6 +44,7 @@ public class APIResponse {
         this.pictures = pictures;
         this.writePerm = writePerm;
         this.status = status;
+        this.reports = reports;
     }
 
     public APIResponse() {

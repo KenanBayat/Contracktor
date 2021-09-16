@@ -135,8 +135,9 @@ class AppApiControllerTest {
         List<State> stateList = stateRepository.findAll();
         List<StateTransition> stateTransitionList = stateTransitionRepository.findAll();
         List<Picture> pictureList = List.of(picture);
+        List<Report> reportList = List.of(report);
 
-        apiResponse = new APIResponse(projectList,contractList,billingUnitList,stateList,stateTransitionList,pictureList,false,"OK");
+        apiResponse = new APIResponse(projectList,contractList,billingUnitList,stateList,stateTransitionList,pictureList,reportList,false,"OK");
 
         ContracktorUserDetails contracktorUserDetails = userDetailsServiceH2.loadUserByUsername("Testo");
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(contracktorUserDetails,"test",
