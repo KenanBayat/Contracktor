@@ -187,7 +187,7 @@
 
         <div class="py-2"></div>
 
-        <div class="card">
+        <div class="card" th:if="${userManager.isCurrentUserAppAdmin()}">
           <div class="card-body">
 
             <div class="input-group mb-3">
