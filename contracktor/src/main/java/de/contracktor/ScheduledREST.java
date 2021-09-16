@@ -16,14 +16,29 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * This class manages the periodic data fetch from the provided adesso API.
+ */
 @Component
 public class ScheduledREST {
 
+    /**
+     * The base url
+     */
     private String url = "http://localhost:3000/api/v1/";
+    /**
+     * credentials for api access
+     */
     private final String credentials = "Bearer 123";
     @SuppressWarnings("rawtypes")
+    /**
+     * Http entity for the header
+     */
 	private static HttpEntity entity;
-    
+
+    /**
+     *
+     */
     @Autowired
     private AdessoAPIService adesso;
 
@@ -37,6 +52,15 @@ public class ScheduledREST {
     public void initializeHeader() {
         headers.set("Authorization", credentials);
         entity = new HttpEntity(headers);
+        // TODO: initialize url with value from txt
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @Scheduled(fixedRate = 300000)
