@@ -33,7 +33,7 @@ public class APITokenFilter extends BasicAuthenticationFilter {
 
     @Override
     protected void onSuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, Authentication authResult) throws IOException {
-        Algorithm encoder = Algorithm.HMAC256("test".getBytes());
+        Algorithm encoder = Algorithm.HMAC256(APIAuthorizationFilter.KEY.getBytes());
         String token = JWT.create()
                 .withSubject(authResult.getName())
                 .withIssuer("ContracktorWEB")

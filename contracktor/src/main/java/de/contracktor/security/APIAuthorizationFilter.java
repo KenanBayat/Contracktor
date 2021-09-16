@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 public class APIAuthorizationFilter extends BasicAuthenticationFilter {
 
     private UserDetailsServiceH2 userDetailsServiceH2;
+    static final String KEY = "k3dnG4XHCyqX5z";
 
     public APIAuthorizationFilter(AuthenticationManager authenticationManager, UserDetailsServiceH2 userDetailsServiceH2) {
         super(authenticationManager);
@@ -41,7 +42,7 @@ public class APIAuthorizationFilter extends BasicAuthenticationFilter {
             if (auth != null && auth.startsWith("Bearer ")) {
                 try {
                     auth = auth.substring("Bearer ".length());
-                    Algorithm algorithm = Algorithm.HMAC256("test".getBytes());
+                    Algorithm algorithm = Algorithm.HMAC256(KEY.getBytes());
                     JWTVerifier verifier = JWT.require(algorithm).build();
                     DecodedJWT decodedJWT = verifier.verify(auth);
                     String username = decodedJWT.getSubject();
