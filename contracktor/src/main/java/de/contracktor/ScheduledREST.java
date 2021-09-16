@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +21,8 @@ public class ScheduledREST {
 
     private String url = "http://localhost:3000/api/v1/";
     private final String credentials = "Bearer 123";
-    private static HttpEntity entity;
+    @SuppressWarnings("rawtypes")
+	private static HttpEntity entity;
     
     @Autowired
     private AdessoAPIService adesso;
@@ -31,7 +31,8 @@ public class ScheduledREST {
     RestTemplate restTemplate = new RestTemplate();
     HttpHeaders headers = new org.springframework.http.HttpHeaders();
 
-    @PostConstruct
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	@PostConstruct
     @DependsOn("init")
     public void initializeHeader() {
         headers.set("Authorization", credentials);

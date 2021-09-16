@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import de.contracktor.model.BillingItem;
@@ -373,6 +372,7 @@ public class DatabaseService {
 		return new ArrayList<>(List.of(contract.getConsignee(),contract.getContractor()));
 	}
 
+	@SuppressWarnings("unused")
 	private List<String> getOrg(BillingUnit billingUnit) {
 		return getOrg(billingUnit.getContract());
 	}

@@ -1,6 +1,5 @@
 package de.contracktor.repository;
 
-import de.contracktor.model.Organisation;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

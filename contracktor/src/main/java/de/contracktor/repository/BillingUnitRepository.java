@@ -2,11 +2,7 @@ package de.contracktor.repository;
 
 import de.contracktor.model.Contract;
 import org.springframework.data.repository.CrudRepository;
-
-import de.contracktor.model.BillingItem;
 import de.contracktor.model.BillingUnit;
-
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 

@@ -18,6 +18,7 @@ public final class DateFormatter {
 	}
 	
 
+	@SuppressWarnings("deprecation")
 	public static String format(Long time) { 
 		if (time == null) {
 			return "";
