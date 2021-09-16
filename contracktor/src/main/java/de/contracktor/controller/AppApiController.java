@@ -59,6 +59,7 @@ public class AppApiController {
     public APIResponse updateController(@RequestBody APIUpdate update) {
         List<BillingItemUpdate> billingItemUpdates = update.getBillingItemUpdates();
         List<Picture> pictureUpdates = update.getPictureList();
+        List<Report> reportList = update.getReportList();
 
         try {
             @SuppressWarnings("unused")
@@ -98,6 +99,11 @@ public class AppApiController {
                         Optional<BillingItem> savedItem = billingItemRepository.findByBillingItemID(report.getBillingItem().getBillingItemID());
                         report.setBillingItem(savedItem.get());
                         reportUpdates.add(report);
+                    }
+                }
+                for (Report report : reportList) {
+                    if (!reportList.contains(report)) {
+                        reportList.add(report);
                     }
                 }
                 reportRepository.saveAll(reportUpdates);

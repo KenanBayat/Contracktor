@@ -162,7 +162,7 @@ class AppApiControllerTest {
         State newState = stateRepository.findByStateName("DENY");
         BillingItemUpdate billingItemUpdate = new BillingItemUpdate("1",newState,2000);
         apiUpdate.setBillingItemUpdates(List.of(billingItemUpdate));
-        apiUpdate.setPictureList(new ArrayList<>());
+        apiUpdate.setPictureList(null);
         mockMvc.perform(post("/api/update").content(objectMapper.writeValueAsString(apiUpdate)).contentType("application/json")).andReturn();
         BillingItem updatedItem = billingItemRepository.findByBillingItemID("1").get();
         assertTrue(updatedItem.getStatus().getStateName() == newState.getStateName() && updatedItem.getLastModified() == 2000);
@@ -176,6 +176,7 @@ class AppApiControllerTest {
         byte[] image = "Test".getBytes(StandardCharsets.UTF_8);
         Picture newPicture = new Picture(123,image,report);
         apiUpdate.setPictureList(List.of(newPicture));
+        apiUpdate.setReportList(List.of(report));
         mockMvc.perform(post("/api/update").content(objectMapper.writeValueAsString(apiUpdate)).contentType("application/json")).andReturn();
         Optional<Report> savedReport = reportRepository.findById(1);
         Optional<Picture> savedPicture = pictureRepo.findById(1);
@@ -220,13 +221,13 @@ class AppApiControllerTest {
         State newState = stateRepository.findByStateName("DENY");
         BillingItemUpdate billingItemUpdate = new BillingItemUpdate("1",newState,2000);
         apiUpdate.setBillingItemUpdates(List.of(billingItemUpdate));
-        apiUpdate.setPictureList(new ArrayList<>());
+        apiUpdate.setPictureList(null);
 
         APIUpdate apiUpdate2 = new APIUpdate();
         State newState2 = stateRepository.findByStateName("OK");
         BillingItemUpdate billingItemUpdate2 = new BillingItemUpdate("1",newState2,1000);
         apiUpdate2.setBillingItemUpdates(List.of(billingItemUpdate2));
-        apiUpdate2.setPictureList(new ArrayList<>());
+        apiUpdate2.setPictureList(null);
 
         mockMvc.perform(post("/api/update").content(objectMapper.writeValueAsString(apiUpdate)).contentType("application/json")).andReturn();
         mockMvc.perform(post("/api/update").content(objectMapper.writeValueAsString(apiUpdate2)).contentType("application/json")).andReturn();
