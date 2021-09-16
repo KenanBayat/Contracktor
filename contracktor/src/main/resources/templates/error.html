@@ -1,19 +1,72 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:include="layout :: page">
 <head>
     <meta charset="UTF-8">
     <title>ERROR</title>
     <link rel="stylesheet" th:href="@{/css/error.css}"/>
+    <title>Contracktor</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="icon" type="image/x-icon" th:href="@{/img/favicon.ico}"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.0/css/bootstrap.min.css}"/>
 </head>
 <body>
 <th:block th:fragment="content">
     <div class="container">
-        <center>
+        <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom bg-dark text-white fixed-top" th:fragment="navbar">
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                <img th:style="'margin-left: 30px'" class="bi me-2" th:src="@{/img/logo.svg}" width="40" height="40"></img>
+                <span class="fs-4 text-white">Contracktor</span>
+            </a>
 
+            <!-- Liste von Links -->
+            <ul class="nav nav-pills me-auto">
+
+                <!-- Statistiken -->
+                <li class="nav-item"><a th:href="@{'/statistic'}" class="nav-link px-2 text-white" th:style="'margin-right:20px'">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-bar-chart" viewBox="0 0 16 16" th:style="'margin-right:5px'">
+                        <path d="M4 11H2v3h2v-3zm5-4H7v7h2V7zm5-5v12h-2V2h2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1h-2zM6 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm-5 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-3z"/>
+                    </svg>
+                    Statistiken</a>
+                </li>
+
+                <!-- Projekte -->
+                <li class="nav-item"><a th:href="@{'/projects'}" class="nav-link px-2 text-white" th:style="'margin-right:20px'">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-building" viewBox="0 0 16 16" th:style="'margin-right:5px'">
+                        <path fill-rule="evenodd" d="M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022zM6 8.694 1 10.36V15h5V8.694zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5V15z"/>
+                        <path d="M2 11h1v1H2v-1zm2 0h1v1H4v-1zm-2 2h1v1H2v-1zm2 0h1v1H4v-1zm4-4h1v1H8V9zm2 0h1v1h-1V9zm-2 2h1v1H8v-1zm2 0h1v1h-1v-1zm2-2h1v1h-1V9zm0 2h1v1h-1v-1zM8 7h1v1H8V7zm2 0h1v1h-1V7zm2 0h1v1h-1V7zM8 5h1v1H8V5zm2 0h1v1h-1V5zm2 0h1v1h-1V5zm0-2h1v1h-1V3z"/>
+                    </svg>
+                    Projekte</a>
+                </li>
+
+                <!-- Verträge -->
+                <li class="nav-item"><a th:href="@{'/contracts'}" class="nav-link px-2 text-white" th:style="'margin-right:20px'">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-briefcase" viewBox="0 0 16 16" th:style="'margin-right:5px'">
+                        <path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5zm1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0zM1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5z"/>
+                    </svg>
+                    Verträge</a>
+                </li>
+
+                <!-- Leistungspositonen -->
+                <li class="nav-item">
+                    <a th:href="@{'/billingitems'}" class="nav-link px-2 text-white" th:style="'margin-right:20px'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-cone-striped" viewBox="0 0 16 16" th:style="'margin-right:5px'">
+                            <path d="m9.97 4.88.953 3.811C10.159 8.878 9.14 9 8 9c-1.14 0-2.158-.122-2.923-.309L6.03 4.88C6.635 4.957 7.3 5 8 5s1.365-.043 1.97-.12zm-.245-.978L8.97.88C8.718-.13 7.282-.13 7.03.88L6.275 3.9C6.8 3.965 7.382 4 8 4c.618 0 1.2-.036 1.725-.098zm4.396 8.613a.5.5 0 0 1 .037.96l-6 2a.5.5 0 0 1-.316 0l-6-2a.5.5 0 0 1 .037-.96l2.391-.598.565-2.257c.862.212 1.964.339 3.165.339s2.303-.127 3.165-.339l.565 2.257 2.391.598z"/>
+                        </svg>
+                        Leistungspositionen</a>
+                </li>
+            </ul>
+
+            <!-- Logout -->
+            <div th:style="'margin-right:30px'">
+                <a th:href="@{/logout}" type="button" class="btn btn-outline-light me-2">Logout</a>
+            </div>
+        </header>
+        <center>
+            <div th:style="'margin-top: 200px'"></div>
             <h2>ERROR 404</h2>
-            <p>Ein Fehler ist aufgetreten.</p>
+            <p>Ein Fehler ist aufgetreten. Entweder existiert die gewünschte Seite nicht oder Ihre Eingabe war nicht valide.</p>
         </center>
     </div>
 </th:block>
+<script th:src="@{/webjars/bootstrap/5.1.0/js/bootstrap.min.js}"></script>
 </body>
 </html>
