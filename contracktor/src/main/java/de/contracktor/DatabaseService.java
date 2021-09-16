@@ -184,7 +184,7 @@ public class DatabaseService {
 	 */
 	public List<Project> findByProjectNameContains(String search) {
 		if (!userManager.hasCurrentUserReadPerm()) {
-			return null;
+			return new ArrayList<Project>();
 		}
 		return projectRepo.findByNameContainsIgnoreCaseAndOwner_OrganisationNameIgnoreCase(search, userManager.getCurrentOrganisation());
 	}
@@ -197,7 +197,7 @@ public class DatabaseService {
 	 */
 	public List<Contract> findByContractNameContains(String search) {
 		if (!userManager.hasCurrentUserReadPerm()) {
-			return null;
+			return new ArrayList<Contract>();
 		}
 		return contractRepo.findByNameContainsIgnoreCaseAndProject_Owner_OrganisationNameIgnoreCase(search, userManager.getCurrentOrganisation());
 	}
@@ -210,7 +210,7 @@ public class DatabaseService {
 	 */
 	public List<BillingItem> findByBillingItemIDContains(String search) {
 		if (!userManager.hasCurrentUserReadPerm()) {
-			return null;
+			return new ArrayList<BillingItem>();
 		}
 		List<BillingItem> billingItems =  billingItemRepo.findByBillingItemIDContains(search);
 		for (BillingItem billingItem : billingItems) {
