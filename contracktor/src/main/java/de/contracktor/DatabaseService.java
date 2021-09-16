@@ -430,6 +430,7 @@ public class DatabaseService {
 	public void setURL(String url) throws IOException {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(new File("data\\URL.txt")));
 		writer.write(url);
+		ScheduledREST.setRestUrl(url);
 		writer.close();
 	}
 
