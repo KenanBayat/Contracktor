@@ -73,7 +73,7 @@ public class ItemController {
 
 
         billingItem = billingItemRepository.findByBillingItemID(billingItem.getBillingItemID()).get();
-        BillingItem item = new BillingItem(billingItemID, "", unit, quantity, pricePerUnit, totalPrice, ifc, stateRepository.findByStateName(state), shortDescription, new ArrayList<>());
+        BillingItem item = new BillingItem(billingItemID, billingUnitID, unit, quantity, pricePerUnit, totalPrice, ifc, stateRepository.findByStateName(state), shortDescription, new ArrayList<>());
         item = billingItemRepository.save(item);
         List<BillingItem> list = billingItem.getBillingItems();
         list.add(item);
