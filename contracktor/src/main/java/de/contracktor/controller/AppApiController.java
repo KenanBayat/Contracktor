@@ -135,7 +135,7 @@ public class AppApiController {
         response.setBillingUnits(billingUnitRepository.findByContractIsIn(response.getContracts()));
         response.setStates(stateRepository.findAll());
         response.setStateTransitions(stateTransitionRepository.findAll());
-        response.setReports(reportRepository.findByOrganisation_OrganisationNameIgnoreCase(organisation));
+        response.setPictures(pictureRepository.findByReport_Organisation_OrganisationNameIgnoreCase(organisation));
         response.setStatus("OK");
         return response;
     }
