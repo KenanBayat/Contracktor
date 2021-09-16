@@ -443,7 +443,8 @@ public class DatabaseService {
 		File file = new File("data\\URL.txt");
 		FileReader fR = new FileReader(file);
 		BufferedReader bR = new BufferedReader(fR);
+		String context = bR.readLine();
 		bR.close();
-		return bR.readLine();
+		return context;
 	}
 }
