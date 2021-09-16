@@ -1,5 +1,7 @@
 package de.contracktor.controller;
 
+import de.contracktor.DatabaseService;
+import de.contracktor.UserManager;
 import de.contracktor.model.BillingItem;
 import de.contracktor.model.Contract;
 import de.contracktor.repository.BillingItemRepository;
@@ -20,6 +22,12 @@ public class BillingItemStatisticController {
     @Autowired
     BillingItemRepository billingItemRepository;
 
+    @Autowired
+    UserManager userManager;
+
+    @Autowired
+    DatabaseService databaseService;
+
     List<BillingItem> selectedBillingItems = new ArrayList<>();
 
     List<BillingItem> searchedBillingItems = new ArrayList<>();
@@ -27,9 +35,10 @@ public class BillingItemStatisticController {
     @GetMapping("/billingitem-statistic")
     public String getBillingitemStatistic(Model model) {
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("labels", getLabels());
         model.addAttribute("count", getCount());
-        model.addAttribute("billingitems", billingItemRepository.findAll());
+        model.addAttribute("billingitems", databaseService.getAllBillingItems());
         model.addAttribute("selectedBillingitems", selectedBillingItems);
         model.addAttribute("filter", "");
         return "billingitem-statistic";
@@ -37,11 +46,12 @@ public class BillingItemStatisticController {
 
     @PostMapping("/billingitem-statistic/addAll")
     public String getAddAllBillingItemStatistic(Model model) {
-        selectedBillingItems = billingItemRepository.findAll();
+        selectedBillingItems = databaseService.getAllBillingItems();
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("labels", getLabels());
         model.addAttribute("count", getCount());
-        model.addAttribute("billingitems", billingItemRepository.findAll());
+        model.addAttribute("billingitems", databaseService.getAllBillingItems());
         model.addAttribute("selectedBillingitems", selectedBillingItems);
         model.addAttribute("filter", "");
 
@@ -52,9 +62,10 @@ public class BillingItemStatisticController {
     public String getRemoveAllBillingItemStatistic(Model model) {
         selectedBillingItems = new ArrayList<>();
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("labels", getLabels());
         model.addAttribute("count", getCount());
-        model.addAttribute("billingitems", billingItemRepository.findAll());
+        model.addAttribute("billingitems", databaseService.getAllBillingItems());
         model.addAttribute("selectedBillingitems", selectedBillingItems);
         model.addAttribute("filter", "");
 
@@ -63,7 +74,7 @@ public class BillingItemStatisticController {
 
     @PostMapping("/billingitem-statistic/remove")
     public String getRemoveProjectStatistic(@RequestParam String id, Model model) {
-        List<BillingItem> billingItems = billingItemRepository.findAll();
+        List<BillingItem> billingItems = databaseService.getAllBillingItems();
         BillingItem billingItem = billingItemRepository.findByBillingItemID(id).get();
         List<BillingItem> newSelected = new ArrayList<>();
         for (BillingItem b : selectedBillingItems) {
@@ -73,9 +84,10 @@ public class BillingItemStatisticController {
         }
         selectedBillingItems = newSelected;
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("labels", getLabels());
         model.addAttribute("count", getCount());
-        model.addAttribute("billingitems", billingItemRepository.findAll());
+        model.addAttribute("billingitems", databaseService.getAllBillingItems());
         model.addAttribute("selectedBillingitems", selectedBillingItems);
         model.addAttribute("filter", "");
         return "billingitem-statistic";
@@ -94,9 +106,10 @@ public class BillingItemStatisticController {
             selectedBillingItems.add(billingItem);
         }
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("labels", getLabels());
         model.addAttribute("count", getCount());
-        model.addAttribute("billingitems", billingItemRepository.findAll());
+        model.addAttribute("billingitems", databaseService.getAllBillingItems());
         model.addAttribute("selectedBillingitems", selectedBillingItems);
         model.addAttribute("filter", "");
         return "billingitem-statistic";
@@ -107,7 +120,7 @@ public class BillingItemStatisticController {
         List<BillingItem> sortList = searchedBillingItems;
 
         if(searchedBillingItems.isEmpty()) {
-            sortList = billingItemRepository.findAll();
+            sortList = databaseService.getAllBillingItems();
         }
         if(filter.equals("description_asc")) {
             sortList = sortList.stream().sorted(Comparator.comparing(BillingItem::getLowerDescription)).collect(Collectors.toList());
@@ -152,6 +165,7 @@ public class BillingItemStatisticController {
             Collections.reverse(sortList);
         }
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("labels", getLabels());
         model.addAttribute("count", getCount());
         model.addAttribute("billingitems", sortList);
@@ -162,7 +176,7 @@ public class BillingItemStatisticController {
 
     @PostMapping("/billingitem-statistic/search")
     public String getSearchAllBillingItemStatistic(@RequestParam String search, Model model) {
-        List<BillingItem> billingItems = billingItemRepository.findAll();
+        List<BillingItem> billingItems = databaseService.getAllBillingItems();
 
         String finalSearch = search.toLowerCase();
         searchedBillingItems = billingItems.stream().filter(item -> item.getShortDescription().toLowerCase().contains(finalSearch)
@@ -174,6 +188,7 @@ public class BillingItemStatisticController {
                 )
                 .collect(Collectors.toList());
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("labels", getLabels());
         model.addAttribute("count", getCount());
         model.addAttribute("billingitems", searchedBillingItems);
@@ -186,9 +201,10 @@ public class BillingItemStatisticController {
     public String getAddAllBillingItemStatistic(@RequestParam String id, Model model) {
         selectedBillingItems = List.of(billingItemRepository.findByBillingItemID(id).get());
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("labels", getLabels());
         model.addAttribute("count", getCount());
-        model.addAttribute("billingitems", billingItemRepository.findAll());
+        model.addAttribute("billingitems", databaseService.getAllBillingItems());
         model.addAttribute("selectedBillingitems", selectedBillingItems);
         model.addAttribute("filter", "");
 
@@ -200,7 +216,10 @@ public class BillingItemStatisticController {
     // Helper
     public List<String> getLabels() {
         List<String> labels = new ArrayList<>();
-        List<BillingItem> items = getSelectedBillingItems();
+        List<BillingItem> items = new ArrayList<>();
+        for (BillingItem b : selectedBillingItems) {
+            items.addAll(databaseService.getAllBillingItemsOfBillingItem(b));
+        }
         for (BillingItem b : items) {
             labels.add(b.getStatus().getStateName());
         }
@@ -211,7 +230,10 @@ public class BillingItemStatisticController {
     }
 
     public List<Integer> getCount() {
-        List<BillingItem> items = getSelectedBillingItems();
+        List<BillingItem> items = new ArrayList<>();
+        for (BillingItem b : selectedBillingItems) {
+            items.addAll(databaseService.getAllBillingItemsOfBillingItem(b));
+        }
         List<String> labels = getLabels();
         List<Integer> count = new ArrayList<>();
         for(String s : labels) {

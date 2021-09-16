@@ -1,5 +1,7 @@
 package de.contracktor.controller;
 
+import de.contracktor.DatabaseService;
+import de.contracktor.UserManager;
 import de.contracktor.model.BillingItem;
 import de.contracktor.model.BillingUnit;
 import de.contracktor.model.Contract;
@@ -34,6 +36,12 @@ public class ContractStatisticController {
     @Autowired
     BillingItemRepository billingItemRepository;
 
+    @Autowired
+    UserManager userManager;
+
+    @Autowired
+    DatabaseService databaseService;
+
     List<Contract> selectedContracts = new ArrayList<>();
 
     List<Contract> searchedContracts = new ArrayList<>();
@@ -41,9 +49,10 @@ public class ContractStatisticController {
     @GetMapping("/contract-statistic")
     public String getContractStatistic(Model model) {
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("labels", getContractLabels());
         model.addAttribute("count", getContractCount());
-        model.addAttribute("contracts", contractRepository.findAll());
+        model.addAttribute("contracts", databaseService.getAllContracts());
         model.addAttribute("selectedContracts", selectedContracts);
         model.addAttribute("filter", "");
 
@@ -52,11 +61,12 @@ public class ContractStatisticController {
 
     @PostMapping("/contract-statistic/addAll")
     public String getAddAllContractStatistic(Model model) {
-        selectedContracts = contractRepository.findAll();
+        selectedContracts = databaseService.getAllContracts();
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("labels", getContractLabels());
         model.addAttribute("count", getContractCount());
-        model.addAttribute("contracts", contractRepository.findAll());
+        model.addAttribute("contracts", databaseService.getAllContracts());
         model.addAttribute("selectedContracts", selectedContracts);
         model.addAttribute("filter", "");
 
@@ -67,9 +77,10 @@ public class ContractStatisticController {
     public String getRemoveAllContractStatistic(Model model) {
         selectedContracts = new ArrayList<>();
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("labels", getContractLabels());
         model.addAttribute("count", getContractCount());
-        model.addAttribute("contracts", contractRepository.findAll());
+        model.addAttribute("contracts", databaseService.getAllContracts());
         model.addAttribute("selectedContracts", selectedContracts);
         model.addAttribute("filter", "");
 
@@ -78,7 +89,7 @@ public class ContractStatisticController {
 
     @PostMapping("/contract-statistic/remove")
     public String getRemoveProjectStatistic(@RequestParam int id, Model model) {
-        List<Contract> contracts = contractRepository.findAll();
+        List<Contract> contracts = databaseService.getAllContracts();
         Contract contract = contractRepository.findByContractID(id);
         List<Contract> newSelected = new ArrayList<>();
         for (Contract c : selectedContracts) {
@@ -88,9 +99,10 @@ public class ContractStatisticController {
         }
         selectedContracts = newSelected;
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("labels", getContractLabels());
         model.addAttribute("count", getContractCount());
-        model.addAttribute("contracts", contractRepository.findAll());
+        model.addAttribute("contracts", databaseService.getAllContracts());
         model.addAttribute("selectedContracts", selectedContracts);
         model.addAttribute("filter", "");
         return "contract-statistic";
@@ -109,9 +121,10 @@ public class ContractStatisticController {
             selectedContracts.add(contract);
         }
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("labels", getContractLabels());
         model.addAttribute("count", getContractCount());
-        model.addAttribute("contracts", contractRepository.findAll());
+        model.addAttribute("contracts", databaseService.getAllContracts());
         model.addAttribute("selectedContracts", selectedContracts);
         model.addAttribute("filter", "");
         return "contract-statistic";
@@ -119,7 +132,7 @@ public class ContractStatisticController {
 
     @PostMapping("/contract-statistic/search")
     public String getSearchAllProjectStatistic(@RequestParam String search, Model model) {
-        List<Contract> contracts = contractRepository.findAll();
+        List<Contract> contracts = databaseService.getAllContracts();
 
         String finalSearch = search.toLowerCase();
         searchedContracts = contracts.stream().filter(contract -> contract.getName().toLowerCase().contains(finalSearch)
@@ -130,6 +143,7 @@ public class ContractStatisticController {
                 )
                 .collect(Collectors.toList());
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("labels", getContractLabels());
         model.addAttribute("count", getContractCount());
         model.addAttribute("contracts", searchedContracts);
@@ -143,7 +157,7 @@ public class ContractStatisticController {
         List<Contract> sortList = searchedContracts;
 
         if(searchedContracts.isEmpty()) {
-            sortList = contractRepository.findAll();
+            sortList = databaseService.getAllContracts();
         }
         if(filter.equals("name_asc")) {
             sortList = sortList.stream().sorted(Comparator.comparing(Contract::getLowerName)).collect(Collectors.toList());
@@ -181,6 +195,7 @@ public class ContractStatisticController {
             Collections.reverse(sortList);
         }
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("labels", getContractLabels());
         model.addAttribute("count", getContractCount());
         model.addAttribute("contracts", sortList);
@@ -194,9 +209,10 @@ public class ContractStatisticController {
     public String getGenerateContractStatistic(@RequestParam int id, Model model) {
         selectedContracts = List.of(contractRepository.findByContractID(id));
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("labels", getContractLabels());
         model.addAttribute("count", getContractCount());
-        model.addAttribute("contracts", contractRepository.findAll());
+        model.addAttribute("contracts", databaseService.getAllContracts());
         model.addAttribute("selectedContracts", selectedContracts);
         model.addAttribute("filter", "");
 
@@ -205,7 +221,10 @@ public class ContractStatisticController {
 
     public List<String> getContractLabels() {
         List<String> labels = new ArrayList<>();
-        List<BillingItem> selectedBillingItems = getSelectBillingItemsContracts();
+        List<BillingItem> selectedBillingItems = new ArrayList<>();
+        for(Contract c : selectedContracts) {
+            selectedBillingItems.addAll(databaseService.getAllBillingItemsOfContract(c));
+        }
         for (BillingItem b: selectedBillingItems) {
             labels.add(b.getStatus().getStateName());
         }
@@ -216,7 +235,10 @@ public class ContractStatisticController {
     }
 
     public List<Integer> getContractCount() {
-        List<BillingItem> selectedBillingItems = getSelectBillingItemsContracts();
+        List<BillingItem> selectedBillingItems = new ArrayList<>();
+        for(Contract c : selectedContracts) {
+            selectedBillingItems.addAll(databaseService.getAllBillingItemsOfContract(c));
+        }
         List<String> labels = getContractLabels();
         List<Integer> count = new ArrayList<>();
         for(String s : labels) {
@@ -229,24 +251,5 @@ public class ContractStatisticController {
             count.add(counter);
         }
         return count;
-    }
-
-    public List<BillingItem> getSelectBillingItemsContracts() {
-        List<Contract> contracts = selectedContracts;
-        List<BillingUnit> billingUnits = new ArrayList<>();
-        for (Contract c : contracts) {
-            billingUnits.addAll(billingUnitRepository.findAllByContract(c));
-        }
-        List<BillingItem> selectedBillingItems = new ArrayList<>();
-        for (BillingUnit bu : billingUnits) {
-            selectedBillingItems.addAll(bu.getBillingItems());
-        }
-        List<BillingItem> items = new ArrayList<>();
-        for (BillingItem b : selectedBillingItems) {
-            items.addAll(b.getBillingItems());
-        }
-        selectedBillingItems.addAll(items);
-
-        return selectedBillingItems;
     }
 }

@@ -105,9 +105,9 @@
 
             <!-- Button trigger modal -->
             <div class="py-2"></div>
-            <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                Leistungsposition hinzufügen
-            </button>
+                <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal" th:if="${userManager.hasCurrentUserWritePerm()}">
+                    Leistungsposition hinzufügen
+                </button>
             <div class="py-2"></div>
 
             <!-- Modal -->

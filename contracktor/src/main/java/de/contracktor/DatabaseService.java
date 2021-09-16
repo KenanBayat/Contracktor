@@ -93,7 +93,7 @@ public class DatabaseService {
 	 * @return the billingItems that belong to the given billingItem
 	 */
 	public List<BillingItem> getAllBillingItemsOfBillingItem(BillingItem billingItem) {
-		if (getOrg(billingItem).contains(userManager.getCurrentOrganisation())) {
+		if (!getOrg(billingItem).contains(userManager.getCurrentOrganisation())) {
 			throw new IllegalArgumentException("No access to this resource!");
 		}
 		List<BillingItem> billingItems = new ArrayList<BillingItem>();

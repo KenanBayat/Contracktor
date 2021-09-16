@@ -1,6 +1,7 @@
 package de.contracktor.controller;
 
 import de.contracktor.DatabaseService;
+import de.contracktor.UserManager;
 import de.contracktor.model.BillingItem;
 import de.contracktor.model.BillingUnit;
 import de.contracktor.model.Contract;
@@ -10,6 +11,7 @@ import de.contracktor.repository.BillingUnitRepository;
 import de.contracktor.repository.ContractRepository;
 import de.contracktor.repository.StateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,12 +41,16 @@ public class ContractController {
     @Autowired
     DatabaseService databaseService;
 
+    @Autowired
+    UserManager userManager;
+
     List<Contract> searchedContracts = new ArrayList<>();
 
     Contract contract = null;
     
     @GetMapping("/contracts")
     public String getContracts(Model model) {
+        model.addAttribute("userManager", userManager);
         model.addAttribute("contracts", databaseService.getAllContracts());
         model.addAttribute("filter", "");
 
@@ -53,6 +59,7 @@ public class ContractController {
 
     @GetMapping("/contract")
     public String getContract(Model model) {
+        model.addAttribute("userManager", userManager);
         model.addAttribute("contract", contract);
         model.addAttribute("billingUnitIDs", getBillingUnitIDs());
         model.addAttribute("states", stateRepository.findAll());
@@ -62,6 +69,7 @@ public class ContractController {
     @PostMapping("/contract")
     public String getContract(@RequestParam int id, Model model) {
         contract = contractRepository.findByContractID(id);
+        model.addAttribute("userManager", userManager);
         model.addAttribute("contract", contract);
         model.addAttribute("billingUnitIDs", getBillingUnitIDs());
         model.addAttribute("states", stateRepository.findAll());
@@ -71,7 +79,9 @@ public class ContractController {
     @PostMapping("/contract/add")
     public String addBillingItem(@RequestParam String billingItemID, @RequestParam String billingUnitID, @RequestParam String unit, @RequestParam double quantity,
                                  @RequestParam double pricePerUnit, @RequestParam double totalPrice, @RequestParam String ifc, @RequestParam String state, @RequestParam String shortDescription, Model model) {
-        
+        if (!userManager.hasCurrentUserWritePerm()) {
+            throw new AuthorizationServiceException("No access");
+        }
     	BillingUnit billingUnit;
         BillingItem billingItem;
         if (billingUnitID.equals("Neue anlegen")) {
@@ -96,6 +106,7 @@ public class ContractController {
         billingUnit.setBillingItems(current);
         billingUnit = billingUnitRepository.save(billingUnit);
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("contract", contract);
         model.addAttribute("billingUnitIDs", getBillingUnitIDs());
         model.addAttribute("states", stateRepository.findAll());
@@ -110,6 +121,7 @@ public class ContractController {
         for (BillingUnit bu : billingUnits) {
             selectedBillingItems.addAll(bu.getBillingItems());
         }
+        model.addAttribute("userManager", userManager);
         model.addAttribute("billingitems", selectedBillingItems);
         return "itemsOfContract";
     }
@@ -127,6 +139,7 @@ public class ContractController {
                 )
                 .collect(Collectors.toList());
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("contracts", searchedContracts);
         model.addAttribute("filter", "");
         return "contracts";
@@ -175,6 +188,7 @@ public class ContractController {
             Collections.reverse(sortList);
         }
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("contracts", sortList);
         model.addAttribute("filter", filter);
 

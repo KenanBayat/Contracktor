@@ -85,6 +85,7 @@
                                     <select class="form-select" aria-label="Default select example" name="id">
                                         <option th:each="transition : ${transitions}" th:if="${billingitem.getStatus().getId() == transition.getStartState().getId()}" th:value="${transition.getEndState().getId()}" th:text="${transition.getEndState().getStateName()}"></option>
                                     </select>
+                                    <input class="form-control" type="text" placeholder="Kommentar..." name="comment" th:style="'min-width: 500px'">
                                     <button type="submit" class="btn btn-outline-dark">Ändern</button>
                                     </div>
                                 </form>
@@ -127,7 +128,7 @@
 
                     <!-- Button trigger modal -->
                     <div class="py-2"></div>
-                    <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal" th:if="${userManager.hasCurrentUserWritePerm()}">
                         Leistungsposition hinzufügen
                     </button>
                     <div class="py-2"></div>
