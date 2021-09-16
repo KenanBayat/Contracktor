@@ -134,9 +134,9 @@ class AppApiControllerTest {
         List<BillingUnit> billingUnitList = List.of(billingUnit);
         List<State> stateList = stateRepository.findAll();
         List<StateTransition> stateTransitionList = stateTransitionRepository.findAll();
-        List<Report> reportList = List.of(report);
+        List<Picture> pictureList = List.of(picture);
 
-        apiResponse = new APIResponse(projectList,contractList,billingUnitList,stateList,stateTransitionList,reportList,false,"OK");
+        apiResponse = new APIResponse(projectList,contractList,billingUnitList,stateList,stateTransitionList,pictureList,false,"OK");
 
         ContracktorUserDetails contracktorUserDetails = userDetailsServiceH2.loadUserByUsername("Testo");
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(contracktorUserDetails,"test",
@@ -155,6 +155,7 @@ class AppApiControllerTest {
 
     @Test
     void testValidBillingItemUpdate() throws Exception {
+        BillingItem oldItem = billingItemRepository.findByBillingItemID("1").get();
         APIUpdate apiUpdate = new APIUpdate();
         State newState = stateRepository.findByStateName("DENY");
         BillingItemUpdate billingItemUpdate = new BillingItemUpdate("1",newState,2000);
@@ -170,7 +171,8 @@ class AppApiControllerTest {
         APIUpdate apiUpdate = new APIUpdate();
         apiUpdate.setBillingItemUpdates(new ArrayList<>());
         Report report = new Report(25, billingItem, testOrganisation, creationDate,"Testo","Bla");
-        Picture newPicture = new Picture(123,"Test".getBytes(StandardCharsets.UTF_8),report);
+        byte[] image = "Test".getBytes(StandardCharsets.UTF_8);
+        Picture newPicture = new Picture(123,image,report);
         apiUpdate.setPictureList(List.of(newPicture));
         mockMvc.perform(post("/api/update").content(objectMapper.writeValueAsString(apiUpdate)).contentType("application/json")).andReturn();
         Optional<Report> savedReport = reportRepository.findById(1);
