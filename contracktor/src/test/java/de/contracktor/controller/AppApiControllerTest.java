@@ -97,9 +97,6 @@ class AppApiControllerTest {
 
         State state = stateRepository.findByStateName("OPEN");
 
-        @SuppressWarnings("unused")
-		State state2 = stateRepository.findByStateName("OK");
-
         Project project = new Project(200000, "test", creationDate, completionDate, address,
 				100.0, testOrganisation, "hans", state, image, "");
 
@@ -141,13 +138,14 @@ class AppApiControllerTest {
 
         apiResponse = new APIResponse(projectList,contractList,billingUnitList,stateList,stateTransitionList,reportList,false,"OK");
 
+        ContracktorUserDetails contracktorUserDetails = userDetailsServiceH2.loadUserByUsername("Testo");
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(contracktorUserDetails,"test",
+                List.of(new SimpleGrantedAuthority("USER"))));
+
     }
 
     @Test
     void testValidDownload() throws Exception {
-        ContracktorUserDetails contracktorUserDetails = userDetailsServiceH2.loadUserByUsername("Testo");
-        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(contracktorUserDetails,"test",
-                List.of(new SimpleGrantedAuthority("USER"))));
         MvcResult result = mockMvc.perform(post("/api/update").content("{}").contentType("application/json")).andReturn();
         String actualResponse = result.getResponse().getContentAsString();
         String expectedResponse = objectMapper.writeValueAsString(apiResponse);
@@ -157,9 +155,6 @@ class AppApiControllerTest {
 
     @Test
     void testValidBillingItemUpdate() throws Exception {
-        ContracktorUserDetails contracktorUserDetails = userDetailsServiceH2.loadUserByUsername("Testo");
-        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(contracktorUserDetails,"test",
-                List.of(new SimpleGrantedAuthority("USER"))));
         APIUpdate apiUpdate = new APIUpdate();
         State newState = stateRepository.findByStateName("DENY");
         BillingItemUpdate billingItemUpdate = new BillingItemUpdate("1",newState,2000);
@@ -172,9 +167,6 @@ class AppApiControllerTest {
 
     @Test
     void testValidImageUpdate() throws Exception{
-        ContracktorUserDetails contracktorUserDetails = userDetailsServiceH2.loadUserByUsername("Testo");
-        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(contracktorUserDetails,
-                "test",List.of(new SimpleGrantedAuthority("USER"))));
         APIUpdate apiUpdate = new APIUpdate();
         apiUpdate.setBillingItemUpdates(new ArrayList<>());
         Report report = new Report(25, billingItem, testOrganisation, creationDate,"Testo","Bla");
@@ -188,9 +180,6 @@ class AppApiControllerTest {
 
     @Test
     void testUndefinedBillingItemUpdate() throws Exception{
-        ContracktorUserDetails contracktorUserDetails = userDetailsServiceH2.loadUserByUsername("Testo");
-        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(contracktorUserDetails,"test",
-                List.of(new SimpleGrantedAuthority("USER"))));
         APIUpdate apiUpdate = new APIUpdate();
         State newState = stateRepository.findByStateName("DENY");
         BillingItemUpdate billingItemUpdate = new BillingItemUpdate("420",newState,2000);

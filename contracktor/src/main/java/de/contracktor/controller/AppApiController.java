@@ -106,7 +106,7 @@ public class AppApiController {
     }
 
     /**
-     * Controller for initial API-Login, actual authentication and token dispensation is done in the APITokenFilter-Class.
+     * Controller for initial API-Login. Actual authentication and token dispensation is done in the APITokenFilter-Class.
      */
     @RequestMapping("/api/login")
     @ResponseBody
