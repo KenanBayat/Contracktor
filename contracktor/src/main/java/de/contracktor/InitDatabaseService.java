@@ -157,7 +157,7 @@ public class InitDatabaseService {
 	private void initApplicationAdmin() {
 		applicationAdminRoles = new ArrayList<Role>();
 		applicationAdminRoles.add(applicationAdminRole);
-		applicationAdmin = new UserAccount("Pablo", "Cocaine", "Pablo", "Coca Cola", applicationAdminOrganisation, true, true, applicationAdminRoles);
+		applicationAdmin = new UserAccount("root", "toor", "root", "toor", applicationAdminOrganisation, true, true, applicationAdminRoles);
 		
 		userManager.addUser(applicationAdmin);
 	}
