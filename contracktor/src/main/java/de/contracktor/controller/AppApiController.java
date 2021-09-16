@@ -69,7 +69,7 @@ public class AppApiController {
                         return new APIResponse("UNKNOWN_BILLINGITEM");
                     }
 
-                    if (savedItem.get().getLastModified() <= billingItemUpdate.getLastModified()) {
+                    if (true) {
                         savedItem.get().setStatus(billingItemUpdate.getNewState());
                         savedItem.get().setLastModified(billingItemUpdate.getLastModified());
                         billingItemRepository.save(savedItem.get());
