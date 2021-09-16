@@ -395,7 +395,9 @@ public class DatabaseService {
 			}
 	public String getURL() throws IOException {
 		File file = new File("data\\URL.txt");
-		BufferedReader bR = new BufferedReader(new FileReader(file));
+		FileReader fR = new FileReader(file);
+		BufferedReader bR = new BufferedReader(fR);
+		bR.close();
 	    return bR.readLine();
 			}
 }
