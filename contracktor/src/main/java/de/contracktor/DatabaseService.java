@@ -1,5 +1,11 @@
 package de.contracktor;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +40,7 @@ public class DatabaseService {
 
 	@Autowired
 	private UserManager userManager;
+	
 	
 	/**
 	 * Returns all billingItems of a project
@@ -380,4 +387,15 @@ public class DatabaseService {
 	private List<String> getOrg(BillingItem billingItem) {
 		return getOrg(billingUnitRepo.findByBillingUnitID(billingItem.getBillingUnit_ID()).getContract());
 	}
+	
+	public void setURL(String url) throws IOException {
+			    BufferedWriter writer = new BufferedWriter(new FileWriter(new File("data\\URL.txt")));
+			    writer.write(url);
+			    writer.close();
+			}
+	public String getURL() throws IOException {
+		File file = new File("data\\URL.txt");
+		BufferedReader bR = new BufferedReader(new FileReader(file));
+	    return bR.readLine();
+			}
 }
