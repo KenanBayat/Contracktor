@@ -25,23 +25,22 @@ import javax.security.sasl.AuthenticationException;
 
 @Service
 public class DatabaseService {
-	
+
 	@Autowired
 	private ProjectRepository projectRepo;
 
 	@Autowired
 	private BillingItemRepository billingItemRepo;
-	
+
 	@Autowired
 	private ContractRepository contractRepo;
-	
+
 	@Autowired
 	private BillingUnitRepository billingUnitRepo;
 
 	@Autowired
 	private UserManager userManager;
-	
-	
+
 	/**
 	 * Returns all billingItems of a project
 	 * 
@@ -49,20 +48,20 @@ public class DatabaseService {
 	 * @return all billingItems of the given project
 	 */
 	public List<BillingItem> getAllBillingItemsOfProject(Project project) {
-		if(!projectRepo.existsById(project.getId())) {
+		if (!projectRepo.existsById(project.getId())) {
 			throw new IllegalArgumentException("Project doesnt exists!");
-		} else if (!getOrg(project).equals( userManager.getCurrentOrganisation())
+		} else if (!getOrg(project).equals(userManager.getCurrentOrganisation())
 				|| !userManager.hasCurrentUserReadPerm()) {
 			throw new IllegalArgumentException("No access to this resource!");
 		}
-		
+
 		List<BillingItem> billingItems = new ArrayList<BillingItem>();
-		
+
 		List<Contract> contracts = contractRepo.findAllByProject(project);
-		
-		for(Contract contract : contracts) {
+
+		for (Contract contract : contracts) {
 			billingItems.addAll(getAllBillingItemsOfContract(contract));
-		}		
+		}
 		return billingItems;
 	}
 
@@ -73,25 +72,25 @@ public class DatabaseService {
 	 * @return all billingItems of the given contract
 	 */
 	public List<BillingItem> getAllBillingItemsOfContract(Contract contract) {
-		if(!contractRepo.existsById(contract.getId())) {
+		if (!contractRepo.existsById(contract.getId())) {
 			throw new IllegalArgumentException("Contract doesnt exists!");
 		} else if (!getOrg(contract).contains(userManager.getCurrentOrganisation())
 				|| !userManager.hasCurrentUserReadPerm()) {
 			throw new IllegalArgumentException("No access to this resource!");
 		}
-		
+
 		List<BillingItem> billingItems = new ArrayList<BillingItem>();
-		
+
 		List<BillingUnit> billingUnits = billingUnitRepo.findAllByContract(contract);
-		
-		for(BillingUnit billingUnit : billingUnits) {
-			for(BillingItem billingItem : billingUnit.getBillingItems()) {
+
+		for (BillingUnit billingUnit : billingUnits) {
+			for (BillingItem billingItem : billingUnit.getBillingItems()) {
 				getBillingItemsOfBillingItem(billingItems, billingItem);
 			}
-		}		
+		}
 		return billingItems;
 	}
-	
+
 	/**
 	 * Returns the billingItems of a billingItem
 	 * 
@@ -103,12 +102,12 @@ public class DatabaseService {
 			throw new IllegalArgumentException("No access to this resource!");
 		}
 		List<BillingItem> billingItems = new ArrayList<BillingItem>();
-		
+
 		getBillingItemsOfBillingItem(billingItems, billingItem);
-		
-		return billingItems; 
+
+		return billingItems;
 	}
-	
+
 	/**
 	 * Returns the billingItems of a billingItem
 	 * 
@@ -117,16 +116,17 @@ public class DatabaseService {
 	 */
 	private void getBillingItemsOfBillingItem(List<BillingItem> billingItems, BillingItem billingItem) {
 		billingItems.add(billingItem);
-		
-		if(billingItem.getBillingItems() != null && !billingItem.getBillingItems().isEmpty()) {
-			for(BillingItem billingItemChild : billingItem.getBillingItems()) {
+
+		if (billingItem.getBillingItems() != null && !billingItem.getBillingItems().isEmpty()) {
+			for (BillingItem billingItemChild : billingItem.getBillingItems()) {
 				getBillingItemsOfBillingItem(billingItems, billingItemChild);
 			}
-		}	
+		}
 	}
 
 	/**
 	 * Returns all billingUnits the user has access to.
+	 * 
 	 * @return a list of billingUnits
 	 * @throws AuthenticationException
 	 */
@@ -134,28 +134,29 @@ public class DatabaseService {
 		return billingUnitRepo.findByContractIsIn(getAllContracts());
 	}
 
-
 	/**
 	 * Returns all billingItems the user has access to.
+	 * 
 	 * @return a list of billingItems
 	 * @throws AuthenticationException
 	 */
 	public List<BillingItem> getAllBillingItems() {
-		if(userManager.hasCurrentUserReadPerm()) {
+		if (userManager.hasCurrentUserReadPerm()) {
 			return billingItemRepo.findAll().stream().filter(new java.util.function.Predicate<BillingItem>() {
 
 				@Override
 				public boolean test(BillingItem t) {
 					return getOrg(t).contains(userManager.getCurrentOrganisation());
 				}
-	          
-	        }).collect(Collectors.toList());
+
+			}).collect(Collectors.toList());
 		}
-		return new ArrayList<BillingItem>(); 
+		return new ArrayList<BillingItem>();
 	}
 
 	/**
 	 * Returns all projects the user has access to.
+	 * 
 	 * @return a list of projects
 	 * @throws AuthenticationException
 	 */
@@ -169,18 +170,18 @@ public class DatabaseService {
 
 	/**
 	 * Returns all contracts the user has access to.
+	 * 
 	 * @return a list of contracts
 	 * @throws AuthenticationException
 	 */
-	public List<Contract> getAllContracts()  {
+	public List<Contract> getAllContracts() {
 		String orgName = userManager.getCurrentOrganisation();
-		if(userManager.hasCurrentUserReadPerm()) {
+		if (userManager.hasCurrentUserReadPerm()) {
 			return contractRepo.findByContractorIgnoreCaseOrConsigneeIgnoreCase(orgName, orgName);
 		} else {
 			return new ArrayList<Contract>();
 		}
 	}
-
 
 	/**
 	 * Finds all projects, which contain the given substring
@@ -192,9 +193,10 @@ public class DatabaseService {
 		if (!userManager.hasCurrentUserReadPerm()) {
 			return new ArrayList<Project>();
 		}
-		return projectRepo.findByNameContainsIgnoreCaseAndOwner_OrganisationNameIgnoreCase(search, userManager.getCurrentOrganisation());
+		return projectRepo.findByNameContainsIgnoreCaseAndOwner_OrganisationNameIgnoreCase(search,
+				userManager.getCurrentOrganisation());
 	}
-	
+
 	/**
 	 * Finds all contracts, which contain the given substring
 	 * 
@@ -205,9 +207,10 @@ public class DatabaseService {
 		if (!userManager.hasCurrentUserReadPerm()) {
 			return new ArrayList<Contract>();
 		}
-		return contractRepo.findByNameContainsIgnoreCaseAndProject_Owner_OrganisationNameIgnoreCase(search, userManager.getCurrentOrganisation());
+		return contractRepo.findByNameContainsIgnoreCaseAndProject_Owner_OrganisationNameIgnoreCase(search,
+				userManager.getCurrentOrganisation());
 	}
-	
+
 	/**
 	 * Finds all the billingItems, which contain the given substring
 	 * 
@@ -218,7 +221,7 @@ public class DatabaseService {
 		if (!userManager.hasCurrentUserReadPerm()) {
 			return new ArrayList<BillingItem>();
 		}
-		List<BillingItem> billingItems =  billingItemRepo.findByBillingItemIDContains(search);
+		List<BillingItem> billingItems = billingItemRepo.findByBillingItemIDContains(search);
 		for (BillingItem billingItem : billingItems) {
 			if (!getOrg(billingItem).contains(userManager.getCurrentOrganisation())) {
 				billingItems.remove(billingItem);
@@ -226,8 +229,7 @@ public class DatabaseService {
 		}
 		return billingItems;
 	}
-	
-	
+
 	/**
 	 * Returns the childs of a billingItem to the depth 1
 	 * 
@@ -235,17 +237,18 @@ public class DatabaseService {
 	 * @return the childs of the given billingItem
 	 */
 	public List<BillingItem> getChildOfBillingItem(BillingItem billingItem) {
-		if (!getOrg(billingItem).contains(userManager.getCurrentOrganisation()) || !userManager.hasCurrentUserReadPerm()) {
+		if (!getOrg(billingItem).contains(userManager.getCurrentOrganisation())
+				|| !userManager.hasCurrentUserReadPerm()) {
 			throw new IllegalArgumentException("No access to this resource!");
 		}
 		List<BillingItem> billingItems = new ArrayList<BillingItem>();
-		
-		for(BillingItem billingItemChild : billingItem.getBillingItems()) {
+
+		for (BillingItem billingItemChild : billingItem.getBillingItems()) {
 			billingItems.add(billingItemChild);
-		}	
+		}
 		return billingItems;
 	}
-	
+
 	/**
 	 * Returns the contract, to which the given billingItem belongs
 	 * 
@@ -253,19 +256,19 @@ public class DatabaseService {
 	 * @return the Contract, to which the given billingItem belongs
 	 */
 	public Contract getContractOfBillingItem(BillingItem billingItem) {
-		if(!billingUnitRepo.existsByBillingUnitID(billingItem.getBillingUnit_ID())) {
+		if (!billingUnitRepo.existsByBillingUnitID(billingItem.getBillingUnit_ID())) {
 			throw new IllegalArgumentException("The billingItem has no billingUnit");
 		} else if (!userManager.hasCurrentUserReadPerm()) {
 			throw new IllegalArgumentException("No access to this resource!");
 		}
-		
+
 		Contract contract = billingUnitRepo.findByBillingUnitID(billingItem.getBillingUnit_ID()).getContract();
-		if(!getOrg(contract).contains(userManager.getCurrentOrganisation())) {
+		if (!getOrg(contract).contains(userManager.getCurrentOrganisation())) {
 			throw new IllegalArgumentException("No access to this resource!");
 		}
 		return contract;
 	}
-	
+
 	/**
 	 * Find a project by the given project id.
 	 * 
@@ -275,7 +278,8 @@ public class DatabaseService {
 		Optional<Project> project = projectRepo.findById(id);
 		if (project.isEmpty()) {
 			return null;
-		} else if (!getOrg(project.get()).equals(userManager.getCurrentOrganisation()) || !userManager.hasCurrentUserReadPerm()) {
+		} else if (!getOrg(project.get()).equals(userManager.getCurrentOrganisation())
+				|| !userManager.hasCurrentUserReadPerm()) {
 			throw new IllegalArgumentException("No access to this resource!");
 		}
 		return project.get();
@@ -291,13 +295,14 @@ public class DatabaseService {
 		Optional<Contract> contract = contractRepo.findById(id);
 		if (contract.isEmpty()) {
 			return null;
-		} else if (!getOrg(contract.get()).contains(userManager.getCurrentOrganisation()) ||
-				!userManager.hasCurrentUserReadPerm()) {
+		} else if (!getOrg(contract.get()).contains(userManager.getCurrentOrganisation())
+				|| !userManager.hasCurrentUserReadPerm()) {
 			throw new IllegalArgumentException("No access to this resource!");
 		}
 		return contract.get();
 
 	}
+
 	/**
 	 * Find a billingItem by the given billingItem id.
 	 * 
@@ -307,12 +312,13 @@ public class DatabaseService {
 		Optional<BillingItem> billingItem = billingItemRepo.findById(id);
 		if (billingItem.isEmpty()) {
 			return null;
-		} else if (!getOrg(billingItem.get()).contains(userManager.getCurrentOrganisation()) || !userManager.hasCurrentUserReadPerm()) {
+		} else if (!getOrg(billingItem.get()).contains(userManager.getCurrentOrganisation())
+				|| !userManager.hasCurrentUserReadPerm()) {
 			throw new IllegalArgumentException("No access to this resource!");
 		}
 		return billingItem.get();
 	}
-	
+
 	/**
 	 * Find a project by the given project id.
 	 * 
@@ -322,12 +328,13 @@ public class DatabaseService {
 		Optional<Project> project = projectRepo.findById(id);
 		if (project.isEmpty()) {
 			return null;
-		} else if (!getOrg(project.get()).equals(userManager.getCurrentOrganisation()) || !userManager.hasCurrentUserReadPerm()) {
+		} else if (!getOrg(project.get()).equals(userManager.getCurrentOrganisation())
+				|| !userManager.hasCurrentUserReadPerm()) {
 			throw new IllegalArgumentException("No access to this resource!");
 		}
 		return project.get();
 	}
-	
+
 	/**
 	 * Find a contract by the given contract id.
 	 * 
@@ -337,12 +344,12 @@ public class DatabaseService {
 		Optional<Contract> contract = contractRepo.findById(id);
 		if (contract.isEmpty()) {
 			return null;
-		} else if (!getOrg(contract.get()).contains(userManager.getCurrentOrganisation()) || !userManager.hasCurrentUserReadPerm()) {
+		} else if (!getOrg(contract.get()).contains(userManager.getCurrentOrganisation())
+				|| !userManager.hasCurrentUserReadPerm()) {
 			throw new IllegalArgumentException("No access to this resource!");
 		}
 		return contract.get();
 	}
-
 
 	/**
 	 * Find a billingItem by the given billingItem id.
@@ -353,14 +360,16 @@ public class DatabaseService {
 		Optional<BillingItem> billingItem = billingItemRepo.findByBillingItemID(id);
 		if (billingItem.isEmpty()) {
 			return null;
-		} else if (!getOrg(billingItem.get()).contains(userManager.getCurrentOrganisation()) || !userManager.hasCurrentUserReadPerm()) {
+		} else if (!getOrg(billingItem.get()).contains(userManager.getCurrentOrganisation())
+				|| !userManager.hasCurrentUserReadPerm()) {
 			throw new IllegalArgumentException("No access to this resource!");
 		}
 		return billingItem.get();
 	}
 
 	/**
-	 * returns a list of all contracts of a project
+	 * Returns a list of all contracts of a project
+	 * 
 	 * @param project: specific Project
 	 * @return all contracts that are included in the project
 	 */
@@ -371,33 +380,70 @@ public class DatabaseService {
 		return contractRepo.findByProject(project);
 	}
 
+	/**
+	 * Returns the organisationName to which the project belongs
+	 * 
+	 * @param project the given project
+	 * @return the organisationName to which the given project belongs
+	 */
 	private String getOrg(Project project) {
 		return project.getOwner().getOrganisationName();
 	}
 
+	/**
+	 * Returns the organisationName to which the contract belongs
+	 * 
+	 * @param contract the given contract
+	 * @return the organisationName to which the given contract belongs
+	 */
 	private List<String> getOrg(Contract contract) {
-		return new ArrayList<>(List.of(contract.getConsignee(),contract.getContractor()));
+		return new ArrayList<>(List.of(contract.getConsignee(), contract.getContractor()));
 	}
 
+	/**
+	 * Returns the organisationName to which the billingUnit belongs
+	 * 
+	 * @param billingUnit the given billingUnit
+	 * @return the organisationName to which the given billingUnit belongs
+	 */
 	@SuppressWarnings("unused")
 	private List<String> getOrg(BillingUnit billingUnit) {
 		return getOrg(billingUnit.getContract());
 	}
 
+	/**
+	 * Returns the organisationName to which the billingItem belongs
+	 * 
+	 * @param billingItem the given billingItem
+	 * @return the organisationName to which the given billingItem belongs
+	 */
 	private List<String> getOrg(BillingItem billingItem) {
 		return getOrg(billingUnitRepo.findByBillingUnitID(billingItem.getBillingUnit_ID()).getContract());
 	}
-	
+
+	/**
+	 * Sets a new URL
+	 *  
+	 * @param url the new URL
+	 * @throws IOException
+	 */
 	public void setURL(String url) throws IOException {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(new File("data\\URL.txt")));
 		writer.write(url);
 		writer.close();
-			}
+	}
+
+	/**
+	 * Returns the current URL 
+	 * 
+	 * @return the current set URL
+	 * @throws IOException
+	 */
 	public String getURL() throws IOException {
 		File file = new File("data\\URL.txt");
 		FileReader fR = new FileReader(file);
 		BufferedReader bR = new BufferedReader(fR);
 		bR.close();
-	    return bR.readLine();
-			}
+		return bR.readLine();
+	}
 }
