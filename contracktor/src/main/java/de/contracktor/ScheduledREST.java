@@ -11,19 +11,34 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * This class manages the periodic data fetch from the provided adesso API.
+ */
 @Component
 public class ScheduledREST {
 
+    /**
+     * The base url
+     */
     private String url = "http://172.18.0.5:3000/api/v1/";
+    /**
+     * credentials for api access
+     */
     private final String credentials = "Bearer 123";
-    private static HttpEntity entity;
-    
+    @SuppressWarnings("rawtypes")
+    /**
+     * Http entity for the header
+     */
+	private static HttpEntity entity;
+
+    /**
+     *
+     */
     @Autowired
     private AdessoAPIService adesso;
 
@@ -31,16 +46,34 @@ public class ScheduledREST {
     RestTemplate restTemplate = new RestTemplate();
     HttpHeaders headers = new org.springframework.http.HttpHeaders();
 
-    @PostConstruct
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	@PostConstruct
     @DependsOn("init")
     public void initializeHeader() {
         headers.set("Authorization", credentials);
         entity = new HttpEntity(headers);
+        // TODO: initialize url with value from txt
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @Scheduled(fixedRate = 300000)
     public void refreshDB() {
 
+        List<Integer> projectIDs = fetchProjects();
+        List<Integer> contractIDs = fetchContracts(projectIDs);
+        fetchBillingModels(contractIDs);
+        fetchBillingUnitCompletionReports(contractIDs);
+
+    }
+
+    private List<Integer> fetchProjects() {
         // Fetch all Projects
         // --------------------------------------------------------------------
         // Build the URL
@@ -63,6 +96,11 @@ public class ScheduledREST {
                 adesso.save(project);
             }
         }
+
+        return projectIDs;
+    }
+
+    private List<Integer> fetchContracts(List<Integer> projectIDs) {
         // Fetch all contracts
         // --------------------------------------------------------------------
 
@@ -89,6 +127,12 @@ public class ScheduledREST {
                 }
             }
         }
+
+        return contractIDs;
+    }
+
+    private void fetchBillingModels(List<Integer> contractIDs) {
+
         // Fetch all billing items
         // --------------------------------------------------------------------
 
@@ -147,18 +191,18 @@ public class ScheduledREST {
                         // Fetch latest Status
                         // --------------------------------------------------------------------
                         try {
-                        UriComponentsBuilder latestStatusBuilder1 = UriComponentsBuilder.fromUriString(url)
-                                .pathSegment("billingUnitCompletion")
-                                .pathSegment("latestStatus")
-                                .pathSegment(Integer.toString(contractID))
-                                .pathSegment(billingItem.getBillingItemID());
+                            UriComponentsBuilder latestStatusBuilder1 = UriComponentsBuilder.fromUriString(url)
+                                    .pathSegment("billingUnitCompletion")
+                                    .pathSegment("latestStatus")
+                                    .pathSegment(Integer.toString(contractID))
+                                    .pathSegment(billingItem.getBillingItemID());
 
-                        ResponseEntity<String> StatusResponse1 = restTemplate.exchange(
-                                latestStatusBuilder1.build().toUri(), HttpMethod.GET, entity, String.class);
+                            ResponseEntity<String> StatusResponse1 = restTemplate.exchange(
+                                    latestStatusBuilder1.build().toUri(), HttpMethod.GET, entity, String.class);
 
-                        System.out.println(StatusResponse1.getBody());
+                            System.out.println(StatusResponse1.getBody());
 
-                       // adesso.save(StatusResponse1.getBody(), billingItem.getBillingItemID());
+                            // adesso.save(StatusResponse1.getBody(), billingItem.getBillingItemID());
 
 
                         } catch (Exception e) {
@@ -173,18 +217,18 @@ public class ScheduledREST {
 
                             try {
 
-                            UriComponentsBuilder latestStatusBuilder2 = UriComponentsBuilder.fromUriString(url)
-                                    .pathSegment("billingUnitCompletion")
-                                    .pathSegment("latestStatus")
-                                    .pathSegment(Integer.toString(contractID))
-                                    .pathSegment(billingItemItem.getBillingItemID());
+                                UriComponentsBuilder latestStatusBuilder2 = UriComponentsBuilder.fromUriString(url)
+                                        .pathSegment("billingUnitCompletion")
+                                        .pathSegment("latestStatus")
+                                        .pathSegment(Integer.toString(contractID))
+                                        .pathSegment(billingItemItem.getBillingItemID());
 
-                            ResponseEntity<String> StatusResponse2 = restTemplate.exchange(
-                                    latestStatusBuilder2.build().toUri(), HttpMethod.GET, entity, String.class);
+                                ResponseEntity<String> StatusResponse2 = restTemplate.exchange(
+                                        latestStatusBuilder2.build().toUri(), HttpMethod.GET, entity, String.class);
 
-                                   // adesso.save(StatusResponse2.getBody(), billingItemItem.getBillingItemID());
+                                // adesso.save(StatusResponse2.getBody(), billingItemItem.getBillingItemID());
 
-                                    System.out.println(StatusResponse2.getBody());
+                                System.out.println(StatusResponse2.getBody());
                             } catch(Exception e) {
 
                             }
@@ -197,6 +241,9 @@ public class ScheduledREST {
             }
         }
 
+    }
+
+    private void fetchBillingUnitCompletionReports(List<Integer> contractIDs) {
         // Fetch Billing Unit Completion Reports
         // --------------------------------------------------------------------
         for (int contractID : contractIDs) {
@@ -229,6 +276,6 @@ public class ScheduledREST {
             }
 
         }
-
     }
+
 }

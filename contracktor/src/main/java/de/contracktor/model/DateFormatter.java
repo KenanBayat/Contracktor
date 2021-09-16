@@ -16,7 +16,9 @@ public final class DateFormatter {
 		// String result = date.format(formatter);
 		return formatter.format(date);
 	}
+	
 
+	@SuppressWarnings("deprecation")
 	public static String format(Long time) { 
 		if (time == null) {
 			return "";

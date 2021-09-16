@@ -75,10 +75,10 @@
                                     <label for="organisation" class="form-label">
                                         Organisation
                                     </label>
-                                    <input class="form-control" list="datalistOptions" id="organisation" placeholder="Tippen zum Suchen..." name="organisation" th:value="${organisation}">
-                                    <datalist id="datalistOptions">
-                                        <option th:each="organisation : ${organisations}" th:value="${organisation.getOrganisationName()}">
-                                    </datalist>
+                                    <select id="organisation" class="form-select" name="organisation">
+                                        <option th:each="organisation : ${organisations}" th:value="${organisation.getOrganisationName()}" th:text="${organisation.getOrganisationName()}" th:if="${isSystemAdmin}">
+                                        <option th:unless="${isSystemAdmin}" th:value="${userOrganisation}" th:text="${userOrganisation}"></option>
+                                    </select>
                                 </div>
 
                                 <!-- Password field -->
@@ -91,10 +91,6 @@
 
                                 <!-- Password Check field -->
                                 <div class="col-6">
-                                    <label for="passwordCheck" class="form-label">
-                                        Passwort wiederholen
-                                    </label>
-                                    <input type="password" class="form-control" id="passwordCheck" placeholder="Passwort.." name="passwordCheck" th:value="${passwordCheck}">
                                 </div>
 
                                 <!-- user rights fields -->
@@ -106,7 +102,7 @@
                                             Mit Admin-Rechten
                                         </label>
                                     </div>
-                                    <div class="form-check form-check-inline">
+                                    <div class="form-check form-check-inline" th:if="${userManager.isCurrentUserAppAdmin()}">
                                         <input class="form-check-input" id="isApplicationAdmin" name="admin"
                                                th:value="sysadmin" type="checkbox"/>
                                         <label class="form-check-label" for="isApplicationAdmin">

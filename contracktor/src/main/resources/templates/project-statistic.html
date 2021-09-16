@@ -28,17 +28,6 @@
       Wählen Sie die relevanten Projekte aus und lassen Sie sich ein Diagramm über den Baufortschritt ausgeben.
     </p>
 
-    <div class="row">
-      <div class="col-4"></div>
-        <div class="col-4 py-2">
-          <canvas th:if="${!selectedProjects.isEmpty() && !labels.isEmpty()}" id="myChart"></canvas>
-        </div>
-        <div th:if="${!selectedProjects.isEmpty() && labels.isEmpty()}">
-          <p><strong>Es sind keine Leistunspositionen in den ausgewählten Projekten enthalten.</strong></p>
-        </div>
-      <div class="col-4"></div>
-    </div>
-
   </div>
   <!-- End Head of the Page -->
 
@@ -72,7 +61,9 @@
 
             <div class="py-2"></div>
 
-            <table class="table table-hover">
+            <p th:if="${projects.isEmpty()}">Keine Daten gefunden.</p>
+
+            <table class="table table-hover" th:unless="${projects.isEmpty()}">
               <thead>
                 <tr>
 
@@ -252,6 +243,18 @@
         </div>
       </div>
       <div class="col-3">
+        <div class="row">
+          <div class="col-1"></div>
+          <div class="col-10">
+            <canvas th:if="${!selectedProjects.isEmpty() && !labels.isEmpty()}" id="myChart"></canvas>
+          </div>
+          <div th:if="${!selectedProjects.isEmpty() && labels.isEmpty()}">
+            <p><strong>Es sind keine Leistunspositionen in den ausgewählten Projekten enthalten.</strong></p>
+          </div>
+          <div class="col-1"></div>
+          <div th:unless="${selectedProjects.isEmpty()}" class="py-2"></div>
+        </div>
+
         <div class="card">
           <div th:class="card-body">
             <h5>Folgende Projekte sind ausgewählt:</h5>

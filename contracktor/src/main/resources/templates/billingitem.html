@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org" th:include="layout :: page">
+<head>
+    <title>
+        Organisation - Contracktor
+    </title>
+</head>
+<body>
+<th:block th:fragment="content">
+    <div class="container">
+
+        <!-- Beginn Content -->
+
+        <!-- Begin Head of the Page -->
+        <!-- Set with of the page -->
+        <div class="py-2 text-center col-md-7 col-lg-8 mx-auto">
+
+            <!-- Set icon of the page -->
+            <!-- Set icon of the page -->
+            <div class="py-3 text-center col-md-7 col-lg-8 mx-auto">
+
+                <!-- Set icon of the page -->
+                <div class="feature-icon bg-primary bg-gradient mx-auto">
+                    <!-- Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="white" class="bi bi-cone-striped" viewBox="0 0 16 16">
+                        <path d="m9.97 4.88.953 3.811C10.159 8.878 9.14 9 8 9c-1.14 0-2.158-.122-2.923-.309L6.03 4.88C6.635 4.957 7.3 5 8 5s1.365-.043 1.97-.12zm-.245-.978L8.97.88C8.718-.13 7.282-.13 7.03.88L6.275 3.9C6.8 3.965 7.382 4 8 4c.618 0 1.2-.036 1.725-.098zm4.396 8.613a.5.5 0 0 1 .037.96l-6 2a.5.5 0 0 1-.316 0l-6-2a.5.5 0 0 1 .037-.96l2.391-.598.565-2.257c.862.212 1.964.339 3.165.339s2.303-.127 3.165-.339l.565 2.257 2.391.598z"/>
+                    </svg>
+                </div>
+
+                <!-- Heading and explanation of the page -->
+                <h2>
+                    Leistungsposition anzeigen
+                </h2>
+                <p class="lead">
+                    Lassen Sie sich Details zu einer Leistungsposition anzeigen und sehen Sie sich zugehörige Leistungspostionen an.
+                </p>
+
+            </div>
+
+        </div>
+        <div class="pb-1 col-md-7 col-lg-8 mx-auto">
+            <a th:href="@{/billingitems}">Zurück</a>
+        </div>
+        <!-- End Head of the Page -->
+
+        <!-- Beginn Body of the Page -->
+        <!-- Set with of the page -->
+        <div class="col-md-7 col-lg-8 mx-auto">
+
+            <!-- Add Organisation -->
+            <!-- Box around add form -->
+            <div class="card">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="true">Leistungspositionsdetails</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/billingitem/billingitems}">Zugehörige Leistungspositionen</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/reports}">Reports</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <ol class="list-group">
+                        <li class="list-group-item justify-content-between">
+                            <div class="m-2 me-auto">
+                                <p class="lead">ID der Leistungsposition</p>
+                                <h3 th:text="${billingitem.getBillingItemID()}"></h3>
+                                <div class="pb-2"></div>
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="m-2 me-auto">
+                                <div class="fw-bold">Status</div>
+                                <span class="badge bg-secondary" th:text="${billingitem.getStatus().getStateName()}"></span>
+                            </div>
+                        </li>
+                        <div th:unless="${noChanges}">
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="m-2 me-auto">
+                                <div class="fw-bold">Zustand ändern</div>
+                                <div class="py-1"></div>
+                                <form method="post" th:action="@{/billingitem/state}">
+                                    <div class="input-group mb-3">
+                                    <select class="form-select" aria-label="Default select example" name="id">
+                                        <option th:each="transition : ${transitions}" th:if="${billingitem.getStatus().getId() == transition.getStartState().getId()}" th:value="${transition.getEndState().getId()}" th:text="${transition.getEndState().getStateName()}"></option>
+                                    </select>
+                                    <input class="form-control" type="text" placeholder="Kommentar..." name="comment" th:style="'min-width: 500px'">
+                                    <button type="submit" class="btn btn-outline-dark">Ändern</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+                        </div>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="m-2 me-auto">
+                                <div class="fw-bold">Beschreibung</div>
+                                <div th:text="${billingitem.getShortDescription()}"></div>
+                                <div class="py-1"></div>
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="m-2 me-auto">
+                                <div class="fw-bold">Menge</div>
+                                <p th:text="${billingitem.getQuantity()}"></p>
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="m-2 me-auto">
+                                <div class="fw-bold">Einzelpreis</div>
+                                <p th:text="${billingitem.getPricePerUnit()}"></p>
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="m-2 me-auto">
+                                <div class="fw-bold">Gesamtpreis</div>
+                                <p th:text="${billingitem.getTotalPrice()}"></p>
+                            </div>
+                        </li>
+                    </ol>
+                    <!--<div class="py-3">
+                        <form th:action="@{/billingitem-statistic/generate}" method="post">
+                            <button type="submit" class="btn btn-outline-primary" name="id" th:value="${billingitem.getBillingItemID()}">
+                                Baufortschritt anzeigen
+                            </button>
+                        </form>
+                    </div>-->
+
+                    <!-- Button trigger modal -->
+                    <div class="py-2"></div>
+                    <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal" th:if="${userManager.hasCurrentUserWritePerm()}">
+                        Leistungsposition hinzufügen
+                    </button>
+                    <div class="py-2"></div>
+
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Leistungsposition hinzufügen</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form method="post" th:action="@{/billingitem/add}">
+                                    <div class="modal-body">
+
+
+                                        <div class="mb-3">
+                                            <label for="billingItemID" class="form-label">ID der Leistungsposition</label>
+                                            <input type="text" class="form-control" id="billingItemID" name="billingItemID">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="billingUnitID">ID der Billing Unit</label>
+                                            <select class="form-select" id="billingUnitID" name="billingUnitID">
+                                                <option th:value="${billingitem.getBillingUnit_ID()}" th:text="${billingitem.getBillingUnit_ID()}"></option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="unit" class="form-label">Einheit</label>
+                                            <input type="text" class="form-control" id="unit" name="unit">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="quanitity" class="form-label">Anzahl</label>
+                                            <input type="number" class="form-control" id="quanitity" name="quantity">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="pricePerUnit" class="form-label">Preis pro Einheit</label>
+                                            <input type="number" class="form-control" id="pricePerUnit" name="pricePerUnit">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="totalPrice" class="form-label">Gesamtpreis</label>
+                                            <input type="number" class="form-control" id="totalPrice" name="totalPrice">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="ifc" class="form-label">IFC</label>
+                                            <input type="text" class="form-control" id="ifc" name="ifc">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="state">ID der Billing Unit</label>
+                                            <select class="form-select" id="state" name="state">
+                                                <option th:each="state : ${states}" th:value="${state.getStateName()}" th:text="${state.getStateName()}"></option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="shortDescription" class="form-label">Kurze Beschreibung</label>
+                                            <input type="text" class="form-control" id="shortDescription" name="shortDescription">
+                                        </div>
+
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                                        <button type="submit" class="btn btn-success">Speichern</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="py-5"></div>
+        </div>
+        <!-- End Body of the Page -->
+
+        <!-- End Content -->
+
+    </div>
+</th:block>
+</body>
+</html>

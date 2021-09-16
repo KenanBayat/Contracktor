@@ -1,5 +1,6 @@
 package de.contracktor.controller;
 
+import de.contracktor.UserManager;
 import de.contracktor.model.State;
 import de.contracktor.repository.StateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class StateController {
     @Autowired
     StateRepository stateRepository;
 
+    @Autowired
+    UserManager userManager;
+
     List<State> searchedStates = new ArrayList<State>();
 
     @GetMapping("/admin/state")
@@ -30,6 +34,7 @@ public class StateController {
 
 
         // Model:
+        model.addAttribute("userManager", userManager);
         model.addAttribute("states", states);
         model.addAttribute("filter", "");
 
@@ -51,6 +56,7 @@ public class StateController {
         searchedStates = states;
 
         // Model attributes:
+        model.addAttribute("userManager", userManager);
         model.addAttribute("states", states);
         model.addAttribute("filter", "");
 
@@ -69,6 +75,7 @@ public class StateController {
         List<State> states = stateRepository.findAll();
 
         // Model attributes:
+        model.addAttribute("userManager", userManager);
         model.addAttribute("states", states);
         model.addAttribute("filter", "");
 
@@ -88,6 +95,7 @@ public class StateController {
         List<State> states = stateRepository.findAll();
 
         // Model attributes:
+        model.addAttribute("userManager", userManager);
         model.addAttribute("states", states);
         model.addAttribute("filter", "");
 
@@ -128,6 +136,7 @@ public class StateController {
         }
 
         // Model attributes:
+        model.addAttribute("userManager", userManager);
         model.addAttribute("states", states);
         model.addAttribute("filter", filter);
 

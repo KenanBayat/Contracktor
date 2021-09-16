@@ -15,5 +15,11 @@ public interface ReportRepository extends CrudRepository<Report, Integer> {
 
     List<Report> findByOrganisation_OrganisationNameIgnoreCase(String organisationName);
 
+    Report findFirstByOrderByReportIDDesc();
+
+    List<Report> findAll();
+
+
+
 
 }

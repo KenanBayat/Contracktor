@@ -1,5 +1,6 @@
 package de.contracktor.controller;
 
+import de.contracktor.UserManager;
 import de.contracktor.model.Organisation;
 import de.contracktor.model.Role;
 import de.contracktor.model.UserAccount;
@@ -12,10 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -30,6 +29,9 @@ public class UserRoleController {
     @Autowired
     RoleRepository roleRepository;
 
+    @Autowired
+    UserManager userManager;
+
     @GetMapping("/admin/userrole")
     public String getUserRolePage(Model model) {
         // Data:
@@ -37,11 +39,15 @@ public class UserRoleController {
         List<Organisation> organisations = organisationRepository.findAll();
         List<Role> roles = roleRepository.findAll();
 
+        if(!userManager.isCurrentUserAppAdmin()) {
+            organisations = List.of(organisationRepository.findByOrganisationName(userManager.getCurrentOrganisation()));
+        }
 
         // Logic:
 
 
         // Model:
+        model.addAttribute("userManager", userManager);
         model.addAttribute("users", users);
         model.addAttribute("organisations", organisations);
         model.addAttribute("roles", roles);
@@ -55,6 +61,10 @@ public class UserRoleController {
         List<Role> roles = roleRepository.findAll();
 
 
+        if(!userManager.isCurrentUserAppAdmin()) {
+            organisations = List.of(organisationRepository.findByOrganisationName(userManager.getCurrentOrganisation()));
+        }
+
         // Logic:
         Role role = roleRepository.findById(addRole).get();
         UserAccount user = userRepository.findById(userId).get();
@@ -66,6 +76,7 @@ public class UserRoleController {
 
 
         // Model:
+        model.addAttribute("userManager", userManager);
         model.addAttribute("users", users);
         model.addAttribute("organisations", organisations);
         model.addAttribute("roles", roles);
@@ -78,6 +89,9 @@ public class UserRoleController {
         List<Organisation> organisations = organisationRepository.findAll();
         List<Role> roles = roleRepository.findAll();
 
+        if(!userManager.isCurrentUserAppAdmin()) {
+            organisations = List.of(organisationRepository.findByOrganisationName(userManager.getCurrentOrganisation()));
+        }
 
         // Logic:
         Role role = roleRepository.findById(addRole).get();
@@ -95,6 +109,7 @@ public class UserRoleController {
 
 
         // Model:
+        model.addAttribute("userManager", userManager);
         model.addAttribute("users", users);
         model.addAttribute("organisations", organisations);
         model.addAttribute("roles", roles);
@@ -108,12 +123,17 @@ public class UserRoleController {
         List<Organisation> organisations = organisationRepository.findAll();
         List<Role> roles = roleRepository.findAll();
 
+        if(!userManager.isCurrentUserAppAdmin()) {
+            organisations = List.of(organisationRepository.findByOrganisationName(userManager.getCurrentOrganisation()));
+        }
+
         // Logic:
         users = users.stream()
                 .filter(user -> (user.getUsername().toLowerCase().contains(search.toLowerCase()) | user.getSurname().toLowerCase().contains(search.toLowerCase()) | user.getForename().toLowerCase().contains(search.toLowerCase()) | user.getOrganisation().getOrganisationName().toLowerCase().contains(search.toLowerCase())))
                 .collect(Collectors.toList());
 
         // Model attributes:
+        model.addAttribute("userManager", userManager);
         model.addAttribute("users", users);
         model.addAttribute("organisations", organisations);
         model.addAttribute("roles", roles);

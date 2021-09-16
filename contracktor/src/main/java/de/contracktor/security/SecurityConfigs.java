@@ -7,13 +7,11 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 
@@ -77,9 +75,12 @@ public class SecurityConfigs {
 					// ignore login -> change
 					//.antMatchers("/admin").permitAll()
 					.antMatchers("/admin").access("hasAuthority('ADMIN') or hasAuthority('APP_ADMIN')")
+					.antMatchers("/admin/state").hasAuthority("APP_ADMIN")
+					.antMatchers("/admin/organisation").hasAuthority("APP_ADMIN")
+					.antMatchers("/admin/transition").hasAuthority("APP_ADMIN")
 
 					// ignore login -> change
-					//.antMatchers("/**").permitAll()
+					// .antMatchers("/**").permitAll()
 					.antMatchers("/**").hasAuthority("USER")
 
 					.and()

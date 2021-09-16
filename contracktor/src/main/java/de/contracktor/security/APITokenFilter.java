@@ -3,28 +3,26 @@ package de.contracktor.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.web.authentication.AuthenticationConverter;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationConverter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.web.bind.MissingRequestHeaderException;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Filter for creating API-Tokens for app-clients that successfully authenticate.
+ */
 public class APITokenFilter extends BasicAuthenticationFilter {
 
     private BasicAuthenticationConverter authenticationConverter = new BasicAuthenticationConverter();
@@ -39,13 +37,15 @@ public class APITokenFilter extends BasicAuthenticationFilter {
         String token = JWT.create()
                 .withSubject(authResult.getName())
                 .withIssuer("ContracktorWEB")
-                .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 60 * 60 * 1000))
                 .withClaim("authorities", authResult.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(encoder);
         response.setHeader("api_token", token);
         response.setStatus(200);
         response.setContentType("application/json");
-        new ObjectMapper().writeValue(response.getOutputStream(), token);
+        String organisation = ((ContracktorUserDetails) authResult.getPrincipal()).getOrganisationName();
+        List<String> content = new ArrayList<>(List.of(token,organisation));
+        new ObjectMapper().writeValue(response.getOutputStream(), content);
     }
 
     @Override
@@ -59,7 +59,6 @@ public class APITokenFilter extends BasicAuthenticationFilter {
 
     @Override
     protected void onUnsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException {
-        super.onUnsuccessfulAuthentication(request,response,failed);
         response.setStatus(401);
     }
 

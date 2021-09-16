@@ -5,14 +5,12 @@ import de.contracktor.model.Organisation;
 import de.contracktor.model.UserAccount;
 import de.contracktor.repository.OrganisationRepository;
 import de.contracktor.repository.UserRepository;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -40,6 +38,11 @@ public class ManageUserController {
         // sort organisation list
         organisations = organisations.stream().sorted(Comparator.comparing(Organisation::getOrganisationName)).collect(Collectors.toList());
 
+        if(!userManager.isCurrentUserAppAdmin()) {
+            organisations = List.of(organisationRepository.findByOrganisationName(userManager.getCurrentOrganisation()));
+        }
+
+        model.addAttribute("userManager", userManager);
         model.addAttribute("users", users);
         model.addAttribute("organisations", organisations);
 
@@ -56,6 +59,11 @@ public class ManageUserController {
         // sort organisation list
         organisations = organisations.stream().sorted(Comparator.comparing(Organisation::getOrganisationName)).collect(Collectors.toList());
 
+        if(!userManager.isCurrentUserAppAdmin()) {
+            organisations = List.of(organisationRepository.findByOrganisationName(userManager.getCurrentOrganisation()));
+        }
+
+        model.addAttribute("userManager", userManager);
         model.addAttribute("users", users);
         model.addAttribute("organisations", organisations);
 
@@ -90,21 +98,27 @@ public class ManageUserController {
             isSysadmin = true;
         }
         if(userRepository.existsById(id)) {
-            Optional<UserAccount> user = userRepository.findById(id);
+            @SuppressWarnings("unused")
+			Optional<UserAccount> user = userRepository.findById(id);
         }
 
-        Optional<UserAccount> userOptional = userRepository.findById(id);
-        UserAccount user = userOptional.get();
+        UserAccount user = userRepository.findById(id).get();
         user.setUsername(username);
         user.setForename(forename);
         user.setSurname(surname);
         user.setOrganisation(organisationRepository.findByOrganisationName(organisation));
         user.setIsAdmin(isAdmin);
         user.setIsApplicationAdmin(isSysadmin);
-        UserAccount saveUser = userRepository.save(user);
+        @SuppressWarnings("unused")
+		UserAccount saveUser = userRepository.save(user);
 
         organisations = organisations.stream().sorted(Comparator.comparing(Organisation::getOrganisationName)).collect(Collectors.toList());
 
+        if(!userManager.isCurrentUserAppAdmin()) {
+            organisations = List.of(organisationRepository.findByOrganisationName(userManager.getCurrentOrganisation()));
+        }
+
+        model.addAttribute("userManager", userManager);
         model.addAttribute("users", users);
         model.addAttribute("organisations", organisations);
 
@@ -121,6 +135,11 @@ public class ManageUserController {
         // sort organisation list
         organisations = organisations.stream().sorted(Comparator.comparing(Organisation::getOrganisationName)).collect(Collectors.toList());
 
+        if(!userManager.isCurrentUserAppAdmin()) {
+            organisations = List.of(organisationRepository.findByOrganisationName(userManager.getCurrentOrganisation()));
+        }
+
+        model.addAttribute("userManager", userManager);
         model.addAttribute("users", users);
         model.addAttribute("organisations", organisations);
 
@@ -138,6 +157,11 @@ public class ManageUserController {
         List<UserAccount> users = (List<UserAccount>) userRepository.findAll();
         organisations = organisations.stream().sorted(Comparator.comparing(Organisation::getOrganisationName)).collect(Collectors.toList());
 
+        if(!userManager.isCurrentUserAppAdmin()) {
+            organisations = List.of(organisationRepository.findByOrganisationName(userManager.getCurrentOrganisation()));
+        }
+
+        model.addAttribute("userManager", userManager);
         model.addAttribute("users", users);
         model.addAttribute("organisations", organisations);
 
@@ -154,13 +178,19 @@ public class ManageUserController {
         // sort organisation list
         organisations = organisations.stream().sorted(Comparator.comparing(Organisation::getOrganisationName)).collect(Collectors.toList());
 
+        if(!userManager.isCurrentUserAppAdmin()) {
+            organisations = List.of(organisationRepository.findByOrganisationName(userManager.getCurrentOrganisation()));
+        }
+
+        model.addAttribute("userManager", userManager);
         model.addAttribute("users", users);
         model.addAttribute("organisations", organisations);
 
         return "manageUsers";
     }
 
-    @PostMapping("/admin/user/password")
+    @SuppressWarnings("unused")
+	@PostMapping("/admin/user/password")
     public String getPasswordUserManagementPage(@RequestParam int userId, @RequestParam String password, @RequestParam String passwordCheck, Model model) {
         // Data:
         List<Organisation> organisations = organisationRepository.findAll();
@@ -175,6 +205,11 @@ public class ManageUserController {
         UserAccount add = userManager.addUser(user);
         organisations = organisations.stream().sorted(Comparator.comparing(Organisation::getOrganisationName)).collect(Collectors.toList());
 
+        if(!userManager.isCurrentUserAppAdmin()) {
+            organisations = List.of(organisationRepository.findByOrganisationName(userManager.getCurrentOrganisation()));
+        }
+
+        model.addAttribute("userManager", userManager);
         model.addAttribute("users", users);
         model.addAttribute("organisations", organisations);
 
@@ -191,6 +226,11 @@ public class ManageUserController {
         // sort organisation list
         organisations = organisations.stream().sorted(Comparator.comparing(Organisation::getOrganisationName)).collect(Collectors.toList());
 
+        if(!userManager.isCurrentUserAppAdmin()) {
+            organisations = List.of(organisationRepository.findByOrganisationName(userManager.getCurrentOrganisation()));
+        }
+
+        model.addAttribute("userManager", userManager);
         model.addAttribute("users", users);
         model.addAttribute("organisations", organisations);
 
@@ -211,6 +251,11 @@ public class ManageUserController {
 
         organisations = organisations.stream().sorted(Comparator.comparing(Organisation::getOrganisationName)).collect(Collectors.toList());
 
+        if(!userManager.isCurrentUserAppAdmin()) {
+            organisations = List.of(organisationRepository.findByOrganisationName(userManager.getCurrentOrganisation()));
+        }
+
+        model.addAttribute("userManager", userManager);
         model.addAttribute("users", users);
         model.addAttribute("organisations", organisations);
 

@@ -8,14 +8,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,9 +22,13 @@ import de.contracktor.repository.BillingItemRepository;
 import de.contracktor.repository.StateRepository;
 
 
-@DataJpaTest
+@DataJpaTest(properties = {
+        "spring.datasource.url=jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1;IGNORECASE=TRUE;DB_CLOSE_ON_EXIT=FALSE;",
+        "spring.jpa.hibernate.ddl-auto=create-drop"
+})
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 @AutoConfigureTestDatabase(replace=Replace.NONE)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class TestBillingItem {
 
 	@Autowired
@@ -48,12 +51,6 @@ public class TestBillingItem {
 		billingItems = new ArrayList<BillingItem>();
 		state = new State("billingStatus");
 		stateRepo.save(state);
-	}
-	
-	@AfterEach
-	public void delete() {
-		billingItemRepo.delete(billingItem);
-		stateRepo.delete(state);
 	}
 	
 	@Test

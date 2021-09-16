@@ -5,7 +5,6 @@ import de.contracktor.model.Organisation;
 import de.contracktor.model.Role;
 import de.contracktor.model.UserAccount;
 import de.contracktor.repository.OrganisationRepository;
-import de.contracktor.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,11 +30,17 @@ public class RegisterAdminController {
     public String getRegisterAdminPage(Model model) {
         // Data:
         List<Organisation> organisations = organisationRepository.findAll();
+        boolean isSystemAdmin = userManager.isCurrentUserAppAdmin();
+        String orgName = userManager.getCurrentOrganisation();
+        System.out.println(userManager.isCurrentUserAppAdmin());
 
         // Model:
         model.addAttribute("organisations", organisations);
 
         // For form input
+        model.addAttribute("userManager", userManager);
+        model.addAttribute("userOrganisation", orgName);
+        model.addAttribute("isSystemAdmin", isSystemAdmin);
         model.addAttribute("username", "");
         model.addAttribute("forename", "");
         model.addAttribute("surname", "");
@@ -53,7 +58,6 @@ public class RegisterAdminController {
                            @RequestParam String surname,
                            @RequestParam String organisation,
                            @RequestParam String password,
-                           @RequestParam String passwordCheck,
                            @RequestParam(value = "admin", required = false) String admin,
                            Model model) {
 
@@ -62,6 +66,8 @@ public class RegisterAdminController {
         boolean isSysadmin = false;
         List<Organisation> organisations = organisationRepository.findAll();
         Organisation org = organisationRepository.findByOrganisationName(organisation);
+        boolean isSystemAdmin = userManager.isCurrentUserAppAdmin();
+        String orgName = userManager.getCurrentOrganisation();
 
         // Logic:
         if(admin == null) {
@@ -76,13 +82,17 @@ public class RegisterAdminController {
 
         System.out.println(admin);
 
-        UserAccount user = userManager.addUser(new UserAccount(username, password, forename, surname, org,
+        @SuppressWarnings("unused")
+		UserAccount user = userManager.addUser(new UserAccount(username, password, forename, surname, org,
                 isAdmin, isSysadmin, new ArrayList<Role>()));
 
         // Model:
         model.addAttribute("organisations", organisations);
 
         // For form input
+        model.addAttribute("userManager", userManager);
+        model.addAttribute("userOrganisation", orgName);
+        model.addAttribute("isSystemAdmin", isSystemAdmin);
         model.addAttribute("username", "");
         model.addAttribute("forename", "");
         model.addAttribute("surname", "");

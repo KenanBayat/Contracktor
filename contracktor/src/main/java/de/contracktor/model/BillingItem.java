@@ -4,17 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -69,6 +59,18 @@ public class BillingItem {
 		if (getClass() != obj.getClass())
 			return false;
 		BillingItem other = (BillingItem) obj;
-		return Objects.equals(billingItemID, other.billingItemID) && id == other.id;
-	}	
+		return Objects.equals(billingItemID, other.billingItemID); //&& id == other.id;
+	}
+
+	public String getLowerDescription() {
+		return this.shortDescription.toLowerCase();
+	}
+
+	public String getLowerID() {
+		return this.billingItemID.toLowerCase();
+	}
+
+	public String getLowerStatus() {
+		return this.status.getStateName().toLowerCase();
+	}
 }

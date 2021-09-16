@@ -85,7 +85,7 @@
 
               <!-- Register user -->
               <!-- 3 Icons per row -->
-              <div class="col-4 mx-auto text-center app-icon">
+              <div class="col-4 mx-auto text-center app-icon" th:if="${userManager.isCurrentUserAppAdmin()}">
                 <!-- link to page -->
                 <a th:href="@{/admin/organisation}">
                   <!-- icon, 1em -->
@@ -142,7 +142,7 @@
 
               <!-- Add and remove Roles to user -->
               <!-- 3 Icons per row -->
-              <div class="col-4 mx-auto text-center app-icon">
+              <div class="col-4 mx-auto text-center app-icon" th:if="${userManager.isCurrentUserAppAdmin()}">
                 <!-- link to page -->
                 <a th:href="@{/admin/state}">
                   <!-- icon, 1em -->
@@ -163,7 +163,7 @@
 
               <!-- Add and remove Roles to user -->
               <!-- 3 Icons per row -->
-              <div class="col-4 mx-auto text-center app-icon">
+              <div class="col-4 mx-auto text-center app-icon" th:if="${userManager.isCurrentUserAppAdmin()}">
                 <!-- link to page -->
                 <a th:href="@{/admin/transition}">
                   <!-- icon, 1em -->
@@ -180,6 +180,24 @@
               </div>
 
 
+            </div>
+
+          </div>
+        </div>
+
+        <div class="py-2"></div>
+
+        <div class="card">
+          <div class="card-body">
+
+            <div class="input-group mb-3">
+              <form method="post" th:action="@{/admin}">
+                <label for="url" class="form-label">Url der API</label>
+                <div class="input-group mb-3">
+                  <input id="url" type="text" class="form-control" placeholder="API Url..." name="url" th:style="'min-width: 400px'">
+                  <button type="submit" class="btn btn-outline-secondary">Ändern</button>
+                </div>
+              </form>
             </div>
 
           </div>

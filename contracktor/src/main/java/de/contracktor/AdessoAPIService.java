@@ -1,17 +1,8 @@
 package de.contracktor;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import de.contracktor.model.BillingItem;
 import de.contracktor.model.BillingUnit;
 import de.contracktor.model.BillingUnitCompletionReport;
@@ -176,7 +167,6 @@ public class AdessoAPIService {
 
 		if (contractRepo.existsByContractID(contractID)) {
 			Contract contract = contractRepo.findByContractID(contractID);
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 			Long completionDate = DateFormatter.stringToLong(billingUnit.getCompletionDateString());
 			billingUnit.setCompletionDate(completionDate);
 			billingUnit.setContract(contract);

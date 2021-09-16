@@ -1,5 +1,6 @@
 package de.contracktor.controller;
 
+import de.contracktor.UserManager;
 import de.contracktor.model.Organisation;
 import de.contracktor.repository.OrganisationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class OrganisationController {
     @Autowired
     OrganisationRepository organisationRepository;
 
+    @Autowired
+    UserManager userManager;
+
     List<Organisation> searchedOrganisations
             = new ArrayList<Organisation>();
 
@@ -37,6 +41,7 @@ public class OrganisationController {
         // Logic:
 
         // Model attributes:
+        model.addAttribute("userManager", userManager);
         model.addAttribute("organisations", organisationList);
         model.addAttribute("filter", "");
 
@@ -63,6 +68,7 @@ public class OrganisationController {
         searchedOrganisations = organisationList;
 
         // Model attributes:
+        model.addAttribute("userManager", userManager);
         model.addAttribute("organisations", organisationList);
         model.addAttribute("filter", "");
 
@@ -87,6 +93,7 @@ public class OrganisationController {
         List<Organisation> organisationList = organisationRepository.findAll();
 
         // Model attributes:
+        model.addAttribute("userManager", userManager);
         model.addAttribute("organisations", organisationList);
         model.addAttribute("filter", "");
 
@@ -111,6 +118,7 @@ public class OrganisationController {
         List<Organisation> organisationList = organisationRepository.findAll();
 
         // Model attributes:
+        model.addAttribute("userManager", userManager);
         model.addAttribute("organisations", organisationList);
         model.addAttribute("filter", "");
 
@@ -151,6 +159,7 @@ public class OrganisationController {
         }
 
         // Model attributes:
+        model.addAttribute("userManager", userManager);
         model.addAttribute("organisations", organisationList);
         model.addAttribute("filter", filter);
 

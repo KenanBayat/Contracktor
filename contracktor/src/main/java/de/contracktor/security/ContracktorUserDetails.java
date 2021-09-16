@@ -2,17 +2,18 @@ package de.contracktor.security;
 
 import de.contracktor.model.Role;
 import de.contracktor.model.UserAccount;
-import org.hibernate.Hibernate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Custom UserDetails-implementation that includes the admin-status, information about the organisation and roles of the currently
+ * logged-in user.
+ */
+@SuppressWarnings("serial")
 public class ContracktorUserDetails implements UserDetails {
 
 
@@ -23,14 +24,16 @@ public class ContracktorUserDetails implements UserDetails {
     private boolean isAdmin;
     private String organisationName;
     private List<Role> roles;
+    private int organisationId;
 
     public ContracktorUserDetails(UserAccount user) {
         this.username = user.getUsername();
         this.password = user.getPassword();
         this.roles = user.getRoles();
-        this.isAppAdmin = user.getIsAdmin();
+        this.isAppAdmin = user.getIsApplicationAdmin();
         this.isAdmin = user.getIsAdmin();
         this.organisationName = user.getOrganisation().getOrganisationName();
+        this.organisationId = user.getOrganisation().getId();
 
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("USER"));
@@ -96,4 +99,9 @@ public class ContracktorUserDetails implements UserDetails {
     public String getOrganisationName() {
         return organisationName;
     }
+
+    public int getOrganisationId() {
+        return organisationId;
+    }
 }
+

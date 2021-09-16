@@ -73,7 +73,7 @@
                         <div class="form-check">
                             <input class="form-check-input" type="radio" id="flexRadioDefault2" name="who" th:value="nehmer" checked>
                             <label class="form-check-label" for="flexRadioDefault2">
-                                Auftrgageber
+                                Auftraggeber
                             </label>
                         </div>
 
@@ -156,6 +156,9 @@
                                     </svg>
                                 </a>
                             </th>
+                            <th>
+                                Akteur
+                            </th>
                             <th scope="col">
                                 Löschen
                             </th>
@@ -168,8 +171,11 @@
 
                             <td th:text="${transition.getEndState().getStateName()}"></td>
 
+                            <td th:text="'Auftraggeber'" th:if="${transition.getConsignee()}"></td>
+                            <td th:text="'Auftragnehmer'" th:if="${transition.getContractor()}"></td>
+
                             <!-- Icon for delete -->
-                            <th>
+                            <td>
                                 <form th:action="@{/admin/transition/delete}" method="post">
 
                                     <!-- Trigger modal -->
@@ -203,7 +209,7 @@
                                     </div>
 
                                 </form>
-                            </th>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
