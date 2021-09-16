@@ -46,7 +46,7 @@ public class ScheduledREST {
     /**
      * The base url
      */
-    private static String url;
+    private static String staticUrl;
 
     @Autowired
     RestTemplate restTemplate = new RestTemplate();
@@ -59,12 +59,11 @@ public class ScheduledREST {
         headers.set("Authorization", credentials);
         entity = new HttpEntity(headers);
         // TODO: initialize url with value from txt
-        url = databaseService.getURL();
+        staticUrl = databaseService.getURL();
     }
 
-    @SuppressWarnings("static-access")
-	public void setRestUrl(String url) {
-        this.url = url;
+    public static void setRestUrl(String url) {
+        staticUrl = url;
     }
 
     @Scheduled(fixedRate = 300000)
@@ -81,7 +80,7 @@ public class ScheduledREST {
         // Fetch all Projects
         // --------------------------------------------------------------------
         // Build the URL
-        UriComponentsBuilder projectBuilder = UriComponentsBuilder.fromUriString(url)
+        UriComponentsBuilder projectBuilder = UriComponentsBuilder.fromUriString(staticUrl)
                 .pathSegment("project").pathSegment("list");
         // Execute the GET-request
         ResponseEntity<Project[]> projectResponse = restTemplate.exchange(
@@ -112,7 +111,7 @@ public class ScheduledREST {
 
         for (int projectID : projectIDs) {
             // Build the URL
-            UriComponentsBuilder contractBuilder = UriComponentsBuilder.fromUriString(url)
+            UriComponentsBuilder contractBuilder = UriComponentsBuilder.fromUriString(staticUrl)
                     .pathSegment("contracts").pathSegment(Integer.toString(projectID));
 
             ResponseEntity<Contract[]> contractResponse = restTemplate.exchange(
@@ -146,7 +145,7 @@ public class ScheduledREST {
             System.out.println("Now retrieving billing model for contract number: " + contractID);
 
             // Build the URL
-            UriComponentsBuilder billingModelBuilder = UriComponentsBuilder.fromUriString(url)
+            UriComponentsBuilder billingModelBuilder = UriComponentsBuilder.fromUriString(staticUrl)
                     .pathSegment("billingmodel").pathSegment("loadAndParseForContractConfiguration")
                     .queryParam("contractId", contractID);
             //System.out.println(billingModelBuilder.build().toUri());
@@ -169,7 +168,7 @@ public class ScheduledREST {
                     adesso.save(billingUnit, contractID);
 
                     try {
-                        UriComponentsBuilder latestStatusBuilder = UriComponentsBuilder.fromUriString(url)
+                        UriComponentsBuilder latestStatusBuilder = UriComponentsBuilder.fromUriString(staticUrl)
                                 .pathSegment("billingUnitCompletion")
                                 .pathSegment("latestStatus")
                                 .pathSegment(Integer.toString(contractID))
@@ -195,7 +194,7 @@ public class ScheduledREST {
                         // Fetch latest Status
                         // --------------------------------------------------------------------
                         try {
-                            UriComponentsBuilder latestStatusBuilder1 = UriComponentsBuilder.fromUriString(url)
+                            UriComponentsBuilder latestStatusBuilder1 = UriComponentsBuilder.fromUriString(staticUrl)
                                     .pathSegment("billingUnitCompletion")
                                     .pathSegment("latestStatus")
                                     .pathSegment(Integer.toString(contractID))
@@ -221,7 +220,7 @@ public class ScheduledREST {
 
                             try {
 
-                                UriComponentsBuilder latestStatusBuilder2 = UriComponentsBuilder.fromUriString(url)
+                                UriComponentsBuilder latestStatusBuilder2 = UriComponentsBuilder.fromUriString(staticUrl)
                                         .pathSegment("billingUnitCompletion")
                                         .pathSegment("latestStatus")
                                         .pathSegment(Integer.toString(contractID))
@@ -264,7 +263,7 @@ public class ScheduledREST {
 //            System.out.println("Das hier ist eine CRID: " + billingUnitCompletionReport.getCRID());
 
             // Build the URL
-            UriComponentsBuilder billingUnitCompletionReportBuilder = UriComponentsBuilder.fromUriString(url)
+            UriComponentsBuilder billingUnitCompletionReportBuilder = UriComponentsBuilder.fromUriString(staticUrl)
                     .pathSegment("contractCompletion").pathSegment("all").pathSegment(Integer.toString(contractID));
 
             ResponseEntity<BillingUnitCompletionReport[]> billingUnitCompletionReportResponse = restTemplate.exchange(
