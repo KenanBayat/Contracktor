@@ -5,7 +5,6 @@ import de.contracktor.model.Organisation;
 import de.contracktor.model.Role;
 import de.contracktor.model.UserAccount;
 import de.contracktor.repository.OrganisationRepository;
-import de.contracktor.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -83,7 +82,8 @@ public class RegisterAdminController {
 
         System.out.println(admin);
 
-        UserAccount user = userManager.addUser(new UserAccount(username, password, forename, surname, org,
+        @SuppressWarnings("unused")
+		UserAccount user = userManager.addUser(new UserAccount(username, password, forename, surname, org,
                 isAdmin, isSysadmin, new ArrayList<Role>()));
 
         // Model:

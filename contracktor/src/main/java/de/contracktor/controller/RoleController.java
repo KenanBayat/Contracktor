@@ -7,15 +7,12 @@ import de.contracktor.model.Role;
 import de.contracktor.repository.OrganisationRepository;
 import de.contracktor.repository.PermissionRepository;
 import de.contracktor.repository.RoleRepository;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.security.Permissions;
 import java.util.List;
 import java.util.Optional;
 
@@ -84,7 +81,8 @@ public class RoleController {
         Optional<Permission> permissionOptional = permissionRepository.findById(permissionId);
         Permission permission = permissionOptional.get();
         Role role = new Role(roleName, permission, organisation);
-        Role save = roleRepository.save(role);
+        @SuppressWarnings("unused")
+		Role save = roleRepository.save(role);
 
         // Data:
         List<Role> roles = roleRepository.findAll();
@@ -190,7 +188,8 @@ public class RoleController {
         role.setRoleName(roleChangeName);
         role.setOrganisation(organisation);
         role.setPermission(permission);
-        Role save = roleRepository.save(role);
+        @SuppressWarnings("unused")
+		Role save = roleRepository.save(role);
 
         System.out.println(roleChangeName+organisationChangeId+permissionChangeId);
 

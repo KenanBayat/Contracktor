@@ -16,7 +16,8 @@ import java.util.Optional;
 @Controller
 public class AppApiController {
 
-    @Autowired
+    @SuppressWarnings("unused")
+	@Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -60,7 +61,8 @@ public class AppApiController {
         List<Picture> pictureUpdates = update.getPictureList();
 
         try {
-            String username = userManager.getCurrentUserName();
+            @SuppressWarnings("unused")
+			String username = userManager.getCurrentUserName();
 
             if (billingItemUpdates != null) {
                 for (BillingItemUpdate billingItemUpdate : billingItemUpdates) {
@@ -68,8 +70,10 @@ public class AppApiController {
                     if (savedItem.isEmpty()) {
                         return new APIResponse("UNKNOWN_BILLINGITEM");
                     }
-                    long savedItemTime =  savedItem.get().getLastModified();
-                    long newItemTime =  billingItemUpdate.getLastModified();
+                    @SuppressWarnings("unused")
+					long savedItemTime =  savedItem.get().getLastModified();
+                    @SuppressWarnings("unused")
+					long newItemTime =  billingItemUpdate.getLastModified();
                     if (savedItem.get().getLastModified() <= billingItemUpdate.getLastModified()) {
                         savedItem.get().setStatus(billingItemUpdate.getNewState());
                         savedItem.get().setLastModified(billingItemUpdate.getLastModified());
@@ -136,6 +140,7 @@ public class AppApiController {
         response.setStates(stateRepository.findAll());
         response.setStateTransitions(stateTransitionRepository.findAll());
         response.setPictures(pictureRepository.findByReport_Organisation_OrganisationNameIgnoreCase(organisation));
+        response.setReports(reportRepository.findByOrganisation_OrganisationNameIgnoreCase(organisation));
         response.setStatus("OK");
         return response;
     }

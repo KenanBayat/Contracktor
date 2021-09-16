@@ -5,7 +5,6 @@ import de.contracktor.UserManager;
 import de.contracktor.model.BillingItem;
 import de.contracktor.model.BillingUnit;
 import de.contracktor.model.Contract;
-import de.contracktor.model.State;
 import de.contracktor.repository.BillingItemRepository;
 import de.contracktor.repository.BillingUnitRepository;
 import de.contracktor.repository.ContractRepository;
@@ -18,8 +17,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 

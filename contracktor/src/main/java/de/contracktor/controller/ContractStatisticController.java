@@ -3,9 +3,7 @@ package de.contracktor.controller;
 import de.contracktor.DatabaseService;
 import de.contracktor.UserManager;
 import de.contracktor.model.BillingItem;
-import de.contracktor.model.BillingUnit;
 import de.contracktor.model.Contract;
-import de.contracktor.model.Project;
 import de.contracktor.repository.BillingItemRepository;
 import de.contracktor.repository.BillingUnitRepository;
 import de.contracktor.repository.ContractRepository;
@@ -87,7 +85,8 @@ public class ContractStatisticController {
         return "contract-statistic";
     }
 
-    @PostMapping("/contract-statistic/remove")
+    @SuppressWarnings("unused")
+	@PostMapping("/contract-statistic/remove")
     public String getRemoveProjectStatistic(@RequestParam int id, Model model) {
         List<Contract> contracts = databaseService.getAllContracts();
         Contract contract = contractRepository.findByContractID(id);
