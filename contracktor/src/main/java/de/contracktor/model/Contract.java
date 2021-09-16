@@ -55,6 +55,8 @@ public class Contract {
 		Contract other = (Contract) obj;
 		return contractID == other.contractID && id == other.id && projectId == other.projectId;
 	}
+	
+	
 
 	public String getLowerName() {
 		return this.name.toLowerCase();
@@ -70,5 +72,12 @@ public class Contract {
 	}
 	public String getLowerStatus() {
 		return this.status.getStateName().toLowerCase();
+	}
+
+	@Override
+	public String toString() {
+		return "Contract [id=" + id + ", contractID=" + contractID + ", project=" + project + ", name=" + name
+				+ ", consignee=" + consignee + ", status=" + status + ", contractor=" + contractor + ", description="
+				+ description + ", projectId=" + projectId + "]";
 	}
 }

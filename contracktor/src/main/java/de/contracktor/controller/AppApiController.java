@@ -122,8 +122,15 @@ public class AppApiController {
         String organisation = userManager.getCurrentOrganisation();
         response.setWritePerm(userManager.hasCurrentUserWritePerm());
         response.setProjects(projectRepository.findByOwner_OrganisationNameIgnoreCase(organisation));
-        response.setContracts(contractRepository.findByContractorIgnoreCaseOrConsigneeIgnoreCase(organisation,
-                organisation));
+        List<Contract> contracts =contractRepository.findByContractorIgnoreCaseOrConsigneeIgnoreCase(organisation,
+                organisation);
+        for(Contract contract : contracts) {
+        	int id = contract.getProject().getProjectID();
+        	contract.setProjectId(id);
+        }     
+        
+        response.setContracts(contracts);    
+        System.out.println("Flemming: " + response.getContracts());
         response.setBillingUnits(billingUnitRepository.findByContractIsIn(response.getContracts()));
         response.setStates(stateRepository.findAll());
         response.setStateTransitions(stateTransitionRepository.findAll());
