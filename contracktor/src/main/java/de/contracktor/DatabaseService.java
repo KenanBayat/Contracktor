@@ -380,5 +380,4 @@ public class DatabaseService {
 	private List<String> getOrg(BillingItem billingItem) {
 		return getOrg(billingUnitRepo.findByBillingUnitID(billingItem.getBillingUnit_ID()).getContract());
 	}
-
 }
