@@ -12,4 +12,7 @@ public class APIUpdate {
     @Getter @Setter
     private List<Picture> pictureList;
 
+    @Getter @Setter
+    private List<Report> reportList;
+
 }
