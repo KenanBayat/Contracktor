@@ -62,7 +62,8 @@ public class ScheduledREST {
         url = databaseService.getURL();
     }
 
-    public void setRestUrl(String url) {
+    @SuppressWarnings("static-access")
+	public void setRestUrl(String url) {
         this.url = url;
     }
 
