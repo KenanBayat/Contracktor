@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.util.UriComponentsBuilder;
 import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,10 +23,7 @@ import java.util.List;
 @Component
 public class ScheduledREST {
 
-    /**
-     * The base url
-     */
-    private String url = "http://localhost:3000/api/v1/";
+
     /**
      * credentials for api access
      */
@@ -36,11 +34,19 @@ public class ScheduledREST {
      */
 	private static HttpEntity entity;
 
+    @Autowired
+    DatabaseService databaseService;
+
     /**
      *
      */
     @Autowired
     private AdessoAPIService adesso;
+
+    /**
+     * The base url
+     */
+    private static String url;
 
     @Autowired
     RestTemplate restTemplate = new RestTemplate();
@@ -49,17 +55,14 @@ public class ScheduledREST {
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	@PostConstruct
     @DependsOn("init")
-    public void initializeHeader() {
+    public void initializeHeader() throws IOException {
         headers.set("Authorization", credentials);
         entity = new HttpEntity(headers);
         // TODO: initialize url with value from txt
+        url = databaseService.getURL();
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
+    public void setRestUrl(String url) {
         this.url = url;
     }
 
