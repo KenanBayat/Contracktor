@@ -21,8 +21,8 @@ public class Project {
 	@Getter @Setter @Column(nullable = false, unique = true) @JsonProperty("id")
 	private int projectID;
 	@Getter @Setter @Column(nullable = false) @NotEmpty private String name;
-    @Getter @Setter @Column(nullable = false) @JsonIgnore private Long creationDate;
-	@Getter @Setter @Column(nullable = false) @JsonIgnore private Long completionDate;
+    @Getter @Setter @Column(nullable = false) @JsonProperty("creation_Date") private Long creationDate;
+	@Getter @Setter @Column(nullable = false) @JsonProperty("completion_Date") private Long completionDate;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private Address address;
 	@Getter @Setter @Column(nullable = false) @JsonProperty("overallCost") private Double totalPrice;
 	@Getter @Setter @JoinColumn(nullable = false) @ManyToOne private Organisation owner;

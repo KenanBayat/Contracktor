@@ -34,7 +34,7 @@ public class BillingUnit {
 	@Getter @Setter @Column(nullable = false, unique = true) @JsonProperty("id") private String billingUnitID;
 	@Getter @Setter @ManyToOne @JoinColumn(nullable = false) private Contract contract;
 	@Getter @Setter @Column private String unit;
-	@Getter @Setter @Column(nullable = false) @JsonIgnore private long completionDate;
+	@Getter @Setter @Column(nullable = false) @JsonProperty("completion_Date") private long completionDate;
 	@Getter @Setter @Column(nullable = false) private Double totalPrice;
 	@Getter @Setter @Column(nullable = false) private Double totalQuantity;
 	@Getter @Setter @OneToMany(fetch = FetchType.EAGER) private List<BillingItem> billingItems;
