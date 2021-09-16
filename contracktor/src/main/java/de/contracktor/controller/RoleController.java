@@ -1,5 +1,6 @@
 package de.contracktor.controller;
 
+import de.contracktor.UserManager;
 import de.contracktor.model.Organisation;
 import de.contracktor.model.Permission;
 import de.contracktor.model.Role;
@@ -30,6 +31,9 @@ public class RoleController {
     @Autowired
     OrganisationRepository organisationRepository;
 
+    @Autowired
+    UserManager userManager;
+
     @GetMapping("/admin/role")
     public String getRoleManagePage(Model model) {
         // Data:
@@ -37,6 +41,9 @@ public class RoleController {
         List<Permission> permissions = permissionRepository.findAll();
         List<Organisation> organisations = organisationRepository.findAll();
 
+        if(!userManager.isCurrentUserAppAdmin()) {
+            organisations = List.of(organisationRepository.findByOrganisationName(userManager.getCurrentOrganisation()));
+        }
         // Logic:
 
         // Model:
@@ -54,6 +61,9 @@ public class RoleController {
         List<Permission> permissions = permissionRepository.findAll();
         List<Organisation> organisations = organisationRepository.findAll();
 
+        if(!userManager.isCurrentUserAppAdmin()) {
+            organisations = List.of(organisationRepository.findByOrganisationName(userManager.getCurrentOrganisation()));
+        }
         // Logic:
 
         // Model:
@@ -79,6 +89,10 @@ public class RoleController {
         List<Permission> permissions = permissionRepository.findAll();
         List<Organisation> organisations = organisationRepository.findAll();
 
+        if(!userManager.isCurrentUserAppAdmin()) {
+            organisations = List.of(organisationRepository.findByOrganisationName(userManager.getCurrentOrganisation()));
+        }
+
         // Model:
         model.addAttribute("roles", roles);
         model.addAttribute("permissions", permissions);
@@ -93,6 +107,10 @@ public class RoleController {
         List<Role> roles = roleRepository.findAll();
         List<Permission> permissions = permissionRepository.findAll();
         List<Organisation> organisations = organisationRepository.findAll();
+
+        if(!userManager.isCurrentUserAppAdmin()) {
+            organisations = List.of(organisationRepository.findByOrganisationName(userManager.getCurrentOrganisation()));
+        }
 
         // Logic:
 
@@ -114,6 +132,9 @@ public class RoleController {
         roleRepository.deleteById(deleteId);
         List<Role> roles = roleRepository.findAll();
 
+        if(!userManager.isCurrentUserAppAdmin()) {
+            organisations = List.of(organisationRepository.findByOrganisationName(userManager.getCurrentOrganisation()));
+        }
         // Model:
         model.addAttribute("roles", roles);
         model.addAttribute("permissions", permissions);
@@ -129,6 +150,9 @@ public class RoleController {
         List<Permission> permissions = permissionRepository.findAll();
         List<Organisation> organisations = organisationRepository.findAll();
 
+        if(!userManager.isCurrentUserAppAdmin()) {
+            organisations = List.of(organisationRepository.findByOrganisationName(userManager.getCurrentOrganisation()));
+        }
         // Logic:
 
 
@@ -147,6 +171,9 @@ public class RoleController {
         List<Permission> permissions = permissionRepository.findAll();
         List<Organisation> organisations = organisationRepository.findAll();
 
+        if(!userManager.isCurrentUserAppAdmin()) {
+            organisations = List.of(organisationRepository.findByOrganisationName(userManager.getCurrentOrganisation()));
+        }
         // Logic:
         Optional<Organisation> organisationOptional = organisationRepository.findById(organisationChangeId);
         Organisation organisation = organisationOptional.get();

@@ -39,6 +39,7 @@ public class RegisterAdminController {
         model.addAttribute("organisations", organisations);
 
         // For form input
+        model.addAttribute("userManager", userManager);
         model.addAttribute("userOrganisation", orgName);
         model.addAttribute("isSystemAdmin", isSystemAdmin);
         model.addAttribute("username", "");
@@ -58,7 +59,6 @@ public class RegisterAdminController {
                            @RequestParam String surname,
                            @RequestParam String organisation,
                            @RequestParam String password,
-                           @RequestParam String passwordCheck,
                            @RequestParam(value = "admin", required = false) String admin,
                            Model model) {
 
@@ -90,6 +90,7 @@ public class RegisterAdminController {
         model.addAttribute("organisations", organisations);
 
         // For form input
+        model.addAttribute("userManager", userManager);
         model.addAttribute("userOrganisation", orgName);
         model.addAttribute("isSystemAdmin", isSystemAdmin);
         model.addAttribute("username", "");

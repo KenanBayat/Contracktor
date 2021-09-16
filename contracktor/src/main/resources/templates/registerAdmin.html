@@ -91,10 +91,6 @@
 
                                 <!-- Password Check field -->
                                 <div class="col-6">
-                                    <label for="passwordCheck" class="form-label">
-                                        Passwort wiederholen
-                                    </label>
-                                    <input type="password" class="form-control" id="passwordCheck" placeholder="Passwort.." name="passwordCheck" th:value="${passwordCheck}">
                                 </div>
 
                                 <!-- user rights fields -->
@@ -106,7 +102,7 @@
                                             Mit Admin-Rechten
                                         </label>
                                     </div>
-                                    <div class="form-check form-check-inline">
+                                    <div class="form-check form-check-inline" th:if="${userManager.isCurrentUserAppAdmin()}">
                                         <input class="form-check-input" id="isApplicationAdmin" name="admin"
                                                th:value="sysadmin" type="checkbox"/>
                                         <label class="form-check-label" for="isApplicationAdmin">

@@ -128,7 +128,7 @@ public class ContractController {
 
     @PostMapping("/contracts/search")
     public String getSearchAllProjectStatistic(@RequestParam String search, Model model) {
-        List<Contract> contracts = contractRepository.findAll();
+        List<Contract> contracts = databaseService.getAllContracts();
 
         String finalSearch = search.toLowerCase();
         searchedContracts = contracts.stream().filter(contract -> contract.getName().toLowerCase().contains(finalSearch)
