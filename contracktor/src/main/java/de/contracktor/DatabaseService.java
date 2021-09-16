@@ -145,7 +145,7 @@ public class DatabaseService {
 	          
 	        }).collect(Collectors.toList());
 		}
-		return null; 
+		return new ArrayList<BillingItem>(); 
 	}
 
 	/**
@@ -157,7 +157,7 @@ public class DatabaseService {
 		if (userManager.hasCurrentUserReadPerm()) {
 			return projectRepo.findByOwner_OrganisationNameIgnoreCase(userManager.getCurrentOrganisation());
 		} else {
-			return null;
+			return new ArrayList<Project>();
 		}
 	}
 
@@ -171,7 +171,7 @@ public class DatabaseService {
 		if(userManager.hasCurrentUserReadPerm()) {
 			return contractRepo.findByContractorIgnoreCaseOrConsigneeIgnoreCase(orgName, orgName);
 		} else {
-			return null;
+			return new ArrayList<Contract>();
 		}
 	}
 
