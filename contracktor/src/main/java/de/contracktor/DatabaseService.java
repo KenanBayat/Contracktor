@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -428,8 +430,10 @@ public class DatabaseService {
 	 * @throws IOException
 	 */
 	public void setURL(String url) throws IOException {
-		BufferedWriter writer = new BufferedWriter(new FileWriter(new File("data\\URL.txt")));
+		Path path = FileSystems.getDefault().getPath("data", "URL.txt");
+		BufferedWriter writer = new BufferedWriter(new FileWriter(new File(String.valueOf(path))));
 		writer.write(url);
+		ScheduledREST.setRestUrl(url);
 		writer.close();
 	}
 
@@ -440,7 +444,8 @@ public class DatabaseService {
 	 * @throws IOException
 	 */
 	public String getURL() throws IOException {
-		File file = new File("data\\URL.txt");
+		Path path = FileSystems.getDefault().getPath("data", "URL.txt");
+		File file = new File(String.valueOf(path));
 		FileReader fR = new FileReader(file);
 		BufferedReader bR = new BufferedReader(fR);
 		String context = bR.readLine();
