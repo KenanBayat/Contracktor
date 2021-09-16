@@ -68,7 +68,8 @@ public class AppApiController {
                     if (savedItem.isEmpty()) {
                         return new APIResponse("UNKNOWN_BILLINGITEM");
                     }
-
+                    long savedItemTime =  savedItem.get().getLastModified();
+                    long newItemTime =  billingItemUpdate.getLastModified();
                     if (savedItem.get().getLastModified() <= billingItemUpdate.getLastModified()) {
                         savedItem.get().setStatus(billingItemUpdate.getNewState());
                         savedItem.get().setLastModified(billingItemUpdate.getLastModified());
@@ -99,7 +100,7 @@ public class AppApiController {
                 pictureRepository.saveAll(pictureUpdates);
             }
 
-            return apiDownloadConstructor(username);
+            return apiDownloadConstructor();
         } catch (AuthenticationException e) {
             return new APIResponse("NOT_AUTHENTICATED");
         }
@@ -113,7 +114,7 @@ public class AppApiController {
     public void loginController() {
     }
 
-    private APIResponse apiDownloadConstructor(String username) throws AuthenticationException{
+    private APIResponse apiDownloadConstructor() throws AuthenticationException{
         if (!userManager.hasCurrentUserReadPerm() && !userManager.hasCurrentUserWritePerm()) {
             return new APIResponse("NO_READ_PERM");
         }
