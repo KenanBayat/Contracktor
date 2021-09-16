@@ -1,7 +1,6 @@
 package de.contracktor.controller;
 
 import de.contracktor.UserManager;
-import de.contracktor.model.Organisation;
 import de.contracktor.model.State;
 import de.contracktor.model.StateTransition;
 import de.contracktor.repository.StateRepository;
