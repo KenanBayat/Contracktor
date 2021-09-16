@@ -1,5 +1,7 @@
 package de.contracktor;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
@@ -72,6 +74,8 @@ public class InitDatabaseService {
 	
 	@Autowired
 	private PictureRepository pictureRepo;
+	
+	private DatabaseService dataBaseService = new DatabaseService();;
 		
 	private Permission read;
 	private Permission write;
@@ -93,6 +97,9 @@ public class InitDatabaseService {
 	
 	@PostConstruct
 	public void init() {
+		
+		if(!new File("data\\URL.txt").exists())
+			initURL();
 		
 		if(permissionRepo.count() == 0) 
 			initPermissions();
@@ -120,6 +127,14 @@ public class InitDatabaseService {
 		   reportRepo.count() == 0 &&
 		   pictureRepo.count() == 0){}
 		
+	}
+	
+	private void initURL() {
+		try {
+			dataBaseService.setURL("http://localhost:3000/api/v1/");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void initPermissions() {
