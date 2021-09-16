@@ -64,7 +64,9 @@
 
                     <div class="py-2"></div>
 
-                    <table class="table table-hover">
+                    <p th:if="${projects.isEmpty()}">Keine Daten gefunden.</p>
+
+                    <table class="table table-hover" th:unless="${projects.isEmpty()}">
                         <thead>
                         <tr>
 

@@ -1,5 +1,7 @@
 package de.contracktor.controller;
 
+import de.contracktor.UserManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,8 +11,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class StatisticController {
 
+    @Autowired
+    UserManager userManager;
+
     @GetMapping("/statistic")
-    public String getStatisticSelection() {
+    public String getStatisticSelection(Model model) {
+
+        model.addAttribute("userManager", userManager);
         return "statistic";
     }
 

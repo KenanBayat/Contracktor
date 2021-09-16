@@ -1,5 +1,6 @@
 package de.contracktor.controller;
 
+import de.contracktor.UserManager;
 import de.contracktor.model.Organisation;
 import de.contracktor.model.State;
 import de.contracktor.model.StateTransition;
@@ -28,6 +29,9 @@ public class TransitionController {
     @Autowired
     StateTransitionRepository transitionRepository;
 
+    @Autowired
+    UserManager userManager;
+
     List<StateTransition> searchedTransitions = new ArrayList<>();
 
     @GetMapping("/admin/transition")
@@ -35,6 +39,7 @@ public class TransitionController {
         List<State> states = stateRepository.findAll();
         List<StateTransition> transitions = transitionRepository.findAll();
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("states", states);
         model.addAttribute("transitions", transitions);
         model.addAttribute("filter", "");
@@ -57,6 +62,7 @@ public class TransitionController {
         searchedTransitions = transitions;
 
         // Model attributes:
+        model.addAttribute("userManager", userManager);
         model.addAttribute("states", states);
         model.addAttribute("transitions", transitions);
         model.addAttribute("filter", "");
@@ -77,6 +83,7 @@ public class TransitionController {
         List<StateTransition> transitions = transitionRepository.findAll();
 
         // Model attributes:
+        model.addAttribute("userManager", userManager);
         model.addAttribute("states", states);
         model.addAttribute("transitions", transitions);
         model.addAttribute("filter", "");
@@ -108,6 +115,7 @@ public class TransitionController {
         List<State> states = stateRepository.findAll();
 
         // Model attributes:
+        model.addAttribute("userManager", userManager);
         model.addAttribute("states", states);
         model.addAttribute("transitions", transitions);
         model.addAttribute("filter", "");
@@ -144,6 +152,7 @@ public class TransitionController {
         }
 
         // Model attributes:
+        model.addAttribute("userManager", userManager);
         model.addAttribute("states", states);
         model.addAttribute("transitions", transitions);
         model.addAttribute("filter", filter);

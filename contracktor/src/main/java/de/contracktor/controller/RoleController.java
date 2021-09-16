@@ -47,6 +47,7 @@ public class RoleController {
         // Logic:
 
         // Model:
+        model.addAttribute("userManager", userManager);
         model.addAttribute("roles", roles);
         model.addAttribute("permissions", permissions);
         model.addAttribute("organisations", organisations);
@@ -67,6 +68,7 @@ public class RoleController {
         // Logic:
 
         // Model:
+        model.addAttribute("userManager", userManager);
         model.addAttribute("roles", roles);
         model.addAttribute("permissions", permissions);
         model.addAttribute("organisations", organisations);
@@ -94,6 +96,7 @@ public class RoleController {
         }
 
         // Model:
+        model.addAttribute("userManager", userManager);
         model.addAttribute("roles", roles);
         model.addAttribute("permissions", permissions);
         model.addAttribute("organisations", organisations);
@@ -115,6 +118,7 @@ public class RoleController {
         // Logic:
 
         // Model:
+        model.addAttribute("userManager", userManager);
         model.addAttribute("roles", roles);
         model.addAttribute("permissions", permissions);
         model.addAttribute("organisations", organisations);
@@ -136,6 +140,7 @@ public class RoleController {
             organisations = List.of(organisationRepository.findByOrganisationName(userManager.getCurrentOrganisation()));
         }
         // Model:
+        model.addAttribute("userManager", userManager);
         model.addAttribute("roles", roles);
         model.addAttribute("permissions", permissions);
         model.addAttribute("organisations", organisations);
@@ -157,6 +162,7 @@ public class RoleController {
 
 
         // Model:
+        model.addAttribute("userManager", userManager);
         model.addAttribute("roles", roles);
         model.addAttribute("permissions", permissions);
         model.addAttribute("organisations", organisations);
@@ -190,6 +196,7 @@ public class RoleController {
 
 
         // Model:
+        model.addAttribute("userManager", userManager);
         model.addAttribute("roles", roles);
         model.addAttribute("permissions", permissions);
         model.addAttribute("organisations", organisations);

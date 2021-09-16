@@ -49,6 +49,7 @@ public class UserRoleController {
 
 
         // Model:
+        model.addAttribute("userManager", userManager);
         model.addAttribute("users", users);
         model.addAttribute("organisations", organisations);
         model.addAttribute("roles", roles);
@@ -77,6 +78,7 @@ public class UserRoleController {
 
 
         // Model:
+        model.addAttribute("userManager", userManager);
         model.addAttribute("users", users);
         model.addAttribute("organisations", organisations);
         model.addAttribute("roles", roles);
@@ -109,6 +111,7 @@ public class UserRoleController {
 
 
         // Model:
+        model.addAttribute("userManager", userManager);
         model.addAttribute("users", users);
         model.addAttribute("organisations", organisations);
         model.addAttribute("roles", roles);
@@ -132,6 +135,7 @@ public class UserRoleController {
                 .collect(Collectors.toList());
 
         // Model attributes:
+        model.addAttribute("userManager", userManager);
         model.addAttribute("users", users);
         model.addAttribute("organisations", organisations);
         model.addAttribute("roles", roles);

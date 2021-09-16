@@ -85,7 +85,7 @@
 
               <!-- Register user -->
               <!-- 3 Icons per row -->
-              <div class="col-4 mx-auto text-center app-icon">
+              <div class="col-4 mx-auto text-center app-icon" th:if="${userManager.isCurrentUserAppAdmin()}">
                 <!-- link to page -->
                 <a th:href="@{/admin/organisation}">
                   <!-- icon, 1em -->
@@ -142,7 +142,7 @@
 
               <!-- Add and remove Roles to user -->
               <!-- 3 Icons per row -->
-              <div class="col-4 mx-auto text-center app-icon">
+              <div class="col-4 mx-auto text-center app-icon" th:if="${userManager.isCurrentUserAppAdmin()}">
                 <!-- link to page -->
                 <a th:href="@{/admin/state}">
                   <!-- icon, 1em -->
@@ -163,7 +163,7 @@
 
               <!-- Add and remove Roles to user -->
               <!-- 3 Icons per row -->
-              <div class="col-4 mx-auto text-center app-icon">
+              <div class="col-4 mx-auto text-center app-icon" th:if="${userManager.isCurrentUserAppAdmin()}">
                 <!-- link to page -->
                 <a th:href="@{/admin/transition}">
                   <!-- icon, 1em -->

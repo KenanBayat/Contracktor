@@ -1,6 +1,7 @@
 package de.contracktor.controller;
 
 import de.contracktor.DatabaseService;
+import de.contracktor.UserManager;
 import de.contracktor.model.*;
 import de.contracktor.repository.BillingItemRepository;
 import de.contracktor.repository.BillingUnitRepository;
@@ -36,6 +37,9 @@ public class ProjectStatisticController {
     @Autowired
     DatabaseService databaseService;
 
+    @Autowired
+    UserManager userManager;
+
     List<Project> selectedProjects = new ArrayList<>();
 
     List<Project> searchedProjects = new ArrayList<>();
@@ -45,6 +49,7 @@ public class ProjectStatisticController {
     @GetMapping("/project-statistic")
     public String getProjectStatistic(Model model) {
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("labels", getLabels());
         model.addAttribute("count", getCount());
         model.addAttribute("projects", databaseService.getAllProjects());
@@ -58,6 +63,7 @@ public class ProjectStatisticController {
     public String getAddAllProjectStatistic(Model model) {
         selectedProjects = databaseService.getAllProjects();
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("labels", getLabels());
         model.addAttribute("count", getCount());
         model.addAttribute("projects", databaseService.getAllProjects());
@@ -71,6 +77,7 @@ public class ProjectStatisticController {
     public String getRemoveAllProjectStatistic(Model model) {
         selectedProjects = new ArrayList<>();
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("labels", getLabels());
         model.addAttribute("count", getCount());
         model.addAttribute("projects", databaseService.getAllProjects());
@@ -99,6 +106,7 @@ public class ProjectStatisticController {
                 )
                 .collect(Collectors.toList());
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("labels", getLabels());
         model.addAttribute("count", getCount());
         model.addAttribute("projects", searchedProjects);
@@ -112,6 +120,7 @@ public class ProjectStatisticController {
     public String getStatistic(@RequestParam int id, Model model) {
         selectedProjects = List.of(databaseService.getProjectByProjectID(id));
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("labels", getLabels());
         model.addAttribute("count", getCount());
         model.addAttribute("projects", databaseService.getAllProjects());
@@ -136,6 +145,7 @@ public class ProjectStatisticController {
             selectedProjects.add(project);
         }
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("labels", getLabels());
         model.addAttribute("count", getCount());
         model.addAttribute("projects", projects);
@@ -159,6 +169,7 @@ public class ProjectStatisticController {
 
 
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("labels", getLabels());
         model.addAttribute("count", getCount());
         model.addAttribute("projects", projects);
@@ -233,6 +244,7 @@ public class ProjectStatisticController {
         }
 
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("labels", getLabels());
         model.addAttribute("count", getCount());
         model.addAttribute("projects", sortList);

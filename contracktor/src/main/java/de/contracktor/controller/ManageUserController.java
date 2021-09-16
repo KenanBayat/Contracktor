@@ -182,6 +182,7 @@ public class ManageUserController {
             organisations = List.of(organisationRepository.findByOrganisationName(userManager.getCurrentOrganisation()));
         }
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("users", users);
         model.addAttribute("organisations", organisations);
 
@@ -207,6 +208,7 @@ public class ManageUserController {
             organisations = List.of(organisationRepository.findByOrganisationName(userManager.getCurrentOrganisation()));
         }
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("users", users);
         model.addAttribute("organisations", organisations);
 
@@ -227,6 +229,7 @@ public class ManageUserController {
             organisations = List.of(organisationRepository.findByOrganisationName(userManager.getCurrentOrganisation()));
         }
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("users", users);
         model.addAttribute("organisations", organisations);
 
@@ -251,6 +254,7 @@ public class ManageUserController {
             organisations = List.of(organisationRepository.findByOrganisationName(userManager.getCurrentOrganisation()));
         }
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("users", users);
         model.addAttribute("organisations", organisations);
 
