@@ -73,22 +73,28 @@ public class ContractController {
                                  @RequestParam double pricePerUnit, @RequestParam double totalPrice, @RequestParam String ifc, @RequestParam String state, @RequestParam String shortDescription, Model model) {
         
     	BillingUnit billingUnit;
+        BillingItem billingItem;
         if (billingUnitID.equals("Neue anlegen")) {
             billingUnit = new BillingUnit(("BUID_" + billingItemID), "", 0, 0.0, 0.0, contract, new ArrayList<>(), false, "", "", stateRepository.findByStateName("NO_STATUS"));
             billingUnit = billingUnitRepository.save(billingUnit);
+            billingItem = new BillingItem(billingItemID, ("BUID_" + billingItemID), unit, quantity, pricePerUnit, totalPrice, ifc, stateRepository.findByStateName(state), shortDescription, new ArrayList<>());
+        } else {
+            billingItem = new BillingItem(billingItemID, billingUnitID, unit, quantity, pricePerUnit, totalPrice, ifc, stateRepository.findByStateName(state), shortDescription, new ArrayList<>());
         }
-            
-        BillingItem billingItem = new BillingItem(billingItemID, ("BUID_" + billingItemID), unit, quantity, pricePerUnit, totalPrice, ifc, stateRepository.findByStateName(state), shortDescription, new ArrayList<>());
         billingItem = billingItemRepository.save(billingItem);
 
         int id = contract.getContractID();
         contract = contractRepository.findByContractID(id);
 
+        if (billingUnitID.equals("Neue anlegen")) {
+            billingUnit = billingUnitRepository.findByBillingUnitID("BUID_" + billingItemID);
+        } else {
             billingUnit = billingUnitRepository.findByBillingUnitID(billingUnitID);
-            List<BillingItem> current = billingUnit.getBillingItems();
-            current.add(billingItem);
-            billingUnit.setBillingItems(current);
-            billingUnit = billingUnitRepository.save(billingUnit);
+        }
+        List<BillingItem> current = billingUnit.getBillingItems();
+        current.add(billingItem);
+        billingUnit.setBillingItems(current);
+        billingUnit = billingUnitRepository.save(billingUnit);
 
         model.addAttribute("contract", contract);
         model.addAttribute("billingUnitIDs", getBillingUnitIDs());
