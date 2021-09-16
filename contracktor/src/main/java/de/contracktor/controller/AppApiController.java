@@ -122,7 +122,7 @@ public class AppApiController {
         String organisation = userManager.getCurrentOrganisation();
         response.setWritePerm(userManager.hasCurrentUserWritePerm());
         response.setProjects(projectRepository.findByOwner_OrganisationNameIgnoreCase(organisation));
-        List<Contract> contracts =contractRepository.findByContractorIgnoreCaseOrConsigneeIgnoreCase(organisation,
+        List<Contract> contracts = contractRepository.findByContractorIgnoreCaseOrConsigneeIgnoreCase(organisation,
                 organisation);
         for(Contract contract : contracts) {
         	int id = contract.getProject().getProjectID();
