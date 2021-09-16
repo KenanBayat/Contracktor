@@ -389,9 +389,9 @@ public class DatabaseService {
 	}
 	
 	public void setURL(String url) throws IOException {
-			    BufferedWriter writer = new BufferedWriter(new FileWriter(new File("data\\URL.txt")));
-			    writer.write(url);
-			    writer.close();
+		BufferedWriter writer = new BufferedWriter(new FileWriter(new File("data\\URL.txt")));
+		writer.write(url);
+		writer.close();
 			}
 	public String getURL() throws IOException {
 		File file = new File("data\\URL.txt");
