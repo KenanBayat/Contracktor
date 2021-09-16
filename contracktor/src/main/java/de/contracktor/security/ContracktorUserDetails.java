@@ -2,13 +2,9 @@ package de.contracktor.security;
 
 import de.contracktor.model.Role;
 import de.contracktor.model.UserAccount;
-import org.hibernate.Hibernate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -17,6 +13,7 @@ import java.util.List;
  * Custom UserDetails-implementation that includes the admin-status, information about the organisation and roles of the currently
  * logged-in user.
  */
+@SuppressWarnings("serial")
 public class ContracktorUserDetails implements UserDetails {
 
 

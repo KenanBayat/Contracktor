@@ -1,7 +1,5 @@
 package de.contracktor.controller;
 
-
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.contracktor.model.*;
 import de.contracktor.repository.*;
@@ -99,7 +97,8 @@ class AppApiControllerTest {
 
         State state = stateRepository.findByStateName("OPEN");
 
-        State state2 = stateRepository.findByStateName("OK");
+        @SuppressWarnings("unused")
+		State state2 = stateRepository.findByStateName("OK");
 
         Project project = new Project(200000, "test", creationDate, completionDate, address,
 				100.0, testOrganisation, "hans", state, image, "");
