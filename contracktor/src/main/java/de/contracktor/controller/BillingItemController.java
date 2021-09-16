@@ -43,6 +43,9 @@ public class BillingItemController {
     UserManager userManager;
 
     @Autowired
+    BillingUnitRepository billingUnitRepository;
+
+    @Autowired
     OrganisationRepository organisationRepository;
 
     List<BillingItem> searchedBillingItems = new ArrayList<>();
@@ -59,7 +62,7 @@ public class BillingItemController {
 
     @GetMapping("/billingitem")
     public String getBillingItem(Model model) {
-        List<StateTransition> transitions = stateTransitionRepository.findAll();
+        List<StateTransition> transitions = getStateTransition();
         boolean noChanges = true;
         for(StateTransition transition : transitions) {
             if (billingItem.getStatus().getId() == transition.getStartState().getId()) {
@@ -70,7 +73,7 @@ public class BillingItemController {
         model.addAttribute("userManager", userManager);
         model.addAttribute("billingitem", billingItem);
         model.addAttribute("filter", "");
-        model.addAttribute("transitions", stateTransitionRepository.findAll());
+        model.addAttribute("transitions", getStateTransition());
         model.addAttribute("states", stateRepository.findAll());
         model.addAttribute("comment", "");
         return "billingitem";
@@ -79,7 +82,7 @@ public class BillingItemController {
     @PostMapping("/billingitem")
     public String getBillingItem(@RequestParam String id, Model model) {
         billingItem = billingItemRepository.findByBillingItemID(id).get();
-        List<StateTransition> transitions = stateTransitionRepository.findAll();
+        List<StateTransition> transitions = getStateTransition();
         boolean noChanges = true;
         for(StateTransition transition : transitions) {
             if (billingItem.getStatus().getId() == transition.getStartState().getId()) {
@@ -90,7 +93,7 @@ public class BillingItemController {
         model.addAttribute("userManager", userManager);
         model.addAttribute("billingitem", billingItem);
         model.addAttribute("filter", "");
-        model.addAttribute("transitions", stateTransitionRepository.findAll());
+        model.addAttribute("transitions", getStateTransition());
         model.addAttribute("states", stateRepository.findAll());
         model.addAttribute("comment", "");
 
@@ -119,7 +122,7 @@ public class BillingItemController {
         String id = billingItem.getBillingItemID();
         billingItem = billingItemRepository.findByBillingItemID(id).get();
 
-        List<StateTransition> transitions = stateTransitionRepository.findAll();
+        List<StateTransition> transitions = getStateTransition();
         boolean noChanges = true;
         for(StateTransition transition : transitions) {
             if (billingItem.getStatus().getId() == transition.getStartState().getId()) {
@@ -132,7 +135,7 @@ public class BillingItemController {
         model.addAttribute("userManager", userManager);
         model.addAttribute("billingitem", billingItem);
         model.addAttribute("filter", "");
-        model.addAttribute("transitions", stateTransitionRepository.findAll());
+        model.addAttribute("transitions", getStateTransition());
         model.addAttribute("states", stateRepository.findAll());
         return "billingitem";
     }
@@ -144,6 +147,16 @@ public class BillingItemController {
         model.addAttribute("billingitems", items);
         model.addAttribute("filter", "");
         return "billingitemsOfBillingitem";
+    }
+
+    @GetMapping("/reports")
+    public String getReports(Model model) {
+        List<Report> reports = reportRepository.findAll().stream().filter(report -> billingItem.getBillingItemID().equals(report.getBillingItem().getBillingItemID())).collect(Collectors.toList());
+
+        model.addAttribute("userManager", userManager);
+        model.addAttribute("reports", reports);
+        model.addAttribute("filter", "");
+        return "reports";
     }
 
     @PostMapping("/billingitem/state")
@@ -160,7 +173,7 @@ public class BillingItemController {
 
         billingItem.setStatus(stateRepository.findById(id).get());
         billingItem = billingItemRepository.save(billingItem);
-        List<StateTransition> transitions = stateTransitionRepository.findAll();
+        List<StateTransition> transitions = getStateTransition();
         boolean noChanges = true;
         for(StateTransition transition : transitions) {
             if (billingItem.getStatus().getId() == transition.getStartState().getId()) {
@@ -251,5 +264,16 @@ public class BillingItemController {
         model.addAttribute("billingitems", searchedBillingItems);
         model.addAttribute("filter", "");
         return "billingitems";
+    }
+
+    public List<StateTransition> getStateTransition() {
+        List<StateTransition> transitions = stateTransitionRepository.findAll();
+        Contract contract = databaseService.getContractOfBillingItem(billingItem);
+        if(contract.getContractor().equals(userManager.getCurrentOrganisation())) {
+            transitions = transitions.stream().filter(transition -> transition.getContractor()).collect(Collectors.toList());
+        } else {
+            transitions = transitions.stream().filter(transition -> !transition.getContractor()).collect(Collectors.toList());
+        }
+        return  transitions;
     }
 }

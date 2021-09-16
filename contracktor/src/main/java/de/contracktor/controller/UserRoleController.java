@@ -1,5 +1,6 @@
 package de.contracktor.controller;
 
+import de.contracktor.UserManager;
 import de.contracktor.model.Organisation;
 import de.contracktor.model.Role;
 import de.contracktor.model.UserAccount;
@@ -30,6 +31,9 @@ public class UserRoleController {
     @Autowired
     RoleRepository roleRepository;
 
+    @Autowired
+    UserManager userManager;
+
     @GetMapping("/admin/userrole")
     public String getUserRolePage(Model model) {
         // Data:
@@ -37,6 +41,9 @@ public class UserRoleController {
         List<Organisation> organisations = organisationRepository.findAll();
         List<Role> roles = roleRepository.findAll();
 
+        if(!userManager.isCurrentUserAppAdmin()) {
+            organisations = List.of(organisationRepository.findByOrganisationName(userManager.getCurrentOrganisation()));
+        }
 
         // Logic:
 
@@ -54,6 +61,10 @@ public class UserRoleController {
         List<Organisation> organisations = organisationRepository.findAll();
         List<Role> roles = roleRepository.findAll();
 
+
+        if(!userManager.isCurrentUserAppAdmin()) {
+            organisations = List.of(organisationRepository.findByOrganisationName(userManager.getCurrentOrganisation()));
+        }
 
         // Logic:
         Role role = roleRepository.findById(addRole).get();
@@ -78,6 +89,9 @@ public class UserRoleController {
         List<Organisation> organisations = organisationRepository.findAll();
         List<Role> roles = roleRepository.findAll();
 
+        if(!userManager.isCurrentUserAppAdmin()) {
+            organisations = List.of(organisationRepository.findByOrganisationName(userManager.getCurrentOrganisation()));
+        }
 
         // Logic:
         Role role = roleRepository.findById(addRole).get();
@@ -107,6 +121,10 @@ public class UserRoleController {
         List<UserAccount> users = userRepository.findAll();
         List<Organisation> organisations = organisationRepository.findAll();
         List<Role> roles = roleRepository.findAll();
+
+        if(!userManager.isCurrentUserAppAdmin()) {
+            organisations = List.of(organisationRepository.findByOrganisationName(userManager.getCurrentOrganisation()));
+        }
 
         // Logic:
         users = users.stream()
