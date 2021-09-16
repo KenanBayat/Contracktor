@@ -33,6 +33,9 @@ public class ItemController {
 
     @Autowired
     StateRepository stateRepository;
+    
+    @Autowired
+    DatabaseService databaseService;
 
     List<BillingItem> searchedBillingItems = new ArrayList<>();
 
@@ -40,7 +43,7 @@ public class ItemController {
 
     @GetMapping("/billingitems")
     public String getBillingItems(Model model) {
-        model.addAttribute("billingitems", billingItemRepository.findAll());
+        model.addAttribute("billingitems", databaseService.getAllBillingItems());
         model.addAttribute("filter", "");
         return "billingitems";
     }

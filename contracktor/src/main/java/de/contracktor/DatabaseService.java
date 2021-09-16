@@ -135,7 +135,17 @@ public class DatabaseService {
 	 * @throws AuthenticationException
 	 */
 	public List<BillingItem> getAllBillingItems() {
-		return getAllBillingUnits().stream().flatMap(b -> b.getBillingItems().stream()).collect(Collectors.toList());
+		if(userManager.hasCurrentUserReadPerm()) {
+			return billingItemRepo.findAll().stream().filter(new java.util.function.Predicate<BillingItem>() {
+
+				@Override
+				public boolean test(BillingItem t) {
+					return getOrg(t).contains(userManager.getCurrentOrganisation());
+				}
+	          
+	        }).collect(Collectors.toList());
+		}
+		return null; 
 	}
 
 	/**
