@@ -1,6 +1,7 @@
 package de.contracktor.controller;
 
 import de.contracktor.DatabaseService;
+import de.contracktor.UserManager;
 import de.contracktor.model.BillingItem;
 import de.contracktor.model.BillingUnit;
 import de.contracktor.model.StateTransition;
@@ -37,12 +38,16 @@ public class ItemController {
     @Autowired
     DatabaseService databaseService;
 
+    @Autowired
+    UserManager userManager;
+
     List<BillingItem> searchedBillingItems = new ArrayList<>();
 
     BillingItem billingItem = null;
 
     @GetMapping("/billingitems")
     public String getBillingItems(Model model) {
+        model.addAttribute("userManager", userManager);
         model.addAttribute("billingitems", databaseService.getAllBillingItems());
         model.addAttribute("filter", "");
         return "billingitems";
@@ -50,6 +55,7 @@ public class ItemController {
 
     @GetMapping("/billingitem")
     public String getBillingItem(Model model) {
+        model.addAttribute("userManager", userManager);
         model.addAttribute("billingitem", billingItem);
         model.addAttribute("filter", "");
         model.addAttribute("transitions", stateTransitionRepository.findAll());
@@ -60,6 +66,7 @@ public class ItemController {
     @PostMapping("/billingitem")
     public String getBillingItem(@RequestParam String id, Model model) {
         billingItem = billingItemRepository.findByBillingItemID(id).get();
+        model.addAttribute("userManager", userManager);
         model.addAttribute("billingitem", billingItem);
         model.addAttribute("filter", "");
         model.addAttribute("transitions", stateTransitionRepository.findAll());
@@ -85,6 +92,7 @@ public class ItemController {
         String id = billingItem.getBillingItemID();
         billingItem = billingItemRepository.findByBillingItemID(id).get();
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("billingitem", billingItem);
         model.addAttribute("filter", "");
         model.addAttribute("transitions", stateTransitionRepository.findAll());
@@ -95,6 +103,7 @@ public class ItemController {
         @GetMapping("/billingitem/billingitems")
     public String getBillingItemsOfBillingitem(Model model) {
         List<BillingItem> items = billingItem.getBillingItems();
+            model.addAttribute("userManager", userManager);
         model.addAttribute("billingitems", items);
         model.addAttribute("filter", "");
         return "billingitemsOfBillingitem";
@@ -112,6 +121,7 @@ public class ItemController {
             }
         }
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("noChanges", noChanges);
         model.addAttribute("billingitem", billingItem);
         model.addAttribute("filter", "");
@@ -169,6 +179,7 @@ public class ItemController {
             Collections.reverse(sortList);
         }
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("billingitems", sortList);
         model.addAttribute("filter", filter);
         return "billingitems";
@@ -188,6 +199,7 @@ public class ItemController {
                 )
                 .collect(Collectors.toList());
 
+        model.addAttribute("userManager", userManager);
         model.addAttribute("billingitems", searchedBillingItems);
         model.addAttribute("filter", "");
         return "billingitems";
