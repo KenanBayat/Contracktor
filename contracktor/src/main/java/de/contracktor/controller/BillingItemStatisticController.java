@@ -3,7 +3,6 @@ package de.contracktor.controller;
 import de.contracktor.DatabaseService;
 import de.contracktor.UserManager;
 import de.contracktor.model.BillingItem;
-import de.contracktor.model.Contract;
 import de.contracktor.repository.BillingItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -74,7 +73,8 @@ public class BillingItemStatisticController {
 
     @PostMapping("/billingitem-statistic/remove")
     public String getRemoveProjectStatistic(@RequestParam String id, Model model) {
-        List<BillingItem> billingItems = databaseService.getAllBillingItems();
+        @SuppressWarnings("unused")
+		List<BillingItem> billingItems = databaseService.getAllBillingItems();
         BillingItem billingItem = billingItemRepository.findByBillingItemID(id).get();
         List<BillingItem> newSelected = new ArrayList<>();
         for (BillingItem b : selectedBillingItems) {

@@ -3,20 +3,15 @@ package de.contracktor.controller;
 import de.contracktor.DatabaseService;
 import de.contracktor.UserManager;
 import de.contracktor.model.Contract;
-import de.contracktor.model.CurrencyFormatter;
 import de.contracktor.model.DateFormatter;
 import de.contracktor.model.Project;
-import de.contracktor.repository.ContractRepository;
-import de.contracktor.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
-import javax.security.sasl.AuthenticationException;
 
 @Controller
 public class ProjectController {
@@ -44,7 +39,8 @@ public class ProjectController {
         return "projects";
     }
 
-    @PostMapping("/projects/search")
+    @SuppressWarnings("static-access")
+	@PostMapping("/projects/search")
     public String getSearchProjects(@RequestParam String search, Model model) {
         List<Project> projects = databaseService.getAllProjects();
 
@@ -148,8 +144,10 @@ public class ProjectController {
     public String getProjectDetails(Model model) {
         Project project = selectedProject;
         DateFormatter formatter = new DateFormatter();
-        String creationDate = formatter.format(project.getCreationDate());
-        String completionDate = formatter.format(project.getCompletionDate());
+        @SuppressWarnings("static-access")
+		String creationDate = formatter.format(project.getCreationDate());
+        @SuppressWarnings("static-access")
+		String completionDate = formatter.format(project.getCompletionDate());
         model.addAttribute("userManager", userManager);
         model.addAttribute("project", project);
         model.addAttribute("creationDate", creationDate);
@@ -178,8 +176,10 @@ public class ProjectController {
         Project project = databaseService.getProjectByID(id);
         selectedProject = project;
         DateFormatter formatter = new DateFormatter();
-        String creationDate = formatter.format(project.getCreationDate());
-        String completionDate = formatter.format(project.getCompletionDate());
+        @SuppressWarnings("static-access")
+		String creationDate = formatter.format(project.getCreationDate());
+        @SuppressWarnings("static-access")
+		String completionDate = formatter.format(project.getCompletionDate());
         model.addAttribute("userManager", userManager);
         model.addAttribute("project", project);
         model.addAttribute("creationDate", creationDate);

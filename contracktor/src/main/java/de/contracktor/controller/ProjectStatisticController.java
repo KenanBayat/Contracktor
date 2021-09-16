@@ -7,7 +7,6 @@ import de.contracktor.repository.BillingUnitRepository;
 import de.contracktor.repository.ContractRepository;
 import de.contracktor.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -80,7 +79,8 @@ public class ProjectStatisticController {
         return "project-statistic";
     }
 
-    @PostMapping("/project-statistic/search")
+    @SuppressWarnings("static-access")
+	@PostMapping("/project-statistic/search")
     public String getSearchAllProjectStatistic(@RequestParam String search, Model model) {
         List<Project> projects = databaseService.getAllProjects();
 

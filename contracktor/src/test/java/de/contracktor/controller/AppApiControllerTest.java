@@ -155,7 +155,8 @@ class AppApiControllerTest {
 
     @Test
     void testValidBillingItemUpdate() throws Exception {
-        BillingItem oldItem = billingItemRepository.findByBillingItemID("1").get();
+        @SuppressWarnings("unused")
+		BillingItem oldItem = billingItemRepository.findByBillingItemID("1").get();
         APIUpdate apiUpdate = new APIUpdate();
         State newState = stateRepository.findByStateName("DENY");
         BillingItemUpdate billingItemUpdate = new BillingItemUpdate("1",newState,2000);
