@@ -75,7 +75,7 @@ public class AppApiController {
                     @SuppressWarnings("unused")
 					long newItemTime =  billingItemUpdate.getLastModified();
                     if (savedItem.get().getLastModified() <= billingItemUpdate.getLastModified()) {
-                        savedItem.get().setStatus(billingItemUpdate.getNewState());
+                        savedItem.get().setStatus(stateRepository.findByStateName(billingItemUpdate.getNewState().getStateName()));
                         savedItem.get().setLastModified(billingItemUpdate.getLastModified());
                         billingItemRepository.save(savedItem.get());
                     }
@@ -118,7 +118,7 @@ public class AppApiController {
     public void loginController() {
     }
 
-    private APIResponse apiDownloadConstructor() throws AuthenticationException{
+    private APIResponse apiDownloadConstructor() throws AuthenticationException {
         if (!userManager.hasCurrentUserReadPerm() && !userManager.hasCurrentUserWritePerm()) {
             return new APIResponse("NO_READ_PERM");
         }
