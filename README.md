@@ -1,3 +1,5 @@
+![favicon-32x32](https://github.com/KenanBayat/Contracktor/assets/104596148/2e73c847-f8db-4c16-b722-7086fb8249ad)
+
 # Contracktor
 
 The purpose of the software is to be used in the construction industry for the efficient management of contract procedures and the construction progress of an organization's projects.
