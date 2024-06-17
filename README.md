@@ -36,7 +36,7 @@ The website was developed for the company Adesso SE and is therefore in German.
 
 After login this home site should be visible:
 
-![alt text](https://github.com/KenanBayat/Contracktor/blob/main/images/home.png)
+![home](https://github.com/KenanBayat/Contracktor/blob/main/images/home.png)
 
 ### Importing  Data 
 
@@ -58,8 +58,8 @@ The URL of the API can be changed via the admin console (see features).
   - The application administrators can create new organizations and their administrators.
   - URL of API for data acquisition can be changed
   - States and state transitions of billing units can be added or removed
-  - ![admin_console](.\images\admin_console.png)
+  - ![admin_console]([.\images\admin_console.png](https://github.com/KenanBayat/Contracktor/blob/main/images/admin_console.png)
 - Management for projects, contracts and billing unit management:
-  -  ![Billing_Unit_Management](.\images\Billing_Unit_Management.png)
+  -  ![Billing_Unit_Management](https://github.com/KenanBayat/Contracktor/blob/main/images/Billing_Unit_Management.png)
 - The software provides the option of creating your own diagrams from the service items, contracts and projects in order to obtain an overview of progress.
-  - ![Statistics](.\images\Statistics.png)
+  - ![Statistics](https://github.com/KenanBayat/Contracktor/blob/main/images/Statistics.png)
