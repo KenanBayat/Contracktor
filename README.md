@@ -36,7 +36,7 @@ The website was developed for the company Adesso SE and is therefore in German.
 
 After login this home site should be visible:
 
-![home](.\images\home.png)
+![alt text](https://github.com/KenanBayat/Contracktor/blob/main/images/home.png)
 
 ### Importing  Data 
 
